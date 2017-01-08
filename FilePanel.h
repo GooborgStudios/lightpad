@@ -14,10 +14,11 @@
 
 #include <string>
 
-class FileEntry;
+class FileEntry; // Must be initialized before the vector, but the class references the vector, so it's contents and methods cannot be defined here
 
 typedef std::vector<FileEntry *> FileList;
 
+// File entry
 class FileEntry {
 	public:
 		FileEntry();
@@ -27,12 +28,14 @@ class FileEntry {
 		FileList *contents;
 };
 
+// Folder entry
 class FolderEntry: public FileEntry {
 	public:
 		FolderEntry();
 		FolderEntry(wxString n, wxString t, FileList *c);
 };
 
+// Graphical interface panel
 class FilePanel: public wxPanel {
 	public:
 		FilePanel(wxPanel *parent);

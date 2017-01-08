@@ -20,6 +20,7 @@
 
 #include "FilePanel.h"
 
+// Initialize file and folder entries
 FileEntry::FileEntry() {
 
 }
@@ -47,6 +48,8 @@ FilePanel::FilePanel(wxPanel *parent)
 
 	sizer = new wxBoxSizer(wxHORIZONTAL);
 	listbox = new wxListBox(this, 5, wxPoint(-1, -1), wxSize(-1, -1));
+
+	// Generate file list...and hope that there's a much better way to do this
 	for (FileList::iterator it = fileList.begin(); it != fileList.end(); ++it) {
 		FileEntry *currentfile = fileList.at(it - fileList.begin());
 		listbox->Append(currentfile->name);
@@ -57,15 +60,17 @@ FilePanel::FilePanel(wxPanel *parent)
 			}
 		}
 	}
+
 	sizer->Add(listbox, 1, wxEXPAND | wxALL, 0);
 
 	Update();
 }
 
 void FilePanel::RefreshFileList() {
-	ListDirectory(wxString("/Users/vinyldarkscratch/Documents/Max 7/Library/MIDIext"), fileList);
+	ListDirectory(wxString("/Users/vinyldarkscratch/Documents/Max 7/Library/MIDIext"), fileList); // XXX Hard-coded full path to the folder, "~/Docume..." doesn't work.  // XXX Assuming that there's only one library folder, and that it's always in the user documents, which both are inaccurate -- should obtain paths from Max itself.
 }
 
+// Obtain all of the contents of a directory and add it to a specified file list
 void FilePanel::ListDirectory(wxString path, FileList &files) {
 	wxDir dir(path);
 	wxString filename;
@@ -78,19 +83,21 @@ void FilePanel::ListDirectory(wxString path, FileList &files) {
 		return;
 	}
 	
+	// List files
 	bool cont = dir.GetFirst(&filename, "", wxDIR_FILES);
 	while (cont) {
 		std::string filetype(magic_file(myt, (path+"/"+filename).c_str()));
-		if (filetype == "audio/midi" || filetype == "text/plain") {
+		if (filetype == "audio/midi" || filetype == "text/plain") { // Only add if a MIDI or plain text file (animations and saves)
 			files.push_back(new FileEntry(filename, "file"));
 		}
 		cont = dir.GetNext(&filename);
 	}
 
+	// List directories
 	cont = dir.GetFirst(&filename, "", wxDIR_DIRS);
 	while (cont) {
 		FileList *fl = new FileList;
-		ListDirectory(path+"/"+filename, *fl);
+		ListDirectory(path+"/"+filename, *fl); // Obtain the contents of the directories by running the function in itself
 		files.push_back(new FolderEntry(filename, "folder", fl));
 		cont = dir.GetNext(&filename);
 	}

@@ -15,9 +15,9 @@
 
 const int PADDING = 0;
 
-// Element IDs
+// wxWidgets Element IDs
 enum {
-	ID_About,
+	ID_Menu_About,
 	ID_Menu_Hello,
 	ID_Menu_Save
 };
@@ -28,6 +28,7 @@ class MainApp: public wxApp {
 		virtual bool OnInit();
 };
 
+// GUI panels
 class PropertiesPanel: public wxPanel {
 	public:
 		PropertiesPanel(wxPanel *parent);
@@ -49,6 +50,7 @@ class DisplayPanel: public wxPanel {
 		wxPanel *m_parent;
 };
 
+// Panel initialization functions: build panel and link to parent
 PropertiesPanel::PropertiesPanel(wxPanel *parent)
 	   : wxPanel(parent, -1, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
@@ -64,40 +66,14 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	m_parent = parent;
 }
 
-class TopPanel: public wxPanel {
-	public:
-		TopPanel(wxPanel *parent);
-		FilePanel *m_fp;
-		PropertiesPanel *m_pp;
-		DisplayPanel *m_dp;
-	private:
-		wxPanel *m_parent;
-};
-
-TopPanel::TopPanel(wxPanel *parent)
-	   : wxPanel(parent, -1, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
-	m_parent = parent;
-
-	// Top panel elements
-	wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
-
-	m_fp = new FilePanel(this);
-	m_pp = new PropertiesPanel(this);
-	m_dp = new DisplayPanel(this);
-
-	hbox->Add(m_fp, 1, wxEXPAND | wxALL, PADDING);
-	hbox->Add(m_dp, 3, wxEXPAND | wxALL, PADDING);
-	hbox->Add(m_pp, 1, wxEXPAND | wxALL, PADDING);
-
-	this->SetSizer(hbox);
-}
-
-// Main frame
+// Main window frame
 class MainFrame: public wxFrame {
 	public:
 		MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 		wxPanel *m_parent;
-		TopPanel *m_tp;
+		FilePanel *m_fp;
+		PropertiesPanel *m_pp;
+		DisplayPanel *m_dp;
 		TimelinePanel *m_tlp;
 
 	private:
@@ -105,11 +81,12 @@ class MainFrame: public wxFrame {
 		void OnExit(wxCommandEvent& event);
 		void OnAbout(wxCommandEvent& event);
 		void OnSaveRequest(wxCommandEvent& event);
-		wxDECLARE_EVENT_TABLE();
+		wxDECLARE_EVENT_TABLE(); // Initialize event listener
 };
 
-wxIMPLEMENT_APP(MainApp);
+wxIMPLEMENT_APP(MainApp); // Tell wxWidgets to commence our app
 
+// Construct and display main window frame
 bool MainApp::OnInit() {
 	MainFrame *frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800,600));
 	frame->SetMinSize(wxSize(800,600));
@@ -120,9 +97,12 @@ bool MainApp::OnInit() {
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 		: wxFrame(NULL, wxID_ANY, title, pos, size) {
 
+	wxImage::AddHandler(new wxPNGHandler); // Enable PNG support(?)
+
 	//SetIcon(wxIcon(wxT("icons/lightpad.ico")));
 
-	// Menubar
+	// Initialize the menubar and attach keyboard shortcuts
+	// wxWidgets automatically maps Ctrl to Cmd for us to enable cross-platform compatibility
 	wxMenu *menuFile = new wxMenu;
 	menuFile->Append(ID_Menu_Hello, "&Hello...\tCtrl-H",
 					 "Help string shown in status bar for this menu item");
@@ -137,41 +117,40 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	menuBar->Append(menuHelp, "&Help");
 	SetMenuBar(menuBar);
 
-	// Statusbar
+	// Bottom status bar
 	CreateStatusBar();
 	SetStatusText("Lightpad - Nightwave Studios");
 
 	// Toolbar
-
-	wxImage::AddHandler(new wxPNGHandler);
-  
 	wxBitmap exit(wxT("icons/exit.png"), wxBITMAP_TYPE_PNG);
 	wxBitmap lightpad(wxT("icons/lightpad.png"), wxBITMAP_TYPE_PNG);
 	wxBitmap add(wxT("icons/add.png"), wxBITMAP_TYPE_PNG);
 
 	wxToolBar *toolbar = CreateToolBar();
 
-	toolbar->AddTool(ID_About, wxT("About"), lightpad);
+	toolbar->AddTool(ID_Menu_About, wxT("About"), lightpad);
 	toolbar->AddTool(wxID_EXIT, wxT("Exit Application"), exit);
 	toolbar->Realize();
 
-	Connect(wxID_EXIT, wxEVT_COMMAND_TOOL_CLICKED, 
-		wxCommandEventHandler(MainFrame::OnExit));
-	Connect(ID_About, wxEVT_COMMAND_TOOL_CLICKED, 
-		wxCommandEventHandler(MainFrame::OnAbout));
-	Connect(ID_Menu_Save, wxEVT_COMMAND_TOOL_CLICKED, 
-		wxCommandEventHandler(MainFrame::OnSaveRequest));
-
-	Centre();
+	Centre(); // Center the window
 
 	// Main window elements
 	m_parent = new wxPanel(this, wxID_ANY);
+	wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
+
+	m_fp = new FilePanel(m_parent);
+	m_pp = new PropertiesPanel(m_parent);
+	m_dp = new DisplayPanel(m_parent);
+
+	hbox->Add(m_fp, 1, wxEXPAND | wxALL, PADDING);
+	hbox->Add(m_dp, 3, wxEXPAND | wxALL, PADDING);
+	hbox->Add(m_pp, 1, wxEXPAND | wxALL, PADDING);
+
 	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
-	m_tp = new TopPanel(m_parent);
 	m_tlp = new TimelinePanel(m_parent);
 
-	vbox->Add(m_tp, 3, wxEXPAND | wxALL, PADDING);
+	vbox->Add(hbox, 3, wxEXPAND | wxALL, PADDING);
 	vbox->Add(m_tlp, 1, wxEXPAND | wxALL, PADDING);
 
 	m_parent->SetSizer(vbox);
@@ -183,7 +162,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 }
 
 void MainFrame::OnExit(wxCommandEvent& event) {
-	Close(true);
+	Close(true); // Make sure that we safely quit the program
 }
 
 void MainFrame::OnAbout(wxCommandEvent& event) {
@@ -200,9 +179,11 @@ void MainFrame::OnHello(wxCommandEvent& event) {
 	m_tlp->Update();
 }
 
+// Initialize event listeners
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_Menu_Hello,   MainFrame::OnHello)
 	EVT_MENU(ID_Menu_Save,   MainFrame::OnSaveRequest)
-	EVT_MENU(wxID_EXIT,  MainFrame::OnExit)
+	EVT_MENU(ID_Menu_About, MainFrame::OnAbout)
 	EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
+	EVT_MENU(wxID_EXIT,  MainFrame::OnExit)
 wxEND_EVENT_TABLE()
