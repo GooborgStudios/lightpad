@@ -1,7 +1,7 @@
-// 
+//
 // Lightpad - FilePanel.cpp
 // Created by Vinyl Darkscratch and Light Apacha, ©2017 Nightwave Studios.
-// 
+//
 
 // Attempt to load precompiled, if compiler doesn't support then load normal
 #include <wx/wxprec.h>
@@ -15,7 +15,7 @@
 #include <wx/imaglist.h>
 #include <wx/artprov.h>
 
-#include <magic.h>
+//#include <magic.h>
 
 #include "FilePanel.h"
 
@@ -47,8 +47,8 @@ void FilePanel::RefreshFileList() {
 void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	wxDir dir(path);
 	wxString filename;
-	magic_t myt = magic_open(MAGIC_ERROR|MAGIC_MIME_TYPE);
-	magic_load(myt,NULL);
+	//magic_t myt = magic_open(MAGIC_ERROR|MAGIC_MIME_TYPE);
+	//magic_load(myt,NULL);
 
 	if (!dir.IsOpened()) {
 		// deal with the error here - wxDir would already log an error message
@@ -59,10 +59,10 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	// List files
 	bool cont = dir.GetFirst(&filename, "", wxDIR_FILES);
 	while (cont) {
-		std::string filetype(magic_file(myt, (path+"/"+filename).c_str()));
-		if (filetype == "audio/midi" || filetype == "text/plain") { // Only add if a MIDI or plain text file (animations and saves)
+		//std::string filetype(magic_file(myt, (path+"/"+filename).c_str()));
+		//if (filetype == "audio/midi" || filetype == "text/plain") { // Only add if a MIDI or plain text file (animations and saves)
 			filelistbox->AppendItem(files, filename, 1);
-		}
+		//}
 		cont = dir.GetNext(&filename);
 	}
 
