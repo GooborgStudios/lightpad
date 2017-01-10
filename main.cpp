@@ -1,7 +1,7 @@
-// 
+//
 // Lightpad - main.cpp
 // Created by Vinyl Darkscratch and Light Apacha, ©2017 Nightwave Studios.
-// 
+//
 
 // Attempt to load precompiled, if compiler doesn't support then load normal
 #include <wx/wxprec.h>
@@ -123,10 +123,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	SetStatusText("Lightpad - Nightwave Studios");
 
 	// Toolbar
-	wxBitmap lightpad(wxT("graphics/icons/lightpad.png"), wxBITMAP_TYPE_PNG);
+	wxBitmap lightpad(wxT("graphics/icons/lightpad_24.png"), wxBITMAP_TYPE_PNG);
 	wxBitmap add(wxT("graphics/icons/add.png"), wxBITMAP_TYPE_PNG);
 
-	wxToolBar *toolbar = CreateToolBar();
+	wxToolBar *toolbar = CreateToolBar(wxTB_FLAT);
 
 	toolbar->AddTool(ID_Menu_About, wxT("About"), lightpad);
 	toolbar->Realize();
