@@ -10,6 +10,7 @@
 #endif
 
 #include <wx/gdicmn.h>
+#include <wx/artprov.h>
 
 #include "FilePanel.h"
 
@@ -122,14 +123,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	SetStatusText("Lightpad - Nightwave Studios");
 
 	// Toolbar
-	wxBitmap exit(wxT("icons/exit.png"), wxBITMAP_TYPE_PNG);
 	wxBitmap lightpad(wxT("icons/lightpad.png"), wxBITMAP_TYPE_PNG);
 	wxBitmap add(wxT("icons/add.png"), wxBITMAP_TYPE_PNG);
 
 	wxToolBar *toolbar = CreateToolBar();
 
 	toolbar->AddTool(ID_Menu_About, wxT("About"), lightpad);
-	toolbar->AddTool(wxID_EXIT, wxT("Exit Application"), exit);
 	toolbar->Realize();
 
 	Centre(); // Center the window
