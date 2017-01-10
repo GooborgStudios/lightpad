@@ -123,8 +123,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	SetStatusText("Lightpad - Nightwave Studios");
 
 	// Toolbar
-	wxBitmap lightpad(wxT("icons/lightpad.png"), wxBITMAP_TYPE_PNG);
-	wxBitmap add(wxT("icons/add.png"), wxBITMAP_TYPE_PNG);
+	wxBitmap lightpad(wxT("graphics/icons/lightpad.png"), wxBITMAP_TYPE_PNG);
+	wxBitmap add(wxT("graphics/icons/add.png"), wxBITMAP_TYPE_PNG);
 
 	wxToolBar *toolbar = CreateToolBar();
 
