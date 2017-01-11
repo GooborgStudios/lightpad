@@ -16,7 +16,7 @@ output += ",\n\t".join(
 ) + "\n};\n"
 
 cpp_file = open("Colors.cpp", "w")
-cpp_tmpl = open("Colors.cpp.template", "r")
+cpp_tmpl = open("Colors_template.cpp", "r")
 
 for line in cpp_tmpl:
 	if line.strip() == "!XXX!":
