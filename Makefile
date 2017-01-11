@@ -10,8 +10,8 @@ Colors.cpp: Colors.cpp.template graphics/references/rgbcolors1.png graphics/refe
 	python sample_colors.py > Colors.cpp
 Colors.o: Colors.cpp Colors.h
 
-# colors: Colors.o
-# 	$(CXX) $(CXXFLAGS) -o colors Colors.o $(LIBS)
+colors: Colors.o
+	$(CXX) $(CXXFLAGS) -o colors Colors.o $(LIBS)
 
 clean:
 	rm *.o
