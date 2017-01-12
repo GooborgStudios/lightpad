@@ -14,10 +14,17 @@
 #include <wx/dataview.h>
 #include <wx/imaglist.h>
 #include <wx/artprov.h>
+#include <wx/treebase.h>
 
 #include <magic.h>
 
 #include "FilePanel.h"
+
+enum {
+	ID_FilePanel_Tree = 5
+};
+
+wxDEFINE_EVENT(FILE_SELECT, wxCommandEvent);
 
 // Initialize the file panel and it's elements
 FilePanel::FilePanel(wxPanel *parent)
@@ -26,10 +33,12 @@ FilePanel::FilePanel(wxPanel *parent)
 
 	icon_list = new wxImageList();
 	icon_list->Add(wxArtProvider::GetIcon(wxART_FOLDER, wxART_MENU));
+	icon_list->Add(wxArtProvider::GetIcon(wxART_FOLDER_OPEN, wxART_MENU));
+	icon_list->Add(wxArtProvider::GetIcon(wxART_NORMAL_FILE, wxART_MENU));
 	icon_list->Add(wxArtProvider::GetIcon(wxART_NORMAL_FILE, wxART_MENU));
 
 	sizer = new wxBoxSizer(wxHORIZONTAL);
-	filelistbox = new wxDataViewTreeCtrl(this, 5, wxPoint(-1, -1), wxSize(-1, -1), wxDV_SINGLE|wxDV_NO_HEADER);
+	filelistbox = new wxDataViewTreeCtrl(this, ID_FilePanel_Tree, wxPoint(-1, -1), wxSize(-1, -1), wxDV_SINGLE|wxDV_NO_HEADER);
 	filelistbox->SetImageList(icon_list);
 	parent_dvi = wxDataViewItem();
 	RefreshFileList();
@@ -40,7 +49,7 @@ FilePanel::FilePanel(wxPanel *parent)
 
 // List all project directories
 void FilePanel::RefreshFileList() {
-	ListDirectory(wxString("/Users/vinyldarkscratch/Documents/Max 7/Library/MIDIext"), parent_dvi); // XXX Hard-coded full path to the folder, "~/Docume..." doesn't work.  // XXX Assuming that there's only one library folder, and that it's always in the user documents, which both are inaccurate -- should obtain paths from Max itself.
+	ListDirectory(maxpath, parent_dvi); // XXX Hard-coded full path to the folder, "~/Docume..." doesn't work.  // XXX Assuming that there's only one library folder, and that it's always in the user documents, which both are inaccurate -- should obtain paths from Max itself.
 }
 
 // Obtain all of the contents of a directory and add it to a specified file list
@@ -61,7 +70,10 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	while (cont) {
 		std::string filetype(magic_file(myt, (path+"/"+filename).c_str()));
 		if (filetype == "audio/midi" || filetype == "text/plain") { // Only add if a MIDI or plain text file (animations and saves)
-			filelistbox->AppendItem(files, filename, 1);
+			int i = 2;
+			if (filetype == "text/plain") i = 3;
+			wxDataViewItem cf = filelistbox->AppendItem(files, filename, i);
+			// filelistbox->SetItemData(cf, new wxStringClientData(wxString(path+"/"+filename)));
 		}
 		cont = dir.GetNext(&filename);
 	}
@@ -69,8 +81,8 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	// List directories
 	cont = dir.GetFirst(&filename, "", wxDIR_DIRS);
 	while (cont) {
-		wxDataViewItem fl = filelistbox->AppendContainer(files, filename, 0);
-		ListDirectory(path+"/"+filename, fl); // Obtain the contents of the directories by running the function in itself
+		wxDataViewItem cf = filelistbox->AppendContainer(files, filename, 0, 1);
+		ListDirectory(path+"/"+filename, cf); // Obtain the contents of the directories by running the function in itself
 		cont = dir.GetNext(&filename);
 	}
 }
@@ -79,3 +91,19 @@ void FilePanel::Update() {
 	this->SetSizer(sizer);
 	sizer->Layout();
 }
+
+void FilePanel::ChangeSelectedFile(wxDataViewEvent& event) {
+	wxDataViewTreeStore *store = filelistbox->GetStore();
+	wxDataViewItem item(event.GetItem());
+	wxDataViewItem parent(store->GetParent(item));
+	if (!store->IsContainer(item)) {
+		wxCommandEvent evt(FILE_SELECT);
+		evt.SetEventObject(this);
+		evt.SetString(maxpath+"/"+filelistbox->GetItemText(parent)+"/"+filelistbox->GetItemText(item));
+		ProcessEvent(evt);
+	}
+}
+
+wxBEGIN_EVENT_TABLE(FilePanel, wxPanel)
+	EVT_DATAVIEW_SELECTION_CHANGED(ID_FilePanel_Tree, FilePanel::ChangeSelectedFile)
+wxEND_EVENT_TABLE()

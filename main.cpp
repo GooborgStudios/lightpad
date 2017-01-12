@@ -18,9 +18,11 @@ const int PADDING = 0;
 
 // wxWidgets Element IDs
 enum {
+	ID_MainFrame,
 	ID_Menu_About,
 	ID_Menu_Hello,
-	ID_Menu_Save
+	ID_Menu_Save,
+	ID_FilePanel_Tree = 5
 };
 
 // Main app
@@ -82,6 +84,7 @@ class MainFrame: public wxFrame {
 		void OnExit(wxCommandEvent& event);
 		void OnAbout(wxCommandEvent& event);
 		void OnSaveRequest(wxCommandEvent& event);
+		void OnSelectFile(wxCommandEvent& event);
 		wxDECLARE_EVENT_TABLE(); // Initialize event listener
 };
 
@@ -96,7 +99,7 @@ bool MainApp::OnInit() {
 }
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
-		: wxFrame(NULL, wxID_ANY, title, pos, size) {
+		: wxFrame(NULL, ID_MainFrame, title, pos, size) {
 
 	wxImage::AddHandler(new wxPNGHandler); // Enable PNG support(?)
 
@@ -158,6 +161,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	// TempBitmap.LoadFile("background.png",wxBITMAP_TYPE_PNG);
 	// wxBackgroundBitmap * Background = new wxBackgroundBitmap(TempBitmap);
 	// m_parent->PushEventHandler(Background);
+
+	Bind(FILE_SELECT, &MainFrame::OnSelectFile, this, ID_MainFrame);
 }
 
 void MainFrame::OnExit(wxCommandEvent& event) {
@@ -167,6 +172,10 @@ void MainFrame::OnExit(wxCommandEvent& event) {
 void MainFrame::OnAbout(wxCommandEvent& event) {
 	wxMessageBox("Lightpad Copyright 2017 Nightwave Studios, all rights reserved.  The application is coded by Vinyl Darkscratch and Light Apacha.  Big thanks to the support from the Launchpad Lightshow Community.",
 				"About Lightpad", wxOK | wxICON_INFORMATION);
+}
+
+void MainFrame::OnSelectFile(wxCommandEvent& event) {
+	wxMessageBox(event.GetString(), "File Selected", wxOK | wxICON_INFORMATION);
 }
 
 void MainFrame::OnSaveRequest(wxCommandEvent& event) {
@@ -185,4 +194,5 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_Menu_About, MainFrame::OnAbout)
 	EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 	EVT_MENU(wxID_EXIT,  MainFrame::OnExit)
+	EVT_COMMAND(ID_MainFrame, FILE_SELECT, MainFrame::OnSelectFile)
 wxEND_EVENT_TABLE()

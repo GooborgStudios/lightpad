@@ -15,12 +15,15 @@
 #include <wx/dataview.h>
 #include <wx/imaglist.h>
 
+const wxString maxpath = wxString("/Users/vinyldarkscratch/Documents/Max 7/Library/MIDIext");
+
 // Graphical interface panel
 class FilePanel: public wxPanel {
 	public:
 		FilePanel(wxPanel *parent);
 		void RefreshFileList();
 		void Update();
+		void ChangeSelectedFile(wxDataViewEvent& event);
 	private:
 		void ListDirectory(wxString path, wxDataViewItem files);
 		wxPanel *m_parent;
@@ -28,6 +31,10 @@ class FilePanel: public wxPanel {
 		wxDataViewTreeCtrl *filelistbox;
 		wxDataViewItem parent_dvi;
 		wxImageList *icon_list;
+
+		wxDECLARE_EVENT_TABLE();
 };
+
+wxDECLARE_EVENT(FILE_SELECT, wxCommandEvent);
 
 #endif
