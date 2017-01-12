@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1484040275 source:e:\my documents\github\lightpad\filepanel.cpp
+1484192785 source:e:\my documents\github\lightpad\filepanel.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/file.h>
@@ -7,6 +7,8 @@
 	<wx/dataview.h>
 	<wx/imaglist.h>
 	<wx/artprov.h>
+	<wx/treebase.h>
+	<magic.h>
 	"FilePanel.h"
 
 1456727616 c:\wxwidgets-3.1.0\include\wx\wxprec.h
@@ -2113,16 +2115,75 @@
 
 1456727616 c:\wxwidgets-3.1.0\include\wx\qt\dataview.h
 
-1484035601 e:\my documents\github\lightpad\filepanel.h
+1484193137 e:\my documents\github\lightpad\filepanel.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/dataview.h>
 	<wx/imaglist.h>
 
-1484077976 source:e:\my documents\github\lightpad\main.cpp
+1484190464 source:e:\my documents\github\lightpad\main.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/gdicmn.h>
 	<wx/artprov.h>
 	"FilePanel.h"
+
+1456727616 c:\wxwidgets-3.1.0\include\wx\treebase.h
+	"wx/defs.h"
+	"wx/window.h"
+	"wx/event.h"
+	"wx/dynarray.h"
+	"wx/itemid.h"
+
+1484190464 source:e:\my documents\github\lightpad\colors.cpp
+	<wx/wxprec.h>
+	<wx/wx.h>
+	"Colors.h"
+	"rgb2lab.cpp"
+	<stdio.h>
+	<math.h>
+
+1484190464 e:\my documents\github\lightpad\colors.h
+	<wx/wxprec.h>
+	<wx/wx.h>
+
+1484190464 e:\my documents\github\lightpad\rgb2lab.cpp
+	<math.h>
+
+1484203010 source:e:\my documents\github\lightpad\midiout.cpp
+	<iostream>
+	<cstdlib>
+	<stdlib.h>
+	<signal.h>
+	<unistd.h>
+	"RtMidi.h"
+
+1484201429 e:\my documents\github\lightpad\lib\rtmidi-2.1.1\rtmidi.h
+	<exception>
+	<iostream>
+	<string>
+	<vector>
+
+1484190464 source:e:\my documents\github\lightpad\midiprobe.cpp
+	<iostream>
+	<cstdlib>
+	"RtMidi.h"
+
+1484190464 source:e:\my documents\github\lightpad\rgb2lab.cpp
+	<math.h>
+
+1484200921 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\rtmidi.cpp
+	"RtMidi.h"
+	<sstream>
+	<CoreMIDI/CoreMIDI.h>
+	<CoreAudio/HostTime.h>
+	<CoreServices/CoreServices.h>
+	<pthread.h>
+	<sys/time.h>
+	<alsa/asoundlib.h>
+	<windows.h>
+	<mmsystem.h>
+	<jack/jack.h>
+	<jack/midiport.h>
+	<jack/ringbuffer.h>
 

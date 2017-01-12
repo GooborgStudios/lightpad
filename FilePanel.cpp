@@ -16,7 +16,17 @@
 #include <wx/artprov.h>
 #include <wx/treebase.h>
 
-#include <magic.h>
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+    #define WINDOWS
+#elif defined(__APPLE__)
+    #define MAC
+#else
+    #define LINUX
+#endif
+
+#ifndef WINDOWS
+    #include <magic.h>
+#endif
 
 #include "FilePanel.h"
 
@@ -56,8 +66,10 @@ void FilePanel::RefreshFileList() {
 void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	wxDir dir(path);
 	wxString filename;
-	magic_t myt = magic_open(MAGIC_ERROR|MAGIC_MIME_TYPE);
-	magic_load(myt,NULL);
+	#ifndef WINDOWS
+        magic_t myt = magic_open(MAGIC_ERROR|MAGIC_MIME_TYPE);
+        magic_load(myt,NULL);
+	#endif
 
 	if (!dir.IsOpened()) {
 		// deal with the error here - wxDir would already log an error message
@@ -68,13 +80,18 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	// List files
 	bool cont = dir.GetFirst(&filename, "", wxDIR_FILES);
 	while (cont) {
+        #ifndef WINDOWS
 		std::string filetype(magic_file(myt, (path+"/"+filename).c_str()));
 		if (filetype == "audio/midi" || filetype == "text/plain") { // Only add if a MIDI or plain text file (animations and saves)
+        #endif
 			int i = 2;
-			if (filetype == "text/plain") i = 3;
-			wxDataViewItem cf = filelistbox->AppendItem(files, filename, i);
-			// filelistbox->SetItemData(cf, new wxStringClientData(wxString(path+"/"+filename)));
+			#ifndef WINDOWS
+                if (filetype == "text/plain") i = 3;
+			#endif
+			filelistbox->AppendItem(files, filename, i);
+        #ifndef WINDOWS
 		}
+        #endif
 		cont = dir.GetNext(&filename);
 	}
 

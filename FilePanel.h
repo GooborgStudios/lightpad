@@ -1,7 +1,7 @@
-// 
+//
 // Lightpad - FilePanel.h
 // Created by Vinyl Darkscratch and Light Apacha, ©2017 Nightwave Studios.
-// 
+//
 
 #ifndef FILEPANEL_H
 #define FILEPANEL_H
@@ -15,7 +15,11 @@
 #include <wx/dataview.h>
 #include <wx/imaglist.h>
 
-const wxString maxpath = wxString("/Users/vinyldarkscratch/Documents/Max 7/Library/MIDIext");
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+    const wxString maxpath = wxString("E:\\My Documents\\Max 7\\Library\\MIDIext");
+#else
+    const wxString maxpath = wxString("/Users/vinyldarkscratch/Documents/Max 7/Library/MIDIext");
+#endif
 
 // Graphical interface panel
 class FilePanel: public wxPanel {

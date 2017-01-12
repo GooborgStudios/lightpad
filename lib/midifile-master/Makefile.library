@@ -1,0 +1,87 @@
+##
+## Makefile to compile Midifile library.
+##
+## Programmer:    Craig Stuart Sapp <craig@ccrma.stanford.edu>
+## Creation Date: Sun Apr  3 00:51:10 PST 2005
+## Last Modified: Mon Feb  9 12:20:53 PST 2015
+## Filename:      midifile/Makefile.library
+## Website:       http://midifile.sapp.org
+## Syntax:        GNU Makefile
+##
+## Description:   This Makefile creates the Midifile library
+##                (lib/libmidifile.dll).
+##
+## To run this makefile, type (without quotes) "make -f Makefile.library",
+## Although it is intended to be used by the file "Makefile" which runs this
+## makefile with the command "make library".  After the library file is
+## created, you can compile specific programs with the Makefile.examples
+## file.
+##
+
+## XXX NOTE, FILE HEAVILY MODIFIED FOR WINDOWS XXX
+
+ARCH   =
+ENV    =
+OSTYPE = WINDOWS
+
+OBJDIR    = obj
+SRCDIR    = src-library
+INCDIR    = include
+LIBDIR    = lib
+LIBFILE   = libmidifile.dll
+COMPILER  = mingw32-g++
+AR        = ar
+RANLIB    = ranlib
+PREFLAGS  = -c -g -Wall -O3 $(DEFINES) -I$(INCDIR) -std=c++11 -D__NO_INLINE__
+
+
+# setting up the directory paths to search for dependency files
+vpath %.h   $(INCDIR):$(SRCDIR)
+vpath %.cpp $(SRCDIR):$(INCDIR)
+vpath %.o   $(OBJDIR)
+
+# generating a list of the object files
+OBJS = $(notdir $(patsubst %.cpp,%.o,$(wildcard $(SRCDIR)/*.cpp)))
+
+
+
+##############################
+##
+## Targets:
+##
+
+# targets which don't actually refer to files
+.PHONY : all clean
+
+
+all: $(OBJS)
+	$(AR) r $(LIBDIR)/$(LIBFILE) $(OBJDIR)/*.o
+	$(RANLIB) $(LIBDIR)/$(LIBFILE)
+
+
+clean:
+	@echo Erasing object files:
+	-rm -f $(OBJDIR)/*.o
+	@echo Erasing obj directory:
+	-rmdir $(OBJDIR)
+
+%.o : %.cpp
+	@echo [CC] $@
+	@$(COMPILER) $(PREFLAGS) -o $(OBJDIR)/$(notdir $@) $<
+
+Binasc.o: Binasc.cpp Binasc.h
+
+MidiEvent.o: MidiEvent.cpp MidiEvent.h MidiMessage.h
+
+MidiEventList.o: MidiEventList.cpp MidiEventList.h \
+  MidiEvent.h MidiMessage.h
+
+MidiFile.o: MidiFile.cpp MidiFile.h MidiEventList.h \
+  MidiEvent.h MidiMessage.h Binasc.h
+
+MidiMessage.o: MidiMessage.cpp MidiMessage.h
+
+Options.o: Options.cpp Options.h
+
+
+

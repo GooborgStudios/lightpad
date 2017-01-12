@@ -1,0 +1,7 @@
+﻿  RtMidi.cpp
+  rtmidi_c.cpp
+..\rtmidi_c.cpp(70): warning C4996: 'strdup': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strdup. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h(552): note: see declaration of 'strdup'
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1357,5): warning MSB8012: TargetPath(E:\Downloads\rtmidi-2.1.1\msw\Release\rtmidilib.lib) does not match the Library's OutputFile property value (E:\Downloads\rtmidi-2.1.1\lib\rtmidi.lib). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1359,5): warning MSB8012: TargetName(rtmidilib) does not match the Library's OutputFile property value (rtmidi). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+  rtmidilib.vcxproj -> E:\Downloads\rtmidi-2.1.1\msw\Release\rtmidilib.lib

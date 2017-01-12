@@ -44,26 +44,77 @@
 					<Add directory="$(#wx)/lib/gcc_dll" />
 				</Linker>
 			</Target>
+			<Target title="LaunchpadProMidi">
+				<Option output="midiout" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="LaunchpadProMidiProbe">
+				<Option output="midiprobe" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Linker>
+					<Add library="rtmidi" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Wall" />
 			<Add option="-pipe" />
 			<Add option="-mthreads" />
 			<Add option="-D__GNUWIN32__" />
 			<Add option="-D__WXMSW__" />
 			<Add option="-DWXUSINGDLL" />
 			<Add option="-DwxUSE_UNICODE" />
-			<Add option="-Wall" />
 			<Add directory="$(#wx)/include" />
+			<Add directory="lib/rtmidi-2.1.1" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="$(#wx)/include" />
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-mthreads" />
+			<Add library="lib/rtmidi-2.1.1/lib/rtmidi.lib" />
+			<Add directory="lib/rtmidi-2.1.1" />
 		</Linker>
-		<Unit filename="FilePanel.cpp" />
-		<Unit filename="FilePanel.h" />
-		<Unit filename="main.cpp" />
+		<Unit filename="Colors.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="Colors.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="FilePanel.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="FilePanel.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="lib/rtmidi-2.1.1/RtMidi.cpp">
+			<Option target="LaunchpadProMidi" />
+			<Option target="LaunchpadProMidiProbe" />
+		</Unit>
+		<Unit filename="lib/rtmidi-2.1.1/RtMidi.h">
+			<Option target="LaunchpadProMidi" />
+			<Option target="LaunchpadProMidiProbe" />
+		</Unit>
+		<Unit filename="main.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="midiout.cpp">
+			<Option target="LaunchpadProMidi" />
+		</Unit>
+		<Unit filename="midiprobe.cpp">
+			<Option target="LaunchpadProMidiProbe" />
+		</Unit>
+		<Unit filename="sample_colors.py">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -7,6 +7,12 @@
 #include <unistd.h>
 #include "RtMidi.h"
 
+//#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__) || defined(__WINDOWS__)
+//    #define __WINDOWS__
+//#else
+//    #define __MAC__
+//#endif
+
 bool done;
 static void finish(int ignore){ done = true; std::cout << std::endl; }
 
@@ -16,13 +22,16 @@ int main() {
 	int inport, outport = -1;
 	std::vector<unsigned char> message_out;
 	std::vector<unsigned char> message_in;
+	std::string t("Launchpad Pro Standalone Port");
 	int nBytes, i;
 	double stamp;
 	// Check available ports.
 	for ( unsigned int i=0; i < midiin->getPortCount(); i++ ) {
 		try {
-			if (midiin->getPortName(i) == "Launchpad Pro Standalone Port") {
+		    std::string u("MIDIIN2 (Launchpad Pro)");
+			if ( midiin->getPortName(i).compare(0, t.length(), t) == 0 || midiin->getPortName(i).compare(0, u.length(), u) == 0 ) {
 				inport = i;
+				std::cout << "In:  " << i << std::endl;
 				break;
 			}
 		}
@@ -33,8 +42,10 @@ int main() {
 	}
 	for ( unsigned int i=0; i < midiout->getPortCount(); i++ ) {
 		try {
-			if (midiout->getPortName(i) == "Launchpad Pro Standalone Port") {
+		    std::string u("MIDIOUT2 (Launchpad Pro)");
+			if ( midiout->getPortName(i).compare(0, t.length(), t) == 0 || midiout->getPortName(i).compare(0, u.length(), u) == 0 ) {
 				outport = i;
+				std::cout << "Out: " << i << std::endl;
 				break;
 			}
 		}
@@ -47,7 +58,7 @@ int main() {
 		std::cout << "Launchpad not found!  Is it plugged in and turned on?\n";
 		delete midiin;
 		delete midiout;
-		return 1;
+		return 2;
 	}
 	// Open Launchpad Standalone port.
 	midiin->openPort( inport );
