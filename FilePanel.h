@@ -27,7 +27,9 @@ class FilePanel: public wxPanel {
 		FilePanel(wxPanel *parent);
 		void RefreshFileList();
 		void Update();
+		wxString GetFilePath(wxDataViewItem item);
 		void ChangeSelectedFile(wxDataViewEvent& event);
+		//void RenameFile(wxDataViewEvent &event);
 	private:
 		void ListDirectory(wxString path, wxDataViewItem files);
 		wxPanel *m_parent;

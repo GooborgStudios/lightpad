@@ -40,7 +40,8 @@ endif
 lightpad: main.o FilePanel.o Colors.o
 	$(CXX) $(CXXFLAGS) -o lightpad main.o FilePanel.o Colors.o $(LIBS)
 
-FilePanel.o: FilePanel.cpp FilePanel.h
+main.o: main.cpp IDs.h
+FilePanel.o: FilePanel.cpp FilePanel.h IDs.h
 Colors.cpp: Colors_template.cpp graphics/references/rgbcolors1.png graphics/references/rgbcolors2.png sample_colors.py
 	python sample_colors.py > Colors.cpp
 Colors.o: Colors.cpp Colors.h

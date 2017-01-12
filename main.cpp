@@ -9,21 +9,27 @@
 	#include <wx/wx.h>
 #endif
 
+#ifdef _WIN32
+	//define something for Windows (32-bit and 64-bit, this part is common)
+	#define WINDOWS
+	#ifdef _WIN64
+		//define something for Windows (64-bit only)
+		#define WINDOWS_64
+	#endif
+#elif __APPLE__
+	//define something for Mac
+	#define MACOS
+#else
+	#error "Unknown/unsupported compiler/operating system"
+#endif
+
 #include <wx/gdicmn.h>
 #include <wx/artprov.h>
 
 #include "FilePanel.h"
+#include "IDs.h"
 
 const int PADDING = 0;
-
-// wxWidgets Element IDs
-enum {
-	ID_MainFrame,
-	ID_Menu_About,
-	ID_Menu_Hello,
-	ID_Menu_Save,
-	ID_FilePanel_Tree = 5
-};
 
 // Main app
 class MainApp: public wxApp {
@@ -55,17 +61,17 @@ class DisplayPanel: public wxPanel {
 
 // Panel initialization functions: build panel and link to parent
 PropertiesPanel::PropertiesPanel(wxPanel *parent)
-	   : wxPanel(parent, -1, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+	   : wxPanel(parent, ID_Panel_Properties, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 }
 
 TimelinePanel::TimelinePanel(wxPanel *parent)
-	   : wxPanel(parent, -1, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+	   : wxPanel(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 }
 
 DisplayPanel::DisplayPanel(wxPanel *parent)
-	   : wxPanel(parent, -1, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+	   : wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 }
 
@@ -99,7 +105,7 @@ bool MainApp::OnInit() {
 }
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
-		: wxFrame(NULL, ID_MainFrame, title, pos, size) {
+		: wxFrame(NULL, ID_Frame_Main, title, pos, size) {
 
 	wxImage::AddHandler(new wxPNGHandler); // Enable PNG support(?)
 
@@ -137,7 +143,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	Centre(); // Center the window
 
 	// Main window elements
-	m_parent = new wxPanel(this, wxID_ANY);
+	m_parent = new wxPanel(this, ID_Panel_Main);
 	wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
 
 	m_fp = new FilePanel(m_parent);
@@ -162,7 +168,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	// wxBackgroundBitmap * Background = new wxBackgroundBitmap(TempBitmap);
 	// m_parent->PushEventHandler(Background);
 
-	Bind(FILE_SELECT, &MainFrame::OnSelectFile, this, ID_MainFrame);
+	Bind(FILE_SELECT, &MainFrame::OnSelectFile, this, ID_Frame_Main);
 }
 
 void MainFrame::OnExit(wxCommandEvent& event) {
@@ -194,5 +200,5 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_Menu_About, MainFrame::OnAbout)
 	EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 	EVT_MENU(wxID_EXIT,  MainFrame::OnExit)
-	EVT_COMMAND(ID_MainFrame, FILE_SELECT, MainFrame::OnSelectFile)
+	EVT_COMMAND(ID_Frame_Main, FILE_SELECT, MainFrame::OnSelectFile)
 wxEND_EVENT_TABLE()

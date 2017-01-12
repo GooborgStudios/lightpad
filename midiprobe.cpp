@@ -2,8 +2,19 @@
 #include <iostream>
 #include <cstdlib>
 #include "RtMidi.h"
-int main()
-{
+
+#ifdef _WIN32
+   //define something for Windows (32-bit and 64-bit, this part is common)
+   #ifdef _WIN64
+      //define something for Windows (64-bit only)
+   #endif
+#elif __APPLE__
+    //define something for Mac
+#else
+	#error "Unknown/unsupported compiler/operating system"
+#endif
+
+int main() {
 	RtMidiIn  *midiin = 0;
 	RtMidiOut *midiout = 0;
 	// RtMidiIn constructor

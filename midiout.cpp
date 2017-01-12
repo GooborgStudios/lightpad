@@ -7,11 +7,16 @@
 #include <unistd.h>
 #include "RtMidi.h"
 
-//#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__) || defined(__WINDOWS__)
-//    #define __WINDOWS__
-//#else
-//    #define __MAC__
-//#endif
+#ifdef _WIN32
+   //define something for Windows (32-bit and 64-bit, this part is common)
+   #ifdef _WIN64
+      //define something for Windows (64-bit only)
+   #endif
+#elif __APPLE__
+    //define something for Mac
+#else
+	#error "Unknown/unsupported compiler/operating system"
+#endif
 
 bool done;
 static void finish(int ignore){ done = true; std::cout << std::endl; }

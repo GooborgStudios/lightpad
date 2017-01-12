@@ -1,4 +1,7 @@
 *.o
 lightpad
+midi
 *.exe
 *.layout
+obj/
+bin/
