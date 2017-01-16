@@ -1,0 +1,112 @@
+
+body {
+	font-family: "HelveticaNeue", "Helvetica Neue", "HelveticaNeueRoman", "HelveticaNeue-Roman", "Helvetica Neue Roman", 'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; 
+	font-weight:400; 
+	font-stretch:normal;
+    text-align:center;
+    color:#383838;
+    margin:0px;
+	background: #ededed;
+    -webkit-font-smoothing: antialiased;
+}
+
+.copyright {
+    position:fixed; 
+    bottom:0px; 
+    text-align:center; 
+    width: 100% 
+}
+
+h1 {
+    font-size:30px;
+    margin:0 0 10px 0;
+
+}
+
+.small {
+    font-size:12px;
+    font-weight:normal;
+}
+
+
+.warning {
+    font-size:16px;
+    font-weight:normal;
+    color:red;
+}
+
+
+#container { 
+    width: 100%;
+    height: 100%;
+    display: table; 
+}
+
+#position {
+    display: table-cell;
+    vertical-align: middle; 
+    width: 100%; 
+    text-align: center; 
+}
+
+
+a:link, a:visited {
+    color:#ed8f0c;
+    text-decoration:none;
+}
+
+
+a:hover, a:active {
+    color:#ed8f0c;
+    text-decoration:underline;
+}
+
+p.small a:link, p.small a:visited {
+    color: black;
+}
+
+.progressbar-out {
+    margin:auto;
+    width:500px;
+    border-radius: 20px;
+    border:3px solid #383838;
+    height:28px;
+    padding-right: 6px;
+}
+
+.progressbar-in {
+    border-radius: 20px;
+    background:#383838;
+    height:22px;
+    margin:3px;
+}
+
+#progress-hook {
+    width:0%;
+}
+
+#loadingcontainer {
+    overflow:hidden; 
+    width:100%; 
+    height:100%; 
+    position: absolute; 
+    top: 0; 
+    left: 0;
+}
+
+
+
+:-webkit-full-screen  {  
+  width: 100%;  
+  height: 100%;  
+}  
+
+
+.info-box{
+width: 488px;
+margin: auto;
+border: 2px solid #383838;
+border-radius: 10px;
+background: #dbdbdb;
+padding:10px
+}

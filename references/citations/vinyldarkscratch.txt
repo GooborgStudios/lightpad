@@ -1,0 +1,16 @@
+Libraries:
+wxWidgets
+RGB2LAB (Modified) - http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
+FileMagic
+RtMidi
+Midifile - http://midifile.sapp.org/
+
+Software:
+Sublime Text
+Code::Blocks
+Photoshop
+
+References:
+Exige’s MIDI Extension - http://forum.launchpad-pro.com/viewtopic.php?id=4968
+Launchpad Pro User Guide - https://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/10594/launchpad-pro-user-guide-en.pdf
+Launchpad Pro Programmer Guide - https://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/10598/launchpad-pro-programmers-reference-guide_0.pdf

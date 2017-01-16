@@ -1,0 +1,128 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ index.html
+ Antetype Web Viewer
+
+ Created by You on April 20, 2010.
+ Copyright 2010, Your Company All rights reserved.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=9" />
+        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+        
+        <!-- mobile -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name=viewport content="width=device-width, initial-scale=1.0, minimum-scale=0.5 maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <link href="Resources/style.css" rel="stylesheet" type="text/css">
+        <title>ANTETYPE Web Viewer</title>
+        <meta charset="utf-8" />
+        <script type="text/javascript">OBJJ_MAIN_FILE = "main.j";</script>
+        <script type = "text/javascript">
+            OBJJ_AUTO_BOOTSTRAP = false;
+        </script>
+        <script type="text/javascript" src="Frameworks/Objective-J/Objective-J.js" charset="UTF-8"></script>
+        <script type="text/javascript">
+            var baseURL=new CFURL(".",ObjectiveJ.pageURL);
+            var URLCache={};
+            var CFHTTPRequest_open=CFHTTPRequest.prototype.open;
+            CFHTTPRequest.prototype.open=function(_1,_2,_3,_4,_5){
+            var _6=CFHTTPRequest._lookupCachedRequest(_2);
+            if(_6){
+            var _7=this;
+            this._nativeRequest=_6;
+            this._nativeRequest.onreadystatechange=function(){
+            ObjectiveJ.determineAndDispatchHTTPRequestEvents(_7);
+            };
+            }
+            return CFHTTPRequest_open.apply(this,arguments);
+            };
+            CFHTTPRequest._cacheRequest=function(_8,_9,_a,_b){
+            URLCache[_8]=new MockXMLHttpRequest(_9,_a,_b);
+            };
+            CFHTTPRequest._lookupCachedRequest=function(_c){
+            return URLCache[_c];
+            };
+            function MockXMLHttpRequest(_d,_e,_f){
+            this.readyState=CFHTTPRequest.UninitializedState;
+            this.status=_d||200;
+            this.statusText="";
+            this.responseText=_f||"";
+            this._responseHeaders=_e||{};
+            };
+            MockXMLHttpRequest.prototype.open=function(_10,url,_11,_12,_13){
+            this.readyState=CFHTTPRequest.LoadingState;
+            this.async=_11;
+            };
+            MockXMLHttpRequest.prototype.send=function(_14){
+            var _15=this;
+            _15.responseText=_15.responseText.toString();
+            function _16(){
+            for(_15.readyState=CFHTTPRequest.LoadedState;_15.readyState<=CFHTTPRequest.CompleteState;_15.readyState++){
+            _15.onreadystatechange();
+            }
+            };
+            (_15.async?ObjectiveJ.Asynchronous(_16):_16)();
+            };
+            MockXMLHttpRequest.prototype.onreadystatechange=function(){
+            };
+            MockXMLHttpRequest.prototype.abort=function(){
+            };
+            MockXMLHttpRequest.prototype.setRequestHeader=function(_17,_18){
+            };
+            MockXMLHttpRequest.prototype.getAllResponseHeaders=function(){
+            return this._responseHeaders;
+            };
+            MockXMLHttpRequest.prototype.getResponseHeader=function(_19){
+            return this._responseHeaders[_19];
+            };
+            MockXMLHttpRequest.prototype.overrideMimeType=function(_1a){
+            };
+            var appFilesCount=2;
+            for(var i=1;i<=appFilesCount;i++){
+            var script=document.createElement("script");
+            script.src="Application"+i+".js";
+            script.charset="UTF-8";
+            script.onload=function(){
+            if(--appFilesCount===0){
+            ObjectiveJ.bootstrap();
+            }
+            };
+            document.getElementsByTagName("head")[0].appendChild(script);
+            }
+            
+        </script>
+    </head>
+    <body>
+
+        <div id="cappuccino-body">
+            <div id="loadingcontainer">
+                <div><p class="copyright small"><a href="http://www.antetype.com"> ANTETYPE &copy; 2014 by Ergosign Technologies GmbH </a></p></div>
+                <div id="container">
+                    <div id="position">
+                        <noscript>
+                            <p class="warning">JavaScript is required for this site to work correctly but is either disabled or not supported by your browser.<br></p>
+                        </noscript>
+
+                        <h1>ANTETYPE Web Viewer</h1>
+                        <div class="progressbar-out">
+                            <div id="progress-hook" class="progressbar-in">
+                            </div>
+                        </div>
+                        
+                        <p><span id="label-hook">Loading ...</span></p>
+                        <div class="info-box">
+	                        <p>Please always use the newest browser versions.</a><br></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
