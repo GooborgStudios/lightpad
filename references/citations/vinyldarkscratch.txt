@@ -14,3 +14,9 @@ References:
 Exige’s MIDI Extension - http://forum.launchpad-pro.com/viewtopic.php?id=4968
 Launchpad Pro User Guide - https://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/10594/launchpad-pro-user-guide-en.pdf
 Launchpad Pro Programmer Guide - https://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/10598/launchpad-pro-programmers-reference-guide_0.pdf
+
+Utilized Lightshow Projects:
+https://youtu.be/Bq3wmW24D_o (for the app icon)
+https://youtu.be/Z3NDxo04Roc (loading animation and use for testing)
+https://youtu.be/nejK-_Fivsg (use for testing)
+https://youtu.be/WiBi0EpgWY4 (use for testing)
