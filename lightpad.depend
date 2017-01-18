@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1484192785 source:e:\my documents\github\lightpad\filepanel.cpp
+1484709598 source:e:\my documents\github\lightpad\filepanel.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/file.h>
@@ -8,8 +8,10 @@
 	<wx/imaglist.h>
 	<wx/artprov.h>
 	<wx/treebase.h>
+	<wx/validate.h>
 	<magic.h>
 	"FilePanel.h"
+	"IDs.h"
 
 1456727616 c:\wxwidgets-3.1.0\include\wx\wxprec.h
 	"wx/defs.h"
@@ -2115,18 +2117,20 @@
 
 1456727616 c:\wxwidgets-3.1.0\include\wx\qt\dataview.h
 
-1484193137 e:\my documents\github\lightpad\filepanel.h
+1484706706 e:\my documents\github\lightpad\filepanel.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/dataview.h>
 	<wx/imaglist.h>
 
-1484190464 source:e:\my documents\github\lightpad\main.cpp
+1484711617 source:e:\my documents\github\lightpad\main.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/gdicmn.h>
 	<wx/artprov.h>
 	"FilePanel.h"
+	"IDs.h"
+	"Display.h"
 
 1456727616 c:\wxwidgets-3.1.0\include\wx\treebase.h
 	"wx/defs.h"
@@ -2135,7 +2139,7 @@
 	"wx/dynarray.h"
 	"wx/itemid.h"
 
-1484190464 source:e:\my documents\github\lightpad\colors.cpp
+1484707579 source:e:\my documents\github\lightpad\colors.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	"Colors.h"
@@ -2143,11 +2147,11 @@
 	<stdio.h>
 	<math.h>
 
-1484190464 e:\my documents\github\lightpad\colors.h
+1484706706 e:\my documents\github\lightpad\colors.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 
-1484190464 e:\my documents\github\lightpad\rgb2lab.cpp
+1484707582 e:\my documents\github\lightpad\rgb2lab.cpp
 	<math.h>
 
 1484203010 source:e:\my documents\github\lightpad\midiout.cpp
@@ -2186,4 +2190,22 @@
 	<jack/jack.h>
 	<jack/midiport.h>
 	<jack/ringbuffer.h>
+
+1484706706 e:\my documents\github\lightpad\ids.h
+
+1484725360 source:e:\my documents\github\lightpad\display.cpp
+	<wx/wxprec.h>
+	<wx/wx.h>
+	<wx/sizer.h>
+	<sstream>
+	<algorithm>
+	"Display.h"
+	"Colors.h"
+	"IDs.h"
+
+1484726250 e:\my documents\github\lightpad\display.h
+	<wx/wxprec.h>
+	<wx/wx.h>
+	<wx/sizer.h>
+	"Colors.h"
 

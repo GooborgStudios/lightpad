@@ -20,7 +20,7 @@
 	//define something for Mac
 	#define MACOS
 #else
-	#error "Unknown/unsupported compiler/operating system"
+	//#error "Unknown/unsupported compiler/operating system"
 #endif
 
 #include <wx/gdicmn.h>
@@ -28,6 +28,7 @@
 
 #include "FilePanel.h"
 #include "IDs.h"
+#include "Display.h"
 
 const int PADDING = 0;
 
@@ -52,13 +53,6 @@ class TimelinePanel: public wxPanel {
 		wxPanel *m_parent;
 };
 
-class DisplayPanel: public wxPanel {
-	public:
-		DisplayPanel(wxPanel *parent);
-	private:
-		wxPanel *m_parent;
-};
-
 // Panel initialization functions: build panel and link to parent
 PropertiesPanel::PropertiesPanel(wxPanel *parent)
 	   : wxPanel(parent, ID_Panel_Properties, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
@@ -67,11 +61,6 @@ PropertiesPanel::PropertiesPanel(wxPanel *parent)
 
 TimelinePanel::TimelinePanel(wxPanel *parent)
 	   : wxPanel(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
-	m_parent = parent;
-}
-
-DisplayPanel::DisplayPanel(wxPanel *parent)
-	   : wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 }
 
@@ -109,7 +98,13 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	wxImage::AddHandler(new wxPNGHandler); // Enable PNG support(?)
 
-	//SetIcon(wxIcon(wxT("icons/lightpad.ico")));
+	#ifdef WINDOWS
+        SetIcon(wxIcon(wxT("graphics/icons/lightpad.ico")));
+    #else
+        #ifdef MACOS
+            SetIcon(wxIcon(wxT("graphics/icons/lightpad.icns")));
+        #endif
+	#endif
 
 	// Initialize the menubar and attach keyboard shortcuts
 	// wxWidgets automatically maps Ctrl to Cmd for us to enable cross-platform compatibility

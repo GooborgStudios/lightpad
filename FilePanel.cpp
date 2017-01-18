@@ -20,7 +20,7 @@
 	//define something for Mac
 	#define MACOS
 #else
-	#error "Unknown/unsupported compiler/operating system"
+	//#error "Unknown/unsupported compiler/operating system"
 #endif
 
 #include <wx/file.h>

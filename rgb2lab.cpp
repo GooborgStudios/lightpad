@@ -1,12 +1,11 @@
 //
 // Lightpad - rgb2lab.cpp
 // File btained from: http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
-// 
+//
 
 #include <math.h>
 
-double H (double q)
-{
+double H (double q) {
 	double value;
 	if ( q > 0.008856 ) {
 		value = pow ( q, 0.333333 );
