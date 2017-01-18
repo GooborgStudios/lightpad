@@ -1,10 +1,16 @@
 //
-// Lightpad - IDs.h
+// Lightpad - Helpers.h
 // Created by Vinyl Darkscratch and Light Apacha, ©2017 Nightwave Studios.
 //
 
-#ifndef IDS_H
-#define IDS_H
+#ifndef HELPERS_H
+#define HELPERS_H
+
+// Attempt to load precompiled, if compiler doesn't support then load normal
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+	#include <wx/wx.h>
+#endif
 
 // Element IDs
 enum {

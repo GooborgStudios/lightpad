@@ -15,6 +15,7 @@
 #include <wx/sizer.h>
 
 #include "Colors.h"
+#include "Helpers.h"
 
 // Graphical interface panel
 class DisplayPanel: public wxPanel {

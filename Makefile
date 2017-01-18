@@ -37,14 +37,15 @@ else
 	endif
 endif
 
-lightpad: main.o FilePanel.o Colors.o
-	$(CXX) $(CXXFLAGS) -o lightpad main.o FilePanel.o Colors.o $(LIBS)
+lightpad: main.o FilePanel.o DisplayPanel.o Colors.o
+	$(CXX) $(CXXFLAGS) -o lightpad main.o FilePanel.o DisplayPanel.o Colors.o $(LIBS)
 
-main.o: main.cpp IDs.h
-FilePanel.o: FilePanel.cpp FilePanel.h IDs.h
-Colors.cpp: Colors_template.cpp graphics/references/rgbcolors1.png graphics/references/rgbcolors2.png sample_colors.py
+main.o: main.cpp Helpers.h
+DisplayPanel.o: DisplayPanel.cpp DisplayPanel.h Helpers.h
+FilePanel.o: FilePanel.cpp FilePanel.h Helpers.h
+Colors.cpp: Colors_template.cpp references/rgbcolors1.png references/rgbcolors2.png sample_colors.py
 	python sample_colors.py > Colors.cpp
-Colors.o: Colors.cpp Colors.h
+Colors.o: Colors.cpp Colors.h Helpers.h
 
 colors: Colors.o
 	$(CXX) $(CXXFLAGS) -o colors Colors.o $(LIBS)

@@ -26,9 +26,9 @@
 #include <wx/gdicmn.h>
 #include <wx/artprov.h>
 
+#include "DisplayPanel.h"
 #include "FilePanel.h"
-#include "IDs.h"
-#include "Display.h"
+#include "Helpers.h"
 
 const int PADDING = 0;
 

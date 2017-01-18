@@ -11,8 +11,8 @@ def do_it(img):
 	return o
 
 output += ",\n\t".join(
-	do_it(Image.open('graphics/references/rgbcolors1.png').convert('RGB')) +
-	do_it(Image.open('graphics/references/rgbcolors2.png').convert('RGB'))
+	do_it(Image.open('references/rgbcolors1.png').convert('RGB')) +
+	do_it(Image.open('references/rgbcolors2.png').convert('RGB'))
 ) + "\n};\n"
 
 cpp_file = open("Colors.cpp", "w")

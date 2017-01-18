@@ -28,9 +28,9 @@
 	//#error "Unknown/unsupported compiler/operating system"
 #endif
 
-#include "Display.h"
+#include "DisplayPanel.h"
 #include "Colors.h"
-#include "IDs.h"
+#include "Helpers.h"
 
 // Initialize the file panel and it's elements
 DisplayPanel::DisplayPanel(wxPanel *parent)
@@ -75,28 +75,28 @@ void DisplayPanel::render(wxDC &dc) {
 		double rh = newh*1.00/h*1.00;
 		double r = std::min(rw, rh);
 		int x = std::min(neww, newh);
-//		int do_new_image = 0;
+		// int do_new_image = 0;
 
-//		if (x < 256 && image_size != 256) {
-//			image_path.replace(45, 4, "0256");
-//			image_size = 256;
-//		} else if (x < 512 && image_size != 512) {
-//			image_path.replace(45, 4, "0512");
-//			image_size = 512;
-//		} else if (x < 1024 && image_size != 1024) {
-//			image_path.replace(45, 4, "1024");
-//			image_size = 1024;
-//		} else if (x < 2048 && image_size != 2048) {
-//			image_path.replace(45, 4, "2048");
-//			image_size = 2048;
-//		} else if (x < 4096 && image_size != 4096) {
-//			image_path.replace(45, 4, "4096");
-//			image_size = 4096;
-//		} else {
-//			do_new_image = 0;
-//		}
+		// if (x <= 256 && image_size != 256) {
+		// 	image_path.replace(45, 4, "0256");
+		// 	image_size = 256;
+		// } else if (x > 256 && x <= 512 && image_size != 512) {
+		// 	image_path.replace(45, 4, "0512");
+		// 	image_size = 512;
+		// } else if (x > 512 && x <= 1024 && image_size != 1024) {
+		// 	image_path.replace(45, 4, "1024");
+		// 	image_size = 1024;
+		// } else if (x > 1024 && x <= 2048 && image_size != 2048) {
+		// 	image_path.replace(45, 4, "2048");
+		// 	image_size = 2048;
+		// } else if (x > 2048 && x <= 4096 && image_size != 4096) {
+		// 	image_path.replace(45, 4, "4096");
+		// 	image_size = 4096;
+		// } else {
+		// 	do_new_image = 0;
+		// }
 
-//		if (do_new_image == 1) launchpad_image->LoadFile(image_path, wxBITMAP_TYPE_PNG);
+		// if (do_new_image == 1) launchpad_image->LoadFile(image_path, wxBITMAP_TYPE_PNG);
         resized = wxBitmap(launchpad_image->Scale(w*r, h*r));
 		w = w*r;
         h = h*r;

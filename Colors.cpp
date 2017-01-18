@@ -17,6 +17,8 @@
 #include <stdio.h>
 #include <math.h>
 
+
+
 wxColor velocitycolors[] = {
 	wxColor(0, 0, 0),
 	wxColor(28, 28, 28),

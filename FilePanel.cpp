@@ -36,7 +36,7 @@
 #endif
 
 #include "FilePanel.h"
-#include "IDs.h"
+#include "Helpers.h"
 
 wxDEFINE_EVENT(FILE_SELECT, wxCommandEvent);
 
