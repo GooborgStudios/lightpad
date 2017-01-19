@@ -256,7 +256,7 @@ int main() {
 	done = false;
 	(void) signal(SIGINT, finish);
 	// Periodically check input queue.
-	std::cout << "Reading MIDI from port ... quit with Ctrl-C.\n";
+	std::cout << "Reading MIDI from port ... quit with Ctrl-C." << std::endl;
 	while (!done) {
 		stamp = lp->getMessage(message_in);
 		nBytes = message_in.size();

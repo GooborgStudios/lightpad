@@ -3,6 +3,8 @@ CXXFLAGS = `wx-config --cxxflags` -O3
 LIBS = `wx-config --libs` -lmagic -lrtmidi
 
 ifeq ($(OS),Windows_NT)
+	# XXX We're using Code::Blocks for Windows compiling
+
 	#CCFLAGS += -D WIN32
 	CXXFLAGS += -D__NO_INLINE__
 	ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
@@ -57,7 +59,9 @@ midiout: midiout.cpp
 	$(CXX) $(CXXFLAGS) -o midi midiout.cpp $(LIBS)
 
 clean:
-	rm *.o
-	rm lightpad
-	rm colors
-	rm midi
+	-rm *.o
+	-rm -r obj
+	-rm *.exe
+	-rm lightpad
+	-rm colors
+	-rm midi
