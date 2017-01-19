@@ -1,5 +1,5 @@
 //
-// Lightpad - Display.h
+// Lightpad - DisplayPanel.h
 // Created by Vinyl Darkscratch and Light Apacha, ©2017 Nightwave Studios.
 //
 
@@ -33,8 +33,10 @@ class DisplayPanel: public wxPanel {
 		wxBitmap resized;
 		std::string image_path;
 		int image_size;
-		int w;
-		int h;
+		int panel_width;
+		int panel_height;
+		int xpos;
+		int ypos;
 };
 
 #endif

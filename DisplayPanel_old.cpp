@@ -1,6 +1,6 @@
 //
-// Lightpad - DisplayPanel.cpp
-// Created by Vinyl Darkscratch and Light Apacha, Â©2017 Nightwave Studios.
+// Lightpad - DisplayPanel_old.cpp
+// Created by Vinyl Darkscratch and Light Apacha, ©2017 Nightwave Studios.
 //
 
 // Attempt to load precompiled, if compiler doesn't support then load normal
@@ -73,9 +73,12 @@ void DisplayPanel::render(wxDC &dc) {
 	dc.GetSize(&neww, &newh);
 
 	if( neww != panel_width || newh != panel_height ) {
-		int newsize = std::min(neww, newh);
-		if (newsize == 0) {
-			newsize = image_size; // When first launching the app, this will make sure it doesn't crash
+		double w_ratio = neww*1.00/panel_width*1.00;
+		double h_ratio = newh*1.00/panel_height*1.00;
+		double r = std::min(w_ratio, h_ratio);
+		int x = std::min(neww, newh);
+		if (r == 0.00) {
+			r = 1.00; // When first launching the app, this will make sure it doesn't crash
 		}
 		// int do_new_image = 0;
 
@@ -99,22 +102,19 @@ void DisplayPanel::render(wxDC &dc) {
 		// }
 
 		// if (do_new_image == 1) launchpad_image->LoadFile(image_path, wxBITMAP_TYPE_PNG);
-		resized = wxBitmap(launchpad_image->Scale(newsize, newsize));
-
-		if ( neww > newh ) {
-			xpos = (neww - newsize)/2;
-			ypos = 0;
+		resized = wxBitmap(launchpad_image->Scale(panel_width*r, panel_height*r));
+		panel_width = panel_width*r;
+		panel_height = panel_height*r;
+		if ( panel_width > panel_height ) {
+			wp = (panel_width-image_size)/2;
 		} else {
-			xpos = 0;
-			ypos = (newh - newsize)/2;
+			hp = (panel_height-image_size)/2;
 		}
-
-		dc.DrawBitmap(resized, xpos, ypos, false);
-
-		panel_width = neww;
-		panel_height = newh;
+		wp = (panel_width - std::min(panel_width, panel_height))/2;
+		hp = (panel_height - std::min(panel_width, panel_height))/2;
+		dc.DrawBitmap(resized, wp, hp, false);
 	} else {
-		dc.DrawBitmap(resized, xpos, ypos, false);
+		dc.DrawBitmap(resized, wp, hp, false);
 	}
 }
 
