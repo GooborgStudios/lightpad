@@ -99,10 +99,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	wxImage::AddHandler(new wxPNGHandler); // Enable PNG support(?)
 
 	#ifdef WINDOWS
-        SetIcon(wxIcon(wxT("graphics/icons/lightpad.ico")));
+        SetIcon(wxIcon(wxT("graphics/icons/icon.ico")));
     #else
         #ifdef MACOS
-            SetIcon(wxIcon(wxT("graphics/icons/lightpad.icns")));
+            SetIcon(wxIcon(wxT("graphics/icons/icon.icns")));
+        #else
+            SetIcon(wxIcon(wxT("graphics/icons/icon_64.png")));
         #endif
 	#endif
 
@@ -127,12 +129,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	SetStatusText("Lightpad - Nightwave Studios");
 
 	// Toolbar
-	wxBitmap lightpad(wxT("graphics/icons/lightpad_24.png"), wxBITMAP_TYPE_PNG);
+	wxBitmap lightpad_icon(wxT("graphics/icons/icon_24.png"), wxBITMAP_TYPE_PNG);
 	wxBitmap add(wxT("graphics/icons/add.png"), wxBITMAP_TYPE_PNG);
 
 	wxToolBar *toolbar = CreateToolBar(wxTB_FLAT);
 
-	toolbar->AddTool(ID_Menu_About, wxT("About"), lightpad);
+	toolbar->AddTool(ID_Menu_About, wxT("About"), lightpad_icon);
 	toolbar->Realize();
 
 	Centre(); // Center the window

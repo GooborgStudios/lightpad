@@ -10,6 +10,7 @@ Sublime Text
 Code::Blocks
 Photoshop CC 2017
 GitHub
+Image2icon
 
 Hardware (Main Computer, Laptop):
 OS        | macOS Sierra, 10.12.3 Beta (16D25a)
