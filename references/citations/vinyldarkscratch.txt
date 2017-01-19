@@ -1,22 +1,43 @@
 Libraries:
-wxWidgets
-RGB2LAB (Modified) - http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
-FileMagic
-RtMidi
-Midifile - http://midifile.sapp.org/
+wxWidgets          | https://wxwidgets.org/
+RGB2LAB (Modified) | http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
+LibMagic           | https://github.com/threatstack/libmagic
+RtMidi             | http://www.music.mcgill.ca/~gary/rtmidi/
+Midifile           | http://midifile.sapp.org/
 
 Software:
 Sublime Text
 Code::Blocks
-Photoshop
+Photoshop CC 2017
+GitHub
+
+Hardware (Main Computer, Laptop):
+OS        | macOS Sierra, 10.12.3 Beta (16D25a)
+Model     | MacBook Pro 15" Retina (Mid 2014)
+CPU       | 2.5GHz Intel Core i7 Quad-Core Hyperthreaded
+RAM       | 16GB DDR3
+GPU 1     | Intel Iris Pro 1.5GB VRAM (integrated)
+GPU 2     | NVIDIA GeForce GT 750M 2GB VRAM (dedicated)
+Storage   | 1 TB Flash Storage
+Display 1 | 15.4-inch (2880 x 1800)
+Display 2 | 24.0-inch (1920 x 1080)
+
+Hardware (Secondary Computer, Desktop):
+OS        | Windows 10 Professional 64-bit
+CPU       | 3.3GHz Intel Core i5 Quad-Core
+RAM       | 16GB DDR3
+GPU       | EVGA GeForce GTX 980 4GB VRAM
+Storage   | 256 GB SSD and 1 TB HDD
+Display 1 | 24.0-inch (1920 x 1080)
+Display 2 | 17.1-inch (1280 x 1024)
 
 References:
-Exige’s MIDI Extension - http://forum.launchpad-pro.com/viewtopic.php?id=4968
-Launchpad Pro User Guide - https://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/10594/launchpad-pro-user-guide-en.pdf
-Launchpad Pro Programmer Guide - https://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/10598/launchpad-pro-programmers-reference-guide_0.pdf
+Exige’s MIDI Extension         | http://forum.launchpad-pro.com/viewtopic.php?id=4968
+Launchpad Pro User Guide       | https://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/10594/launchpad-pro-user-guide-en.pdf
+Launchpad Pro Programmer Guide | https://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/10598/launchpad-pro-programmers-reference-guide_0.pdf
 
-Utilized Lightshow Projects:
-https://youtu.be/Bq3wmW24D_o (for the app icon)
-https://youtu.be/Z3NDxo04Roc (loading animation and use for testing)
-https://youtu.be/nejK-_Fivsg (use for testing)
-https://youtu.be/WiBi0EpgWY4 (use for testing)
+Utilized Lightshow Projects: (Lightshow Creator | Video Link | Song Name | Usage Details)
+Kaskobi | https://youtu.be/Bq3wmW24D_o | Zomboy - Like A Bitch                  | App icon inspiration
+ProdiG  | https://youtu.be/Z3NDxo04Roc | Nanomake - Crying Ice                  | Loading animation & testing use
+ProdiG  | https://youtu.be/B32JC3Fhf8M | Bro Safari - Reality                   | Testing use
+Ixen    | https://youtu.be/nejK-_Fivsg | Dodge & Fuski vs. Virtual Riot - Alien | Testing use
