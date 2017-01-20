@@ -168,8 +168,10 @@ void Launchpad::displayText(unsigned int color, unsigned int speed, std::string 
 }
 
 int main() {
+	MidiFile midifile;
+	MidiEvent* mev;
 	std::vector<unsigned char> message_in;
-	int nBytes, color;
+	int nBytes, color, deltatick, b, button;
 	double stamp;
 	Launchpad *lp = new Launchpad();
 	int lp_status = lp->connect();
@@ -236,21 +238,11 @@ int main() {
 	midiout->sendMessage( &message );
 	*/
 
-	MidiFile midifile;
 	midifile.read("./Light_Output_Test.mid");
-	
-	std::cout << "TPQ: " << midifile.getTicksPerQuarterNote() << std::endl;
-	std::cout << "TRACKS: " << midifile.getTrackCount() << std::endl;
-	
 	midifile.joinTracks();
-	// midifile.getTrackCount() will now return "1", but original
-	// track assignments can be seen in .track field of MidiEvent.
+
+	std::cout << "Playing MIDI File..." << std::endl;
 	
-	// std::cout << "TICK    DELTA   TRACK   MIDI MESSAGE\n";
-	// std::cout << "____________________________________\n";
-	
-	MidiEvent* mev;
-	int deltatick, b, button;
 	for (int event=0; event < midifile[0].size(); event++) {
 		mev = &midifile[0][event];
 		if (event == 0) {
@@ -272,12 +264,16 @@ int main() {
 				button = 91+(b-28);
 			} else if (b <= 115) {
 				button = 89-10*((b-100)%8)-(b/108*9);
-			} else {
+			} else if (b <= 123) {
 				button = b-115;
+			} else {
+				button = 0; // Ignore invalid notes
 			}
 
 			lp->setColor(button, color);
+
 		}
+
 		// std::cout << dec << mev->tick;
 		// std::cout << '\t' << deltatick;
 		// std::cout << '\t' << mev->track;
@@ -287,6 +283,8 @@ int main() {
 		// }
 		// std::cout << std::endl;
 	}
+
+	std::cout << "Completed MIDI file playback!" << std::endl << std::endl;
 
 	// Install an interrupt handler function.
 	done = false;
