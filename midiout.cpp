@@ -33,6 +33,8 @@
 #define MIDI_MESSAGE_SYSEX_END 247
 #define LAUNCHPAD_SIDE_LED_ID 99
 
+int BPM = 120;
+
 bool done;
 static void finish(int ignore){ done = true; std::cout << std::endl; }
 
@@ -210,18 +212,6 @@ int main() {
 
 	// Pulse side LED
 	lp->setPulse(LAUNCHPAD_SIDE_LED_ID, 53);
-	// message.push_back( 240 );
-	// message.push_back( 0 );
-	// message.push_back( 32 );
-	// message.push_back( 41 );
-	// message.push_back( 2 );
-	// message.push_back( 16 );
-	// message.push_back( 40 ); // Pulse
-	// message.push_back( 99 ); // Side LED
-	// message.push_back( 53 ); // Purple
-	// message.push_back( 247 );
-	// midiout->sendMessage( &message );
-	// message.erase(message.begin(),  message.begin()+message.size());
 
 	/*
 	// Program change: 192, 5
@@ -247,7 +237,7 @@ int main() {
 	*/
 
 	MidiFile midifile;
-	midifile.read("/Users/vinyldarkscratch/Documents/Max 7/Library/MIDIext/CryingIce/A3.mid");
+	midifile.read("./Light_Output_Test.mid");
 	
 	std::cout << "TPQ: " << midifile.getTicksPerQuarterNote() << std::endl;
 	std::cout << "TRACKS: " << midifile.getTrackCount() << std::endl;
@@ -272,21 +262,20 @@ int main() {
 			color = (int)(*mev)[2];
 			if ((int)(*mev)[0] == 128) color = 0;
 			if (deltatick > 0) {
-				usleep(60000 * 1000 / (120 * deltatick));
+				usleep(60000 * 1000 / (BPM * deltatick));
 			}
 
 			b = (int)(*mev)[1]; // Obnoxious, but it works
 			if (b >= 36 && b <= 99) {
 				button = ((b - 36) % 4 + 1 + 10 * ((b - 36) % 32 / 4 + 1) + ((b - 36) / 32 * 4));
 			} else if (b < 36) {
-				button = 95+(35-b);
+				button = 91+(b-28);
 			} else if (b <= 115) {
 				button = 89-10*((b-100)%8)-(b/108*9);
 			} else {
 				button = b-115;
 			}
 
-			std::cout << b << "-" << button << " ";
 			lp->setColor(button, color);
 		}
 		// std::cout << dec << mev->tick;
@@ -298,7 +287,6 @@ int main() {
 		// }
 		// std::cout << std::endl;
 	}
-	std::cout << std::endl;
 
 	// Install an interrupt handler function.
 	done = false;
