@@ -1,6 +1,7 @@
 //
 // Lightpad - Helpers.h
 // Created by Vinyl Darkscratch and Light Apacha, ©2017 Nightwave Studios.
+// Additional assistance by Eric Busch (Origami1105).
 //
 
 #ifndef HELPERS_H
@@ -25,5 +26,7 @@ enum {
 	ID_Menu_Save,
 	ID_FilePanel_Tree
 };
+
+int closest_two_power(int current_size, int min_range, int max_range);
 
 #endif

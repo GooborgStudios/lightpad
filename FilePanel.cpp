@@ -30,6 +30,7 @@
 #include <wx/artprov.h>
 #include <wx/treebase.h>
 #include <wx/validate.h>
+#include <wx/file.h>
 
 #ifdef MACOS
 	#include <magic.h>
@@ -63,7 +64,9 @@ FilePanel::FilePanel(wxPanel *parent)
 
 // List all project directories
 void FilePanel::RefreshFileList() {
-	ListDirectory(maxpath, parent_dvi); // XXX Hard-coded full path to the folder, "~/Docume..." doesn't work.  // XXX Assuming that there's only one library folder, and that it's always in the user documents, which both are inaccurate -- should obtain paths from Max itself.
+	ListDirectory(max_user_library_path, parent_dvi);
+	ListDirectory(max_shared_library_path, parent_dvi);
+	// XXX Should also obtain user search paths.
 }
 
 // Obtain all of the contents of a directory and add it to a specified file list
@@ -114,10 +117,20 @@ void FilePanel::Update() {
 wxString FilePanel::GetFilePath(wxDataViewItem item) {
 	wxDataViewTreeStore *store = filelistbox->GetStore();
 	wxDataViewItem parent(store->GetParent(item));
-	wxString path(maxpath+"/");
-	if (!store->IsContainer(item))
-		path += filelistbox->GetItemText(parent)+"/";
-	path += filelistbox->GetItemText(item);
+	wxString path;
+
+	for (int i = 0; i <= 1; i++) {
+		if (i == 0)
+			path = max_user_library_path+"/";
+		else
+			path = max_shared_library_path+"/";
+
+		if (!store->IsContainer(item))
+			path += filelistbox->GetItemText(parent)+"/";
+		path += filelistbox->GetItemText(item);
+		if (wxFile::Exists(path))
+			break;
+	}
 	return path;
 }
 

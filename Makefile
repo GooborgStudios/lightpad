@@ -1,6 +1,6 @@
 CXX = `wx-config --cxx`
-CXXFLAGS = `wx-config --cxxflags` -O3
-LIBS = `wx-config --libs` -lmagic -lrtmidi
+CXXFLAGS = `wx-config --cxxflags` -O3 -I/Users/vinyldarkscratch/Developer/git/midifile/include
+LIBS = `wx-config --libs` -lmagic -lrtmidi -lmidifile -L/Users/vinyldarkscratch/Developer/git/midifile/lib
 
 ifeq ($(OS),Windows_NT)
 	# XXX We're using Code::Blocks for Windows compiling
@@ -39,15 +39,17 @@ else
 	endif
 endif
 
-lightpad: main.o FilePanel.o DisplayPanel.o Colors.o
-	$(CXX) $(CXXFLAGS) -o lightpad main.o FilePanel.o DisplayPanel.o Colors.o $(LIBS)
+lightpad: main.o FilePanel.o DisplayPanel.o Colors.o Helpers.o
+	$(CXX) $(CXXFLAGS) -o lightpad main.o FilePanel.o DisplayPanel.o Colors.o Helpers.o $(LIBS)
 
 main.o: main.cpp Helpers.h
+Helpers.o: Helpers.cpp Helpers.h
 DisplayPanel.o: DisplayPanel.cpp DisplayPanel.h Helpers.h
 FilePanel.o: FilePanel.cpp FilePanel.h Helpers.h
+Colors.o: Colors.cpp Colors.h Helpers.h
+
 Colors.cpp: Colors_template.cpp references/rgbcolors1.png references/rgbcolors2.png sample_colors.py
 	python sample_colors.py > Colors.cpp
-Colors.o: Colors.cpp Colors.h Helpers.h
 
 colors: Colors.o
 	$(CXX) $(CXXFLAGS) -o colors Colors.o $(LIBS)

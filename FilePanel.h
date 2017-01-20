@@ -16,9 +16,18 @@
 #include <wx/imaglist.h>
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-    const wxString maxpath = wxString("E:\\My Documents\\Max 7\\Library\\MIDIext");
+	#include <windows.h>
+	#include <shlobj.h>
+	#pragma comment(lib, "shell32.lib")
+
+	char my_documents[MAX_PATH];
+	SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
+
+	const wxString max_user_library_path = wxString(my_documents) + wxString("\\MIDIext");
+	const wxString max_shared_library_path = wxString(my_documents) + wxString("\\MIDIext"); // XXX Inaccurate
 #else
-    const wxString maxpath = wxString("/Users/vinyldarkscratch/Documents/Max 7/Library/MIDIext");
+	const wxString max_user_library_path = wxString(getenv("HOME")) + wxString("/Documents/Max 7/Library/MIDIext");
+	const wxString max_shared_library_path = wxString("/Users/Shared/Max 7/Library/MIDIext");
 #endif
 
 // Graphical interface panel

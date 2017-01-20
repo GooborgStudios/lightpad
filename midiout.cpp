@@ -1,13 +1,16 @@
 // midiout.cpp
 
 #include <iostream>
+#include <iomanip>
 #include <cstdlib>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <signal.h>
 #include <unistd.h>
 #include <time.h>
+
 #include "RtMidi.h"
+#include "MidiFile.h"
 
 #ifdef _WIN32
 	//define something for Windows (32-bit and 64-bit, this part is common)
@@ -25,6 +28,7 @@
 	#error "Unknown/unsupported compiler/operating system"
 #endif
 
+#define ABLETON_LIVE_MODE 4
 #define MIDI_MESSAGE_SYSEX_BEGIN 240
 #define MIDI_MESSAGE_SYSEX_END 247
 #define LAUNCHPAD_SIDE_LED_ID 99
@@ -38,7 +42,7 @@ class Launchpad {
 		int connect();
 		void disconnect();
 		int getMidiPort(std::string name, RtMidi *ports);
-		double getMessage(std::vector<unsigned char> message_in);
+		double getMessage(std::vector<unsigned char> *message_in);
 		void setColor(unsigned char light, unsigned char color);
 		void setColor(unsigned char light, unsigned char red, unsigned char green, unsigned char blue);
 		void setFlash(unsigned char light, unsigned char color);
@@ -51,10 +55,7 @@ class Launchpad {
 		int outport;
 		std::vector<unsigned char> message;
 
-		void addToMessage(unsigned int first_byte, ...);
-		void addToMessage(unsigned int first_byte, va_list vl);
 		void sendMessage(unsigned int first_byte, ...);
-		void sendMessage();
 };
 
 Launchpad::Launchpad() {
@@ -80,18 +81,24 @@ int Launchpad::connect() {
 	// Don't ignore sysex, timing, or active sensing messages.
 	midiin->ignoreTypes( false, false, false );
 
+	std::vector<unsigned char> device_info;
+
 	// Inquiry Device
 	sendMessage( 240, 126, 127, 6, 1, 247 );
+	while (device_info.size() == 0) {
+		getMessage(&device_info);
+		usleep( 10000 ); // Sleep for 10 milliseconds ... platform-dependent.
+	}
 
-	// Set to Programmer Mode
-	sendMessage( 240, 0, 32, 41, 2, 16, 44, 3, 247 );
+	sendMessage( 240, 0, 32, 41, 2, 16, 33, 1, 247 ); // Set to Standalone Mode
+	sendMessage( 240, 0, 32, 41, 2, 16, 44, 3, 247 ); // Set to Programmer Mode
 
 	return 0;
 }
 
 void Launchpad::disconnect() {
-	sendMessage( 240, 0, 32, 41, 2, 16, 14, 0, 247 );
-	sendMessage( 240, 0, 32, 41, 2, 16, 44, 0, 247 );
+	sendMessage( 240, 0, 32, 41, 2, 16, 14, 0, 247 ); // Clear all LED colors
+	sendMessage( 240, 0, 32, 41, 2, 16, 44, 0, 247 ); // Set to Note Mode
 
 	delete midiin;
 	delete midiout;
@@ -113,34 +120,21 @@ int Launchpad::getMidiPort(std::string name, RtMidi *ports) {
 	return -1;
 }
 
-double Launchpad::getMessage(std::vector<unsigned char> message_in) {
-	return midiin->getMessage(&message_in);
-}
-
-void Launchpad::addToMessage(unsigned int first_byte, ...) {
-	va_list vl;
-	va_start(vl, first_byte);
-	addToMessage(first_byte, vl);
-	va_end(vl);
-}
-
-void Launchpad::addToMessage(unsigned int first_byte, va_list vl) {
-	unsigned int byte = first_byte;
-	while (byte != MIDI_MESSAGE_SYSEX_END) {
-		message.push_back(byte);
-		byte = va_arg(vl, unsigned int);
-	}
+double Launchpad::getMessage(std::vector<unsigned char> *message_in) {
+	return midiin->getMessage(message_in);
 }
 
 void Launchpad::sendMessage(unsigned int first_byte, ...) {
 	va_list vl;
 	va_start(vl, first_byte);
-	addToMessage(first_byte, vl);
-	sendMessage();
+	unsigned char byte = first_byte;
+	while (byte != MIDI_MESSAGE_SYSEX_END || byte > 255) {
+		message.push_back(byte);
+		byte = va_arg(vl, unsigned int);
+	}
+	message.push_back(byte);
 	va_end(vl);
-}
 
-void Launchpad::sendMessage() {
 	midiout->sendMessage(&message);
 	message.erase(message.begin(), message.begin()+message.size());
 }
@@ -252,30 +246,88 @@ int main() {
 	midiout->sendMessage( &message );
 	*/
 
+	MidiFile midifile;
+	midifile.read("/Users/vinyldarkscratch/Documents/Max 7/Library/MIDIext/CryingIce/A3.mid");
+	
+	std::cout << "TPQ: " << midifile.getTicksPerQuarterNote() << std::endl;
+	std::cout << "TRACKS: " << midifile.getTrackCount() << std::endl;
+	
+	midifile.joinTracks();
+	// midifile.getTrackCount() will now return "1", but original
+	// track assignments can be seen in .track field of MidiEvent.
+	
+	// std::cout << "TICK    DELTA   TRACK   MIDI MESSAGE\n";
+	// std::cout << "____________________________________\n";
+	
+	MidiEvent* mev;
+	int deltatick, b, button;
+	for (int event=0; event < midifile[0].size(); event++) {
+		mev = &midifile[0][event];
+		if (event == 0) {
+			deltatick = mev->tick;
+		} else {
+			deltatick = mev->tick - midifile[0][event-1].tick;
+		}
+		if ((int)(*mev)[0] == 128 || (int)(*mev)[0] == 144) {
+			color = (int)(*mev)[2];
+			if ((int)(*mev)[0] == 128) color = 0;
+			if (deltatick > 0) {
+				usleep(60000 * 1000 / (120 * deltatick));
+			}
+
+			b = (int)(*mev)[1]; // Obnoxious, but it works
+			if (b >= 36 && b <= 99) {
+				button = ((b - 36) % 4 + 1 + 10 * ((b - 36) % 32 / 4 + 1) + ((b - 36) / 32 * 4));
+			} else if (b < 36) {
+				button = 95+(35-b);
+			} else if (b <= 115) {
+				button = 89-10*((b-100)%8)-(b/108*9);
+			} else {
+				button = b-115;
+			}
+
+			std::cout << b << "-" << button << " ";
+			lp->setColor(button, color);
+		}
+		// std::cout << dec << mev->tick;
+		// std::cout << '\t' << deltatick;
+		// std::cout << '\t' << mev->track;
+		// std::cout << '\t' << std::hex;
+		// for (int i=0; i < mev->size(); i++) {
+		// 	std::cout << (int)(*mev)[i] << ' ';
+		// }
+		// std::cout << std::endl;
+	}
+	std::cout << std::endl;
+
 	// Install an interrupt handler function.
 	done = false;
 	(void) signal(SIGINT, finish);
 	// Periodically check input queue.
 	std::cout << "Reading MIDI from port ... quit with Ctrl-C." << std::endl;
 	while (!done) {
-		stamp = lp->getMessage(message_in);
+		stamp = lp->getMessage(&message_in);
 		nBytes = message_in.size();
 		if (nBytes > 0) {
 			if ((message_in[0] == 144) || (message_in[0] == 176)) {
-				color = rand() % 127 + 0;
+				color = rand() % 126 + 1;
 				if (message_in[2] > 0) {
+
 					lp->setColor(message_in[1], color);
 				} else {
 					lp->setPulse(message_in[1], color);
 				}
 			}
 		}
-		for ( int i=0; i<nBytes; i++ )
-			std::cout << "Byte " << i << " = " << (int)message_in[i] << ", ";
-		if ( nBytes > 0 )
-			std::cout << "stamp = " << stamp << std::endl;
-		// Sleep for 10 milliseconds ... platform-dependent.
-		usleep( 10000 );
+
+		if ( nBytes > 0 ) {
+			std::cout << std::fixed << std::setprecision(7) << stamp << " |   ";
+			for ( int i=0; i<nBytes; i++ )
+				std::cout << std::setw(4) << (int)message_in[i];
+			std::cout << std::endl;
+		}
+		
+		usleep( 10000 ); // Sleep for 10 milliseconds ... platform-dependent.
 	}
 
 	// delete midiin;

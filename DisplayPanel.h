@@ -14,6 +14,8 @@
 
 #include <wx/sizer.h>
 
+#define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
+
 #include "Colors.h"
 #include "Helpers.h"
 

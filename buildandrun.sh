@@ -1,1 +1,1 @@
-make && echo ---------- && ./lightpad
+make -j4 && echo ---------- && ./lightpad

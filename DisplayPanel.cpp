@@ -38,7 +38,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	m_parent = parent;
 
 	image_path = "graphics/launchpad_display/launchpad_display_4096.png";
-	image_size = 4096;
+	image_size = MAXIMUM_LAUNCHPAD_IMAGE_SIZE;
 	launchpad_image = new wxImage(image_path, wxBITMAP_TYPE_PNG);
 	panel_width = image_size;
 	panel_height = image_size;
@@ -73,40 +73,24 @@ void DisplayPanel::render(wxDC &dc) {
 	dc.GetSize(&neww, &newh);
 
 	if( neww != panel_width || newh != panel_height ) {
-		int newsize = std::min(neww, newh);
-		if (newsize == 0) {
-			newsize = image_size; // When first launching the app, this will make sure it doesn't crash
+		int new_size = std::min(neww, newh);
+		if (new_size == 0) {
+			new_size = image_size; // When first launching the app, this will make sure it doesn't crash
 		}
-		// int do_new_image = 0;
+		int new_image_size = closest_two_power(new_size, 256, 4096);
 
-		// if (x <= 256 && image_size != 256) {
-		// 	image_path.replace(45, 4, "0256");
-		// 	image_size = 256;
-		// } else if (x > 256 && x <= 512 && image_size != 512) {
-		// 	image_path.replace(45, 4, "0512");
-		// 	image_size = 512;
-		// } else if (x > 512 && x <= 1024 && image_size != 1024) {
-		// 	image_path.replace(45, 4, "1024");
-		// 	image_size = 1024;
-		// } else if (x > 1024 && x <= 2048 && image_size != 2048) {
-		// 	image_path.replace(45, 4, "2048");
-		// 	image_size = 2048;
-		// } else if (x > 2048 && x <= 4096 && image_size != 4096) {
-		// 	image_path.replace(45, 4, "4096");
-		// 	image_size = 4096;
-		// } else {
-		// 	do_new_image = 0;
-		// }
-
-		// if (do_new_image == 1) launchpad_image->LoadFile(image_path, wxBITMAP_TYPE_PNG);
-		resized = wxBitmap(launchpad_image->Scale(newsize, newsize));
+		if (new_image_size != image_size) {
+			launchpad_image->LoadFile(image_path, wxBITMAP_TYPE_PNG);
+			image_size = new_image_size;
+		}
+		resized = wxBitmap(launchpad_image->Scale(new_size, new_size));
 
 		if ( neww > newh ) {
-			xpos = (neww - newsize)/2;
+			xpos = (neww - new_size)/2;
 			ypos = 0;
 		} else {
 			xpos = 0;
-			ypos = (newh - newsize)/2;
+			ypos = (newh - new_size)/2;
 		}
 
 		dc.DrawBitmap(resized, xpos, ypos, false);
