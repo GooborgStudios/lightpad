@@ -2,8 +2,8 @@
 *.layout
 
 lightpad
-midi
-color
+midiprobe
+midiout
 *.exe
 
 *.o

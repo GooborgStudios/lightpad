@@ -35,8 +35,3 @@ unsigned char get_closest_velocity(wxColor c) {
 
 	return best_match_index;
 };
-
-// int main() {
-// 	int v = get_closest_velocity(wxColor(255, 255, 255));
-// 	std::cout << "Best Match: " << v << std::endl;
-// }

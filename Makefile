@@ -51,14 +51,11 @@ Colors.o: Colors.cpp Colors.h Helpers.h
 Colors.cpp: Colors_template.cpp references/rgbcolors1.png references/rgbcolors2.png sample_colors.py
 	python sample_colors.py > Colors.cpp
 
-colors: Colors.o
-	$(CXX) $(CXXFLAGS) -o colors Colors.o $(LIBS)
-
 midiprobe: midiprobe.cpp
-	$(CXX) $(CXXFLAGS) -o midi midiprobe.cpp $(LIBS)
+	$(CXX) $(CXXFLAGS) -o midiprobe midiprobe.cpp $(LIBS)
 
 midiout: midiout.cpp
-	$(CXX) $(CXXFLAGS) -o midi midiout.cpp $(LIBS)
+	$(CXX) $(CXXFLAGS) -o midiout midiout.cpp $(LIBS)
 
 clean:
 	-rm *.o
@@ -66,4 +63,5 @@ clean:
 	-rm *.exe
 	-rm lightpad
 	-rm colors
-	-rm midi
+	-rm midiprobe
+	-rm midiout
