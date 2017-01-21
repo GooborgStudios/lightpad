@@ -30,4 +30,13 @@ enum {
 
 int closest_two_power(int current_size, int min_range, int max_range);
 
+int note_to_button(int note);
+
+class Note {
+  int position; // Note position
+  int color; // Velocity
+  int time; // Note start time
+  int duration; // Note duration
+};
+
 #endif

@@ -34,3 +34,17 @@ int closest_two_power(int current_size, int min_range, int max_range) {
 
 	return pow_two;
 }
+
+int note_to_button(int note) {
+	if (note >= 36 && note <= 99) {
+		return ((note - 36) % 4 + 1 + 10 * ((note - 36) % 32 / 4 + 1) + ((note - 36) / 32 * 4));
+	} else if (note < 36) {
+		return 91 + (note - 28);
+	} else if (note <= 115) {
+		return 89 - 10 * ((note - 100) % 8) - (note / 108 * 9);
+	} else if (note <= 123) {
+		return note - 115;
+	} else {
+		return 0; // Ignore invalid notes
+	}
+}

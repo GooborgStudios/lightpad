@@ -5,6 +5,12 @@
 // http://www.nightwave.co/lightpad
 //
 
+// Attempt to load precompiled, if compiler doesn't support then load normal
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+	#include <wx/wx.h>
+#endif
+
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
@@ -16,6 +22,8 @@
 
 #include "RtMidi.h"
 #include "MidiFile.h"
+
+#include "Helpers.h"
 
 #ifdef _WIN32
 	//define something for Windows (32-bit and 64-bit, this part is common)
@@ -176,7 +184,7 @@ int main() {
 	MidiFile midifile;
 	MidiEvent* mev;
 	std::vector<unsigned char> message_in;
-	int nBytes, color, deltatick, b, button;
+	int nBytes, color, deltatick;
 	double stamp;
 	Launchpad *lp = new Launchpad();
 	int lp_status = lp->connect();
@@ -262,20 +270,7 @@ int main() {
 				usleep(60000 * 1000 / (BPM * deltatick));
 			}
 
-			b = (int)(*mev)[1]; // Obnoxious, but it works
-			if (b >= 36 && b <= 99) {
-				button = ((b - 36) % 4 + 1 + 10 * ((b - 36) % 32 / 4 + 1) + ((b - 36) / 32 * 4));
-			} else if (b < 36) {
-				button = 91 + (b - 28);
-			} else if (b <= 115) {
-				button = 89 - 10 * ((b - 100) % 8) - (b / 108 * 9);
-			} else if (b <= 123) {
-				button = b - 115;
-			} else {
-				button = 0; // Ignore invalid notes
-			}
-
-			lp->setColor(button, color);
+			lp->setColor(note_to_button((int)(*mev)[1]), color);
 
 		}
 
