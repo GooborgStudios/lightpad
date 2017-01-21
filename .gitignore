@@ -1,9 +1,11 @@
 */.DS_Store
+*.layout
+
 lightpad
 midi
 color
 *.exe
-*.layout
+
 *.o
 obj/
 bin/

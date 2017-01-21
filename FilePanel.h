@@ -2,6 +2,7 @@
 // Lightpad - FilePanel.h
 // Created by Vinyl Darkscratch, Light Apacha, and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional assistance by Eric Busch (Origami1105).
+// http://www.nightwave.co/lightpad
 //
 
 #ifndef FILEPANEL_H
