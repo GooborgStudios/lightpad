@@ -261,11 +261,11 @@ int main() {
 			if (b >= 36 && b <= 99) {
 				button = ((b - 36) % 4 + 1 + 10 * ((b - 36) % 32 / 4 + 1) + ((b - 36) / 32 * 4));
 			} else if (b < 36) {
-				button = 91+(b-28);
+				button = 91 + (b - 28);
 			} else if (b <= 115) {
-				button = 89-10*((b-100)%8)-(b/108*9);
+				button = 89 - 10 * ((b - 100) % 8) - (b / 108 * 9);
 			} else if (b <= 123) {
-				button = b-115;
+				button = b - 115;
 			} else {
 				button = 0; // Ignore invalid notes
 			}
