@@ -1,5 +1,5 @@
 CXX = `wx-config --cxx`
-CXXFLAGS = `wx-config --cxxflags` -O3 -I/Users/vinyldarkscratch/Developer/git/midifile/include
+CXXFLAGS = `wx-config --cxxflags` -std=c++11 -O3 -I/Users/vinyldarkscratch/Developer/git/midifile/include
 LIBS = `wx-config --libs` -lmagic -lrtmidi -lmidifile -L/Users/vinyldarkscratch/Developer/git/midifile/lib
 
 ifeq ($(OS),Windows_NT)
