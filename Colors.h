@@ -1,6 +1,7 @@
 //
 // Lightpad - Colors.h
-// Created by Vinyl Darkscratch and Light Apacha, ©2017 Nightwave Studios.
+// Created by Vinyl Darkscratch, Light Apacha, and WhoovesPON3, ©2017 Nightwave Studios.
+// Additional assistance by Eric Busch (Origami1105).
 //
 
 #ifndef COLORS_H

@@ -1,6 +1,8 @@
 //
 // Lightpad - rgb2lab.cpp
-// File btained from: http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
+// File obtained and modified from: http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
+// Program by Vinyl Darkscratch, Light Apacha, and WhoovesPON3, ©2017 Nightwave Studios.
+// Additional assistance by Eric Busch (Origami1105).
 //
 
 #include <math.h>

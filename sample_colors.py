@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+# Lightpad - sample_colors.py
+# Created by Vinyl Darkscratch, Light Apacha, and WhoovesPON3, ©2017 Nightwave Studios.
+# Additional assistance by Eric Busch (Origami1105).
+
 from PIL import Image
 
 output = "\n\nwxColor velocitycolors[] = {\n\t"
