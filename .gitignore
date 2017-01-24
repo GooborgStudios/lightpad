@@ -5,6 +5,7 @@ lightpad
 midiprobe
 midiout
 *.exe
+a.out
 
 *.o
 obj/

@@ -1,5 +1,5 @@
 CXX = `wx-config --cxx`
-CXXFLAGS = `wx-config --cxxflags` -std=c++11 -O3 -I/Users/vinyldarkscratch/Developer/git/midifile/include
+CXXFLAGS = `wx-config --cxxflags` -std=c++11 -O3 -I/Users/vinyldarkscratch/Developer/git/midifile/include -I.
 LIBS = `wx-config --libs` -lmagic -lrtmidi -lmidifile -L/Users/vinyldarkscratch/Developer/git/midifile/lib
 
 ifeq ($(OS),Windows_NT)
@@ -59,11 +59,22 @@ Colors.o: Colors.cpp Colors.h Helpers.h
 Colors.cpp: Colors_template.cpp references/rgbcolors1.png references/rgbcolors2.png sample_colors.py
 	python sample_colors.py > Colors.cpp
 
+.PHONY: tests
+tests: tests/RunTests
+	tests/RunTests
+
+tests/RunTests: tests/HelpersTest.h Helpers.o
+	cxxtestgen --error-printer -o tests/RunTests.cpp tests/HelpersTest.h
+	$(CXX) $(CXXFLAGS) -o tests/RunTests tests/RunTests.cpp Helpers.o $(LIBS)
+
 clean:
 	-rm *.o
 	-rm -r obj
 	-rm *.exe
+	-rm a.out
 	-rm lightpad
 	-rm colors
 	-rm midiprobe
 	-rm midiout
+	-rm tests/RunTests.cpp
+	-rm tests/RunTests
