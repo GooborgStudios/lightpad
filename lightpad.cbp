@@ -21,15 +21,7 @@
 					<Add option="-DwxUSE_UNICODE" />
 					<Add option="-DWIN32" />
 					<Add option="-D_WIN32" />
-					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
 				</Compiler>
-				<ResourceCompiler>
-					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
-				</ResourceCompiler>
-				<Linker>
-					<Add library="libwxmsw31u.a" />
-					<Add directory="$(#wx)/lib/gcc_dll" />
-				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/lightpad" prefix_auto="1" extension_auto="1" />
@@ -39,28 +31,28 @@
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
 				</Compiler>
-				<ResourceCompiler>
-					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
-				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libwxmsw31u.a" />
-					<Add directory="$(#wx)/lib/gcc_dll" />
 				</Linker>
 			</Target>
 			<Target title="LaunchpadProMidi">
 				<Option output="midiout" prefix_auto="1" extension_auto="1" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Linker>
+					<Add library="rtmidi" />
+				</Linker>
 			</Target>
 			<Target title="LaunchpadProMidiProbe">
 				<Option output="midiprobe" prefix_auto="1" extension_auto="1" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-D__WINDOWS_MM__" />
+				</Compiler>
 				<Linker>
-					<Add library="rtmidi" />
+					<Add library="winmm" />
 				</Linker>
 			</Target>
 		</Build>
@@ -76,105 +68,379 @@
 			<Add option="-D_WIN32" />
 			<Add directory="$(#wx)/include" />
 			<Add directory="lib/rtmidi-2.1.1" />
+			<Add directory="$(#wx)/lib/gcc_dll/mswu" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="$(#wx)/include" />
+			<Add directory="$(#wx)/lib/gcc_dll/mswu" />
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-mthreads" />
 			<Add library="lib/rtmidi-2.1.1/lib/rtmidi.lib" />
+			<Add library="libwxmsw31u.a" />
 			<Add directory="lib/rtmidi-2.1.1" />
+			<Add directory="$(#wx)/lib/gcc_dll" />
 		</Linker>
-		<Unit filename="Colors.cpp" />
-		<Unit filename="Colors.h" />
-		<Unit filename="Colors_template.cpp" />
-		<Unit filename="Display.cpp">
-			<Option target="Debug" />
+		<Unit filename="Colors.cpp">
 			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Colors.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Display.cpp">
+			<Option target="Release" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="Display.h">
-			<Option target="Debug" />
 			<Option target="Release" />
+			<Option target="Debug" />
 		</Unit>
-		<Unit filename="DisplayPanel.cpp" />
-		<Unit filename="DisplayPanel.h" />
-		<Unit filename="FilePanel.cpp" />
-		<Unit filename="FilePanel.h" />
-		<Unit filename="GenerateNoteButtonMap.cpp" />
-		<Unit filename="Helpers.cpp" />
-		<Unit filename="Helpers.h" />
-		<Unit filename="IDs.h" />
-		<Unit filename="lib/midifile-master/include/Binasc.h" />
-		<Unit filename="lib/midifile-master/include/MidiEvent.h" />
-		<Unit filename="lib/midifile-master/include/MidiEventList.h" />
-		<Unit filename="lib/midifile-master/include/MidiFile.h" />
-		<Unit filename="lib/midifile-master/include/MidiMessage.h" />
-		<Unit filename="lib/midifile-master/include/Options.h" />
-		<Unit filename="lib/midifile-master/src-library/Binasc.cpp" />
-		<Unit filename="lib/midifile-master/src-library/MidiEvent.cpp" />
-		<Unit filename="lib/midifile-master/src-library/MidiEventList.cpp" />
-		<Unit filename="lib/midifile-master/src-library/MidiFile.cpp" />
-		<Unit filename="lib/midifile-master/src-library/MidiMessage.cpp" />
-		<Unit filename="lib/midifile-master/src-library/Options.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/80off.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/asciimidi.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/binasc.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/createmidifile.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/createmidifile2.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/drumtab.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/durations.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/henonfile.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/mid2hum.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/mid2mat.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/mid2mtb.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/mid2svg.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/midi2beep.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/midi2binasc.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/midi2melody.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/midi2notes.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/midi2skini.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/midi2text.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/midicat.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/midiexcerpt.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/midimixup.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/miditime.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/peep2midi.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/perfid.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/shutak.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/smfdur.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/stretch.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/sysextest.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/text2midi.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/textmidi.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/toascii.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/tobin.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/tobinary.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/todec.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/tohex.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/type0.cpp" />
-		<Unit filename="lib/midifile-master/src-programs/vlv.cpp" />
+		<Unit filename="DisplayPanel.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="DisplayPanel.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="FilePanel.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="FilePanel.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="GenerateNoteButtonMap.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Helpers.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Helpers.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="IDs.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/include/Binasc.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/include/MidiEvent.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/include/MidiEventList.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/include/MidiFile.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/include/MidiMessage.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/include/Options.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-library/Binasc.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-library/MidiEvent.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-library/MidiEventList.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-library/MidiFile.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-library/MidiMessage.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-library/Options.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/80off.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/asciimidi.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/binasc.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/createmidifile.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/createmidifile2.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/drumtab.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/durations.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/henonfile.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/mid2hum.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/mid2mat.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/mid2mtb.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/mid2svg.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/midi2beep.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/midi2binasc.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/midi2melody.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/midi2notes.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/midi2skini.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/midi2text.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/midicat.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/midiexcerpt.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/midimixup.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/miditime.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/peep2midi.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/perfid.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/shutak.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/smfdur.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/stretch.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/sysextest.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/text2midi.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/textmidi.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/toascii.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/tobin.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/tobinary.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/todec.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/tohex.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/type0.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/midifile-master/src-programs/vlv.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="lib/rtmidi-2.1.1/RtMidi.cpp" />
 		<Unit filename="lib/rtmidi-2.1.1/RtMidi.h" />
-		<Unit filename="lib/rtmidi-2.1.1/rtmidi_c.cpp" />
-		<Unit filename="lib/rtmidi-2.1.1/rtmidi_c.h" />
-		<Unit filename="lib/rtmidi-2.1.1/tests/cmidiin.cpp" />
-		<Unit filename="lib/rtmidi-2.1.1/tests/midiout.cpp" />
-		<Unit filename="lib/rtmidi-2.1.1/tests/midiprobe.cpp" />
-		<Unit filename="lib/rtmidi-2.1.1/tests/qmidiin.cpp" />
-		<Unit filename="lib/rtmidi-2.1.1/tests/sysextest.cpp" />
-		<Unit filename="main.cpp" />
+		<Unit filename="lib/rtmidi-2.1.1/rtmidi_c.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/rtmidi-2.1.1/tests/cmidiin.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/rtmidi-2.1.1/tests/midiout.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/rtmidi-2.1.1/tests/midiprobe.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/rtmidi-2.1.1/tests/qmidiin.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="lib/rtmidi-2.1.1/tests/sysextest.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="main.cpp">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="midiout.cpp">
 			<Option target="LaunchpadProMidi" />
 		</Unit>
 		<Unit filename="midiprobe.cpp">
 			<Option target="LaunchpadProMidiProbe" />
 		</Unit>
-		<Unit filename="rgb2lab.cpp" />
-		<Unit filename="sample_colors.py">
-			<Option target="Debug" />
+		<Unit filename="rgb2lab.cpp">
 			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
 		</Unit>
-		<Unit filename="tests/HelpersTest.h" />
+		<Unit filename="sample_colors.py">
+			<Option target="Release" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="tests/HelpersTest.h">
+			<Option target="Release" />
+			<Option target="LaunchpadProMidi" />
+			<Option target="Debug" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

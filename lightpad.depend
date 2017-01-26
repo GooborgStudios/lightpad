@@ -2139,7 +2139,7 @@
 	"wx/dynarray.h"
 	"wx/itemid.h"
 
-1484707579 source:e:\my documents\github\lightpad\colors.cpp
+1485406435 source:e:\my documents\github\lightpad\colors.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	"Colors.h"
@@ -2147,11 +2147,11 @@
 	<stdio.h>
 	<math.h>
 
-1484706706 e:\my documents\github\lightpad\colors.h
+1485406435 e:\my documents\github\lightpad\colors.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 
-1484707582 e:\my documents\github\lightpad\rgb2lab.cpp
+1485035041 e:\my documents\github\lightpad\rgb2lab.cpp
 	<math.h>
 
 1484203010 source:e:\my documents\github\lightpad\midiout.cpp
@@ -2168,12 +2168,12 @@
 	<string>
 	<vector>
 
-1484190464 source:e:\my documents\github\lightpad\midiprobe.cpp
+1485406435 source:e:\my documents\github\lightpad\midiprobe.cpp
 	<iostream>
 	<cstdlib>
 	"RtMidi.h"
 
-1484190464 source:e:\my documents\github\lightpad\rgb2lab.cpp
+1485035041 source:e:\my documents\github\lightpad\rgb2lab.cpp
 	<math.h>
 
 1484706707 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\rtmidi.cpp
@@ -2208,4 +2208,57 @@
 	<wx/wx.h>
 	<wx/sizer.h>
 	"Colors.h"
+
+1485406435 source:e:\my documents\github\lightpad\helpers.cpp
+	<wx/wxprec.h>
+	<wx/wx.h>
+	<cmath>
+	"Helpers.h"
+
+1485406435 e:\my documents\github\lightpad\helpers.h
+	<wx/wxprec.h>
+	<wx/wx.h>
+
+1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\rtmidi_c.cpp
+	<string.h>
+	<stdlib.h>
+	"rtmidi_c.h"
+	"RtMidi.h"
+
+1484706708 e:\my documents\github\lightpad\lib\rtmidi-2.1.1\rtmidi_c.h
+	<stdbool.h>
+
+1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\tests\cmidiin.cpp
+	<iostream>
+	<cstdlib>
+	"RtMidi.h"
+
+1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\tests\midiout.cpp
+	<iostream>
+	<cstdlib>
+	"RtMidi.h"
+	<windows.h>
+	<unistd.h>
+
+1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\tests\midiprobe.cpp
+	<iostream>
+	<cstdlib>
+	<map>
+	"RtMidi.h"
+
+1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\tests\qmidiin.cpp
+	<iostream>
+	<cstdlib>
+	<signal.h>
+	"RtMidi.h"
+	<windows.h>
+	<unistd.h>
+
+1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\tests\sysextest.cpp
+	<iostream>
+	<cstdlib>
+	<typeinfo>
+	"RtMidi.h"
+	<windows.h>
+	<unistd.h>
 
