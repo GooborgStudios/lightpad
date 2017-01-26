@@ -55,7 +55,7 @@ Helpers.o: Helpers.cpp Helpers.h
 DisplayPanel.o: DisplayPanel.cpp DisplayPanel.h Helpers.h
 FilePanel.o: FilePanel.cpp FilePanel.h Helpers.h
 Colors.o: Colors.cpp Colors.h Helpers.h
-	
+
 Colors.cpp: Colors_template.cpp references/rgbcolors1.png references/rgbcolors2.png sample_colors.py
 	python sample_colors.py > Colors.cpp
 

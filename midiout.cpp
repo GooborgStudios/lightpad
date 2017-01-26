@@ -58,19 +58,38 @@ class Launchpad {
 		void disconnect();
 		int getMidiPort(std::string name, RtMidi *ports);
 		double getMessage(std::vector<unsigned char> *message_in);
-		void setColor(unsigned char light, unsigned char color);
-		void setColor(unsigned char light, unsigned char red, unsigned char green, unsigned char blue);
-		void setFlash(unsigned char light, unsigned char color);
-		void setPulse(unsigned char light, unsigned char color);
-		void displayText(unsigned int color, unsigned int speed, std::string text);
-	private:
+		virtual void setColor(unsigned char msg_type, unsigned char light, unsigned char color);
+		virtual void setPulse(unsigned char msg_type, unsigned char light, unsigned char color);
+		std::string INPORT_NAME;
+		std::string OUTPORT_NAME;
+	protected:
 		RtMidiIn *midiin;
 		RtMidiOut *midiout;
 		int inport;
 		int outport;
 		std::vector<unsigned char> message;
-
 		void sendMessage(unsigned int first_byte, ...);
+		
+};
+
+class LaunchpadPro : public Launchpad {
+	public:
+		LaunchpadPro();
+		void setColor(unsigned char msg_type, unsigned char light, unsigned char color);
+		void setColor(unsigned char msg_type, unsigned char light, unsigned char red, unsigned char green, unsigned char blue);
+		void setFlash(unsigned char msg_type, unsigned char light, unsigned char color);
+		void setPulse(unsigned char msg_type, unsigned char light, unsigned char color);
+		void displayText(unsigned char msg_type, unsigned int color, unsigned int speed, std::string text);
+};
+
+class LaunchpadS : public Launchpad {
+	public:
+		LaunchpadS();
+		void setColor(unsigned char msg_type, unsigned char light, unsigned char color);
+		void setPulse(unsigned char msg_type, unsigned char light, unsigned char color);
+	private:
+		unsigned char pro_to_s_note(unsigned char pro_note);
+		unsigned char pro_to_s_color(unsigned char pro_color);
 };
 
 Launchpad::Launchpad() {
@@ -79,8 +98,8 @@ Launchpad::Launchpad() {
 }
 
 int Launchpad::connect() {
-	inport = getMidiPort(LAUNCHPAD_IN, midiin);
-	outport = getMidiPort(LAUNCHPAD_OUT, midiout);
+	inport = getMidiPort(INPORT_NAME, midiin);
+	outport = getMidiPort(OUTPORT_NAME, midiout);
 
 	if ( (inport == -1) || (outport == -1) ) {
 		std::cout << "Launchpad not found!  Is it plugged in and turned on?\n";
@@ -89,7 +108,7 @@ int Launchpad::connect() {
 		return -1;
 	}
 
-	// Open Launchpad Standalone port.
+	// Open LaunchpadPro Standalone port.
 	midiin->openPort( inport );
 	midiout->openPort( outport );
 
@@ -97,6 +116,8 @@ int Launchpad::connect() {
 	midiin->ignoreTypes( false, false, false );
 
 	std::vector<unsigned char> device_info;
+
+	// Everything below is for the Launchpad Pro
 
 	// Inquiry Device
 	sendMessage( 240, 126, 127, 6, 1, 247 );
@@ -112,6 +133,7 @@ int Launchpad::connect() {
 }
 
 void Launchpad::disconnect() {
+	// Two below are Launchpad Pro
 	sendMessage( 240, 0, 32, 41, 2, 16, 14, 0, 247 ); // Clear all LED colors
 	sendMessage( 240, 0, 32, 41, 2, 16, 44, 0, 247 ); // Set to Note Mode
 
@@ -154,23 +176,36 @@ void Launchpad::sendMessage(unsigned int first_byte, ...) {
 	message.erase(message.begin(), message.begin()+message.size());
 }
 
-void Launchpad::setColor(unsigned char light, unsigned char color) {
+void Launchpad::setColor(unsigned char msg_type, unsigned char light, unsigned char color) {
+
+}
+
+void Launchpad::setPulse(unsigned char msg_type, unsigned char light, unsigned char color) {
+
+}
+
+LaunchpadPro::LaunchpadPro() {
+	INPORT_NAME = "Launchpad Pro Standalone Port";
+	OUTPORT_NAME = "Launchpad Pro Standalone Port";
+}
+
+void LaunchpadPro::setColor(unsigned char msg_type, unsigned char light, unsigned char color) {
 	sendMessage( 240, 0, 32, 41, 2, 16, 10, light, color, 247 );
 }
 
-void Launchpad::setColor(unsigned char light, unsigned char red, unsigned char green, unsigned char blue) {
+void LaunchpadPro::setColor(unsigned char msg_type, unsigned char light, unsigned char red, unsigned char green, unsigned char blue) {
 	sendMessage( 240, 0, 32, 41, 2, 16, 11, light, red, green, blue, 247 );
 }
 
-void Launchpad::setFlash(unsigned char light, unsigned char color) {
+void LaunchpadPro::setFlash(unsigned char msg_type, unsigned char light, unsigned char color) {
 	sendMessage( 240, 0, 32, 41, 2, 16, 35, light, color, 247 );
 }
 
-void Launchpad::setPulse(unsigned char light, unsigned char color) {
+void LaunchpadPro::setPulse(unsigned char msg_type, unsigned char light, unsigned char color) {
 	sendMessage( 240, 0, 32, 41, 2, 16, 40, light, color, 247 );
 }
 
-void Launchpad::displayText(unsigned int color, unsigned int speed, std::string text) {
+void LaunchpadPro::displayText(unsigned char msg_type, unsigned int color, unsigned int speed, std::string text) {
 	// XXX Broken!
 
 	// addToMessage(240, 0, 32, 41, 2, 16, 40, color, speed);
@@ -180,13 +215,39 @@ void Launchpad::displayText(unsigned int color, unsigned int speed, std::string 
 	// sendMessage();
 }
 
+LaunchpadS::LaunchpadS() {
+	INPORT_NAME = "Launchpad S";
+	OUTPORT_NAME = "Launchpad S";
+}
+
+unsigned char pro_to_s_note(unsigned char pro_note) {
+	return pro_note;
+}
+
+unsigned char pro_to_s_color(unsigned char pro_color) {
+	return pro_color;
+}
+
+void LaunchpadS::setColor(unsigned char msg_type, unsigned char light, unsigned char color) {
+	message.push_back(144);
+	message.push_back(/*pro_to_s_note(*/light/*)*/);
+	message.push_back(/*pro_to_s_color(*/color/*)*/);
+
+	midiout->sendMessage(&message);
+	message.erase(message.begin(), message.begin()+message.size());
+}
+
+void LaunchpadS::setPulse(unsigned char msg_type, unsigned char light, unsigned char color) {
+
+}
+
 int main() {
 	MidiFile midifile;
 	MidiEvent* mev;
 	std::vector<unsigned char> message_in;
 	int nBytes, color, deltatick;
 	double stamp;
-	Launchpad *lp = new Launchpad();
+	LaunchpadPro *lp = new LaunchpadPro();
 	int lp_status = lp->connect();
 	if (lp_status < 0) {
 		return 1;
@@ -226,7 +287,7 @@ int main() {
 	*/
 
 	// Pulse side LED
-	lp->setPulse(LAUNCHPAD_SIDE_LED_ID, 53);
+	lp->setPulse(176, LAUNCHPAD_SIDE_LED_ID, 53);
 
 	/*
 	// Program change: 192, 5
@@ -270,7 +331,7 @@ int main() {
 				usleep(60000 * 1000 / (BPM * deltatick));
 			}
 
-			lp->setColor(note_to_button((int)(*mev)[1]), color);
+			lp->setColor((int)(*mev)[0], note_to_button((int)(*mev)[1]), color);
 
 		}
 
@@ -299,9 +360,9 @@ int main() {
 				color = rand() % 126 + 1;
 				if (message_in[2] > 0) {
 
-					lp->setColor(message_in[1], color);
+					lp->setColor(message_in[0], message_in[1], color);
 				} else {
-					lp->setPulse(message_in[1], color);
+					lp->setPulse(message_in[0], message_in[1], color);
 				}
 			}
 		}
