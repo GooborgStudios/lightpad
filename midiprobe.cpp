@@ -72,7 +72,7 @@ int main() {
 	std::cout << '\n';
 	// Clean up
  cleanup:
- 	std::cout.ignore();
+ 	std::cin.ignore();
 	delete midiin;
 	delete midiout;
 	return 0;
