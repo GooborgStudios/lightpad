@@ -10,17 +10,20 @@
 #include "RtMidi.h"
 
 #ifdef _WIN32
-   //define something for Windows (32-bit and 64-bit, this part is common)
-   #ifdef _WIN64
-      //define something for Windows (64-bit only)
-   #endif
+	//define something for Windows (32-bit and 64-bit, this part is common)
+	#define OPERATING_SYSTEM "Windows"
+	#ifdef _WIN64
+		//define something for Windows (64-bit only)
+	#endif
 #elif __APPLE__
-    //define something for Mac
+	//define something for Mac (and Linux(?))
+	#define OPERATING_SYSTEM "macOS"
 #else
 	#error "Unknown/unsupported compiler/operating system"
 #endif
 
 int main() {
+	std::cout << "Operating System: " << OPERATING_SYSTEM << std::endl;
 	RtMidiIn  *midiin = 0;
 	RtMidiOut *midiout = 0;
 	// RtMidiIn constructor
