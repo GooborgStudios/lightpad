@@ -39,8 +39,8 @@ else
 	endif
 endif
 
-lightpad: main.o FilePanel.o DisplayPanel.o Colors.o Helpers.o
-	$(CXX) $(CXXFLAGS) -o lightpad main.o FilePanel.o DisplayPanel.o Colors.o Helpers.o $(LIBS)
+lightpad: main.o FilePanel.o DisplayPanel.o TimelinePanel.o PropertiesPanel.o Colors.o Helpers.o
+	$(CXX) $(CXXFLAGS) -o lightpad main.o FilePanel.o DisplayPanel.o TimelinePanel.o PropertiesPanel.o Colors.o Helpers.o $(LIBS)
 
 midiprobe: midiprobe.o Helpers.o
 	$(CXX) $(CXXFLAGS) -o midiprobe midiprobe.o Helpers.o $(LIBS)
@@ -52,7 +52,9 @@ main.o: main.cpp Helpers.h
 midiprobe.o: midiprobe.cpp Helpers.h
 midiout.o: midiout.cpp Helpers.h
 Helpers.o: Helpers.cpp Helpers.h
-DisplayPanel.o: DisplayPanel.cpp DisplayPanel.h Helpers.h
+DisplayPanel.o: DisplayPanel.cpp DisplayPanel.h Colors.h Helpers.h
+TimelinePanel.o: TimelinePanel.cpp TimelinePanel.h Colors.h Helpers.h
+PropertiesPanel.o: PropertiesPanel.cpp PropertiesPanel.h Colors.h Helpers.h
 FilePanel.o: FilePanel.cpp FilePanel.h Helpers.h
 Colors.o: Colors.cpp Colors.h Helpers.h
 

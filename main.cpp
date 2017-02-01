@@ -1,7 +1,7 @@
 //
 // Lightpad - main.cpp
-// Created by Vinyl Darkscratch, Light Apacha, and WhoovesPON3, ©2017 Nightwave Studios.
-// Additional assistance by Eric Busch (Origami1105).
+// Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
+// Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // http://www.nightwave.co/lightpad
 //
 
@@ -28,9 +28,11 @@
 #include <wx/gdicmn.h>
 #include <wx/artprov.h>
 
-#include "DisplayPanel.h"
-#include "FilePanel.h"
 #include "Helpers.h"
+#include "FilePanel.h"
+#include "DisplayPanel.h"
+#include "TimelinePanel.h"
+#include "PropertiesPanel.h"
 
 const int PADDING = 0;
 
@@ -39,32 +41,6 @@ class MainApp: public wxApp {
 	public:
 		virtual bool OnInit();
 };
-
-// GUI panels
-class PropertiesPanel: public wxPanel {
-	public:
-		PropertiesPanel(wxPanel *parent);
-	private:
-		wxPanel *m_parent;
-};
-
-class TimelinePanel: public wxPanel {
-	public:
-		TimelinePanel(wxPanel *parent);
-	private:
-		wxPanel *m_parent;
-};
-
-// Panel initialization functions: build panel and link to parent
-PropertiesPanel::PropertiesPanel(wxPanel *parent)
-	   : wxPanel(parent, ID_Panel_Properties, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
-	m_parent = parent;
-}
-
-TimelinePanel::TimelinePanel(wxPanel *parent)
-	   : wxPanel(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
-	m_parent = parent;
-}
 
 // Main window frame
 class MainFrame: public wxFrame {
@@ -175,7 +151,7 @@ void MainFrame::OnExit(wxCommandEvent& event) {
 }
 
 void MainFrame::OnAbout(wxCommandEvent& event) {
-	wxMessageBox("Lightpad Copyright 2017 Nightwave Studios, all rights reserved.  The application is coded by Vinyl Darkscratch and Light Apacha.  Big thanks to the support from the Launchpad Lightshow Community.",
+	wxMessageBox("Lightpad Copyright 2017 Nightwave Studios, all rights reserved.  The application is coded by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3.  Some features based upon those found in LightshowCreator by LaunchpadFun with exclusive permission.  Big thanks to the support from the Launchpad Lightshow Community.",
 				"About Lightpad", wxOK | wxICON_INFORMATION);
 }
 
