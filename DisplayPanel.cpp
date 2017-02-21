@@ -39,11 +39,17 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	   : wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 
-	image_path = "graphics/launchpad_display/launchpad_display_4096.png";
+	// Load the graphics
+	// base_image_path = "graphics/launchpad_display/launchpad_display_4096.png";
+	base_image_path = "graphics/launchpad_display/base/base_4096.png";
+	button_image_path = "graphics/launchpad_display/buttons/buttons_4096.png";
+	launchpad_base_image = new wxImage(base_image_path, wxBITMAP_TYPE_PNG);
+	launchpad_button_image = new wxImage(button_image_path, wxBITMAP_TYPE_PNG);
+
+	// Initialize size and position variables
 	image_size = MAXIMUM_LAUNCHPAD_IMAGE_SIZE;
-	launchpad_image = new wxImage(image_path, wxBITMAP_TYPE_PNG);
-	panel_width = image_size;
-	panel_height = image_size;
+	panel_width = -1;
+	panel_height = -1;
 	xpos = 0;
 	ypos = 0;
 
@@ -62,9 +68,9 @@ void DisplayPanel::paintNow() {
 	render(dc);
 }
 
-void DisplayPanel::OnSize(wxSizeEvent& event){
+void DisplayPanel::OnSize(wxSizeEvent& event) {
+	// Re-render when resizing
 	Refresh();
-	//skip the event.
 	event.Skip();
 }
 
@@ -81,12 +87,16 @@ void DisplayPanel::render(wxDC &dc) {
 		}
 		int new_image_size = closest_two_power(new_size, 256, 4096);
 
+		// Load the other resolutions of the image as needed
 		if (new_image_size != image_size) {
-			launchpad_image->LoadFile(image_path, wxBITMAP_TYPE_PNG);
+			launchpad_base_image->LoadFile(base_image_path, wxBITMAP_TYPE_PNG);
+			// launchpad_button_image->LoadFile(button_image_path, wxBITMAP_TYPE_PNG);
 			image_size = new_image_size;
 		}
-		resized = wxBitmap(launchpad_image->Scale(new_size, new_size));
+		resized = wxBitmap(launchpad_base_image->Scale(new_size, new_size));
+		// resized = wxBitmap(launchpad_button_image->Scale(new_size, new_size));
 
+		// Reposition as needed
 		if ( neww > newh ) {
 			xpos = (neww - new_size)/2;
 			ypos = 0;
@@ -95,13 +105,11 @@ void DisplayPanel::render(wxDC &dc) {
 			ypos = (newh - new_size)/2;
 		}
 
-		dc.DrawBitmap(resized, xpos, ypos, false);
-
 		panel_width = neww;
 		panel_height = newh;
-	} else {
-		dc.DrawBitmap(resized, xpos, ypos, false);
 	}
+
+	dc.DrawBitmap(resized, xpos, ypos, false);
 }
 
 wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)

@@ -12,6 +12,9 @@
 #endif
 
 #include <wx/grid.h>
+#include <wx/clrpicker.h>
+
+#include <iostream>
 
 #ifdef _WIN32
 	//define something for Windows (32-bit and 64-bit, this part is common)
@@ -30,76 +33,99 @@
 #include "TimelinePanel.h"
 #include "Colors.h"
 #include "Helpers.h"
+#include "GridRenderer.h"
 
 // Initialize the timeline panel and it's elements
-const int COLS = 16;
-const int ROWS = 16;
+const int COLS = 32;
+const int ROWS = 16;//96;
 
 TimelinePanel::TimelinePanel(wxPanel *parent)
-	   : wxPanel(parent, -1, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+	   : wxPanel(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 
 	sizer = new wxBoxSizer(wxHORIZONTAL);
 
-	Update();
-}
-
-void TimelinePanel::Update() {
 	char buf[8];
 
 	this->DestroyChildren();
 
 	// Create a wxGrid object
 	grid = new wxGrid( this,
-						-1,
+						ID_TimelinePanel_TimelineGrid,
 						wxPoint( 0, 0 ),
 						wxSize( -1, -1 ));
 	// Then we call CreateGrid to set the dimensions of the grid
 	// (100 rows and 10 columns in this example)
 
 	grid->CreateGrid( ROWS, COLS );
+	grid->SetDefaultRenderer(new LightpadGridRenderer(1));
+	grid->SetCellHighlightPenWidth(0);
+	grid->SetCellHighlightROPenWidth(0);
 	// We can set the sizes of individual rows and columns
 	// in pixels
-	grid->SetDefaultColSize(150, true);
+	grid->SetDefaultColSize(75, true);
+	grid->SetDefaultRowSize(18, true);
 	for (int c = 0; c < COLS; c++) {
-		for (int r = 0; r < ROWS; r++) {
-			
-		}
+		snprintf(buf, 7, "%d.%d.%d", c/16+1, c/4%4+1, c%4+1);
+		grid->SetColLabelValue(c, buf);
+		grid->DisableColResize(c);
+	}
+	for (int r = 0; r < ROWS; r++) {
+		grid->DisableRowResize(r);
 	}
 
-	// for (int c = 0; c < COLS; c++) {
-	// 	snprintf(buf, 7, "%d.%d", c/4+1, c%4+1);
-	// 	grid->SetColLabelValue(c, buf);
-	// 	for (int r = 0; r < activeProject.layers->size(); r++) {
-	// 		grid->SetCellValue(r,c,activeProject.layers->at(r)->description); // XXX This is assuming every layer is a TextElement!
-	// 		grid->SetReadOnly(r,c);
-	// 	}
-	// }
+	// std::vector<Note *> notes; // Temporary note vector
+	// notes.push_back(new Note(1, 3, 0, 0));
+	// notes.push_back(new Note(2, 3, 0, 0));
+	// notes.push_back(new Note(3, 3, 0, 0));
+	// notes.push_back(new Note(4, 3, 0, 0));
 
-	// std::string ln = "Layer";
-	// for (int i=0; i<activeProject.layers->size(); i++) {
-	// 	grid->SetRowLabelValue(i, ln/*activeProject.layers->at(i)->name*/);
-	// }
+	// std::vector<Note *>::iterator it = notes.begin();
 
-	// //grid->SetRowSize( 0, 150 );
-	// //grid->SetColSize( 0, 120 );
-	// // And set grid cell contents as strings
-	// grid->SetCellValue( 0, 0, "wxGrid is good" );
-	// // We can specify that some cells are read->only
-	// grid->SetCellValue( 0, 3, "This is read->only" );
-	// grid->SetReadOnly( 0, 3 );
-	// // Colours can be specified for grid cell contents
-	// grid->SetCellValue(3, 3, "green on grey");
-	// grid->SetCellTextColour(3, 3, *wxGREEN);
-	// grid->SetCellBackgroundColour(3, 3, *wxLIGHT_GREY);
-	// // We can specify the some cells will store numeric
-	// // values rather than strings. Here we set grid column 5
-	// // to hold floating point values displayed with width of 6
-	// // and precision of 2
-	// grid->SetColFormatFloat(5, 6, 2);
-	// grid->SetCellValue(0, 6, "3.1415");
+	// for (; it != notes.end(); ++it) {
+	// 	Note *n = *(it);
+	// 	grid->SetCellBackgroundColour(n->position, n->time, velocitycolors[n->color]);
+	// }
 
 	sizer->Add(grid, 1, wxEXPAND);
 	this->SetSizer(sizer);
 	sizer->Layout();
+
+	Update();
 }
+
+// void TimelinePanel::Update() {
+	
+// }
+
+void TimelinePanel::ChangeNoteColor(wxColourPickerEvent &event) {
+	wxGridCellCoordsArray cells = grid->GetSelectedCells();
+    wxGridCellCoordsArray btops = grid->GetSelectionBlockTopLeft();
+    wxGridCellCoordsArray bbots = grid->GetSelectionBlockBottomRight();
+
+    if (cells.Count() > 0) {
+		for (int i=0; i < cells.Count(); i++ )
+			grid->SetCellBackgroundColour(cells[i].GetRow(), cells[i].GetCol(), event.GetColour());
+    }
+    if (btops.Count() > 0 && bbots.Count() > 0) {
+		for (int i=btops[0].GetRow(); i <= bbots[0].GetRow(); i++ ) {
+			for (int j=btops[0].GetCol(); j <= bbots[0].GetCol(); j++ )
+				grid->SetCellBackgroundColour(i, j, event.GetColour());
+		}
+	}
+
+	Refresh();
+	Update();
+}
+
+void TimelinePanel::OnSingleSelectCell(wxGridEvent& event) {
+	grid->SelectBlock(event.GetRow(), event.GetCol(), event.GetRow(), event.GetCol());
+
+	wxColourPickerEvent evt(this, ID_TimelinePanel_TimelineGrid, grid->GetCellBackgroundColour(event.GetRow(), event.GetCol()));
+	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Properties), evt);
+}
+
+wxBEGIN_EVENT_TABLE(TimelinePanel, wxPanel)
+	EVT_GRID_SELECT_CELL(TimelinePanel::OnSingleSelectCell)
+	EVT_COLOURPICKER_CHANGED(ID_PropertiesPanel_ColorSelector, TimelinePanel::ChangeNoteColor)
+wxEND_EVENT_TABLE()

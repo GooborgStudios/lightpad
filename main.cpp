@@ -125,9 +125,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	m_pp = new PropertiesPanel(m_parent);
 	m_dp = new DisplayPanel(m_parent);
 
-	hbox->Add(m_fp, 1, wxEXPAND | wxALL, PADDING);
-	hbox->Add(m_dp, 3, wxEXPAND | wxALL, PADDING);
-	hbox->Add(m_pp, 1, wxEXPAND | wxALL, PADDING);
+	hbox->Add(m_fp, 1, wxEXPAND | wxLEFT, PADDING);
+	hbox->Add(m_dp, 4, wxEXPAND | wxALL, PADDING);
+	hbox->Add(m_pp, 0, wxEXPAND | wxRIGHT, PADDING);
 
 	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 

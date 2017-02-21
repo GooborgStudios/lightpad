@@ -25,7 +25,9 @@ enum {
 	ID_Menu_About,
 	ID_Menu_Hello,
 	ID_Menu_Save,
-	ID_FilePanel_Tree
+	ID_FilePanel_Tree,
+	ID_PropertiesPanel_ColorSelector,
+	ID_TimelinePanel_TimelineGrid
 };
 
 int closest_two_power(int current_size, int min_range, int max_range);
@@ -34,10 +36,14 @@ int note_to_button(int note);
 int button_to_note(int button);
 
 class Note {
-  int position; // Note position
-  int color; // Velocity
-  int time; // Note start time
-  int duration; // Note duration
+	public:
+		Note();
+		Note(int pos, int col, int t);
+		Note(int pos, int col, int t, int dur);
+		int position; // Note position
+		int color; // Velocity
+		int time; // Note start time
+		int duration; // Note duration
 };
 
 #endif

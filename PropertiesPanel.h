@@ -15,19 +15,26 @@
 #endif
 
 #include <wx/sizer.h>
+#include <wx/grid.h>
+#include <wx/clrpicker.h>
 
 #include "Colors.h"
 #include "Helpers.h"
+#include "GridRenderer.h"
 
 // Timeline panel
 class PropertiesPanel: public wxPanel {
 	public:
 		PropertiesPanel(wxPanel *parent);
 		void Update();
+		void OnSelectCell(wxGridEvent& event);
+		void SelectColor(wxColourPickerEvent& event);
 	private:
 		wxPanel *m_parent;
 		wxBoxSizer *sizer;
-		wxGridSizer *gs;
+		wxGrid *grid;
+
+		wxDECLARE_EVENT_TABLE();
 };
 
 #endif

@@ -21,6 +21,27 @@ const int note_button_offset = 28;
 const int note_button_size = sizeof(note_button_map)/sizeof(int);
 // End generate block
 
+Note::Note() {
+	int position = 0;
+	int color = 0;
+	int time = 0;
+	int duration = 0;
+}
+
+Note::Note(int pos, int col, int t) {
+	int position = pos;
+	int color = col;
+	int time = t;
+	int duration = 0;
+}
+
+Note::Note(int pos, int col, int t, int dur) {
+	int position = pos;
+	int color = col;
+	int time = t;
+	int duration = dur;
+}
+
 // closest_two_power() written by Eric Busch (Origami1105) on 1/19/2017
 int closest_two_power(int current_size, int min_range, int max_range) {
 	int pow_two = 1, i = 1;

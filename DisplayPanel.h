@@ -33,9 +33,11 @@ class DisplayPanel: public wxPanel {
         wxDECLARE_EVENT_TABLE();
 	private:
 		wxPanel *m_parent;
-		wxImage *launchpad_image;
+		wxImage *launchpad_base_image;
+		wxImage *launchpad_button_image;
 		wxBitmap resized;
-		std::string image_path;
+		std::string base_image_path;
+		std::string button_image_path;
 		int image_size;
 		int panel_width;
 		int panel_height;

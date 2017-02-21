@@ -48,6 +48,7 @@ FilePanel::FilePanel(wxPanel *parent)
 	   : wxPanel(parent, ID_Panel_File, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 
+	// Initialize icons
 	icon_list = new wxImageList();
 	icon_list->Add(wxArtProvider::GetIcon(wxART_FOLDER, wxART_MENU));
 	icon_list->Add(wxArtProvider::GetIcon(wxART_FOLDER_OPEN, wxART_MENU));
@@ -55,12 +56,15 @@ FilePanel::FilePanel(wxPanel *parent)
 	icon_list->Add(wxArtProvider::GetIcon(wxART_NORMAL_FILE, wxART_MENU));
 
 	sizer = new wxBoxSizer(wxHORIZONTAL);
+
+	// Set up the file list
 	filelistbox = new wxDataViewTreeCtrl(this, ID_FilePanel_Tree, wxPoint(-1, -1), wxSize(-1, -1), wxDV_SINGLE|wxDV_NO_HEADER);
 	filelistbox->SetImageList(icon_list);
 	parent_dvi = wxDataViewItem();
 	RefreshFileList();
-	sizer->Add(filelistbox, 1, wxEXPAND | wxALL, 0);
 
+	sizer->Add(filelistbox, 1, wxEXPAND | wxALL, 0);
+	this->SetSizer(sizer);
 	Update();
 }
 
@@ -89,10 +93,10 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	// List files
 	bool cont = dir.GetFirst(&filename, "", wxDIR_FILES);
 	while (cont) {
-		#ifdef MACOS
-			std::string filetype(magic_file(myt, (path+"/"+filename).c_str()));
+		#ifdef WINDOWS
+			std::string filetype("audio/midi"); // XXX Find FileMagic for Windows
 		#else
-			std::string filetype("audio/midi");
+			std::string filetype(magic_file(myt, (path+"/"+filename).c_str()));
 		#endif
 		if (filetype == "audio/midi" /*|| filetype == "text/plain"*/) { // Only add if a MIDI or plain text file (animations and saves)
 			int i = 2;
