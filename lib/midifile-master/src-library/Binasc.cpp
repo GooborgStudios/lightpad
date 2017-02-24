@@ -10,6 +10,7 @@
 //
 
 #include "Binasc.h"
+#include <stdlib.h> // Added by VD
 #include <sstream>
 #include <string.h>
 
