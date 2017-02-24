@@ -2267,12 +2267,15 @@
 	<windows.h>
 	<unistd.h>
 
-1487930476 source:e:\my documents\github\lightpad\displaypanel.cpp
+1487968050 source:e:\my documents\github\lightpad\displaypanel.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/sizer.h>
 	<sstream>
 	<algorithm>
+	<cmath>
+	<iostream>
+	<iomanip>
 	"DisplayPanel.h"
 	"Colors.h"
 	"Helpers.h"

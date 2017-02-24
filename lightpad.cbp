@@ -159,14 +159,14 @@
 		<Unit filename="midiprobe.cpp">
 			<Option target="LaunchpadProMidiProbe" />
 		</Unit>
+		<Unit filename="rgb2lab.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="sample_colors.py">
-			<Option target="Release" />
-			<Option target="Debug" />
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="tests/HelpersTest.h">
-			<Option target="Release" />
 			<Option target="LaunchpadProMidi" />
-			<Option target="Debug" />
 		</Unit>
 		<Extensions>
 			<code_completion />

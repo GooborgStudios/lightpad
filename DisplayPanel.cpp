@@ -15,6 +15,9 @@
 
 #include <sstream>
 #include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <iomanip>
 
 #ifdef _WIN32
 	//define something for Windows (32-bit and 64-bit, this part is common)
@@ -53,9 +56,28 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	image_xpos = 0;
 	image_ypos = 0;
 
+    wxColor rainbow[18];
+	for (int j = 0; j <= 18; j++) {
+		int r = 0, g = 0, b = 0;
+		if (j >= 15) r = 255*((18-j)/3.0);
+		else r = 255*((j-9)/3.0);
+		if (j >= 12) g = 255*((15-j)/3.0);
+		else g = 255*((j-3)/3.0);
+		if (j >= 6) b = 255*((9-j)/3.0);
+		else b = 255*((j)/3.0);
+
+		r = std::max(0, std::min(255, r));
+		g = std::max(0, std::min(255, g));
+		b = std::max(0, std::min(255, b));
+
+		//std::cout << std::setw(2) << std::right << j << ": R = " << std::setw(3) << std::left << r << "  G = " << std::setw(3) << g << "  B = " << std::setw(3) << b << std::endl;
+		rainbow[j] = wxColor(r,g,b);
+	}
+
 	for (int i = 1; i < 99; i++) {
 		if (i == 9 || i == 90) continue;
-		button_colors[i] = wxColor(0, 0, 0);
+		int j = (i / 10) + (i % 10);
+		button_colors[i] = wxColor(rainbow[j]);
 	}
 
 	paintNow();
@@ -119,17 +141,17 @@ void DisplayPanel::render(wxDC &dc) {
 
 	/* convert button number to coordinates */
     int button_size = min_fit_size * 0.069580078125;
+    int button_radius = image_size/512;
 
     for (int i = 1; i < 99; i++) {
 		if (i == 9 || i == 90) continue;
 		int x = i % 10;
-		int y = 9 - i / 10;
-
-        wxPoint bpos(image_xpos+(min_fit_size*getButtonPosition(x)), image_ypos+(min_fit_size*getButtonPosition(y)));
-
+		int y = 9 - (i / 10);
+        wxPoint bpos(image_xpos+(min_fit_size*getButtonPosition(9-x)), image_ypos+(min_fit_size*getButtonPosition(y)));
 		dc.SetBrush(wxBrush(button_colors[i]));
-        if (x == 0 || x == 9 || y == 0 || y == 9) dc.DrawEllipse(bpos, wxSize(button_size, button_size));
-		else dc.DrawRoundedRectangle(bpos, wxSize(button_size, button_size), image_size/512);
+
+		if (x == 0 || x == 9 || y == 0 || y == 9) dc.DrawEllipse(bpos, wxSize(button_size, button_size));
+		else dc.DrawRoundedRectangle(bpos, wxSize(button_size, button_size), button_radius);
     }
 }
 
