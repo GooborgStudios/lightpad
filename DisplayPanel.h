@@ -29,6 +29,8 @@ class DisplayPanel: public wxPanel {
         void paintNow();
         void OnSize(wxSizeEvent& event);
         void render(wxDC& dc);
+        float getButtonPosition(int digit);
+        void colorButton(int button, wxColor color);
 
         wxDECLARE_EVENT_TABLE();
 	private:
@@ -41,8 +43,9 @@ class DisplayPanel: public wxPanel {
 		int image_size;
 		int panel_width;
 		int panel_height;
-		int xpos;
-		int ypos;
+		int image_xpos;
+		int image_ypos;
+		wxColor button_colors[100];
 };
 
 #endif

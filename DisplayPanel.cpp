@@ -50,8 +50,13 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	image_size = MAXIMUM_LAUNCHPAD_IMAGE_SIZE;
 	panel_width = -1;
 	panel_height = -1;
-	xpos = 0;
-	ypos = 0;
+	image_xpos = 0;
+	image_ypos = 0;
+
+	for (int i = 1; i < 99; i++) {
+		if (i == 9 || i == 90) continue;
+		button_colors[i] = wxColor(0, 0, 0);
+	}
 
 	paintNow();
 }
@@ -79,13 +84,13 @@ void DisplayPanel::render(wxDC &dc) {
 	int newh;
 	std::stringstream ss;
 	dc.GetSize(&neww, &newh);
+	int min_fit_size = std::min(neww, newh);
 
 	if( neww != panel_width || newh != panel_height ) {
-		int new_size = std::min(neww, newh);
-		if (new_size == 0) {
-			new_size = image_size; // When first launching the app, this will make sure it doesn't crash
+		if (min_fit_size == 0) {
+			min_fit_size = image_size; // When first launching the app, this will make sure it doesn't crash
 		}
-		int new_image_size = closest_two_power(new_size, 256, 4096);
+		int new_image_size = closest_two_power(min_fit_size, 256, 4096);
 
 		// Load the other resolutions of the image as needed
 		if (new_image_size != image_size) {
@@ -93,23 +98,54 @@ void DisplayPanel::render(wxDC &dc) {
 			// launchpad_button_image->LoadFile(button_image_path, wxBITMAP_TYPE_PNG);
 			image_size = new_image_size;
 		}
-		resized = wxBitmap(launchpad_base_image->Scale(new_size, new_size));
-		// resized = wxBitmap(launchpad_button_image->Scale(new_size, new_size));
+		resized = wxBitmap(launchpad_base_image->Scale(min_fit_size, min_fit_size));
+		// resized = wxBitmap(launchpad_button_image->Scale(min_fit_size, min_fit_size));
 
 		// Reposition as needed
 		if ( neww > newh ) {
-			xpos = (neww - new_size)/2;
-			ypos = 0;
+			image_xpos = (neww - min_fit_size)/2;
+			image_ypos = 0;
 		} else {
-			xpos = 0;
-			ypos = (newh - new_size)/2;
+			image_xpos = 0;
+			image_ypos = (newh - min_fit_size)/2;
 		}
 
 		panel_width = neww;
 		panel_height = newh;
 	}
 
-	dc.DrawBitmap(resized, xpos, ypos, false);
+	dc.DrawBitmap(resized, image_xpos, image_ypos, false);
+	dc.SetPen(*(wxTRANSPARENT_PEN));
+
+	/* convert button number to coordinates */
+    int button_size = min_fit_size * 0.069580078125;
+
+    for (int i = 1; i < 99; i++) {
+		if (i == 9 || i == 90) continue;
+		int x = i % 10;
+		int y = 9 - i / 10;
+
+        wxPoint bpos(image_xpos+(min_fit_size*getButtonPosition(x)), image_ypos+(min_fit_size*getButtonPosition(y)));
+
+		dc.SetBrush(wxBrush(button_colors[i]));
+        if (x == 0 || x == 9 || y == 0 || y == 9) dc.DrawEllipse(bpos, wxSize(button_size, button_size));
+		else dc.DrawRoundedRectangle(bpos, wxSize(button_size, button_size), image_size/512);
+    }
+}
+
+float DisplayPanel::getButtonPosition(int digit) {
+	float x = 0.113525390625 + (digit * 0.078125);
+	int y = 0;
+	if (digit > 0) y = 1;
+	if (digit == 9) y = 2;
+	x = x + (y * 0.0078125);
+
+	return x;
+}
+
+void DisplayPanel::colorButton(int button, wxColor color) {
+    button_colors[button] = color;
+    // This should check for invalid buttons (0, 9, 99)
 }
 
 wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
