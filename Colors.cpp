@@ -12,7 +12,7 @@
 #endif
 
 #include "Colors.h"
-#include "rgb2lab.cpp"
+#include "Helpers.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -155,7 +155,7 @@ unsigned char get_closest_velocity(wxColor c) {
 	int best_match_index = 0;
 	int best_match_value = 1024;
 	for (int i = 0; i < COLORCOUNT; i++) {
-		int d = RGB2LAB(velocitycolors[i].Red(), velocitycolors[i].Green(), velocitycolors[i].Blue(), c.Red(), c.Green(), c.Blue());
+		int d = ColorConverter::LAB_compare_RGB(velocitycolors[i].Red(), velocitycolors[i].Green(), velocitycolors[i].Blue(), c.Red(), c.Green(), c.Blue());
 		if (d < best_match_value) {
 			best_match_index = i;
 			best_match_value = d;

@@ -109,7 +109,7 @@ void DisplayPanel::render(wxDC &dc) {
 	wxMemoryDC bdc;
 	wxCoord width, height;
 	wxColour pixel;
-	unsigned char red, green, blue;
+	double hue, sat, lum, hue2, sat2, lum2;
 
 	dc.GetSize(&neww, &newh);
 	int min_fit_size = std::min(neww, newh);
@@ -178,14 +178,12 @@ void DisplayPanel::render(wxDC &dc) {
 		bdc.GetSize(&width, &height);
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < width; y++) {
-                if (bdc.GetPixel(x, y, &pixel)) {
-                    red = pixel.Red() + (button_colors[i].Red()/3);
-                    green = pixel.Green() + (button_colors[i].Green()/3);
-                    blue = pixel.Blue() + (button_colors[i].Blue()/3);
-                    pixel.Set(red, green, blue, pixel.Alpha());
+				if (bdc.GetPixel(x, y, &pixel)) {
+					
+					// pixel.Set(red, green, blue, pixel.Alpha());
 					//bdc.SetPen(pixel);
-                    //bdc.DrawPoint(x, y);
-                }
+					//bdc.DrawPoint(x, y);
+				}
 			}
 		}
 		dc.Blit(bpos.x, bpos.y, button_size, button_size, &bdc, 0, 0);
