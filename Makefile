@@ -1,6 +1,6 @@
 CXX = `wx-config --cxx`
-CXXFLAGS = `wx-config --cxxflags` -std=c++11 -O3 -I/Users/vinyldarkscratch/Developer/git/midifile/include -I.
-LIBS = `wx-config --libs` -lmagic -lrtmidi -lmidifile -L/Users/vinyldarkscratch/Developer/git/midifile/lib
+CXXFLAGS = `wx-config --cxxflags` -std=c++11 -O3 -I. -I./include -I./include/midifile -I./include/rtmidi
+LIBS = `wx-config --libs` -lmagic -lrtmidi -lmidifile -L./lib
 
 ifeq ($(OS),Windows_NT)
 	# XXX We're using Code::Blocks for Windows compiling
@@ -72,6 +72,7 @@ tests/RunTests: tests/HelpersTest.h Helpers.o
 
 clean:
 	-rm *.o
+	-rm -r bin
 	-rm -r obj
 	-rm *.exe
 	-rm a.out

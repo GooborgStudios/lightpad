@@ -37,23 +37,16 @@
 				</Linker>
 			</Target>
 			<Target title="LaunchpadProMidi">
-				<Option output="midiout" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/midiout" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/midiout/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Linker>
-					<Add library="rtmidi" />
-				</Linker>
 			</Target>
 			<Target title="LaunchpadProMidiProbe">
-				<Option output="midiprobe" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/midiprobe" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/midiprobe/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-D__WINDOWS_MM__" />
-				</Compiler>
-				<Linker>
-					<Add library="winmm" />
-				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
@@ -66,10 +59,11 @@
 			<Add option="-DwxUSE_UNICODE" />
 			<Add option="-DWIN32" />
 			<Add option="-D_WIN32" />
+			<Add option="-D__WINDOWS_MM__" />
 			<Add directory="$(#wx)/include" />
-			<Add directory="lib/rtmidi-2.1.1" />
 			<Add directory="$(#wx)/lib/gcc_dll/mswu" />
-			<Add directory="lib/midifile-master/include" />
+			<Add directory="include/rtmidi" />
+			<Add directory="include/midifile" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="$(#wx)/include" />
@@ -77,12 +71,11 @@
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-mthreads" />
-			<Add library="lib/rtmidi-2.1.1/lib/rtmidi.lib" />
+			<Add library="winmm" />
 			<Add library="libwxmsw31u.a" />
-			<Add library="lib/midifile-master/lib/libmidifile.dll" />
-			<Add directory="lib/rtmidi-2.1.1" />
+			<Add library="lib/librtmidi.dll" />
+			<Add library="lib/libmidifile.dll" />
 			<Add directory="$(#wx)/lib/gcc_dll" />
-			<Add directory="lib/midifile-master/lib" />
 		</Linker>
 		<Unit filename="Colors.cpp">
 			<Option target="Release" />
@@ -166,7 +159,7 @@
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="tests/HelpersTest.h">
-			<Option target="LaunchpadProMidi" />
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Extensions>
 			<code_completion />

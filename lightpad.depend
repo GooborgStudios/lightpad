@@ -1,19 +1,4 @@
 # depslib dependency file v1.0
-1487815695 source:e:\my documents\github\lightpad\filepanel.cpp
-	<wx/wxprec.h>
-	<wx/wx.h>
-	<wx/file.h>
-	<wx/dir.h>
-	<wx/dataview.h>
-	<wx/imaglist.h>
-	<wx/artprov.h>
-	<wx/treebase.h>
-	<wx/validate.h>
-	<wx/file.h>
-	<magic.h>
-	"FilePanel.h"
-	"Helpers.h"
-
 1456727616 c:\wxwidgets-3.1.0\include\wx\wxprec.h
 	"wx/defs.h"
 	"wx/chartype.h"
@@ -2118,6 +2103,21 @@
 
 1456727616 c:\wxwidgets-3.1.0\include\wx\qt\dataview.h
 
+1487815695 source:e:\my documents\github\lightpad\filepanel.cpp
+	<wx/wxprec.h>
+	<wx/wx.h>
+	<wx/file.h>
+	<wx/dir.h>
+	<wx/dataview.h>
+	<wx/imaglist.h>
+	<wx/artprov.h>
+	<wx/treebase.h>
+	<wx/validate.h>
+	<wx/file.h>
+	<magic.h>
+	"FilePanel.h"
+	"Helpers.h"
+
 1487817539 e:\my documents\github\lightpad\filepanel.h
 	<wx/wxprec.h>
 	<wx/wx.h>
@@ -2167,12 +2167,6 @@
 	<unistd.h>
 	"RtMidi.h"
 
-1484706707 e:\my documents\github\lightpad\lib\rtmidi-2.1.1\rtmidi.h
-	<exception>
-	<iostream>
-	<string>
-	<vector>
-
 1485406435 source:e:\my documents\github\lightpad\midiprobe.cpp
 	<iostream>
 	<cstdlib>
@@ -2180,21 +2174,6 @@
 
 1485035041 source:e:\my documents\github\lightpad\rgb2lab.cpp
 	<math.h>
-
-1484706707 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\rtmidi.cpp
-	"RtMidi.h"
-	<sstream>
-	<CoreMIDI/CoreMIDI.h>
-	<CoreAudio/HostTime.h>
-	<CoreServices/CoreServices.h>
-	<pthread.h>
-	<sys/time.h>
-	<alsa/asoundlib.h>
-	<windows.h>
-	<mmsystem.h>
-	<jack/jack.h>
-	<jack/midiport.h>
-	<jack/ringbuffer.h>
 
 1484706706 e:\my documents\github\lightpad\ids.h
 
@@ -2223,49 +2202,6 @@
 1487815695 e:\my documents\github\lightpad\helpers.h
 	<wx/wxprec.h>
 	<wx/wx.h>
-
-1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\rtmidi_c.cpp
-	<string.h>
-	<stdlib.h>
-	"rtmidi_c.h"
-	"RtMidi.h"
-
-1484706708 e:\my documents\github\lightpad\lib\rtmidi-2.1.1\rtmidi_c.h
-	<stdbool.h>
-
-1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\tests\cmidiin.cpp
-	<iostream>
-	<cstdlib>
-	"RtMidi.h"
-
-1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\tests\midiout.cpp
-	<iostream>
-	<cstdlib>
-	"RtMidi.h"
-	<windows.h>
-	<unistd.h>
-
-1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\tests\midiprobe.cpp
-	<iostream>
-	<cstdlib>
-	<map>
-	"RtMidi.h"
-
-1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\tests\qmidiin.cpp
-	<iostream>
-	<cstdlib>
-	<signal.h>
-	"RtMidi.h"
-	<windows.h>
-	<unistd.h>
-
-1484706708 source:e:\my documents\github\lightpad\lib\rtmidi-2.1.1\tests\sysextest.cpp
-	<iostream>
-	<cstdlib>
-	<typeinfo>
-	"RtMidi.h"
-	<windows.h>
-	<unistd.h>
 
 1487968050 source:e:\my documents\github\lightpad\displaypanel.cpp
 	<wx/wxprec.h>
