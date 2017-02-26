@@ -33,6 +33,7 @@ enum {
 double threeway_max(double a, double b, double c);
 double threeway_min(double a, double b, double c);
 double val_in_range(double val, double min, double max);
+int val_in_range(int val, int min, int max);
 int closest_two_power(int current_size, int min_range, int max_range);
 
 int note_to_button(int note);
@@ -50,11 +51,15 @@ class Note {
 };
 
 class ColorConverter {
+	// All converters take values from 0.0 to 1.0
 	public:
+		// Conversion helpers
+		static double Hue2RGB(double p, double q, double t);
 		static double XYZ2H(double q);
 		static double LAB_compare_RGB(double r1, double g1, double b1, double r2, double g2, double b2);
 		static double LAB_compare_RGB(int r1, int g1, int b1, int r2, int g2, int b2);
-		static double Hue2RGB(double p, double q, double t);
+
+		// Base converters
 		static void RGB2HSL(double r, double g, double b, double *h, double *s, double *l);
 		static void HSL2RGB(double h, double s, double l, double *r, double *g, double *b);
 		static void RGB2HSV(double r, double g, double b, double *h, double *s, double *v);
@@ -67,6 +72,8 @@ class ColorConverter {
 		static void XYZ2RGB(double x, double y, double z, double *r, double *g, double *b);
 		static void XYZ2LAB(double x, double y, double z, double *l, double *a, double *b);
 		static void LAB2XYZ(double l, double a, double b, double *x, double *y, double *z);
+
+		// Two-step converters
 		static void RGB2LAB(double r, double g, double b, double *l, double *a, double *_b);
 		static void LAB2RGB(double l, double a, double b, double *r, double *g, double *_b);
 		static void HSL2HSV(double h, double s, double l, double *_h, double *_s, double *v);

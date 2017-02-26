@@ -19,6 +19,7 @@
 	#include <wx/wx.h>
 #endif
 
+#include <algorithm>
 #include <cmath>
 
 #include "Helpers.h"
@@ -63,15 +64,19 @@ int button_to_note(int button) {
 
 // Math helpers
 double threeway_max(double a, double b, double c) {
-	return fmax(a, fmax(b, c));
+	return std::max(a, std::max(b, c));
 }
 
 double threeway_min(double a, double b, double c) {
-	return fmin(a, fmin(b, c));
+	return std::min(a, std::min(b, c));
 }
 
 double val_in_range(double val, double min, double max) {
-	return fmin(min, fmax(val, max));
+	return std::max(min, std::min(val, max));
+}
+
+int val_in_range(int val, int min, int max) {
+	return std::max(min, std::min(val, max));
 }
 
 // closest_two_power() written by Eric Busch (Origami1105) on 1/19/2017
@@ -90,11 +95,6 @@ int closest_two_power(int current_size, int min_range, int max_range) {
 }
 
 // Conversion helpers
-double ColorConverter::XYZ2H(double q) {
-	if (q > 0.008856) return pow(q, 0.333333);
-	return 7.787 * q + 0.137931;
-}
-
 double ColorConverter::Hue2RGB(double p, double q, double t) {
   if (t < 0.0) t += 1;
   if (t > 1.0) t -= 1;
@@ -102,6 +102,11 @@ double ColorConverter::Hue2RGB(double p, double q, double t) {
   if (t < 1/2.0) return q;
   if (t < 2/3.0) return p + (q - p) * (2/3.0 - t) * 6.0;
   return p;
+}
+
+double ColorConverter::XYZ2H(double q) {
+	if (q > 0.008856) return pow(q, 0.333333);
+	return 7.787 * q + 0.137931;
 }
 
 // Compare two RGB colors via LAB
