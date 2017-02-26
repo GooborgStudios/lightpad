@@ -2203,10 +2203,12 @@
 	<wx/wxprec.h>
 	<wx/wx.h>
 
-1487968050 source:e:\my documents\github\lightpad\displaypanel.cpp
+1488085745 source:e:\my documents\github\lightpad\displaypanel.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/sizer.h>
+	<wx/bitmap.h>
+	<wx/rawbmp.h>
 	<sstream>
 	<algorithm>
 	<cmath>
@@ -2216,7 +2218,7 @@
 	"Colors.h"
 	"Helpers.h"
 
-1487930005 e:\my documents\github\lightpad\displaypanel.h
+1488077099 e:\my documents\github\lightpad\displaypanel.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/sizer.h>
@@ -2319,4 +2321,9 @@
 	"Colors.h"
 	"Helpers.h"
 	"GridRenderer.h"
+
+1456727616 c:\wxwidgets-3.1.0\include\wx\rawbmp.h
+	"wx/defs.h"
+	"wx/image.h"
+	"wx/bitmap.h"
 

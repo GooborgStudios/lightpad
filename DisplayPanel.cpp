@@ -12,6 +12,8 @@
 #endif
 
 #include <wx/sizer.h>
+#include <wx/bitmap.h>
+#include <wx/rawbmp.h>
 
 #include <sstream>
 #include <algorithm>
@@ -74,7 +76,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 		// std::cout << std::setw(2) << std::right << j << ": R = " << std::setw(3) << std::left << r << "  G = " << std::setw(3) << g << "  B = " << std::setw(3) << b << std::endl;
 		rainbow[j] = wxColor(r,g,b);
 	}
-	
+
 	for (int i = 1; i < 99; i++) {
 		if (i == 9 || i == 90) continue;
 		int j = (i / 10) + (i % 10);
@@ -104,7 +106,11 @@ void DisplayPanel::OnSize(wxSizeEvent& event) {
 
 void DisplayPanel::render(wxDC &dc) {
 	int neww, newh;
-	std::stringstream ss;
+	wxMemoryDC bdc;
+	wxCoord width, height;
+	wxColour pixel;
+	unsigned char red, green, blue;
+
 	dc.GetSize(&neww, &newh);
 	int min_fit_size = std::min(neww, newh);
 
@@ -149,12 +155,12 @@ void DisplayPanel::render(wxDC &dc) {
 	dc.SetPen(*(wxTRANSPARENT_PEN));
 
 	// convert button number to coordinates
-    for (int i = 1; i < 99; i++) {
+	for (int i = 1; i < 99; i++) {
 		if (i == 9 || i == 90) continue;
 		int x = i % 10;
 		int y = 9 - (i / 10);
 		int z = 1;
-        wxPoint bpos(image_xpos+(min_fit_size*getButtonPosition(9-x)), image_ypos+(min_fit_size*getButtonPosition(y)));
+		wxPoint bpos(image_xpos+(min_fit_size*getButtonPosition(9-x)), image_ypos+(min_fit_size*getButtonPosition(y)));
 		dc.SetBrush(wxBrush(button_colors[i]));
 
 		if (x == 0 || x == 9 || y == 0 || y == 9) z = 0;
@@ -167,8 +173,22 @@ void DisplayPanel::render(wxDC &dc) {
 		if (x == 0 || x == 9 || y == 0 || y == 9) dc.DrawEllipse(bpos, wxSize(button_size, button_size));
 		else dc.DrawRoundedRectangle(bpos, wxSize(button_size, button_size), button_radius);
 
-		wxBitmap bimg = wxBitmap(*(launchpad_button_images[z]));
-        dc.DrawBitmap(bimg, bpos);
+		wxBitmap bimg = wxBitmap(*(launchpad_button_images[z]), 32);
+		bdc.SelectObject(bimg);
+		bdc.GetSize(&width, &height);
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < width; y++) {
+                if (bdc.GetPixel(x, y, &pixel)) {
+                    red = pixel.Red() + (button_colors[i].Red()/3);
+                    green = pixel.Green() + (button_colors[i].Green()/3);
+                    blue = pixel.Blue() + (button_colors[i].Blue()/3);
+                    pixel.Set(red, green, blue, pixel.Alpha());
+					//bdc.SetPen(pixel);
+                    //bdc.DrawPoint(x, y);
+                }
+			}
+		}
+		dc.Blit(bpos.x, bpos.y, button_size, button_size, &bdc, 0, 0);
 	}
 }
 
