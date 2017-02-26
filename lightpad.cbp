@@ -73,9 +73,10 @@
 			<Add option="-mthreads" />
 			<Add library="winmm" />
 			<Add library="libwxmsw31u.a" />
-			<Add library="lib/librtmidi.dll" />
-			<Add library="lib/libmidifile.dll" />
+			<Add library="librtmidi" />
+			<Add library="libmidifile" />
 			<Add directory="$(#wx)/lib/gcc_dll" />
+			<Add directory="libraries" />
 		</Linker>
 		<Unit filename="Colors.cpp">
 			<Option target="Release" />
