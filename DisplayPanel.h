@@ -37,10 +37,13 @@ class DisplayPanel: public wxPanel {
 		wxPanel *m_parent;
 		wxImage *launchpad_base_image;
 		wxImage *launchpad_button_image;
+		wxImage *launchpad_button_images[6];
 		wxBitmap resized;
 		std::string base_image_path;
 		std::string button_image_path;
 		int image_size;
+		int button_size;
+		int button_radius;
 		int panel_width;
 		int panel_height;
 		int image_xpos;
