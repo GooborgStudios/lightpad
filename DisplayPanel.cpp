@@ -56,8 +56,8 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	image_xpos = 0;
 	image_ypos = 0;
 
-    wxColor rainbow[18];
-	for (int j = 0; j <= 18; j++) {
+	wxColor rainbow[18];
+	for (int j = 0; j < 18; j++) {
 		int r = 0, g = 0, b = 0;
 		if (j >= 15) r = 255*((18-j)/3.0);
 		else r = 255*((j-9)/3.0);
@@ -70,10 +70,10 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 		g = std::max(0, std::min(255, g));
 		b = std::max(0, std::min(255, b));
 
-		//std::cout << std::setw(2) << std::right << j << ": R = " << std::setw(3) << std::left << r << "  G = " << std::setw(3) << g << "  B = " << std::setw(3) << b << std::endl;
+		// std::cout << std::setw(2) << std::right << j << ": R = " << std::setw(3) << std::left << r << "  G = " << std::setw(3) << g << "  B = " << std::setw(3) << b << std::endl;
 		rainbow[j] = wxColor(r,g,b);
 	}
-
+	
 	for (int i = 1; i < 99; i++) {
 		if (i == 9 || i == 90) continue;
 		int j = (i / 10) + (i % 10);
@@ -143,16 +143,16 @@ void DisplayPanel::render(wxDC &dc) {
     int button_size = min_fit_size * 0.069580078125;
     int button_radius = image_size/512;
 
-    for (int i = 1; i < 99; i++) {
+	for (int i = 1; i < 99; i++) {
 		if (i == 9 || i == 90) continue;
 		int x = i % 10;
 		int y = 9 - (i / 10);
-        wxPoint bpos(image_xpos+(min_fit_size*getButtonPosition(9-x)), image_ypos+(min_fit_size*getButtonPosition(y)));
+		wxPoint bpos(image_xpos+(min_fit_size*getButtonPosition(9-x)), image_ypos+(min_fit_size*getButtonPosition(y)));
 		dc.SetBrush(wxBrush(button_colors[i]));
 
 		if (x == 0 || x == 9 || y == 0 || y == 9) dc.DrawEllipse(bpos, wxSize(button_size, button_size));
 		else dc.DrawRoundedRectangle(bpos, wxSize(button_size, button_size), button_radius);
-    }
+	}
 }
 
 float DisplayPanel::getButtonPosition(int digit) {
@@ -166,8 +166,8 @@ float DisplayPanel::getButtonPosition(int digit) {
 }
 
 void DisplayPanel::colorButton(int button, wxColor color) {
-    button_colors[button] = color;
-    // This should check for invalid buttons (0, 9, 99)
+	button_colors[button] = color;
+	// This should check for invalid buttons (0, 9, 99)
 }
 
 wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)

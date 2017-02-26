@@ -26,13 +26,13 @@ class DisplayPanel: public wxPanel {
 	public:
 		DisplayPanel(wxPanel *parent);
 		void paintEvent(wxPaintEvent & evt);
-        void paintNow();
-        void OnSize(wxSizeEvent& event);
-        void render(wxDC& dc);
-        float getButtonPosition(int digit);
-        void colorButton(int button, wxColor color);
+		void paintNow();
+		void OnSize(wxSizeEvent& event);
+		void render(wxDC& dc);
+		float getButtonPosition(int digit);
+		void colorButton(int button, wxColor color);
 
-        wxDECLARE_EVENT_TABLE();
+		wxDECLARE_EVENT_TABLE();
 	private:
 		wxPanel *m_parent;
 		wxImage *launchpad_base_image;
