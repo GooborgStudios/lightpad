@@ -74,6 +74,9 @@ clean:
 	-rm *.o
 	-rm -r bin
 	-rm -r obj
+	-rm -r CMakeFiles
+	-rm CMakeCache.txt
+	-rm cmake_install.cmake
 	-rm *.exe
 	-rm a.out
 	-rm lightpad

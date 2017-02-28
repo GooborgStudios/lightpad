@@ -78,83 +78,73 @@
 			<Add directory="$(#wx)/lib/gcc_dll" />
 			<Add directory="libraries" />
 		</Linker>
-		<Unit filename="Colors.cpp">
+		<Unit filename="src/Colors.cpp">
+			<Option target="Release" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="src/Colors.h">
+			<Option target="Release" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="src/DisplayPanel.cpp">
+			<Option target="Release" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="src/DisplayPanel.h">
+			<Option target="Release" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="src/FilePanel.cpp">
+			<Option target="Release" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="src/FilePanel.h">
+			<Option target="Release" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="src/GridRenderer.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="src/GridRenderer.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="src/Helpers.cpp">
 			<Option target="Release" />
 			<Option target="LaunchpadProMidi" />
 			<Option target="Debug" />
 		</Unit>
-		<Unit filename="Colors.h">
+		<Unit filename="src/Helpers.h">
 			<Option target="Release" />
 			<Option target="LaunchpadProMidi" />
 			<Option target="Debug" />
 		</Unit>
-		<Unit filename="DisplayPanel.cpp">
-			<Option target="Release" />
-			<Option target="LaunchpadProMidi" />
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="DisplayPanel.h">
-			<Option target="Release" />
-			<Option target="LaunchpadProMidi" />
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="FilePanel.cpp">
-			<Option target="Release" />
-			<Option target="LaunchpadProMidi" />
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="FilePanel.h">
-			<Option target="Release" />
-			<Option target="LaunchpadProMidi" />
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="GridRenderer.cpp">
+		<Unit filename="src/PropertiesPanel.cpp">
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="GridRenderer.h">
+		<Unit filename="src/PropertiesPanel.h">
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="Helpers.cpp">
-			<Option target="Release" />
-			<Option target="LaunchpadProMidi" />
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="Helpers.h">
-			<Option target="Release" />
-			<Option target="LaunchpadProMidi" />
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="PropertiesPanel.cpp">
+		<Unit filename="src/TimelinePanel.cpp">
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="PropertiesPanel.h">
+		<Unit filename="src/TimelinePanel.h">
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="TimelinePanel.cpp">
-			<Option target="Debug" />
+		<Unit filename="src/main.cpp">
 			<Option target="Release" />
-		</Unit>
-		<Unit filename="TimelinePanel.h">
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="main.cpp">
-			<Option target="Release" />
-			<Option target="LaunchpadProMidi" />
 			<Option target="Debug" />
 		</Unit>
-		<Unit filename="midiout.cpp">
+		<Unit filename="src/midiout.cpp">
 			<Option target="LaunchpadProMidi" />
 		</Unit>
-		<Unit filename="midiprobe.cpp">
+		<Unit filename="src/midiprobe.cpp">
 			<Option target="LaunchpadProMidiProbe" />
-		</Unit>
-		<Unit filename="rgb2lab.cpp">
-			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="sample_colors.py">
 			<Option target="&lt;{~None~}&gt;" />

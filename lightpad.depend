@@ -2103,7 +2103,7 @@
 
 1456727616 c:\wxwidgets-3.1.0\include\wx\qt\dataview.h
 
-1487815695 source:e:\my documents\github\lightpad\filepanel.cpp
+1487815695 source:e:\my documents\github\lightpad\src\filepanel.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/file.h>
@@ -2118,7 +2118,7 @@
 	"FilePanel.h"
 	"Helpers.h"
 
-1487817539 e:\my documents\github\lightpad\filepanel.h
+1487817539 e:\my documents\github\lightpad\src\filepanel.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/dataview.h>
@@ -2126,7 +2126,7 @@
 	<windows.h>
 	<shlobj.h>
 
-1487815695 source:e:\my documents\github\lightpad\main.cpp
+1487815695 source:e:\my documents\github\lightpad\src\main.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/gdicmn.h>
@@ -2144,7 +2144,7 @@
 	"wx/dynarray.h"
 	"wx/itemid.h"
 
-1487815695 source:e:\my documents\github\lightpad\colors.cpp
+1487815695 source:e:\my documents\github\lightpad\src\colors.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	"Colors.h"
@@ -2152,14 +2152,11 @@
 	<stdio.h>
 	<math.h>
 
-1487815695 e:\my documents\github\lightpad\colors.h
+1487815695 e:\my documents\github\lightpad\src\colors.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 
-1485035041 e:\my documents\github\lightpad\rgb2lab.cpp
-	<math.h>
-
-1484203010 source:e:\my documents\github\lightpad\midiout.cpp
+1484203010 source:e:\my documents\github\lightpad\src\midiout.cpp
 	<iostream>
 	<cstdlib>
 	<stdlib.h>
@@ -2167,43 +2164,22 @@
 	<unistd.h>
 	"RtMidi.h"
 
-1485406435 source:e:\my documents\github\lightpad\midiprobe.cpp
+1485406435 source:e:\my documents\github\lightpad\src\midiprobe.cpp
 	<iostream>
 	<cstdlib>
 	"RtMidi.h"
 
-1485035041 source:e:\my documents\github\lightpad\rgb2lab.cpp
-	<math.h>
-
-1484706706 e:\my documents\github\lightpad\ids.h
-
-1484725360 source:e:\my documents\github\lightpad\display.cpp
-	<wx/wxprec.h>
-	<wx/wx.h>
-	<wx/sizer.h>
-	<sstream>
-	<algorithm>
-	"Display.h"
-	"Colors.h"
-	"IDs.h"
-
-1484726250 e:\my documents\github\lightpad\display.h
-	<wx/wxprec.h>
-	<wx/wx.h>
-	<wx/sizer.h>
-	"Colors.h"
-
-1487815695 source:e:\my documents\github\lightpad\helpers.cpp
+1487815695 source:e:\my documents\github\lightpad\src\helpers.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<cmath>
 	"Helpers.h"
 
-1487815695 e:\my documents\github\lightpad\helpers.h
+1487815695 e:\my documents\github\lightpad\src\helpers.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 
-1488085745 source:e:\my documents\github\lightpad\displaypanel.cpp
+1488085745 source:e:\my documents\github\lightpad\src\displaypanel.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/sizer.h>
@@ -2218,17 +2194,17 @@
 	"Colors.h"
 	"Helpers.h"
 
-1488077099 e:\my documents\github\lightpad\displaypanel.h
+1488077099 e:\my documents\github\lightpad\src\displaypanel.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/sizer.h>
 	"Colors.h"
 	"Helpers.h"
 
-1487815695 source:e:\my documents\github\lightpad\generatenotebuttonmap.cpp
+1487815695 source:e:\my documents\github\lightpad\src\generatenotebuttonmap.cpp
 	<iostream>
 
-1487815695 e:\my documents\github\lightpad\timelinepanel.h
+1487815695 e:\my documents\github\lightpad\src\timelinepanel.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/grid.h>
@@ -2278,12 +2254,12 @@
 1456727616 c:\wxwidgets-3.1.0\include\wx\colourdata.h
 	"wx/colour.h"
 
-1487815695 e:\my documents\github\lightpad\gridrenderer.h
+1487815695 e:\my documents\github\lightpad\src\gridrenderer.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/grid.h>
 
-1487815695 e:\my documents\github\lightpad\propertiespanel.h
+1487815695 e:\my documents\github\lightpad\src\propertiespanel.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/sizer.h>
@@ -2293,7 +2269,7 @@
 	"Helpers.h"
 	"GridRenderer.h"
 
-1487815695 source:e:\my documents\github\lightpad\propertiespanel.cpp
+1487815695 source:e:\my documents\github\lightpad\src\propertiespanel.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/sizer.h>
@@ -2305,13 +2281,13 @@
 	"Helpers.h"
 	"GridRenderer.h"
 
-1487815695 source:e:\my documents\github\lightpad\gridrenderer.cpp
+1487815695 source:e:\my documents\github\lightpad\src\gridrenderer.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/grid.h>
 	"GridRenderer.h"
 
-1487815695 source:e:\my documents\github\lightpad\timelinepanel.cpp
+1487815695 source:e:\my documents\github\lightpad\src\timelinepanel.cpp
 	<wx/wxprec.h>
 	<wx/wx.h>
 	<wx/grid.h>

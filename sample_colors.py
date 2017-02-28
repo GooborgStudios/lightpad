@@ -21,8 +21,8 @@ output += ",\n\t".join(
 	do_it(Image.open('references/rgbcolors2.png').convert('RGB'))
 ) + "\n};\n"
 
-cpp_file = open("Colors.cpp", "w")
-cpp_tmpl = open("Colors_template.cpp", "r")
+cpp_file = open("src/Colors.cpp", "w")
+cpp_tmpl = open("src/Colors_template.cpp", "r")
 
 for line in cpp_tmpl:
 	if line.strip() == "!XXX!":

@@ -8,11 +8,12 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-	#include <wx/wx.h>
-#endif
+// // Attempt to load precompiled, if compiler doesn't support then load normal
+// // Not needed in Helpers.cpp/.h
+// #include <wx/wxprec.h>
+// #ifndef WX_PRECOMP
+// 	#include <wx/wx.h>
+// #endif
 
 // Element IDs
 enum {
