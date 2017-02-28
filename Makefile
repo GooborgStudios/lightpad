@@ -1,6 +1,6 @@
 CXX = `wx-config --cxx`
-CXXFLAGS = `wx-config --cxxflags` -std=c++11 -O3 -I. -I./include -I./include/midifile -I./include/rtmidi
-LIBS = `wx-config --libs` -lmagic -lrtmidi -lmidifile -L./lib
+CXXFLAGS = `wx-config --cxxflags` `GraphicsMagick++-config --cppflags --cxxflags` -std=c++11 -O3 -I. -I./include -I./include/midifile -I./include/rtmidi
+LIBS = `wx-config --libs` `GraphicsMagick++-config --ldflags --libs` -lmagic -lrtmidi -lmidifile -L./lib
 
 ifeq ($(OS),Windows_NT)
 	# XXX We're using Code::Blocks for Windows compiling

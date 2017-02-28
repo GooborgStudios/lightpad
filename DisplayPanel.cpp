@@ -45,9 +45,9 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	m_parent = parent;
 
 	// Load the graphics
-	// base_image_path = "graphics/launchpad_display/launchpad_display_4096.png";
-	base_image_path = "graphics/launchpad_display/base/base_4096.png";
-	button_image_path = "graphics/launchpad_display/buttons/buttons_4096.png";
+	// base_image_path = "graphics/launchpad_display/launchpad_display_1024.png";
+	base_image_path = "graphics/launchpad_display/base/base_1024.png";
+	button_image_path = "graphics/launchpad_display/buttons/buttons_1024.png";
 	launchpad_base_image = new wxImage(base_image_path, wxBITMAP_TYPE_PNG);
 	launchpad_button_image = new wxImage(button_image_path, wxBITMAP_TYPE_PNG);
 	for (int i = 0; i < 6; i++) launchpad_button_images[i] = new wxImage(launchpad_button_image->Size(wxSize(286, 286), wxPoint(-286*i, 0)));
@@ -173,8 +173,8 @@ void DisplayPanel::render(wxDC &dc) {
 			if (y == 5) z += 2;
 		}
 
-		if (x == 0 || x == 9 || y == 0 || y == 9) dc.DrawEllipse(bpos, wxSize(button_size, button_size));
-		else dc.DrawRoundedRectangle(bpos, wxSize(button_size, button_size), button_radius);
+		// if (x == 0 || x == 9 || y == 0 || y == 9) dc.DrawEllipse(bpos, wxSize(button_size, button_size));
+		// else dc.DrawRoundedRectangle(bpos, wxSize(button_size, button_size), button_radius);
 
 		wxBitmap bimg = wxBitmap(*(launchpad_button_images[z]));
 		bdc.SelectObject(bimg);
@@ -185,8 +185,9 @@ void DisplayPanel::render(wxDC &dc) {
 				
 				bdc.GetPixel(bmp_x, bmp_y, &pixel);
 				// if (x == 1 && y == 0 && bmp_x == 0 && bmp_y == 0) std::cout << x << "," << y << "_" << bmp_x << "," << bmp_y << "_" << width << "," << height << ":" << std::endl;
-				ColorConverter::RGB2HSL(pixel.Red()/255.0, pixel.Green()/255.0, pixel.Blue()/255.0, &hue, &sat, &lum);
-				// if (x == 1 && y == 0 && bmp_x == 0 && bmp_y == 0) std::cout << "Pixel - " << (int)(pixel.Red()) << " " << (int)(pixel.Green()) << " " << (int)(pixel.Blue()) << " " << (int)(pixel.Alpha()) << " - " << hue << " " << sat << " " << lum << std::endl;
+				float r = pixel.Red()/255.0, g = pixel.Green()/255.0, b = pixel.Blue()/255.0;
+				ColorConverter::RGB2HSL(r, g, b, &hue, &sat, &lum);
+				if (x == 1 && y == 0 && bmp_x == 0 && bmp_y == 0) std::cout << "Pixel - " << r << " " << g << " " << b << " " << (int)(pixel.Alpha()) << " - " << hue << " " << sat << " " << lum << std::endl;
 				ColorConverter::HSL2RGB(hue2, sat2, lum, &newr, &newg, &newb);
 				// if (x == 1 && y == 0 && bmp_x == 0 && bmp_y == 0) std::cout << "Merge - " << (int)(newr*255) << " " << (int)(newg*255) << " " << (int)(newb*255) << " " << (int)(pixel.Alpha()) << std::endl;
 				pixel.Set((int)(newr*255), (int)(newg*255), (int)(newb*255), (int)(pixel.Alpha()));
@@ -195,7 +196,7 @@ void DisplayPanel::render(wxDC &dc) {
 			}
 		}
 		dc.Blit(bpos.x, bpos.y, button_size, button_size, &bdc, 0, 0);
-		// bdc.SelectObject(wxNullBitmap);
+		bdc.SelectObject(wxNullBitmap);
 	}
 }
 
