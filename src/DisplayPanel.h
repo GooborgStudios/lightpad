@@ -14,6 +14,8 @@
 	#include <wx/wx.h>
 #endif
 
+#include "Magick++.h"
+
 #include <wx/sizer.h>
 
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
@@ -39,6 +41,9 @@ class DisplayPanel: public wxPanel {
 		wxImage *launchpad_button_image;
 		wxImage *launchpad_button_images[6];
 		wxBitmap resized;
+		Magick::Image bg_img;
+		Magick::Image button_img;
+		Magick::Image *button[6];
 		std::string base_image_path;
 		std::string button_image_path;
 		int image_size;
