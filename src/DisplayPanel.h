@@ -2,26 +2,24 @@
 // Lightpad - DisplayPanel.h
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#pragma once
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
 #endif
 
-#include "Magick++.h"
-
 #include <wx/sizer.h>
 
-#define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
+#include "Magick++.h"
 
 #include "Colors.h"
 #include "Helpers.h"
+
+#define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
 
 // Graphical interface panel
 class DisplayPanel: public wxPanel {
@@ -59,5 +57,3 @@ class DisplayPanel: public wxPanel {
 		int image_ypos;
 		int button_colors[100];
 };
-
-#endif

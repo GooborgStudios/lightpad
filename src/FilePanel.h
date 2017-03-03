@@ -2,13 +2,11 @@
 // Lightpad - FilePanel.h
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
-#ifndef FILEPANEL_H
-#define FILEPANEL_H
+#pragma once
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
@@ -17,7 +15,7 @@
 #include <wx/dataview.h>
 #include <wx/imaglist.h>
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+#ifdef WINDOWS
 	#include <windows.h>
 	#include <shlobj.h>
 	#pragma comment(lib, "shell32.lib")
@@ -53,5 +51,3 @@ class FilePanel: public wxPanel {
 };
 
 wxDECLARE_EVENT(FILE_SELECT, wxCommandEvent);
-
-#endif

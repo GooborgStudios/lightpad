@@ -2,13 +2,11 @@
 // Lightpad - TimelinePanel.h
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
-#ifndef TIMELINEPANEL_H
-#define TIMELINEPANEL_H
+#pragma once
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
@@ -25,7 +23,6 @@
 class TimelinePanel: public wxPanel {
 	public:
 		TimelinePanel(wxPanel *parent);
-		// void Update();
 		void ChangeNoteColor(wxColourPickerEvent &event);
 		void OnSingleSelectCell(wxGridEvent& event);
 		void OnCellLeftClick(wxGridEvent& event);
@@ -37,5 +34,3 @@ class TimelinePanel: public wxPanel {
 
 	wxDECLARE_EVENT_TABLE();
 };
-
-#endif

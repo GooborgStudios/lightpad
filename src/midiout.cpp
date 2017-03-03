@@ -2,40 +2,26 @@
 // Lightpad - midiout.cpp
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
+#include <iostream>
+#include <iomanip>
+#include <cstdlib>
+#include <cstdarg>
+#include <csignal>
+#include <ctime>
+#include <unistd.h>
+
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
 #endif
 
-#include <iostream>
-#include <iomanip>
-#include <cstdlib>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <signal.h>
-#include <unistd.h>
-#include <time.h>
-
 #include "RtMidi.h"
 #include "MidiFile.h"
 
 #include "Helpers.h"
-
-#ifdef _WIN32
-	//define something for Windows (32-bit and 64-bit, this part is common)
-
-	#ifdef _WIN64
-		//define something for Windows (64-bit only)
-	#endif
-#else//#elif __APPLE__
-	//define something for Mac (and Linux(?))
-//#else
-	//#error "Unknown/unsupported compiler/operating system"
-#endif
 
 int BPM = 120;
 

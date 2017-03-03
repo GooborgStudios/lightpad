@@ -51,7 +51,7 @@ PROJECT_BRIEF          = "Making Launchpad Lightshow production all the more eff
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = @CMAKE_CURRENT_SOURCE_DIR@/graphics/icons/icon_256.png
+PROJECT_LOGO           = @CMAKE_CURRENT_SOURCE_DIR@/graphics/icons/icon_128.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -187,7 +187,7 @@ SHORT_NAMES            = NO
 # description.)
 # The default value is: NO.
 
-JAVADOC_AUTOBRIEF      = NO
+JAVADOC_AUTOBRIEF      = YES
 
 # If the QT_AUTOBRIEF tag is set to YES then doxygen will interpret the first
 # line (until the first dot) of a Qt-style comment as the brief description. If

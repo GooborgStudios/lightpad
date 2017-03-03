@@ -2,10 +2,11 @@
 // Lightpad - TimelinePanel.cpp
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
+#include <iostream>
+
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
@@ -14,22 +15,6 @@
 #include <wx/grid.h>
 #include <wx/clrpicker.h>
 
-#include <iostream>
-
-#ifdef _WIN32
-	//define something for Windows (32-bit and 64-bit, this part is common)
-	#define WINDOWS
-	#ifdef _WIN64
-		//define something for Windows (64-bit only)
-		#define WINDOWS_64
-	#endif
-#elif __APPLE__
-	//define something for Mac
-	#define MACOS
-#else
-	//#error "Unknown/unsupported compiler/operating system"
-#endif
-
 #include "TimelinePanel.h"
 #include "Colors.h"
 #include "Helpers.h"
@@ -37,7 +22,7 @@
 
 // Initialize the timeline panel and it's elements
 const int COLS = 32;
-const int ROWS = 16;//96;
+const int ROWS = 16;
 
 TimelinePanel::TimelinePanel(wxPanel *parent)
 	   : wxPanel(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
@@ -74,19 +59,6 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 		grid->DisableRowResize(r);
 	}
 
-	// std::vector<Note *> notes; // Temporary note vector
-	// notes.push_back(new Note(1, 3, 0, 0));
-	// notes.push_back(new Note(2, 3, 0, 0));
-	// notes.push_back(new Note(3, 3, 0, 0));
-	// notes.push_back(new Note(4, 3, 0, 0));
-
-	// std::vector<Note *>::iterator it = notes.begin();
-
-	// for (; it != notes.end(); ++it) {
-	// 	Note *n = *(it);
-	// 	grid->SetCellBackgroundColour(n->position, n->time, velocitycolors[n->color]);
-	// }
-
 	sizer->Add(grid, 1, wxEXPAND);
 	this->SetSizer(sizer);
 	sizer->Layout();
@@ -94,9 +66,6 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 	Update();
 }
 
-// void TimelinePanel::Update() {
-	
-// }
 
 void TimelinePanel::ChangeNoteColor(wxColourPickerEvent &event) {
 	wxGridCellCoordsArray cells = grid->GetSelectedCells();

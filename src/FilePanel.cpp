@@ -2,27 +2,12 @@
 // Lightpad - FilePanel.cpp
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
-#endif
-
-#ifdef _WIN32
-	//define something for Windows (32-bit and 64-bit, this part is common)
-	#define WINDOWS
-	#ifdef _WIN64
-		//define something for Windows (64-bit only)
-		#define WINDOWS_64
-	#endif
-#elif __APPLE__
-	//define something for Mac
-	#define MACOS
-#else
-	//#error "Unknown/unsupported compiler/operating system"
 #endif
 
 #include <wx/file.h>
@@ -34,7 +19,7 @@
 #include <wx/validate.h>
 #include <wx/file.h>
 
-#ifdef MACOS
+#ifdef LIB_MAGIC
 	#include <magic.h>
 #endif
 
@@ -79,7 +64,7 @@ void FilePanel::RefreshFileList() {
 void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	wxDir dir(path);
 	wxString filename;
-	#ifdef MACOS
+	#ifdef LIB_MAGIC
 		magic_t myt = magic_open(MAGIC_ERROR|MAGIC_MIME_TYPE);
 		magic_load(myt,NULL);
 	#endif
@@ -93,10 +78,10 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	// List files
 	bool cont = dir.GetFirst(&filename, "", wxDIR_FILES);
 	while (cont) {
-		#ifdef WINDOWS
-			std::string filetype("audio/midi"); // XXX Find FileMagic for Windows
-		#else
+		#ifdef LIB_MAGIC
 			std::string filetype(magic_file(myt, (path+"/"+filename).c_str()));
+		#else
+			std::string filetype("audio/midi"); // XXX Use file extension instead
 		#endif
 		if (filetype == "audio/midi" /*|| filetype == "text/plain"*/) { // Only add if a MIDI or plain text file (animations and saves)
 			int i = 2;

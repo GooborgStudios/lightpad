@@ -2,10 +2,14 @@
 // Lightpad - Colors.cpp
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
+#include <iostream>
+#include <iomanip>
+#include <cstdio>
+#include <cmath>
+
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
@@ -13,11 +17,6 @@
 
 #include "Colors.h"
 #include "Helpers.h"
-
-#include <iostream>
-#include <iomanip>
-#include <stdio.h>
-#include <math.h>
 
 !XXX!
 

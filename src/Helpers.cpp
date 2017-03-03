@@ -2,22 +2,18 @@
 // Lightpad - Helpers.cpp
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
-//
 // RGB->XYZ->LAB conversion modified from: http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
 // RGB<-XYZ<-LAB conversion modified from: http://stackoverflow.com/a/9372718
 // 3-way min/max, RGB<>HSL, RGB<>HSV, RGB<>CMYK, RGB<>YIQ conversions, and HSL<>RGB<>HSV,
 //   HSL->RGB->CMYK, HSL->RGB->YIQ, HSV->RGB->CMYK, HSV->RGB->YIQ conversions modified from:
 //   https://github.com/aleksandaratanasov/RGBConverter/blob/master/RGBConverter.cpp
-//
 
 #include <algorithm>
 #include <cmath>
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
-// Not needed in Helpers.cpp/.h
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
@@ -100,12 +96,12 @@ Note::Note(int pos, int col, int t, int dur) {
 	int duration = dur;
 }
 
-Launchpad::Launchpad() {
+LaunchpadBase::LaunchpadBase() {
 	midiin = new RtMidiIn();
 	midiout = new RtMidiOut();
 }
 
-int Launchpad::connect() {
+int LaunchpadBase::connect() {
 	connected = false;
 
 	inport = getMidiPort(INPORT_NAME, midiin);
@@ -117,7 +113,7 @@ int Launchpad::connect() {
 		return -1;
 	}
 
-	// Open LaunchpadPro Standalone port.
+	// Open (Pro) Standalone port.
 	midiin->openPort( inport );
 	midiout->openPort( outport );
 
@@ -128,7 +124,7 @@ int Launchpad::connect() {
 	return 0;
 }
 
-void Launchpad::disconnect() {
+void LaunchpadBase::disconnect() {
 	if (connected) {
 		connected = false;
 		delete midiin;
@@ -136,11 +132,11 @@ void Launchpad::disconnect() {
 	}
 }
 
-bool Launchpad::isConnected() {
+bool LaunchpadBase::isConnected() {
 	return connected;
 }
 
-int Launchpad::getMidiPort(std::string name, RtMidi *ports) {
+int LaunchpadBase::getMidiPort(std::string name, RtMidi *ports) {
 	for ( unsigned int i=0; i < ports->getPortCount(); i++ ) {
 		try {
 			if ( ports->getPortName(i).compare(0, name.length(), name) == 0 ) {
@@ -156,12 +152,12 @@ int Launchpad::getMidiPort(std::string name, RtMidi *ports) {
 	return -1;
 }
 
-double Launchpad::getMessage(std::vector<unsigned char> *message_in) {
+double LaunchpadBase::getMessage(std::vector<unsigned char> *message_in) {
 	if (isConnected() == false) return -1;
 	return midiin->getMessage(message_in);
 }
 
-void Launchpad::sendMessage(unsigned int first_byte, ...) {
+void LaunchpadBase::sendMessage(unsigned int first_byte, ...) {
 	if (isConnected() == false) return;
 	va_list vl;
 	va_start(vl, first_byte);
@@ -177,12 +173,12 @@ void Launchpad::sendMessage(unsigned int first_byte, ...) {
 	message.erase(message.begin(), message.begin()+message.size());
 }
 
-void Launchpad::setColor(unsigned char msg_type, unsigned char light, unsigned char color) {
+void LaunchpadBase::setColor(unsigned char msg_type, unsigned char light, unsigned char color) {
 	if (isConnected() == false) return;
 
 }
 
-void Launchpad::setPulse(unsigned char msg_type, unsigned char light, unsigned char color) {
+void LaunchpadBase::setPulse(unsigned char msg_type, unsigned char light, unsigned char color) {
 	if (isConnected() == false) return;
 
 }
@@ -198,7 +194,7 @@ LaunchpadPro::LaunchpadPro() {
 }
 
 int LaunchpadPro::connect() {
-	int x = Launchpad::connect();
+	int x = LaunchpadBase::connect();
 
 	if (x == 0) {
 		std::vector<unsigned char> device_info;
@@ -220,11 +216,11 @@ void LaunchpadPro::disconnect() {
 	sendMessage( 240, 0, 32, 41, 2, 16, 14, 0, 247 ); // Clear all LED colors
 	sendMessage( 240, 0, 32, 41, 2, 16, 44, 0, 247 ); // Set to Note Mode
 
-	Launchpad::disconnect();
+	LaunchpadBase::disconnect();
 }
 
 bool LaunchpadPro::isConnected() {
-	return Launchpad::isConnected();
+	return LaunchpadBase::isConnected();
 }
 
 void LaunchpadPro::setColor(unsigned char msg_type, unsigned char light, unsigned char color) {
@@ -269,7 +265,7 @@ LaunchpadS::LaunchpadS() {
 }
 
 int LaunchpadS::connect() {
-	int x = Launchpad::connect();
+	int x = LaunchpadBase::connect();
 
 	if (x == 0) {
 		std::vector<unsigned char> device_info;
@@ -289,11 +285,11 @@ int LaunchpadS::connect() {
 void LaunchpadS::disconnect() {
 	sendMessage( 176, 0, 0, -1 ); // Reset
 
-	Launchpad::disconnect();
+	LaunchpadBase::disconnect();
 }
 
 bool LaunchpadS::isConnected() {
-	return Launchpad::isConnected();
+	return LaunchpadBase::isConnected();
 }
 
 unsigned char LaunchpadS::pro_to_s_note(unsigned char pro_note, unsigned char msg_type) {

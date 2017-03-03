@@ -2,12 +2,11 @@
 // Lightpad - midiprobe.cpp
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
 #include <iostream>
 #include <cstdlib>
-#include "RtMidi.h"
 
 #ifdef _WIN32
 	//define something for Windows (32-bit and 64-bit, this part is common)

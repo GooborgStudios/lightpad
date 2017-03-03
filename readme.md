@@ -5,27 +5,14 @@ Additional support from [LaunchpadFun](http://www.launchpadfun.com/en/).
 # This software is in early development and is not ready for use.  Please check back later!
 
 ## Build and Installation
-Lightpad has three make projects: _main_, _midiprobe_, and _midiout_.  _Main_ is just what it sounds like, it's the main application, bringing together all of it's features.  _Midiprobe_ and _midiout_ focus specifically on MIDI connectivity, with the first providing a list of available MIDI I/O ports, and the second playing a test file to the Launchpad, while also telling a pressed button to pulse a random color.
-
-**Main**
+Lightpad has three executables: _main_, _midiprobe_, and _midiout_.  _Main_ is just what it sounds like, it's the main application, bringing together all of it's features.  _Midiprobe_ and _midiout_ focus specifically on MIDI connectivity, with the first providing a list of available MIDI I/O ports, and the second playing a test file to the Launchpad, while also telling a pressed button to pulse a random color.
 
 ```bash
-make [lightpad]
-./lightpad
-```
-
-**MidiProbe**
-
-```bash
-make midiprobe
-./midiprobe
-```
-
-**MidiOut**
-
-```bash
-make midiout
-./midiout
+cd [lightpad directory path]
+cmake . && make -j4
+./bin/lightpad[.exe]
+./bin/midiprobe[.exe]
+./bin/midiout[.exe]
 ```
 
 ## Features

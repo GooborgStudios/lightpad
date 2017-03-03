@@ -2,10 +2,11 @@
 // Lightpad - PropertiesPanel.cpp
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
+#include <string>
+
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
@@ -14,22 +15,6 @@
 #include <wx/sizer.h>
 #include <wx/grid.h>
 #include <wx/clrpicker.h>
-
-#include <string>
-
-#ifdef _WIN32
-	//define something for Windows (32-bit and 64-bit, this part is common)
-	#define WINDOWS
-	#ifdef _WIN64
-		//define something for Windows (64-bit only)
-		#define WINDOWS_64
-	#endif
-#elif __APPLE__
-	//define something for Mac
-	#define MACOS
-#else
-	//#error "Unknown/unsupported compiler/operating system"
-#endif
 
 #include "PropertiesPanel.h"
 #include "Colors.h"
@@ -65,8 +50,6 @@ PropertiesPanel::PropertiesPanel(wxPanel *parent)
 		int r = i/8;
 		int c = i%8;
 		grid->SetCellBackgroundColour(r, c, velocitycolors[i]);
-		// wxToggleButton *color_button = new wxToggleButton(this, wxID_ANY, std::to_string(i), wxPoint(-1, -1), wxSize(20, 20));
-		// gs->Add(color_button); //velocitycolors[i];
 	}
 
 	sizer->Add(grid, 1, wxSHRINK);
@@ -92,7 +75,6 @@ void PropertiesPanel::SelectColor(wxColourPickerEvent& event) {
 		int y = color%8;
 		grid->SelectBlock(x, y, x, y);
 	}
-	// wxMessageBox("Blah blah blah...", "PropertiesPanel::SelectColor()", wxOK | wxICON_INFORMATION);
 }
 
 wxBEGIN_EVENT_TABLE(PropertiesPanel, wxPanel)

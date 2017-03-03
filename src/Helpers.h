@@ -2,14 +2,24 @@
 // Lightpad - Helpers.h
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
-#ifndef HELPERS_H
-#define HELPERS_H
+#pragma once
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
-// Not needed in Helpers.cpp/.h
+#ifdef _WIN32 // Windows
+	#define WINDOWS
+	#ifdef _WIN64 // Windows 64-bit
+		#define WINDOWS_64
+	#else // Windows 32-bit
+		#define WINDOWS_32
+	#endif
+#elif __APPLE__ // macOS
+	#define MACOS
+#else // Linux, Unix, POSIX, iOS, Android...
+	#warning "Unknown/unsupported compiler/operating system"
+#endif
+
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
@@ -58,9 +68,9 @@ class Note {
 		int duration; // Note duration
 };
 
-class Launchpad {
+class LaunchpadBase {
 	public:
-		Launchpad();
+		LaunchpadBase();
 		int connect();
 		void disconnect();
 		bool isConnected();
@@ -80,7 +90,7 @@ class Launchpad {
 		bool connected;
 };
 
-class LaunchpadPro : public Launchpad {
+class LaunchpadPro : public LaunchpadBase {
 	public:
 		LaunchpadPro();
 		int connect();
@@ -93,7 +103,7 @@ class LaunchpadPro : public Launchpad {
 		void displayText(unsigned char msg_type, unsigned int color, unsigned int speed, std::string text);
 };
 
-class LaunchpadS : public Launchpad {
+class LaunchpadS : public LaunchpadBase {
 	public:
 		LaunchpadS();
 		int connect();
@@ -145,5 +155,3 @@ class ColorConverter {
 		static void CMYK2YIQ(double c, double m, double y, double k, double *_y, double *i, double *q); // XXX Convert to int (0-255)
 		static void YIQ2CMYK(double y, double i, double q, double *c, double *m, double *_y, double *k); // XXX Convert to int (0-255)
 };
-
-#endif

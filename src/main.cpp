@@ -2,27 +2,12 @@
 // Lightpad - main.cpp
 // Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// http://www.nightwave.co/lightpad
+// https://www.nightwave.co/lightpad
 //
 
-// Attempt to load precompiled, if compiler doesn't support then load normal
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
-#endif
-
-#ifdef _WIN32
-	//define something for Windows (32-bit and 64-bit, this part is common)
-	#define WINDOWS
-	#ifdef _WIN64
-		//define something for Windows (64-bit only)
-		#define WINDOWS_64
-	#endif
-#elif __APPLE__
-	//define something for Mac
-	#define MACOS
-#else
-	//#error "Unknown/unsupported compiler/operating system"
 #endif
 
 #include <wx/gdicmn.h>
