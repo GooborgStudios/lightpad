@@ -1,6 +1,6 @@
 //
 // Lightpad - GridRenderer.cpp
-// Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), WhoovesPON3.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
@@ -26,11 +26,13 @@ wxGridCellRenderer *LightpadGridRenderer::Clone() const {
 	return new LightpadGridRenderer();
 }
 
-wxSize LightpadGridRenderer::GetBestSize(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc, int row, int col) {
+wxSize LightpadGridRenderer::GetBestSize(wxGrid &grid, wxGridCellAttr &attr,
+			wxDC &dc, int row, int col) {
 	return wxSize(0, 0);
 }
 
-void LightpadGridRenderer::Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc, const wxRect &rect, int row, int col, bool isSelected) {
+void LightpadGridRenderer::Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc,
+			const wxRect &rect, int row, int col, bool isSelected) {
 	wxPen pen = *wxTRANSPARENT_PEN;
 	if (isSelected) pen = *wxWHITE_PEN;
 	pen.SetWidth(pen_width);
@@ -44,5 +46,6 @@ void LightpadGridRenderer::Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc, co
 		pen.SetWidth(pen_width);
 		dc.SetPen(pen);
 	}
-	dc.DrawRectangle(rect.GetX()+pen_width, rect.GetY()+pen_width, rect.GetWidth()-(pen_width*2), rect.GetHeight()-(pen_width*2));
+	dc.DrawRectangle(rect.GetX()+pen_width, rect.GetY()+pen_width,
+		rect.GetWidth()-(pen_width*2), rect.GetHeight()-(pen_width*2));
 }

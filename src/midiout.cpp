@@ -1,6 +1,6 @@
 //
 // Lightpad - midiout.cpp
-// Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), WhoovesPON3.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
@@ -44,9 +44,9 @@ int main() {
 	srand(time(NULL));
 
 	// Pulse side LED
-	lp->setPulse(176, LAUNCHPAD_PRO_SIDE_LED_ID, 53);
+	lp->setPulse(LAUNCHPAD_PRO_SIDE_LED_ID, 53);
 
-	midifile.read("./Light_Output_Test.mid");
+	midifile.read("../references/Light_Output_Test.mid");
 	midifile.joinTracks();
 
 	std::cout << "Playing MIDI File..." << std::endl;
@@ -65,7 +65,7 @@ int main() {
 				usleep(60000 * 1000 / (BPM * deltatick));
 			}
 
-			lp->setColor((int)(*mev)[0], note_to_button((int)(*mev)[1]), color);
+			lp->setColor(note_to_button((int)(*mev)[1]), color);
 
 		}
 	}
@@ -84,9 +84,9 @@ int main() {
 			if ((message_in[0] == 144) || (message_in[0] == 176)) {
 				color = rand() % 126 + 1;
 				if (message_in[2] > 0) {
-					lp->setColor(message_in[0], message_in[1], color);
+					lp->setColor(message_in[1], color);
 				} else {
-					lp->setPulse(message_in[0], message_in[1], color);
+					lp->setPulse(message_in[1], color);
 				}
 			}
 		}

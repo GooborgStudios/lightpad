@@ -1,6 +1,6 @@
 //
 // Lightpad - FilePanel.cpp
-// Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), WhoovesPON3.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
@@ -43,7 +43,8 @@ FilePanel::FilePanel(wxPanel *parent)
 	sizer = new wxBoxSizer(wxHORIZONTAL);
 
 	// Set up the file list
-	filelistbox = new wxDataViewTreeCtrl(this, ID_FilePanel_Tree, wxPoint(-1, -1), wxSize(-1, -1), wxDV_SINGLE|wxDV_NO_HEADER);
+	filelistbox = new wxDataViewTreeCtrl(this, ID_FilePanel_Tree, wxPoint(-1, -1),
+			wxSize(-1, -1), wxDV_SINGLE|wxDV_NO_HEADER);
 	filelistbox->SetImageList(icon_list);
 	parent_dvi = wxDataViewItem();
 	RefreshFileList();
@@ -83,7 +84,7 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 		#else
 			std::string filetype("audio/midi"); // XXX Use file extension instead
 		#endif
-		if (filetype == "audio/midi" /*|| filetype == "text/plain"*/) { // Only add if a MIDI or plain text file (animations and saves)
+		if (filetype == "audio/midi") { // Only add if a MIDI file
 			int i = 2;
 			if (filetype == "text/plain") i = 3;
 			filelistbox->AppendItem(files, filename, i);
@@ -94,8 +95,9 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	// List directories
 	cont = dir.GetFirst(&filename, "", wxDIR_DIRS);
 	while (cont) {
-		wxDataViewItem cf = filelistbox->AppendContainer(files, filename, 0, 1);
-		ListDirectory(path+"/"+filename, cf); // Obtain the contents of the directories by running the function in itself
+		wxDataViewItem current_file = filelistbox->AppendContainer(files, filename, 0, 1);
+		ListDirectory(path+"/"+filename, current_file);
+		// Obtain the contents of the directories by running the function in itself
 		cont = dir.GetNext(&filename);
 	}
 }
@@ -133,7 +135,8 @@ void FilePanel::ChangeSelectedFile(wxDataViewEvent &event) {
 }
 
 // void FilePanel::RenameFile(wxDataViewEvent &event) {
-// 	std::cout << filelistbox->GetItemText(event.GetItem()) << " > " << event.GetValue().GetType() << std::endl;
+// 	std::cout << filelistbox->GetItemText(event.GetItem());
+//  std::cout << " > " << event.GetValue().GetType() << std::endl;
 // }
 
 wxBEGIN_EVENT_TABLE(FilePanel, wxPanel)

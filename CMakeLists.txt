@@ -30,7 +30,7 @@ add_executable(midiout src/midiout.cpp src/Helpers.cpp)
 add_executable(GenerateNoteButtonMap src/GenerateNoteButtonMap.cpp)
 
 add_custom_target(Colors ALL DEPENDS src/Colors.cpp)
-add_custom_command(OUTPUT src/Colors.cpp COMMAND python "${CMAKE_CURRENT_SOURCE_DIR}/sample_colors.py" WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DEPENDS src/Colors.cpp.in references/rgbcolors1.png references/rgbcolors2.png sample_colors.py VERBATIM) # COMMENT "Generating color mapping with sample_colors.py"
+add_custom_command(OUTPUT src/Colors.cpp COMMAND python "${CMAKE_CURRENT_SOURCE_DIR}/src/sample_colors.py" WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DEPENDS src/Colors.cpp.in graphics/rgbcolors1.png graphics/rgbcolors2.png src/sample_colors.py VERBATIM) # COMMENT "Generating color mapping with sample_colors.py"
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)

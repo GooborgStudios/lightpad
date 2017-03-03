@@ -1,6 +1,6 @@
 //
 // Lightpad - main.cpp
-// Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), WhoovesPON3.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
@@ -57,7 +57,7 @@ bool MainApp::OnInit() {
 
 	int launchpad_status = launchpad->connect();
 	// if (launchpad_status < 0) launchpad->disconnect();
-	/*else*/ launchpad->setPulse(176, LAUNCHPAD_PRO_SIDE_LED_ID, 53);
+	/*else*/ launchpad->setPulse(LAUNCHPAD_PRO_SIDE_LED_ID, 53);
 
 	MainFrame *frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800,600));
 	frame->SetMinSize(wxSize(800,600));

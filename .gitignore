@@ -17,7 +17,5 @@ Makefile
 *.build
 
 oclint/
-./*.plist
-
 doxygen/
 doxygen.err.log

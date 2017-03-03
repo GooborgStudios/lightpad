@@ -1,6 +1,6 @@
 //
 // Lightpad - Colors.cpp
-// Created by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 Nightwave Studios.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), WhoovesPON3.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
@@ -20,28 +20,25 @@
 
 !XXX!
 
-unsigned char get_closest_velocity(wxColor c) {
+unsigned char get_closest_velocity(wxColor color) {
 	/* Take a wxColor and find the closest match to a Launchpad Pro available color */
 	int best_match_index = 0;
 	int best_match_value = 1024;
 	for (int i = 0; i < COLORCOUNT; i++) {
-		int d = ColorConverter::LAB_compare_RGB(velocitycolors[i].Red(), velocitycolors[i].Green(), velocitycolors[i].Blue(), c.Red(), c.Green(), c.Blue());
-		if (d < best_match_value) {
+		int comparison = ColorConverter::LAB_compare_RGB(velocitycolors[i], color);
+		if (comparison < best_match_value) {
 			best_match_index = i;
-			best_match_value = d;
+			best_match_value = comparison;
 		}
-		// std::cout << std::setw(4) << (int)(velocitycolors[i].Red()) << " " << std::setw(4) << (int)(velocitycolors[i].Green()) << " " << std::setw(4) << (int)(velocitycolors[i].Blue()) << "  |  " << std::setw(4) << (int)(c.Red()) << " " << std::setw(4) << (int)(c.Green()) << " " << std::setw(4) << (int)(c.Blue()) << "  |  " << std::setw(4) << i << " - " << std::setw(4) << d << std::endl;
 	}
-
-	// std::cout << best_match_index << " " << best_match_value << std::endl;
 
 	return best_match_index;
 };
 
-char get_color_velocity(wxColor c) {
+char get_color_velocity(wxColor color) {
 	/* Take a wxColor and find the matching velocity of a Launchpad Pro available color */
 	for (int i = 0; i < COLORCOUNT; i++) {
-		if (c == velocitycolors[i]) return i;
+		if (color == velocitycolors[i]) return i;
 	}
 
 	return -1;
