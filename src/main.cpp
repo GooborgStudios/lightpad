@@ -28,6 +28,9 @@
 #include <wx/gdicmn.h>
 #include <wx/artprov.h>
 
+#include "Magick++.h"
+#include "RtMidi.h"
+
 #include "Helpers.h"
 #include "FilePanel.h"
 #include "DisplayPanel.h"
@@ -65,6 +68,12 @@ wxIMPLEMENT_APP(MainApp); // Tell wxWidgets to commence our app
 
 // Construct and display main window frame
 bool MainApp::OnInit() {
+	Magick::InitializeMagick(NULL);
+
+	int launchpad_status = launchpad->connect();
+	// if (launchpad_status < 0) launchpad->disconnect();
+	/*else*/ launchpad->setPulse(176, LAUNCHPAD_PRO_SIDE_LED_ID, 53);
+
 	MainFrame *frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800,600));
 	frame->SetMinSize(wxSize(800,600));
 	frame->Show(true);
@@ -147,6 +156,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 }
 
 void MainFrame::OnExit(wxCommandEvent& event) {
+	launchpad->disconnect();
 	Close(true); // Make sure that we safely quit the program
 }
 

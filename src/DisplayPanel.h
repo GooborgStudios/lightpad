@@ -37,13 +37,17 @@ class DisplayPanel: public wxPanel {
 		wxDECLARE_EVENT_TABLE();
 	private:
 		wxPanel *m_parent;
-		wxImage *launchpad_base_image;
-		wxImage *launchpad_button_image;
-		wxImage *launchpad_button_images[6];
-		wxBitmap resized;
-		Magick::Image bg_img;
-		Magick::Image button_img;
-		Magick::Image *button[6];
+		#if wxDRAW_BUTTONS
+			wxImage *launchpad_base_image;
+			wxImage *launchpad_button_image;
+			wxImage *launchpad_button_images[6];
+			wxBitmap resized;
+		#else
+			Magick::Image launchpad_base_image;
+			Magick::Image launchpad_button_image;
+			Magick::Image *launchpad_button_images[6];
+			Magick::Image resized;
+		#endif
 		std::string base_image_path;
 		std::string button_image_path;
 		int image_size;
@@ -53,7 +57,7 @@ class DisplayPanel: public wxPanel {
 		int panel_height;
 		int image_xpos;
 		int image_ypos;
-		wxColor button_colors[100];
+		int button_colors[100];
 };
 
 #endif

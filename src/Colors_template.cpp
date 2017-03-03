@@ -14,6 +14,8 @@
 #include "Colors.h"
 #include "Helpers.h"
 
+#include <iostream>
+#include <iomanip>
 #include <stdio.h>
 #include <math.h>
 
@@ -29,8 +31,10 @@ unsigned char get_closest_velocity(wxColor c) {
 			best_match_index = i;
 			best_match_value = d;
 		}
-		//std::cout << i << " - " << d << std::endl;
+		// std::cout << std::setw(4) << (int)(velocitycolors[i].Red()) << " " << std::setw(4) << (int)(velocitycolors[i].Green()) << " " << std::setw(4) << (int)(velocitycolors[i].Blue()) << "  |  " << std::setw(4) << (int)(c.Red()) << " " << std::setw(4) << (int)(c.Green()) << " " << std::setw(4) << (int)(c.Blue()) << "  |  " << std::setw(4) << i << " - " << std::setw(4) << d << std::endl;
 	}
+
+	// std::cout << best_match_index << " " << best_match_value << std::endl;
 
 	return best_match_index;
 };

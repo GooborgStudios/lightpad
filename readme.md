@@ -1,4 +1,4 @@
-# Lightpad {#index}
+# Lightpad
 Software Designed, Developed, and Published by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3, ©2017 [Nightwave Studios](https://www.nightwave.co), all rights reserved.
 Additional support from [LaunchpadFun](http://www.launchpadfun.com/en/).
 
@@ -47,5 +47,5 @@ The software is mainly developed on a mid-2014 MacBook Pro, 2.5GHz Intel i7 with
 Supported Operating Systems:
 
 * Mac OS
-* Windows
+* Windows (possibly broken at the moment)
 * Linux/Unix (untested)
