@@ -13,8 +13,11 @@ set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+aux_source_directory(src source_file_list)
+set(SOURCE_FILES "")
 
 set(wxDRAW_BUTTONS 0)
 if(wxDRAW_BUTTONS EQUAL 1)
@@ -27,7 +30,7 @@ add_executable(midiout src/midiout.cpp src/Helpers.cpp)
 add_executable(GenerateNoteButtonMap src/GenerateNoteButtonMap.cpp)
 
 add_custom_target(Colors ALL DEPENDS src/Colors.cpp)
-add_custom_command(OUTPUT src/Colors.cpp COMMAND python "${CMAKE_CURRENT_SOURCE_DIR}/sample_colors.py" WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DEPENDS src/Colors_template.cpp references/rgbcolors1.png references/rgbcolors2.png sample_colors.py VERBATIM) # COMMENT "Generating color mapping with sample_colors.py"
+add_custom_command(OUTPUT src/Colors.cpp COMMAND python "${CMAKE_CURRENT_SOURCE_DIR}/sample_colors.py" WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DEPENDS src/Colors.cpp.in references/rgbcolors1.png references/rgbcolors2.png sample_colors.py VERBATIM) # COMMENT "Generating color mapping with sample_colors.py"
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
@@ -72,3 +75,8 @@ target_link_libraries(midiout "rtmidi")
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/midifile)
 target_link_libraries(lightpad "midifile")
 target_link_libraries(midiout "midifile")
+
+foreach(f ${source_file_list})
+	list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/${f}")
+endforeach()
+add_custom_target(oclint oclint -p ${CMAKE_CURRENT_SOURCE_DIR} -enable-clang-static-analyzer -enable-global-analysis -report-type html -o oclint_result.html -max-priority-1 1000 -max-priority-2 2000 -max-priority-3 3000 ${SOURCE_FILES} DEPENDS src/* compile_commands.json WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."

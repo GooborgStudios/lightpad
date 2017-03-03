@@ -11,9 +11,13 @@ cmake_install.cmake
 CMakeFiles/
 CMakeScripts/
 CMakeCache.txt
+compile_commands.json
 Makefile
 *.xcodeproj
 *.build
+
+oclint/
+./*.plist
 
 doxygen/
 doxygen.err.log
