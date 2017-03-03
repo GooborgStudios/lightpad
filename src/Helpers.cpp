@@ -112,7 +112,6 @@ int Launchpad::connect() {
 	outport = getMidiPort(OUTPORT_NAME, midiout);
 
 	if ( (inport == -1) || (outport == -1) ) {
-		std::cout << "Launchpad not found!  Is it plugged in and turned on?\n";
 		delete midiin;
 		delete midiout;
 		return -1;

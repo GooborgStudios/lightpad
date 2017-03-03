@@ -51,6 +51,7 @@ int main() {
 	LaunchpadPro *lp = new LaunchpadPro();
 	int lp_status = lp->connect();
 	if (lp_status < 0) {
+		std::cout << "Launchpad not found!  Is it plugged in and turned on?\n";
 		return 1;
 	}
 
