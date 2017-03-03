@@ -46,7 +46,8 @@ class MainFrame: public wxFrame {
 		void OnAbout(wxCommandEvent& event);
 		void OnSaveRequest(wxCommandEvent& event);
 		void OnSelectFile(wxCommandEvent& event);
-		wxDECLARE_EVENT_TABLE(); // Initialize event listener
+
+	wxDECLARE_EVENT_TABLE(); // Initialize event listener
 };
 
 wxIMPLEMENT_APP(MainApp); // Tell wxWidgets to commence our app
@@ -55,9 +56,8 @@ wxIMPLEMENT_APP(MainApp); // Tell wxWidgets to commence our app
 bool MainApp::OnInit() {
 	Magick::InitializeMagick(NULL);
 
-	int launchpad_status = launchpad->connect();
-	// if (launchpad_status < 0) launchpad->disconnect();
-	/*else*/ launchpad->setPulse(LAUNCHPAD_PRO_SIDE_LED_ID, 53);
+	if (launchpad->connect() < 0) launchpad->disconnect();
+	else launchpad->setPulse(LAUNCHPAD_PRO_SIDE_LED_ID, 53);
 
 	MainFrame *frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800,600));
 	frame->SetMinSize(wxSize(800,600));
@@ -102,7 +102,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	// Toolbar
 	wxBitmap lightpad_icon(wxT("graphics/icons/icon_24.png"), wxBITMAP_TYPE_PNG);
-	wxBitmap add(wxT("graphics/icons/add.png"), wxBITMAP_TYPE_PNG);
 
 	wxToolBar *toolbar = CreateToolBar(wxTB_FLAT);
 

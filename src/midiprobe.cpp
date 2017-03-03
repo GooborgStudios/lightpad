@@ -13,20 +13,33 @@
 	#error "Unknown/unsupported compiler/operating system"
 #endif
 
-
 #include <iostream>
 #include <cstdlib>
 
 #include "RtMidi.h"
 
+RtMidiIn  *midiin = 0;
+RtMidiOut *midiout = 0;
+
+void quit(int error_code) {
+	delete midiin;
+	delete midiout;
+	exit(error_code);
+}
+
+void quit(int error_code, RtMidiError &error) {
+	error.printMessage();
+	quit(error_code);
+}
+
+void quit() {
+	quit(0);
+}
+
 int main() {
 	std::cout << "Operating System: " << OPERATING_SYSTEM << std::endl;
-	RtMidiIn  *midiin = 0;
-	RtMidiOut *midiout = 0;
 	// RtMidiIn constructor
-	try {
-		midiin = new RtMidiIn();
-	}
+	try midiin = new RtMidiIn();
 	catch ( RtMidiError &error ) {
 		error.printMessage();
 		exit( EXIT_FAILURE );
@@ -40,8 +53,7 @@ int main() {
 			portName = midiin->getPortName(i);
 		}
 		catch ( RtMidiError &error ) {
-			error.printMessage();
-			goto cleanup;
+			quit(1, error);
 		}
 		std::cout << "  Input Port #" << i+1 << ": " << portName << '\n';
 	}
@@ -67,10 +79,7 @@ int main() {
 		std::cout << "  Output Port #" << i+1 << ": " << portName << '\n';
 	}
 	std::cout << '\n';
-	// Clean up
- cleanup:
+
  	std::cin.ignore();
-	delete midiin;
-	delete midiout;
-	return 0;
+	return quit(0);
 }
