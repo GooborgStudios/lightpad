@@ -5,21 +5,19 @@
 // https://www.nightwave.co/lightpad
 //
 
-#include <iostream>
-#include <cstdlib>
-
 #ifdef _WIN32
-	//define something for Windows (32-bit and 64-bit, this part is common)
 	#define OPERATING_SYSTEM "Windows"
-	#ifdef _WIN64
-		//define something for Windows (64-bit only)
-	#endif
 #elif __APPLE__
-	//define something for Mac (and Linux(?))
 	#define OPERATING_SYSTEM "macOS"
 #else
 	#error "Unknown/unsupported compiler/operating system"
 #endif
+
+
+#include <iostream>
+#include <cstdlib>
+
+#include "RtMidi.h"
 
 int main() {
 	std::cout << "Operating System: " << OPERATING_SYSTEM << std::endl;
