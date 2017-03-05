@@ -55,6 +55,7 @@ wxIMPLEMENT_APP(MainApp); // Tell wxWidgets to commence our app
 // Construct and display main window frame
 bool MainApp::OnInit() {
 	Magick::InitializeMagick(NULL);
+	wxImage::AddHandler(new wxPNGHandler); // Enable PNG support(?)
 
 	if (launchpad->connect() < 0) launchpad->disconnect();
 	else launchpad->setPulse(LAUNCHPAD_PRO_SIDE_LED_ID, 53);
@@ -68,30 +69,21 @@ bool MainApp::OnInit() {
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 		: wxFrame(NULL, ID_Frame_Main, title, pos, size) {
 
-	wxImage::AddHandler(new wxPNGHandler); // Enable PNG support(?)
-
-	#ifdef WINDOWS
-        SetIcon(wxIcon(wxT("graphics/icons/icon.ico")));
-    #else
-        #ifdef MACOS
-            SetIcon(wxIcon(wxT("graphics/icons/icon.icns")));
-        #else
-            SetIcon(wxIcon(wxT("graphics/icons/icon_64.png")));
-        #endif
-	#endif
+	wxBitmap lightpad_icon(wxT("graphics/icons/icon_24.png"), wxBITMAP_TYPE_PNG);
+	SetIcon(wxIcon(APP_ICON));
 
 	// Initialize the menubar and attach keyboard shortcuts
 	// wxWidgets automatically maps Ctrl to Cmd for us to enable cross-platform compatibility
+	wxMenuBar *menuBar = new wxMenuBar;
 	wxMenu *menuFile = new wxMenu;
+	wxMenu *menuHelp = new wxMenu;
 	menuFile->Append(ID_Menu_Hello, "&Hello...\tCtrl-H",
 					 "Help string shown in status bar for this menu item");
 	menuFile->Append(ID_Menu_Save, "&Save\tCtrl-S",
 					 "Saves the file");
 	menuFile->AppendSeparator();
 	menuFile->Append(wxID_EXIT);
-	wxMenu *menuHelp = new wxMenu;
 	menuHelp->Append(wxID_ABOUT);
-	wxMenuBar *menuBar = new wxMenuBar;
 	menuBar->Append(menuFile, "&File");
 	menuBar->Append(menuHelp, "&Help");
 	SetMenuBar(menuBar);
@@ -101,10 +93,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	SetStatusText("Lightpad - Nightwave Studios");
 
 	// Toolbar
-	wxBitmap lightpad_icon(wxT("graphics/icons/icon_24.png"), wxBITMAP_TYPE_PNG);
-
 	wxToolBar *toolbar = CreateToolBar(wxTB_FLAT);
-
 	toolbar->AddTool(ID_Menu_About, wxT("About"), lightpad_icon);
 	toolbar->Realize();
 
@@ -112,29 +101,21 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	// Main window elements
 	m_parent = new wxPanel(this, ID_Panel_Main);
-	wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
-
 	m_fp = new FilePanel(m_parent);
 	m_pp = new PropertiesPanel(m_parent);
 	m_dp = new DisplayPanel(m_parent);
-
-	hbox->Add(m_fp, 1, wxEXPAND | wxLEFT, PADDING);
-	hbox->Add(m_dp, 4, wxEXPAND | wxALL, PADDING);
-	hbox->Add(m_pp, 0, wxEXPAND | wxRIGHT, PADDING);
-
-	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-
 	m_tlp = new TimelinePanel(m_parent);
 
-	vbox->Add(hbox, 3, wxEXPAND | wxALL, PADDING);
-	vbox->Add(m_tlp, 1, wxEXPAND | wxALL, PADDING);
+	wxBoxSizer *top_half = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
-	m_parent->SetSizer(vbox);
+	top_half->Add(m_fp, 1, wxEXPAND | wxLEFT, PADDING);
+	top_half->Add(m_dp, 4, wxEXPAND | wxALL, PADDING);
+	top_half->Add(m_pp, 0, wxEXPAND | wxRIGHT, PADDING);
+	sizer->Add(top_half, 3, wxEXPAND | wxALL, PADDING);
+	sizer->Add(m_tlp, 1, wxEXPAND | wxALL, PADDING);
 
-	// wxBitmap TempBitmap;
-	// TempBitmap.LoadFile("background.png",wxBITMAP_TYPE_PNG);
-	// wxBackgroundBitmap * Background = new wxBackgroundBitmap(TempBitmap);
-	// m_parent->PushEventHandler(Background);
+	m_parent->SetSizer(sizer);
 
 	Bind(FILE_SELECT, &MainFrame::OnSelectFile, this, ID_Frame_Main);
 }

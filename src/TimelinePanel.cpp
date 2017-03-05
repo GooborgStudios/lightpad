@@ -90,7 +90,8 @@ void TimelinePanel::ChangeNoteColor(wxColourPickerEvent &event) {
 void TimelinePanel::OnSingleSelectCell(wxGridEvent& event) {
 	grid->SelectBlock(event.GetRow(), event.GetCol(), event.GetRow(), event.GetCol());
 
-	wxColourPickerEvent evt(this, ID_TimelinePanel_TimelineGrid, grid->GetCellBackgroundColour(event.GetRow(), event.GetCol()));
+	wxColourPickerEvent evt(this, ID_TimelinePanel_TimelineGrid,
+		grid->GetCellBackgroundColour(event.GetRow(), event.GetCol()));
 	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Properties), evt);
 }
 

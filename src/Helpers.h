@@ -10,7 +10,7 @@
 #ifdef _WIN32 // Windows
 	#define WINDOWS
 	#include <windows.h>
-
+	#define APP_ICON "graphics/icons/icon.ico"
 	#ifdef _WIN64 // Windows 64-bit
 		#define WINDOWS_64
 	#else // Windows 32-bit
@@ -18,8 +18,10 @@
 	#endif
 #elif __APPLE__ // macOS
 	#define MACOS
+	#define APP_ICON "graphics/icons/icon.icns"
 #else // Linux, Unix, POSIX, iOS, Android...
 	#warning "Unknown/unsupported compiler/operating system"
+	#define APP_ICON "graphics/icons/icon_64.png"
 #endif
 
 #include <wx/wxprec.h>

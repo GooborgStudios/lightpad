@@ -24,11 +24,18 @@
 #include "Helpers.h"
 
 int BPM = 120;
-bool done = false;
 
-static void finish(int ignore) {
-	done = ignore > 0;
+void finish(int code) {
+	int err_code = 0;
+	if (code == -1) err_code = 1;
+	launchpad->disconnect();
 	std::cout << std::endl;
+	exit(err_code);
+}
+
+void launchpad_not_found_quit() {
+	std::cout << "Launchpad not found!  Is it plugged in and turned on?" << std::endl;
+	finish(-1);
 }
 
 void playback_file(const char *file) {
@@ -58,19 +65,16 @@ int main() {
 	double stamp;
 	srand(time(NULL));
 
-	if (launchpad->connect() < 0) {
-		std::cout << "Launchpad not found!  Is it plugged in and turned on?" << std::endl;
-		return 1;
-	}
+	if (launchpad->connect() < 0) launchpad_not_found_quit();
 	launchpad->setPulse(LAUNCHPAD_PRO_SIDE_LED_ID, 53); // Pulse side LED
 
 	std::cout << "Playing MIDI File..." << std::endl;
 	playback_file("../references/Light_Output_Test.mid");
 	std::cout << "Completed MIDI file playback!" << std::endl << std::endl;
 
-	(void) signal(SIGINT, finish); // Install an interrupt handler function.
+	(void)signal(SIGINT, finish); // Install an interrupt handler function.
 	std::cout << "Reading MIDI from port ... quit with Ctrl-C." << std::endl;
-	while (!done) {
+	while (true) {
 		stamp = launchpad->getMessage(&message_in);
 		nBytes = message_in.size();
 		if (nBytes > 0) {
@@ -87,6 +91,5 @@ int main() {
 		usleep( 10000 ); // Sleep for 10 milliseconds ... platform-dependent.
 	}
 
-	launchpad->disconnect();
 	return 0;
 }

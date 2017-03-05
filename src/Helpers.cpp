@@ -360,7 +360,8 @@ double ColorConverter::XYZ2H(double q) {
 }
 
 // Compare two RGB colors via LAB
-double ColorConverter::LAB_compare_RGB(int red1, int grn1, int blu1, int red2, int grn2, int blu2) {
+double ColorConverter::LAB_compare_RGB(int red1, int grn1, int blu1, int red2, 
+		int grn2, int blu2) {
 	double lum1, apt1, bpt1, lum2, apt2, bpt2;
 	RGB2LAB(red1, grn1, blu1, &lum1, &apt1, &bpt1);
 	RGB2LAB(red2, grn2, blu2, &lum2, &apt2, &bpt2);
@@ -373,7 +374,8 @@ double ColorConverter::LAB_compare_RGB(wxColor col1, wxColor col2) {
 }
 
 // RGB<>HSL color conversion
-void ColorConverter::RGB2HSL(double red, double grn, double blu, double *hue, double *sat, double *lum) {
+void ColorConverter::RGB2HSL(double red, double grn, double blu, double *hue, 
+		double *sat, double *lum) {
 	double max = threeway_max(red, grn, blu);
 	double min = threeway_min(red, grn, blu);
 	*lum = (max + min) / 2;
@@ -390,7 +392,8 @@ void ColorConverter::RGB2HSL(double red, double grn, double blu, double *hue, do
 	}
 }
 
-void ColorConverter::HSL2RGB(double hue, double sat, double lum, double *red, double *grn, double *blu) {
+void ColorConverter::HSL2RGB(double hue, double sat, double lum, double *red, 
+		double *grn, double *blu) {
 	if (sat == 0.0) {
 		*red = *grn = *blu = lum; // achromatic
 	} else {
@@ -403,7 +406,8 @@ void ColorConverter::HSL2RGB(double hue, double sat, double lum, double *red, do
 }
 
 // RGB<>HSV color conversion
-void ColorConverter::RGB2HSV(double red, double grn, double blu, double *hue, double *sat, double *vel) {
+void ColorConverter::RGB2HSV(double red, double grn, double blu, double *hue, 
+		double *sat, double *vel) {
 	double max = threeway_max(red, grn, blu);
 	double min = threeway_min(red, grn, blu);
 	double diff = max - min;
@@ -420,7 +424,8 @@ void ColorConverter::RGB2HSV(double red, double grn, double blu, double *hue, do
 	}
 }
 
-void ColorConverter::HSV2RGB(double hue, double sat, double vel, double *red, double *grn, double *blu) {
+void ColorConverter::HSV2RGB(double hue, double sat, double vel, double *red, 
+		double *grn, double *blu) {
 	unsigned int i = (unsigned int)(hue * 6.0);
 	double f = hue * 6.0 - i;
 	double p = vel * (1.0 - sat);
@@ -460,49 +465,53 @@ void ColorConverter::CMYK2RGB(double cyan, double mgnta, double ylw, double blk,
 }
 
 // RGB<>YIQ color conversion
-void ColorConverter::RGB2YIQ(double red, double grn, double blu, double *ylum, double *iphs, double *quad) {
+void ColorConverter::RGB2YIQ(double red, double grn, double blu, double *ylum, 
+		double *iphs, double *quad) {
 	*ylum = 0.299 * red + 0.587 * grn + 0.114 * blu;
 	*iphs = 0.569 * red - 0.275 * grn - 0.322 * blu;
 	*quad = 0.211 * red - 0.523 * grn + 0.312 * blu;
 }
 
-void ColorConverter::YIQ2RGB(double ylum, double iphs, double quad, double *red, double *grn, double *blu) {
+void ColorConverter::YIQ2RGB(double ylum, double iphs, double quad, double *red, 
+		double *grn, double *blu) {
 	*red = ylum + 0.956 * iphs + 0.621 * quad;
 	*grn = ylum - 0.272 * iphs - 0.647 * quad;
 	*blu = ylum - 1.106 * iphs + 1.703 * quad;
 }
 
 // RGB<>XYZ color conversion
-void ColorConverter::RGB2XYZ(int red, int grn, int blu, double *xrsp, double *ylum, double *zblu) {
+void ColorConverter::RGB2XYZ(int red, int grn, int blu,
+		double *xrsp, double *ylum, double *zblu) {
 	double adapt = 0.003922;
-
-	*xrsp = (0.412424  * red + 0.357579 * grn + 0.180464  * blu) * adapt;
-	*ylum = (0.212656  * red + 0.715158 * grn + 0.0721856 * blu) * adapt;
-	*zblu = (0.0193324 * red + 0.119193 * grn + 0.950444  * blu) * adapt;
+	*xrsp = (0.412424 * red + 0.357579 * grn + 0.180464 * blu) * adapt;
+	*ylum = (0.212656 * red + 0.715158 * grn + 0.072186 * blu) * adapt;
+	*zblu = (0.019332 * red + 0.119193 * grn + 0.950444 * blu) * adapt;
 }
 
 void ColorConverter::XYZ2RGB(double xrsp, double ylum, double zblu, int *red, int *grn, int *blu) {
-	*red = xrsp * (1219569 / 395920) + ylum * (-608687 / 395920) + zblu * (-107481 / 197960);
-	*grn = xrsp * (-80960619 / 87888100) + ylum * (82435961 / 43944050) + zblu * (3976797 / 87888100);
-	*blu = xrsp * (93813 / 1774030) + ylum * (-180961 / 887015) + zblu * (107481 / 93370);
+	*red = xrsp * 3.080342  - ylum * 1.537399 - zblu * 0.542943;
+	*grn = xrsp * -0.921178 + ylum * 1.87593  + zblu * 0.045248;
+	*blu = xrsp * 0.052881  - ylum * 0.204011 + zblu * 1.15113;
 }
 
 // XYZ<>LAB color conversion
-void ColorConverter::XYZ2LAB(double xrsp, double ylum, double zblu, double *lum, double *apt, double *bpt) {
-	*lum = 116 * ColorConverter::XYZ2H(ylum / 1.0) - 16;
-	*apt = 500 * (ColorConverter::XYZ2H(xrsp / 0.950467) - ColorConverter::XYZ2H (ylum / 1.0));
-	*bpt = 200 * (ColorConverter::XYZ2H(ylum / 1.0) - ColorConverter::XYZ2H (zblu / 1.088969));
+void ColorConverter::XYZ2LAB(double xrsp, double ylum, double zblu,
+		double *lum, double *apt, double *bpt) {
+	*lum = 116 * ColorConverter::XYZ2H(ylum) - 16;
+	*apt = 500 * (ColorConverter::XYZ2H(xrsp / 0.950467) - ColorConverter::XYZ2H (ylum));
+	*bpt = 200 * (ColorConverter::XYZ2H(ylum) - ColorConverter::XYZ2H (zblu / 1.088969));
 }
 
-void ColorConverter::LAB2XYZ(double lum, double apt, double bpt, double *xrsp, double *ylum, double *zblu) {
+void ColorConverter::LAB2XYZ(double lum, double apt, double bpt,
+		double *xrsp, double *ylum, double *zblu) {
 	double XRSP, YLUM, ZBLU;
-	YLUM = lum * (1 / 116) + 16 / 116;
-	XRSP = apt * (1 / 500) + YLUM;
-	ZBLU = bpt * (-1 / 200) + YLUM;
+	YLUM = lum * (0.00862) + 0.137931;
+	XRSP = apt * (0.002) + YLUM;
+	ZBLU = bpt * (-0.005) + YLUM;
 
-	*xrsp = XRSP > 6 / 29 ? pow(XRSP, 3) : XRSP * (108 / 841) - 432 / 24389;
-	*ylum = lum > 8 ? pow(YLUM, 3) : lum * (27 / 24389);
-	*zblu = ZBLU > 6 / 29 ? pow(ZBLU, 3) : ZBLU * (108 / 841) - 432 / 24389;
+	*xrsp = XRSP > 0.206897 ? pow(XRSP, 3) : XRSP * (0.128419) - 0.017713;
+	*ylum = lum > 8 ? pow(YLUM, 3) : lum * (0.00110705646);
+	*zblu = ZBLU > 0.206897 ? pow(ZBLU, 3) : ZBLU * (0.128419) - 0.017713;
 }
 
 // RGB<>XYZ<>LAB color conversion
@@ -519,13 +528,15 @@ void ColorConverter::LAB2RGB(double lum, double apt, double bpt, int *red, int *
 }
 
 // HSL<>RGB<>HSV color conversion
-void ColorConverter::HSL2HSV(double hue, double sat, double lum, double *_hue, double *_sat, double *vel) {
+void ColorConverter::HSL2HSV(double hue, double sat, double lum,
+		double *_hue, double *_sat, double *vel) {
 	double red, grn, blu;
 	HSL2RGB(hue, sat, lum, &red, &grn, &blu);
 	RGB2HSV(red, grn, blu, _hue, _sat, vel);
 }
 
-void ColorConverter::HSV2HSL(double hue, double sat, double vel, double *_hue, double *_sat, double *lum) {
+void ColorConverter::HSV2HSL(double hue, double sat, double vel,
+		double *_hue, double *_sat, double *lum) {
 	double red, grn, blu;
 	HSV2RGB(hue, sat, vel, &red, &grn, &blu);
 	RGB2HSL(red, grn, blu, _hue, _sat, lum);
