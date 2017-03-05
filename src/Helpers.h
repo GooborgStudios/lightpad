@@ -1,6 +1,6 @@
 //
 // Lightpad - Helpers.h
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), WhoovesPON3.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
@@ -48,8 +48,8 @@ enum {
 	ID_TimelinePanel_TimelineGrid
 };
 
-double threeway_max(double a, double b, double c);
-double threeway_min(double a, double b, double c);
+double threeway_max(double val_a, double val_b, double val_c);
+double threeway_min(double val_a, double val_b, double val_c);
 double val_in_range(double val, double min, double max);
 int val_in_range(int val, int min, int max);
 int closest_two_power(int current_size, int min_range, int max_range);
@@ -60,8 +60,8 @@ int button_to_note(int button);
 class Note {
 	public:
 		Note();
-		Note(int pos, int col, int t);
-		Note(int pos, int col, int t, int dur);
+		Note(int pos, int col, int start);
+		Note(int pos, int col, int start, int dur);
 		int position; // Note position
 		int color; // Velocity
 		int time; // Note start time

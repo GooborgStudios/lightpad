@@ -1,6 +1,6 @@
 //
 // Lightpad - midiprobe.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), WhoovesPON3.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
@@ -10,7 +10,8 @@
 #elif __APPLE__
 	#define OPERATING_SYSTEM "macOS"
 #else
-	#error "Unknown/unsupported compiler/operating system"
+	#warning "Unknown/unsupported compiler/operating system"
+	#define OPERATING_SYSTEM "UNKNOWN"
 #endif
 
 #include <iostream>
@@ -18,68 +19,59 @@
 
 #include "RtMidi.h"
 
-RtMidiIn  *midiin = 0;
+RtMidiIn *midiin = 0;
 RtMidiOut *midiout = 0;
 
-void quit(int error_code) {
+void quit(int code) {
 	delete midiin;
 	delete midiout;
-	exit(error_code);
+	exit(code);
 }
-
-void quit(int error_code, RtMidiError &error) {
+void quit(RtMidiError &error) {
 	error.printMessage();
-	quit(error_code);
+	quit(1);
 }
-
 void quit() {
 	quit(0);
 }
 
 int main() {
-	std::cout << "Operating System: " << OPERATING_SYSTEM << std::endl;
-	// RtMidiIn constructor
-	try midiin = new RtMidiIn();
-	catch ( RtMidiError &error ) {
-		error.printMessage();
-		exit( EXIT_FAILURE );
+	std::cout << "Operating System: " << OPERATING_SYSTEM << std::endl << std::endl;
+
+	try {
+		midiin = new RtMidiIn();
+		midiout = new RtMidiOut();
+	} catch (RtMidiError &error) {
+		quit(error);
 	}
+
 	// Check inputs.
 	unsigned int nPorts = midiin->getPortCount();
-	std::cout << "\nThere are " << nPorts << " MIDI input sources available.\n";
+	std::cout << "There are " << nPorts << " MIDI input ports available:" << std::endl;
 	std::string portName;
 	for ( unsigned int i=0; i<nPorts; i++ ) {
 		try {
 			portName = midiin->getPortName(i);
+		} catch (RtMidiError &error) {
+			quit(error);
 		}
-		catch ( RtMidiError &error ) {
-			quit(1, error);
-		}
-		std::cout << "  Input Port #" << i+1 << ": " << portName << '\n';
+		std::cout << " - Input Port #" << i+1 << ": " << portName << std::endl;
 	}
-	// RtMidiOut constructor
-	try {
-		midiout = new RtMidiOut();
-	}
-	catch ( RtMidiError &error ) {
-		error.printMessage();
-		exit( EXIT_FAILURE );
-	}
+	std::cout << std::endl;
+
 	// Check outputs.
 	nPorts = midiout->getPortCount();
-	std::cout << "\nThere are " << nPorts << " MIDI output ports available.\n";
+	std::cout << "There are " << nPorts << " MIDI output ports available:" << std::endl;
 	for ( unsigned int i=0; i<nPorts; i++ ) {
 		try {
 			portName = midiout->getPortName(i);
+		} catch (RtMidiError &error) {
+			quit(error);
 		}
-		catch (RtMidiError &error) {
-			error.printMessage();
-			goto cleanup;
-		}
-		std::cout << "  Output Port #" << i+1 << ": " << portName << '\n';
+		std::cout << " - Output Port #" << i+1 << ": " << portName << std::endl;
 	}
-	std::cout << '\n';
+	std::cout << std::endl;
 
- 	std::cin.ignore();
-	return quit(0);
+ 	std::cin.ignore(); // Wait for keypress before quitting
+	quit(0);
 }

@@ -1,6 +1,6 @@
 //
 // Lightpad - FilePanel.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), WhoovesPON3.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
@@ -85,9 +85,9 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 			std::string filetype("audio/midi"); // XXX Use file extension instead
 		#endif
 		if (filetype == "audio/midi") { // Only add if a MIDI file
-			int i = 2;
-			if (filetype == "text/plain") i = 3;
-			filelistbox->AppendItem(files, filename, i);
+			int icon_type = 2;
+			if (filetype == "text/plain") icon_type = 3;
+			filelistbox->AppendItem(files, filename, icon_type);
 		}
 		cont = dir.GetNext(&filename);
 	}

@@ -1,6 +1,6 @@
 //
 // Lightpad - Helpers.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), WhoovesPON3.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
@@ -37,12 +37,12 @@ const int note_button_size = sizeof(note_button_map)/sizeof(int);
 // End generate block
 
 // Math helpers
-double threeway_max(double a, double b, double c) {
-	return std::max(a, std::max(b, c));
+double threeway_max(double val_a, double val_b, double val_c) {
+	return std::max(val_a, std::max(val_b, val_c));
 }
 
-double threeway_min(double a, double b, double c) {
-	return std::min(a, std::min(b, c));
+double threeway_min(double val_a, double val_b, double val_c) {
+	return std::min(val_a, std::min(val_b, val_c));
 }
 
 double val_in_range(double val, double min, double max) {
@@ -55,14 +55,14 @@ int val_in_range(int val, int min, int max) {
 
 // closest_two_power() written by Eric Busch (Origami1105) on 1/19/2017
 int closest_two_power(int current_size, int min_range, int max_range) {
-	int pow_two = 1, i = 1;
+	int pow_two = 1, power = 1;
 
 	while (true) {
 		// increment the power of 2 if the value is still smaller
 		// than current_size, if it is no longer smaller than
 		// current_size, set success to true so that the loop ends
 		if ((pow_two < min_range) || (pow_two < max_range && pow_two < current_size))
-			pow_two = pow(2, i++);
+			pow_two = pow(2, power++);
 		else
 			return pow_two;
 	}
@@ -87,17 +87,17 @@ Note::Note() {
 	duration = 0;
 }
 
-Note::Note(int pos, int col, int t) {
+Note::Note(int pos, int col, int start) {
 	position = pos;
 	color = col;
-	time = t;
+	time = start;
 	duration = 0;
 }
 
-Note::Note(int pos, int col, int t, int dur) {
+Note::Note(int pos, int col, int start, int dur) {
 	position = pos;
 	color = col;
-	time = t;
+	time = start;
 	duration = dur;
 }
 
@@ -112,18 +112,18 @@ int LaunchpadBase::connect() {
 	inport = getMidiPort(INPORT_NAME, midiin);
 	outport = getMidiPort(OUTPORT_NAME, midiout);
 
-	if ( (inport == -1) || (outport == -1) ) {
+	if ((inport == -1) || (outport == -1)) {
 		delete midiin;
 		delete midiout;
 		return -1;
 	}
 
 	// Open (Pro) Standalone port.
-	midiin->openPort( inport );
-	midiout->openPort( outport );
+	midiin->openPort(inport);
+	midiout->openPort(outport);
 
 	// Don't ignore sysex, timing, or active sensing messages.
-	midiin->ignoreTypes( false, false, false );
+	midiin->ignoreTypes(false, false, false);
 
 	connected = true;
 	return 0;
@@ -144,11 +144,11 @@ bool LaunchpadBase::isConnected() {
 int LaunchpadBase::getMidiPort(std::string name, RtMidi *ports) {
 	for ( unsigned int i=0; i < ports->getPortCount(); i++ ) {
 		try {
-			if ( ports->getPortName(i).compare(0, name.length(), name) == 0 ) {
+			if (ports->getPortName(i).compare(0, name.length(), name) == 0) {
 				return i;
 			}
 		}
-		catch ( RtMidiError &error ) {
+		catch (RtMidiError &error) {
 			error.printMessage();
 			return -1;
 		}
@@ -164,15 +164,15 @@ double LaunchpadBase::getMessage(std::vector<unsigned char> *message_in) {
 
 void LaunchpadBase::sendMessage(unsigned int first_byte, ...) {
 	if (isConnected() == false) return;
-	va_list vl;
-	va_start(vl, first_byte);
+	va_list varlist;
+	va_start(varlist, first_byte);
 	unsigned char byte = first_byte;
 	while (byte != MIDI_MESSAGE_SYSEX_END || byte < 0 || byte > 255) {
 		message.push_back(byte);
-		byte = va_arg(vl, unsigned int);
+		byte = va_arg(varlist, unsigned int);
 	}
 	if (byte >= 0 && byte <= 255) message.push_back(byte);
-	va_end(vl);
+	va_end(varlist);
 
 	midiout->sendMessage(&message);
 	message.erase(message.begin(), message.begin()+message.size());
@@ -199,9 +199,8 @@ LaunchpadPro::LaunchpadPro() {
 }
 
 int LaunchpadPro::connect() {
-	int x = LaunchpadBase::connect();
-
-	if (x == 0) {
+	int status = LaunchpadBase::connect();
+	if (status == 0) {
 		std::vector<unsigned char> device_info;
 
 		// Inquiry Device
@@ -214,13 +213,12 @@ int LaunchpadPro::connect() {
 		sendMessage( 240, 0, 32, 41, 2, 16, 33, 1, 247 ); // Set to Standalone Mode
 		sendMessage( 240, 0, 32, 41, 2, 16, 44, 3, 247 ); // Set to Programmer Mode
 	}
-	return x;
+	return status;
 }
 
 void LaunchpadPro::disconnect() {
 	sendMessage( 240, 0, 32, 41, 2, 16, 14, 0, 247 ); // Clear all LED colors
 	sendMessage( 240, 0, 32, 41, 2, 16, 44, 0, 247 ); // Set to Note Mode
-
 	LaunchpadBase::disconnect();
 }
 
@@ -270,7 +268,7 @@ void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
 }
 
 LaunchpadS::LaunchpadS() {
-	#ifdef _WIN32 // May not be accurate!
+	#ifdef WINDOWS // May not be accurate!
 		INPORT_NAME = "Launchpad S";
 		OUTPORT_NAME = "Launchpad S";
 	#else
@@ -280,9 +278,9 @@ LaunchpadS::LaunchpadS() {
 }
 
 int LaunchpadS::connect() {
-	int x = LaunchpadBase::connect();
+	int status = LaunchpadBase::connect();
 
-	if (x == 0) {
+	if (status == 0) {
 		std::vector<unsigned char> device_info;
 
 		// Inquiry Device
@@ -294,12 +292,11 @@ int LaunchpadS::connect() {
 
 		sendMessage( 176, 0, 2, -1 ); // Set to Drum Rack Mode
 	}
-	return x;
+	return status;
 }
 
 void LaunchpadS::disconnect() {
 	sendMessage( 176, 0, 0, -1 ); // Reset
-
 	LaunchpadBase::disconnect();
 }
 
@@ -332,12 +329,12 @@ void LaunchpadS::setPulse(unsigned char light, unsigned char color) {
 }
 
 // Conversion helpers
-double ColorConverter::Hue2RGB(double p, double q, double hue) {
-  if (hue < 0.0) hue += 1;
-  if (hue > 1.0) hue -= 1;
-  if (hue < 1/6.0) return p + (q - p) * 6.0 * hue;
-  if (hue < 1/2.0) return q;
-  if (hue < 2/3.0) return p + (q - p) * (2/3.0 - hue) * 6.0;
+double ColorConverter::Hue2RGB(double p, double q, double t) {
+  if (t < 0.0) t += 1;
+  if (t > 1.0) t -= 1;
+  if (t < 1/6.0) return p + (q - p) * 6.0 * t;
+  if (t < 1/2.0) return q;
+  if (t < 2/3.0) return p + (q - p) * (2/3.0 - t) * 6.0;
   return p;
 }
 
@@ -348,10 +345,10 @@ double ColorConverter::XYZ2H(double q) {
 
 // Compare two RGB colors via LAB
 double ColorConverter::LAB_compare_RGB(int red1, int grn1, int blu1, int red2, int grn2, int blu2) {
-	double l1, a1, b1, l2, a2, b2;
-	RGB2LAB(red1, grn1, blu1, &l1, &a1, &b1);
-	RGB2LAB(red2, grn2, blu2, &l2, &a2, &b2);
-	return pow((l1 - l2), 2) + pow((a1 - a2), 2) + pow((b1 - b2), 2);
+	double lum1, apt1, bpt1, lum2, apt2, bpt2;
+	RGB2LAB(red1, grn1, blu1, &lum1, &apt1, &bpt1);
+	RGB2LAB(red2, grn2, blu2, &lum2, &apt2, &bpt2);
+	return pow((lum1 - lum2), 2) + pow((apt1 - apt2), 2) + pow((bpt1 - bpt2), 2);
 }
 
 double ColorConverter::LAB_compare_RGB(wxColor col1, wxColor col2) {
@@ -368,13 +365,12 @@ void ColorConverter::RGB2HSL(double red, double grn, double blu, double *hue, do
 	if (max == min) {
 		*hue = *sat = 0.0; // achromatic
 	} else {
-		double d = max - min;
-		*sat = *lum > 0.5 ? d / (2.0 - max - min) : d / (max + min);
-		if (max == red) *hue = (grn - blu) / d + (grn < blu ? 6.0 : 0.0);
-		else if (max == grn) *hue = (blu - red) / d + 2.0;
-		else if (max == blu) *hue = (red - grn) / d + 4.0;
-
-		*hue /= 6;
+		double diff = max - min;
+		*sat = *lum > 0.5 ? diff / (2.0 - max - min) : diff / (max + min);
+		if (max == red) *hue = (grn - blu) / diff + (grn < blu ? 6.0 : 0.0);
+		else if (max == grn) *hue = (blu - red) / diff + 2.0;
+		else if (max == blu) *hue = (red - grn) / diff + 4.0;
+		*hue /= 6.0;
 	}
 }
 
@@ -394,18 +390,16 @@ void ColorConverter::HSL2RGB(double hue, double sat, double lum, double *red, do
 void ColorConverter::RGB2HSV(double red, double grn, double blu, double *hue, double *sat, double *vel) {
 	double max = threeway_max(red, grn, blu);
 	double min = threeway_min(red, grn, blu);
+	double diff = max - min;
 	*vel = max;
-
-	double d = max - min;
-	*sat = max == 0.0 ? 0.0 : d / max;
+	*sat = max == 0.0 ? 0.0 : diff / max;
 
 	if (max == min) {
 		*hue = 0.0; // achromatic
 	} else {
-		if (max == red) *hue = (grn - blu) / d + (grn < blu ? 6.0 : 0.0);
-		else if (max == grn) *hue = (blu - red) / d + 2.0;
-		else if (max == blu) *hue = (red - grn) / d + 4.0;
-
+		if (max == red) *hue = (grn - blu) / diff + (grn < blu ? 6.0 : 0.0);
+		else if (max == grn) *hue = (blu - red) / diff + 2.0;
+		else if (max == blu) *hue = (red - grn) / diff + 4.0;
 		*hue /= 6.0;
 	}
 }
@@ -419,45 +413,27 @@ void ColorConverter::HSV2RGB(double hue, double sat, double vel, double *red, do
 
 	switch (i % 6) {
 		case 0:
-			*red = vel;
-			*grn = t;
-			*blu = p;
-			break;
+			*red = vel; *grn = t; *blu = p; break;
 		case 1:
-			*red = q;
-			*grn = vel;
-			*blu = p;
-			break;
+			*red = q; *grn = vel; *blu = p; break;
 		case 2:
-			*red = p;
-			*grn = vel;
-			*blu = t;
-			break;
+			*red = p; *grn = vel; *blu = t; break;
 		case 3:
-			*red = p;
-			*grn = q;
-			*blu = vel;
-			break;
+			*red = p; *grn = q; *blu = vel; break;
 		case 4:
-			*red = t;
-			*grn = p;
-			*blu = vel;
-			break;
+			*red = t; *grn = p; *blu = vel; break;
 		default: // case 5
-			*red = vel;
-			*grn = p;
-			*blu = q;
-			break;
+			*red = vel; *grn = p; *blu = q; break;
 	}
 }
 
 // RGB<>CMYK color conversion
 void ColorConverter::RGB2CMYK(double red, double grn, double blu,
 		double *cyan, double *mgnta, double *ylw, double *blk) {
-	*blk = 1.0 - threeway_max(red, grn, blu);
-	*cyan =  (1.0 - red - *blk) / (1.0 - *blk);
+	*blk   =  1.0 - threeway_max(red, grn, blu);
+	*cyan  = (1.0 - red - *blk) / (1.0 - *blk);
 	*mgnta = (1.0 - grn - *blk) / (1.0 - *blk);
-	*ylw =   (1.0 - blu - *blk) / (1.0 - *blk);
+	*ylw   = (1.0 - blu - *blk) / (1.0 - *blk);
 }
 
 void ColorConverter::CMYK2RGB(double cyan, double mgnta, double ylw, double blk,
@@ -490,9 +466,9 @@ void ColorConverter::RGB2XYZ(int red, int grn, int blu, double *xrsp, double *yl
 }
 
 void ColorConverter::XYZ2RGB(double xrsp, double ylum, double zblu, int *red, int *grn, int *blu) {
-	*red = xrsp * (1219569 / 395920)     + ylum * (-608687 / 395920)    + zblu * (-107481 / 197960);
+	*red = xrsp * (1219569 / 395920) + ylum * (-608687 / 395920) + zblu * (-107481 / 197960);
 	*grn = xrsp * (-80960619 / 87888100) + ylum * (82435961 / 43944050) + zblu * (3976797 / 87888100);
-	*blu = xrsp * (93813 / 1774030)      + ylum * (-180961 / 887015)    + zblu * (107481 / 93370);
+	*blu = xrsp * (93813 / 1774030) + ylum * (-180961 / 887015) + zblu * (107481 / 93370);
 }
 
 // XYZ<>LAB color conversion
@@ -503,14 +479,14 @@ void ColorConverter::XYZ2LAB(double xrsp, double ylum, double zblu, double *lum,
 }
 
 void ColorConverter::LAB2XYZ(double lum, double apt, double bpt, double *xrsp, double *ylum, double *zblu) {
-	double X, Y, Z;
-	Y = lum * (1 / 116) + 16 / 116;
-	X = apt * (1 / 500) + Y;
-	Z = bpt * (-1 / 200) + Y;
+	double XRSP, YLUM, ZBLU;
+	YLUM = lum * (1 / 116) + 16 / 116;
+	XRSP = apt * (1 / 500) + YLUM;
+	ZBLU = bpt * (-1 / 200) + YLUM;
 
-	*xrsp = X > 6 / 29 ? X * X * X : X * (108 / 841) - 432 / 24389;
-	*ylum = lum > 8 ? Y * Y * Y : lum * (27 / 24389);
-	*zblu = Z > 6 / 29 ? Z * Z * Z : Z * (108 / 841) - 432 / 24389;
+	*xrsp = XRSP > 6 / 29 ? pow(XRSP, 3) : XRSP * (108 / 841) - 432 / 24389;
+	*ylum = lum > 8 ? pow(YLUM, 3) : lum * (27 / 24389);
+	*zblu = ZBLU > 6 / 29 ? pow(ZBLU, 3) : ZBLU * (108 / 841) - 432 / 24389;
 }
 
 // RGB<>XYZ<>LAB color conversion

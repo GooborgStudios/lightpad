@@ -1,6 +1,6 @@
 //
 // Lightpad - DisplayPanel.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), WhoovesPON3.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
@@ -77,7 +77,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	paintNow();
 }
 
-void DisplayPanel::paintEvent(wxPaintEvent &evt) {
+void DisplayPanel::paintEvent(wxPaintEvent &event) {
 	// depending on your system you may need to look at double-buffered dcs
 	wxPaintDC dc(this);
 	render(dc);
