@@ -5,6 +5,8 @@
 // https://www.nightwave.co/lightpad
 //
 
+#include "FilePanel.h"
+
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
@@ -23,7 +25,6 @@
 	#include <magic.h>
 #endif
 
-#include "FilePanel.h"
 #include "Helpers.h"
 
 wxDEFINE_EVENT(FILE_SELECT, wxCommandEvent);

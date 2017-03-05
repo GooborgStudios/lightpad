@@ -5,14 +5,14 @@
 // https://www.nightwave.co/lightpad
 //
 
+#include "GridRenderer.h"
+
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
 #endif
 
 #include <wx/grid.h>
-
-#include "GridRenderer.h"
 
 LightpadGridRenderer::LightpadGridRenderer() {
 	pen_width = 1;

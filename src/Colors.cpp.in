@@ -5,6 +5,8 @@
 // https://www.nightwave.co/lightpad
 //
 
+#include "Colors.h"
+
 #include <iostream>
 #include <iomanip>
 #include <cstdio>
@@ -15,7 +17,6 @@
 	#include <wx/wx.h>
 #endif
 
-#include "Colors.h"
 #include "Helpers.h"
 
 !XXX!

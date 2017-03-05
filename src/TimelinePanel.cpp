@@ -5,6 +5,8 @@
 // https://www.nightwave.co/lightpad
 //
 
+#include "TimelinePanel.h"
+
 #include <iostream>
 
 #include <wx/wxprec.h>
@@ -15,7 +17,6 @@
 #include <wx/grid.h>
 #include <wx/clrpicker.h>
 
-#include "TimelinePanel.h"
 #include "Colors.h"
 #include "Helpers.h"
 #include "GridRenderer.h"

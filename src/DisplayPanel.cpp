@@ -5,6 +5,8 @@
 // https://www.nightwave.co/lightpad
 //
 
+#include "DisplayPanel.h"
+
 #include <sstream>
 #include <algorithm>
 #include <cmath>
@@ -22,7 +24,6 @@
 
 #include "Magick++.h"
 
-#include "DisplayPanel.h"
 #include "Colors.h"
 #include "Helpers.h"
 

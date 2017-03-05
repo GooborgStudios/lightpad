@@ -125,10 +125,9 @@ class LaunchpadS : public LaunchpadBase {
 
 extern LaunchpadPro *launchpad;
 
-class ColorConverter {
-	// All converters take values from 0.0 to 1.0
+class ColorConverter { // All converters take values from 0.0 to 1.0
 	public:
-		// Conversion helpers
+		// Color conversion helpers
 		static double Hue2RGB(double p, double q, double t);
 		static double XYZ2H(double q);
 		static double LAB_compare_RGB(int red1, int grn1, int blu1, int red2, int grn2, int blu2);
