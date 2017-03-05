@@ -1,162 +1,403 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CodeBlocks_project_file>
-	<FileVersion major="1" minor="6" />
+	<FileVersion major="1" minor="6"/>
 	<Project>
-		<Option title="lightpad" />
-		<Option pch_mode="2" />
-		<Option compiler="gcc" />
+		<Option title="lightpad"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\CMakeModules\;"/>
 		<Build>
-			<Target title="Debug">
-				<Option output="bin/Debug/lightpad" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
-				<Option type="1" />
-				<Option compiler="gcc" />
-				<Option projectLinkerOptionsRelation="2" />
+			<Target title="all">
+				<Option working_dir="E:/My Documents/GitHub/lightpad"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="oclint">
+				<Option working_dir="E:/My Documents/GitHub/lightpad"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 oclint"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="lightpad">
+				<Option output="E:/My Documents/GitHub/lightpad/bin/lightpad.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/My Documents/GitHub/lightpad/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-g" />
-					<Add option="-D__WXDEBUG__" />
-					<Add option="-D__GNUWIN32__" />
-					<Add option="-D__WXMSW__" />
-					<Add option="-DWXUSINGDLL" />
-					<Add option="-DwxUSE_UNICODE" />
-					<Add option="-DWIN32" />
-					<Add option="-D_WIN32" />
+					<Add option="-D__NO_INLINE__"/>
+					<Add option="-DWXUSINGDLL"/>
+					<Add option="-DUNICODE"/>
+					<Add option="-D_UNICODE"/>
+					<Add option="-DLIB_GRAPHICSMAGICK"/>
+					<Add directory="E:/My Documents/GitHub/lightpad"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include"/>
+					<Add directory="C:/wxWidgets-3.1.0/lib/gcc_dll/mswu"/>
+					<Add directory="C:/wxWidgets-3.1.0/include"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16/Magick++/lib"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/rtmidi"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/midifile"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../mingw32/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/backward"/>
 				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 lightpad"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
 			</Target>
-			<Target title="Release">
-				<Option output="bin/Release/lightpad" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
-				<Option type="0" />
-				<Option compiler="gcc" />
-				<Option projectLinkerOptionsRelation="2" />
+			<Target title="lightpad/fast">
+				<Option output="E:/My Documents/GitHub/lightpad/bin/lightpad.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/My Documents/GitHub/lightpad/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-D__NO_INLINE__"/>
+					<Add option="-DWXUSINGDLL"/>
+					<Add option="-DUNICODE"/>
+					<Add option="-D_UNICODE"/>
+					<Add option="-DLIB_GRAPHICSMAGICK"/>
+					<Add directory="E:/My Documents/GitHub/lightpad"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include"/>
+					<Add directory="C:/wxWidgets-3.1.0/lib/gcc_dll/mswu"/>
+					<Add directory="C:/wxWidgets-3.1.0/include"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16/Magick++/lib"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/rtmidi"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/midifile"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../mingw32/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/backward"/>
 				</Compiler>
-				<Linker>
-					<Add option="-s" />
-				</Linker>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 lightpad/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
 			</Target>
-			<Target title="LaunchpadProMidi">
-				<Option output="bin/midiout" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/midiout/" />
-				<Option type="1" />
-				<Option compiler="gcc" />
+			<Target title="midiout">
+				<Option output="E:/My Documents/GitHub/lightpad/bin/midiout.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/My Documents/GitHub/lightpad/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D__NO_INLINE__"/>
+					<Add option="-DWXUSINGDLL"/>
+					<Add option="-DUNICODE"/>
+					<Add option="-D_UNICODE"/>
+					<Add option="-DLIB_GRAPHICSMAGICK"/>
+					<Add directory="E:/My Documents/GitHub/lightpad"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include"/>
+					<Add directory="C:/wxWidgets-3.1.0/lib/gcc_dll/mswu"/>
+					<Add directory="C:/wxWidgets-3.1.0/include"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16/Magick++/lib"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/rtmidi"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/midifile"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../mingw32/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 midiout"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
 			</Target>
-			<Target title="LaunchpadProMidiProbe">
-				<Option output="bin/midiprobe" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/midiprobe/" />
-				<Option type="1" />
-				<Option compiler="gcc" />
+			<Target title="midiout/fast">
+				<Option output="E:/My Documents/GitHub/lightpad/bin/midiout.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/My Documents/GitHub/lightpad/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D__NO_INLINE__"/>
+					<Add option="-DWXUSINGDLL"/>
+					<Add option="-DUNICODE"/>
+					<Add option="-D_UNICODE"/>
+					<Add option="-DLIB_GRAPHICSMAGICK"/>
+					<Add directory="E:/My Documents/GitHub/lightpad"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include"/>
+					<Add directory="C:/wxWidgets-3.1.0/lib/gcc_dll/mswu"/>
+					<Add directory="C:/wxWidgets-3.1.0/include"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16/Magick++/lib"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/rtmidi"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/midifile"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../mingw32/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 midiout/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="midiprobe">
+				<Option output="E:/My Documents/GitHub/lightpad/bin/midiprobe.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/My Documents/GitHub/lightpad/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D__NO_INLINE__"/>
+					<Add option="-DWXUSINGDLL"/>
+					<Add option="-DUNICODE"/>
+					<Add option="-D_UNICODE"/>
+					<Add option="-DLIB_GRAPHICSMAGICK"/>
+					<Add directory="E:/My Documents/GitHub/lightpad"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include"/>
+					<Add directory="C:/wxWidgets-3.1.0/lib/gcc_dll/mswu"/>
+					<Add directory="C:/wxWidgets-3.1.0/include"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16/Magick++/lib"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/rtmidi"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/midifile"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../mingw32/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 midiprobe"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="midiprobe/fast">
+				<Option output="E:/My Documents/GitHub/lightpad/bin/midiprobe.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/My Documents/GitHub/lightpad/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D__NO_INLINE__"/>
+					<Add option="-DWXUSINGDLL"/>
+					<Add option="-DUNICODE"/>
+					<Add option="-D_UNICODE"/>
+					<Add option="-DLIB_GRAPHICSMAGICK"/>
+					<Add directory="E:/My Documents/GitHub/lightpad"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include"/>
+					<Add directory="C:/wxWidgets-3.1.0/lib/gcc_dll/mswu"/>
+					<Add directory="C:/wxWidgets-3.1.0/include"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16/Magick++/lib"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/rtmidi"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/midifile"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../mingw32/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 midiprobe/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="GenerateNoteButtonMap">
+				<Option output="E:/My Documents/GitHub/lightpad/bin/GenerateNoteButtonMap.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/My Documents/GitHub/lightpad/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D__NO_INLINE__"/>
+					<Add option="-DWXUSINGDLL"/>
+					<Add option="-DUNICODE"/>
+					<Add option="-D_UNICODE"/>
+					<Add option="-DLIB_GRAPHICSMAGICK"/>
+					<Add directory="E:/My Documents/GitHub/lightpad"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include"/>
+					<Add directory="C:/wxWidgets-3.1.0/lib/gcc_dll/mswu"/>
+					<Add directory="C:/wxWidgets-3.1.0/include"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16/Magick++/lib"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/rtmidi"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/midifile"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../mingw32/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 GenerateNoteButtonMap"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="GenerateNoteButtonMap/fast">
+				<Option output="E:/My Documents/GitHub/lightpad/bin/GenerateNoteButtonMap.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/My Documents/GitHub/lightpad/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D__NO_INLINE__"/>
+					<Add option="-DWXUSINGDLL"/>
+					<Add option="-DUNICODE"/>
+					<Add option="-D_UNICODE"/>
+					<Add option="-DLIB_GRAPHICSMAGICK"/>
+					<Add directory="E:/My Documents/GitHub/lightpad"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include"/>
+					<Add directory="C:/wxWidgets-3.1.0/lib/gcc_dll/mswu"/>
+					<Add directory="C:/wxWidgets-3.1.0/include"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16"/>
+					<Add directory="E:/Program Files/GraphicsMagick-1.3.25-Q16/Magick++/lib"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/rtmidi"/>
+					<Add directory="E:/My Documents/GitHub/lightpad/include/midifile"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/../../../../mingw32/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/4.9.3/include/c++/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 GenerateNoteButtonMap/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="E:/My Documents/GitHub/lightpad"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Colors">
+				<Option working_dir="E:/My Documents/GitHub/lightpad"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 Colors"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="E:/My Documents/GitHub/lightpad"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/My Documents/GitHub/lightpad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
 			</Target>
 		</Build>
-		<Compiler>
-			<Add option="-Wall" />
-			<Add option="-pipe" />
-			<Add option="-mthreads" />
-			<Add option="-D__GNUWIN32__" />
-			<Add option="-D__WXMSW__" />
-			<Add option="-DWXUSINGDLL" />
-			<Add option="-DwxUSE_UNICODE" />
-			<Add option="-DWIN32" />
-			<Add option="-D_WIN32" />
-			<Add option="-D__WINDOWS_MM__" />
-			<Add directory="$(#wx)/include" />
-			<Add directory="$(#wx)/lib/gcc_dll/mswu" />
-			<Add directory="include/rtmidi" />
-			<Add directory="include/midifile" />
-		</Compiler>
-		<ResourceCompiler>
-			<Add directory="$(#wx)/include" />
-			<Add directory="$(#wx)/lib/gcc_dll/mswu" />
-		</ResourceCompiler>
-		<Linker>
-			<Add option="-mthreads" />
-			<Add library="winmm" />
-			<Add library="libwxmsw31u.a" />
-			<Add library="librtmidi" />
-			<Add library="libmidifile" />
-			<Add directory="$(#wx)/lib/gcc_dll" />
-			<Add directory="libraries" />
-		</Linker>
-		<Unit filename="src/Colors.cpp">
-			<Option target="Release" />
-			<Option target="Debug" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/DisplayPanel.cpp">
+			<Option target="lightpad"/>
 		</Unit>
-		<Unit filename="src/Colors.h">
-			<Option target="Release" />
-			<Option target="Debug" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/DisplayPanel.h">
+			<Option target="lightpad"/>
 		</Unit>
-		<Unit filename="src/DisplayPanel.cpp">
-			<Option target="Release" />
-			<Option target="Debug" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/FilePanel.cpp">
+			<Option target="lightpad"/>
 		</Unit>
-		<Unit filename="src/DisplayPanel.h">
-			<Option target="Release" />
-			<Option target="Debug" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/FilePanel.h">
+			<Option target="lightpad"/>
 		</Unit>
-		<Unit filename="src/FilePanel.cpp">
-			<Option target="Release" />
-			<Option target="Debug" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/GenerateNoteButtonMap.cpp">
+			<Option target="GenerateNoteButtonMap"/>
 		</Unit>
-		<Unit filename="src/FilePanel.h">
-			<Option target="Release" />
-			<Option target="Debug" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/GridRenderer.cpp">
+			<Option target="lightpad"/>
 		</Unit>
-		<Unit filename="src/GridRenderer.cpp">
-			<Option target="Debug" />
-			<Option target="Release" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/GridRenderer.h">
+			<Option target="lightpad"/>
 		</Unit>
-		<Unit filename="src/GridRenderer.h">
-			<Option target="Debug" />
-			<Option target="Release" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/Helpers.cpp">
+			<Option target="lightpad"/>
+			<Option target="midiout"/>
+			<Option target="midiprobe"/>
 		</Unit>
-		<Unit filename="src/Helpers.cpp">
-			<Option target="Release" />
-			<Option target="LaunchpadProMidi" />
-			<Option target="Debug" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/Helpers.h">
+			<Option target="lightpad"/>
+			<Option target="midiout"/>
+			<Option target="midiprobe"/>
 		</Unit>
-		<Unit filename="src/Helpers.h">
-			<Option target="Release" />
-			<Option target="LaunchpadProMidi" />
-			<Option target="Debug" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/PropertiesPanel.cpp">
+			<Option target="lightpad"/>
 		</Unit>
-		<Unit filename="src/PropertiesPanel.cpp">
-			<Option target="Debug" />
-			<Option target="Release" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/PropertiesPanel.h">
+			<Option target="lightpad"/>
 		</Unit>
-		<Unit filename="src/PropertiesPanel.h">
-			<Option target="Debug" />
-			<Option target="Release" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/TimelinePanel.cpp">
+			<Option target="lightpad"/>
 		</Unit>
-		<Unit filename="src/TimelinePanel.cpp">
-			<Option target="Debug" />
-			<Option target="Release" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/TimelinePanel.h">
+			<Option target="lightpad"/>
 		</Unit>
-		<Unit filename="src/TimelinePanel.h">
-			<Option target="Debug" />
-			<Option target="Release" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/main.cpp">
+			<Option target="lightpad"/>
 		</Unit>
-		<Unit filename="src/main.cpp">
-			<Option target="Release" />
-			<Option target="Debug" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/midiout.cpp">
+			<Option target="midiout"/>
 		</Unit>
-		<Unit filename="src/midiout.cpp">
-			<Option target="LaunchpadProMidi" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/src/midiprobe.cpp">
+			<Option target="midiprobe"/>
 		</Unit>
-		<Unit filename="src/midiprobe.cpp">
-			<Option target="LaunchpadProMidiProbe" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="sample_colors.py">
-			<Option target="&lt;{~None~}&gt;" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/CMakeModules/FindGraphicsMagick.cmake">
+			<Option virtualFolder="CMake Files\CMakeModules\"/>
 		</Unit>
-		<Unit filename="tests/HelpersTest.h">
-			<Option target="&lt;{~None~}&gt;" />
+		<Unit filename="E:/My Documents/GitHub/lightpad/CMakeModules/FindLibMagic.cmake">
+			<Option virtualFolder="CMake Files\CMakeModules\"/>
 		</Unit>
-		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
-			<editor_config active="1" use_tabs="1" tab_indents="1" tab_width="4" indent="4" eol_mode="0" />
-		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

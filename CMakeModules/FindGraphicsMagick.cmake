@@ -27,7 +27,7 @@ SET(MAGICKWAND_FOUND    "NO" )
 FIND_PATH( MAGICK_INCLUDE_DIR
   NAMES "magick/magick.h"
   PATHS
-  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]/include"
+  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]"
   "$ENV{MAGICK_LOCATION}"
   "$ENV{MAGICK_LOCATION}/include"
   "$ENV{MAGICK_LOCATION}/include/GraphicsMagick"
@@ -42,7 +42,7 @@ FIND_PATH( MAGICK_INCLUDE_DIR
 FIND_PATH( MAGICK++_INCLUDE_DIR
   NAMES "Magick++.h"
   PATHS
-  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]/include"
+  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]\\Magick++\\lib"
   "$ENV{MAGICK++_LOCATION}"
   "$ENV{MAGICK++_LOCATION}/include"
   "$ENV{MAGICK_LOCATION}"
@@ -59,7 +59,7 @@ FIND_PATH( MAGICK++_INCLUDE_DIR
 FIND_PATH( MAGICKWAND_INCLUDE_DIR
   NAMES "wand/magick_wand.h" 
   PATHS
-  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]/include"
+  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]"
   "$ENV{MAGICKWAND_LOCATION}"
   "$ENV{MAGICKWAND_LOCATION}/include"
   "$ENV{MAGICK_LOCATION}"
@@ -76,7 +76,7 @@ FIND_PATH( MAGICKWAND_INCLUDE_DIR
 FIND_LIBRARY( Magick
   NAMES GraphicsMagick CORE_RL_magick_
   PATHS 
-  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]/lib"
+  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]"
   "$ENV{MAGICK_LOCATION}/magick/.libs"
   "$ENV{MAGICK_LOCATION}/lib"
   "$ENV{MAGICK_HOME}/lib"
@@ -92,7 +92,7 @@ FIND_LIBRARY( Magick
 FIND_LIBRARY( Magick++
   NAMES GraphicsMagick++ CORE_RL_Magick++_
   PATHS 
-  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]/lib"
+  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]"
   "$ENV{MAGICK++_LOCATION}/.libs"
   "$ENV{MAGICK_LOCATION}/.libs"
   "$ENV{MAGICK++_LOCATION}/lib"
@@ -110,7 +110,7 @@ FIND_LIBRARY( Magick++
 FIND_LIBRARY( MagickWand
   NAMES GraphicsMagickWand CORE_RL_MagickWand_
   PATHS 
-  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]/lib"
+  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GraphicsMagick\\Current;BinPath]"
   "$ENV{MAGICKWAND_LOCATION}/.libs"
   "$ENV{MAGICK_LOCATION}/.libs"
   "$ENV{MAGICKWAND_LOCATION}/lib"

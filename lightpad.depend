@@ -2144,15 +2144,17 @@
 	"wx/dynarray.h"
 	"wx/itemid.h"
 
-1487815695 source:e:\my documents\github\lightpad\src\colors.cpp
+1488674269 source:e:\my documents\github\lightpad\src\colors.cpp
+	<iostream>
+	<iomanip>
+	<cstdio>
+	<cmath>
 	<wx/wxprec.h>
 	<wx/wx.h>
 	"Colors.h"
-	"rgb2lab.cpp"
-	<stdio.h>
-	<math.h>
+	"Helpers.h"
 
-1487815695 e:\my documents\github\lightpad\src\colors.h
+1488674269 e:\my documents\github\lightpad\src\colors.h
 	<wx/wxprec.h>
 	<wx/wx.h>
 
@@ -2175,9 +2177,10 @@
 	<cmath>
 	"Helpers.h"
 
-1487815695 e:\my documents\github\lightpad\src\helpers.h
+1488674269 e:\my documents\github\lightpad\src\helpers.h
 	<wx/wxprec.h>
 	<wx/wx.h>
+	"RtMidi.h"
 
 1488085745 source:e:\my documents\github\lightpad\src\displaypanel.cpp
 	<wx/wxprec.h>
@@ -2302,4 +2305,10 @@
 	"wx/defs.h"
 	"wx/image.h"
 	"wx/bitmap.h"
+
+1488077099 e:\my documents\github\lightpad\include\rtmidi\rtmidi.h
+	<exception>
+	<iostream>
+	<string>
+	<vector>
 

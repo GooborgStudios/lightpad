@@ -9,6 +9,8 @@
 
 #ifdef _WIN32 // Windows
 	#define WINDOWS
+	#include <windows.h>
+
 	#ifdef _WIN64 // Windows 64-bit
 		#define WINDOWS_64
 	#else // Windows 32-bit
@@ -47,6 +49,10 @@ enum {
 	ID_PropertiesPanel_ColorSelector,
 	ID_TimelinePanel_TimelineGrid
 };
+
+#ifdef WINDOWS
+	void usleep(__int64 usec);
+#endif
 
 double threeway_max(double val_a, double val_b, double val_c);
 double threeway_min(double val_a, double val_b, double val_c);
