@@ -34,5 +34,5 @@ The software is mainly developed on a mid-2014 MacBook Pro, 2.5GHz Intel i7 with
 Supported Operating Systems:
 
 * Mac OS
-* Windows (possibly broken at the moment)
+* Windows (broken at the moment)
 * Linux/Unix (untested)
