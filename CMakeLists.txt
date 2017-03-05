@@ -85,4 +85,4 @@ target_link_libraries(midiout "midifile")
 foreach(f ${source_file_list})
 	list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/${f}")
 endforeach()
-add_custom_target(oclint oclint -p ${CMAKE_CURRENT_SOURCE_DIR} -enable-clang-static-analyzer -enable-global-analysis -report-type html -o oclint_result.html -max-priority-1 1000 -max-priority-2 2000 -max-priority-3 3000 ${SOURCE_FILES} DEPENDS src/* compile_commands.json WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."
+add_custom_target(oclint oclint -p ${CMAKE_CURRENT_SOURCE_DIR} ${SOURCE_FILES} DEPENDS src/* compile_commands.json WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."

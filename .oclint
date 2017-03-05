@@ -1,0 +1,8 @@
+output: oclint_result.html
+report-type: html
+max-priority-1: 10000
+max-priority-2: 20000
+max-priority-3: 30000
+enable-clang-static-analyzer: true
+enable-global-analysis: true
+allow-duplicated-violations: true

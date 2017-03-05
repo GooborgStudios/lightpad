@@ -4,6 +4,8 @@ RGB2LAB (Modified) | http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
 LibMagic           | https://github.com/threatstack/libmagic
 RtMidi             | http://www.music.mcgill.ca/~gary/rtmidi/
 Midifile           | http://midifile.sapp.org/
+GraphicsMagick     | http://www.graphicsmagick.org/
+OCLint             | http://www.oclint.org/
 
 Software:
 Sublime Text
