@@ -28,13 +28,17 @@ class DisplayPanel: public wxPanel {
 		void paintEvent(wxPaintEvent &evt);
 		void paintNow();
 		void OnSize(wxSizeEvent &event);
+		void startstop(wxCommandEvent &event);
 		void render(wxDC &dc);
 		float getButtonPosition(int digit);
 		void colorButton(int button, wxColor color);
 
 		wxDECLARE_EVENT_TABLE();
 	private:
+		void play_next_frame(wxTimerEvent &event);
+
 		wxPanel *m_parent;
+		wxTimer *m_timer;
 		#if wxDRAW_BUTTONS
 		wxImage *launchpad_base_image;
 		wxImage *launchpad_button_image;
@@ -56,4 +60,5 @@ class DisplayPanel: public wxPanel {
 		int image_xpos;
 		int image_ypos;
 		int button_colors[100];
+		int frame;
 };

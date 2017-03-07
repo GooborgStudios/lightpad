@@ -46,6 +46,7 @@ class MainFrame: public wxFrame {
 		void OnAbout(wxCommandEvent &event);
 		void OnSaveRequest(wxCommandEvent &event);
 		void OnSelectFile(wxCommandEvent &event);
+		void OnStartStop(wxCommandEvent &event);
 
 		wxDECLARE_EVENT_TABLE(); // Initialize event listener
 };
@@ -81,6 +82,8 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	                 "Help string shown in status bar for this menu item");
 	menuFile->Append(ID_Menu_Save, "&Save\tCtrl-S",
 	                 "Saves the file");
+	menuFile->Append(ID_Menu_PlayPause, "&Play/Pause\tSpace",
+	                 "Plays/pauses the animation");
 	menuFile->AppendSeparator();
 	menuFile->Append(wxID_EXIT);
 	menuHelp->Append(wxID_ABOUT);
@@ -143,12 +146,17 @@ void MainFrame::OnHello(wxCommandEvent &event) {
 	m_tlp->Update();
 }
 
+void MainFrame::OnStartStop(wxCommandEvent &event) {
+	event.Skip();
+}
+
 // Initialize event listeners
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
-	EVT_MENU(ID_Menu_Hello,   MainFrame::OnHello)
-	EVT_MENU(ID_Menu_Save,   MainFrame::OnSaveRequest)
+	EVT_MENU(ID_Menu_Hello, MainFrame::OnHello)
+	EVT_MENU(ID_Menu_Save, MainFrame::OnSaveRequest)
 	EVT_MENU(ID_Menu_About, MainFrame::OnAbout)
+	EVT_MENU(ID_Menu_PlayPause, MainFrame::OnStartStop)
 	EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
-	EVT_MENU(wxID_EXIT,  MainFrame::OnExit)
+	EVT_MENU(wxID_EXIT, MainFrame::OnExit)
 	EVT_COMMAND(ID_Frame_Main, FILE_SELECT, MainFrame::OnSelectFile)
 wxEND_EVENT_TABLE()

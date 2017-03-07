@@ -32,6 +32,8 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	: wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 
+	m_timer = new wxTimer(this, ID_DisplayPanel_Timer);
+
 	// Initialize variables
 	base_image_path = "graphics/launchpad_display/base/base_4096.png";
 	button_image_path = "graphics/launchpad_display/buttons/buttons_4096.png";
@@ -42,6 +44,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	panel_height = -1;
 	image_xpos = 0;
 	image_ypos = 0;
+	frame = 0;
 
 	#ifdef wxDRAW_BUTTONS
 #warning "wxDrawing not recommended!"
@@ -59,23 +62,23 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	}
 	#endif
 
-	wxColor rainbow[18];
-	for (int j = 0; j < 18; j++) {
-		int red = 0, grn = 0, blu = 0;
-		if (j >= 15) red = 255 * ((18 - j) / 3.0);
-		else red = 255 * ((j - 9) / 3.0);
-		if (j >= 12) grn = 255 * ((15 - j) / 3.0);
-		else grn = 255 * ((j - 3) / 3.0);
-		if (j >= 6) blu = 255 * ((9 - j) / 3.0);
-		else blu = 255 * ((j) / 3.0);
-		rainbow[j] = wxColor(val_in_range(red, 0, 255), val_in_range(grn, 0, 255), val_in_range(blu, 0,
-		                     255));
-	}
-	for (int i = 1; i < 99; i++) {
-		if (i == 9 || i == 90) continue;
-		int j = (i / 10) + (9 - (i % 10));
-		button_colors[i] = get_closest_velocity(rainbow[j]);
-	}
+	// wxColor rainbow[18];
+	// for (int j = 0; j < 18; j++) {
+	// 	int red = 0, grn = 0, blu = 0;
+	// 	if (j >= 15) red = 255 * ((18 - j) / 3.0);
+	// 	else red = 255 * ((j - 9) / 3.0);
+	// 	if (j >= 12) grn = 255 * ((15 - j) / 3.0);
+	// 	else grn = 255 * ((j - 3) / 3.0);
+	// 	if (j >= 6) blu = 255 * ((9 - j) / 3.0);
+	// 	else blu = 255 * ((j) / 3.0);
+	// 	rainbow[j] = wxColor(val_in_range(red, 0, 255), val_in_range(grn, 0, 255), val_in_range(blu, 0,
+	// 	                     255));
+	// }
+	// for (int i = 1; i < 99; i++) {
+	// 	if (i == 9 || i == 90) continue;
+	// 	int j = (i + / 10) + (9 - (i % 10));
+	// 	button_colors[i] = get_closest_velocity(rainbow[j]);
+	// }
 
 	paintNow();
 }
@@ -98,6 +101,17 @@ void DisplayPanel::OnSize(wxSizeEvent &event) {
 	event.Skip();
 }
 
+void DisplayPanel::startstop(wxCommandEvent &event) {
+	if (m_timer->IsRunning()) m_timer->Stop();
+	else m_timer->Start(1000 / 60);
+}
+
+void DisplayPanel::play_next_frame(wxTimerEvent &event) {
+	frame += 1;
+	std::cout << frame << std::endl;
+	Refresh();
+}
+
 void DisplayPanel::render(wxDC &dc) {
 	int neww, newh, ratio, new_image_size, min_fit_size;
 	wxColor bcolor;
@@ -112,6 +126,31 @@ void DisplayPanel::render(wxDC &dc) {
 	Magick::Image *current_button;
 	Magick::Geometry size;
 	#endif
+
+	for (int i = 1; i < 99; i++) {
+		if (i == 9 || i == 90) continue;
+		int x = i % 10;
+		int y = 9 - (i / 10);
+		int offset = std::abs(sin(frame * PI / 6) * 3);
+
+		if (x == 0 || y == 0 || x == 9 || y == 9) {
+			button_colors[i] = 0;
+		} else if (x == 3 || y == 3 || x == 6 || y == 6) {
+			if ((x == 3 || x == 6) && (y == 3 || y == 6)) {
+				button_colors[i] = 81;
+			} else {
+				// std::cout << x << "," << y << ": " << offset;
+				if (x < 3) offset += std::abs(sin(x + 1 * PI / 6) * 3);
+				if (x > 6) offset += std::abs(sin(x * PI / 6) * 3);
+				if (y < 3) offset += std::abs(sin(y + 1 * PI / 6) * 3);
+				if (y > 6) offset += std::abs(sin(y * PI / 6) * 3);
+				// std::cout << " - " << offset << std::endl;
+				button_colors[i] = 45 + offset;
+			}
+		} else {
+			button_colors[i] = 0;
+		}
+	}
 
 	dc.GetSize(&neww, &newh);
 	min_fit_size = std::min(neww, newh);
@@ -300,4 +339,6 @@ void DisplayPanel::colorButton(int button, wxColor color) {
 wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
 	EVT_PAINT(DisplayPanel::paintEvent)
 	EVT_SIZE(DisplayPanel::OnSize)
+	EVT_MENU(ID_Menu_PlayPause, DisplayPanel::startstop)
+	EVT_TIMER(ID_DisplayPanel_Timer, DisplayPanel::play_next_frame)
 wxEND_EVENT_TABLE()

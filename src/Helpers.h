@@ -36,6 +36,8 @@
 #define MIDI_MESSAGE_SYSEX_END 247
 #define LAUNCHPAD_PRO_SIDE_LED_ID 99
 
+#define PI 3.14159265
+
 // Element IDs
 enum {
 	ID_Frame_Main,
@@ -47,9 +49,11 @@ enum {
 	ID_Menu_About,
 	ID_Menu_Hello,
 	ID_Menu_Save,
+	ID_Menu_PlayPause,
 	ID_FilePanel_Tree,
 	ID_PropertiesPanel_ColorSelector,
-	ID_TimelinePanel_TimelineGrid
+	ID_TimelinePanel_TimelineGrid,
+	ID_DisplayPanel_Timer
 };
 
 #ifdef WINDOWS
