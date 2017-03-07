@@ -40,16 +40,16 @@ void launchpad_not_found_quit() {
 
 void playback_file(const char *file) {
 	MidiFile midifile;
-	MidiEvent* mev;
+	MidiEvent *mev;
 	int color, deltatick;
 
 	midifile.read(file);
 	midifile.joinTracks();
-	
+
 	for (int event = 0; event < midifile[0].size(); event++) {
 		mev = &midifile[0][event];
 		if (event == 0) deltatick = mev->tick;
-		else deltatick = mev->tick - midifile[0][event-1].tick;
+		else deltatick = mev->tick - midifile[0][event - 1].tick;
 		if ((int)(*mev)[0] == 128 || (int)(*mev)[0] == 144) {
 			color = (int)(*mev)[2];
 			if ((int)(*mev)[0] == 128) color = 0;
@@ -84,10 +84,10 @@ int main() {
 				else launchpad->setPulse(message_in[1], color);
 			}
 			std::cout << std::fixed << std::setprecision(7) << stamp << " |   ";
-			for (int i=0; i<nBytes; i++) std::cout << std::setw(4) << (int)message_in[i];
+			for (int i = 0; i < nBytes; i++) std::cout << std::setw(4) << (int)message_in[i];
 			std::cout << std::endl;
 		}
-		
+
 		usleep( 10000 ); // Sleep for 10 milliseconds ... platform-dependent.
 	}
 

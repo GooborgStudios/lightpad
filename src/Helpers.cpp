@@ -24,20 +24,20 @@
 #include "RtMidi.h"
 
 #ifdef WINDOWS
-	#include <windows.h>
+#include <windows.h>
 
-	void usleep(__int64 usec) {
-		HANDLE timer;
-		LARGE_INTEGER ft;
+void usleep(__int64 usec) {
+	HANDLE timer;
+	LARGE_INTEGER ft;
 
-		// Convert to 100 nanosecond interval, negative value indicates relative time
-		ft.QuadPart = -(10*usec);
+	// Convert to 100 nanosecond interval, negative value indicates relative time
+	ft.QuadPart = -(10 * usec);
 
-		timer = CreateWaitableTimer(NULL, TRUE, NULL);
-		SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
-		WaitForSingleObject(timer, INFINITE);
-		CloseHandle(timer);
-	}
+	timer = CreateWaitableTimer(NULL, TRUE, NULL);
+	SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
+	WaitForSingleObject(timer, INFINITE);
+	CloseHandle(timer);
+}
 #endif
 
 LaunchpadPro *launchpad = new LaunchpadPro();
@@ -50,7 +50,7 @@ const int note_button_map[] = {
 	89, 79, 69, 59, 49, 39, 29, 19, 80, 70, 60, 50, 40, 30, 20, 10, 1, 2, 3, 4, 5, 6, 7, 8
 };
 const int note_button_offset = 28;
-const int note_button_size = sizeof(note_button_map)/sizeof(int);
+const int note_button_size = sizeof(note_button_map) / sizeof(int);
 // End generate block
 
 // Math helpers
@@ -88,11 +88,11 @@ int closest_two_power(int current_size, int min_range, int max_range) {
 // Note<>Button conversion
 int note_to_button(int note) {
 	if (note < note_button_offset || note > (note_button_size + note_button_offset)) return 0;
-	return note_button_map[note-note_button_offset];
+	return note_button_map[note - note_button_offset];
 }
 
 int button_to_note(int button) {
-	for (int i=0; i < note_button_size + note_button_offset; i++)
+	for (int i = 0; i < note_button_size + note_button_offset; i++)
 		if (note_button_map[i] == button) return i + note_button_offset;
 	return 0;
 }
@@ -159,13 +159,12 @@ bool LaunchpadBase::isConnected() {
 }
 
 int LaunchpadBase::getMidiPort(std::string name, RtMidi *ports) {
-	for ( unsigned int i=0; i < ports->getPortCount(); i++ ) {
+	for ( unsigned int i = 0; i < ports->getPortCount(); i++ ) {
 		try {
 			if (ports->getPortName(i).compare(0, name.length(), name) == 0) {
 				return i;
 			}
-		}
-		catch (RtMidiError &error) {
+		} catch (RtMidiError &error) {
 			error.printMessage();
 			return -1;
 		}
@@ -192,7 +191,7 @@ void LaunchpadBase::sendMessage(unsigned int first_byte, ...) {
 	va_end(varlist);
 
 	midiout->sendMessage(&message);
-	message.erase(message.begin(), message.begin()+message.size());
+	message.erase(message.begin(), message.begin() + message.size());
 }
 
 void LaunchpadBase::setColor(unsigned char light, unsigned char color) {
@@ -207,11 +206,11 @@ void LaunchpadBase::setPulse(unsigned char light, unsigned char color) {
 
 LaunchpadPro::LaunchpadPro() {
 	#ifdef _WIN32
-		INPORT_NAME = "MIDIIN2 (Launchpad Pro)";
-		OUTPORT_NAME = "MIDIOUT2 (Launchpad Pro)";
+	INPORT_NAME = "MIDIIN2 (Launchpad Pro)";
+	OUTPORT_NAME = "MIDIOUT2 (Launchpad Pro)";
 	#else
-		INPORT_NAME = "Launchpad Pro Standalone Port";
-		OUTPORT_NAME = "Launchpad Pro Standalone Port";
+	INPORT_NAME = "Launchpad Pro Standalone Port";
+	OUTPORT_NAME = "Launchpad Pro Standalone Port";
 	#endif
 }
 
@@ -249,7 +248,7 @@ void LaunchpadPro::setColor(unsigned char light, unsigned char color) {
 }
 
 void LaunchpadPro::setColor(unsigned char light,
-		unsigned char red, unsigned char green, unsigned char blue) {
+                            unsigned char red, unsigned char green, unsigned char blue) {
 	if (isConnected() == false) return;
 	sendMessage( 240, 0, 32, 41, 2, 16, 11, light, red, green, blue, 247 );
 }
@@ -265,9 +264,9 @@ void LaunchpadPro::setPulse(unsigned char light, unsigned char color) {
 }
 
 void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
-		std::string text) {
+                               std::string text) {
 	if (isConnected() == false) return;
-	
+
 	message.push_back(240);
 	message.push_back(0);
 	message.push_back(32);
@@ -281,16 +280,16 @@ void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
 	message.push_back(247);
 
 	midiout->sendMessage(&message);
-	message.erase(message.begin(), message.begin()+message.size());
+	message.erase(message.begin(), message.begin() + message.size());
 }
 
 LaunchpadS::LaunchpadS() {
 	#ifdef WINDOWS // May not be accurate!
-		INPORT_NAME = "Launchpad S";
-		OUTPORT_NAME = "Launchpad S";
+	INPORT_NAME = "Launchpad S";
+	OUTPORT_NAME = "Launchpad S";
 	#else
-		INPORT_NAME = "Launchpad S";
-		OUTPORT_NAME = "Launchpad S";
+	INPORT_NAME = "Launchpad S";
+	OUTPORT_NAME = "Launchpad S";
 	#endif
 }
 
@@ -337,7 +336,7 @@ void LaunchpadS::setColor(unsigned char light, unsigned char color) {
 	message.push_back(color);
 
 	midiout->sendMessage(&message);
-	message.erase(message.begin(), message.begin()+message.size());
+	message.erase(message.begin(), message.begin() + message.size());
 }
 
 void LaunchpadS::setPulse(unsigned char light, unsigned char color) {
@@ -349,9 +348,9 @@ void LaunchpadS::setPulse(unsigned char light, unsigned char color) {
 double ColorConverter::Hue2RGB(double p, double q, double t) {
 	if (t < 0.0) t += 1;
 	if (t > 1.0) t -= 1;
-	if (t < 1/6.0) return p + (q - p) * 6.0 * t;
-	if (t < 1/2.0) return q;
-	if (t < 2/3.0) return p + (q - p) * (2/3.0 - t) * 6.0;
+	if (t < 1 / 6.0) return p + (q - p) * 6.0 * t;
+	if (t < 1 / 2.0) return q;
+	if (t < 2 / 3.0) return p + (q - p) * (2 / 3.0 - t) * 6.0;
 	return p;
 }
 
@@ -362,7 +361,7 @@ double ColorConverter::XYZ2H(double q) {
 
 // Compare two RGB colors via LAB
 double ColorConverter::LAB_compare_RGB(int red1, int grn1, int blu1,
-		int red2, int grn2, int blu2) {
+                                       int red2, int grn2, int blu2) {
 	double lum1, apt1, bpt1, lum2, apt2, bpt2;
 	RGB2LAB(red1, grn1, blu1, &lum1, &apt1, &bpt1);
 	RGB2LAB(red2, grn2, blu2, &lum2, &apt2, &bpt2);
@@ -371,12 +370,12 @@ double ColorConverter::LAB_compare_RGB(int red1, int grn1, int blu1,
 
 double ColorConverter::LAB_compare_RGB(wxColor col1, wxColor col2) {
 	return LAB_compare_RGB(col1.Red(), col1.Green(), col1.Blue(),
-		col2.Red(), col2.Green(), col2.Blue());
+	                       col2.Red(), col2.Green(), col2.Blue());
 }
 
 // RGB<>HSL color conversion
 void ColorConverter::RGB2HSL(double red, double grn, double blu,
-		double *hue, double *sat, double *lum) {
+                             double *hue, double *sat, double *lum) {
 	double max = threeway_max(red, grn, blu);
 	double min = threeway_min(red, grn, blu);
 	*lum = (max + min) / 2;
@@ -394,21 +393,21 @@ void ColorConverter::RGB2HSL(double red, double grn, double blu,
 }
 
 void ColorConverter::HSL2RGB(double hue, double sat, double lum,
-		double *red, double *grn, double *blu) {
+                             double *red, double *grn, double *blu) {
 	if (sat == 0.0) {
 		*red = *grn = *blu = lum; // achromatic
 	} else {
 		double q = lum < 0.5 ? lum * (1 + sat) : lum + sat - lum * sat;
 		double p = 2.0 * lum - q;
-		*red = ColorConverter::Hue2RGB(p, q, hue + 1/3.0);
+		*red = ColorConverter::Hue2RGB(p, q, hue + 1 / 3.0);
 		*grn = ColorConverter::Hue2RGB(p, q, hue);
-		*blu = ColorConverter::Hue2RGB(p, q, hue - 1/3.0);
+		*blu = ColorConverter::Hue2RGB(p, q, hue - 1 / 3.0);
 	}
 }
 
 // RGB<>HSV color conversion
 void ColorConverter::RGB2HSV(double red, double grn, double blu,
-		double *hue, double *sat, double *vel) {
+                             double *hue, double *sat, double *vel) {
 	double max = threeway_max(red, grn, blu);
 	double min = threeway_min(red, grn, blu);
 	double diff = max - min;
@@ -426,7 +425,7 @@ void ColorConverter::RGB2HSV(double red, double grn, double blu,
 }
 
 void ColorConverter::HSV2RGB(double hue, double sat, double vel,
-		double *red, double *grn, double *blu) {
+                             double *red, double *grn, double *blu) {
 	unsigned int i = (unsigned int)(hue * 6.0);
 	double f = hue * 6.0 - i;
 	double p = vel * (1.0 - sat);
@@ -451,7 +450,7 @@ void ColorConverter::HSV2RGB(double hue, double sat, double vel,
 
 // RGB<>CMYK color conversion
 void ColorConverter::RGB2CMYK(double red, double grn, double blu, double *cyan,
-		double *mgnta, double *ylw, double *blk) {
+                              double *mgnta, double *ylw, double *blk) {
 	*blk   =  1.0 - threeway_max(red, grn, blu);
 	*cyan  = (1.0 - red - *blk) / (1.0 - *blk);
 	*mgnta = (1.0 - grn - *blk) / (1.0 - *blk);
@@ -459,7 +458,7 @@ void ColorConverter::RGB2CMYK(double red, double grn, double blu, double *cyan,
 }
 
 void ColorConverter::CMYK2RGB(double cyan, double mgnta, double ylw, double blk,
-		double *red, double *grn, double *blu) {
+                              double *red, double *grn, double *blu) {
 	*red = (1.0 - cyan)  / (1.0 - blk);
 	*grn = (1.0 - mgnta) / (1.0 - blk);
 	*blu = (1.0 - ylw)   / (1.0 - blk);
@@ -467,14 +466,14 @@ void ColorConverter::CMYK2RGB(double cyan, double mgnta, double ylw, double blk,
 
 // RGB<>YIQ color conversion
 void ColorConverter::RGB2YIQ(double red, double grn, double blu,
-		double *ylum, double *iphs, double *quad) {
+                             double *ylum, double *iphs, double *quad) {
 	*ylum = 0.299 * red + 0.587 * grn + 0.114 * blu;
 	*iphs = 0.569 * red - 0.275 * grn - 0.322 * blu;
 	*quad = 0.211 * red - 0.523 * grn + 0.312 * blu;
 }
 
 void ColorConverter::YIQ2RGB(double ylum, double iphs, double quad,
-		double *red, double *grn, double *blu) {
+                             double *red, double *grn, double *blu) {
 	*red = ylum + 0.956 * iphs + 0.621 * quad;
 	*grn = ylum - 0.272 * iphs - 0.647 * quad;
 	*blu = ylum - 1.106 * iphs + 1.703 * quad;
@@ -496,14 +495,14 @@ void ColorConverter::XYZ2RGB(double xrsp, double ylum, double zblu, int *red, in
 
 // XYZ<>LAB color conversion
 void ColorConverter::XYZ2LAB(double xrsp, double ylum, double zblu,
-		double *lum, double *apt, double *bpt) {
+                             double *lum, double *apt, double *bpt) {
 	*lum = 116 * ColorConverter::XYZ2H(ylum) - 16;
 	*apt = 500 * (ColorConverter::XYZ2H(xrsp / 0.950467) - ColorConverter::XYZ2H (ylum));
 	*bpt = 200 * (ColorConverter::XYZ2H(ylum) - ColorConverter::XYZ2H (zblu / 1.088969));
 }
 
 void ColorConverter::LAB2XYZ(double lum, double apt, double bpt,
-		double *xrsp, double *ylum, double *zblu) {
+                             double *xrsp, double *ylum, double *zblu) {
 	double XRSP, YLUM, ZBLU;
 	YLUM = lum * (0.00862) + 0.137931;
 	XRSP = apt * (0.002) + YLUM;
@@ -529,14 +528,14 @@ void ColorConverter::LAB2RGB(double lum, double apt, double bpt, int *red, int *
 
 // HSL<>RGB<>HSV color conversion
 void ColorConverter::HSL2HSV(double hue, double sat, double lum,
-		double *_hue, double *_sat, double *vel) {
+                             double *_hue, double *_sat, double *vel) {
 	double red, grn, blu;
 	HSL2RGB(hue, sat, lum, &red, &grn, &blu);
 	RGB2HSV(red, grn, blu, _hue, _sat, vel);
 }
 
 void ColorConverter::HSV2HSL(double hue, double sat, double vel,
-		double *_hue, double *_sat, double *lum) {
+                             double *_hue, double *_sat, double *lum) {
 	double red, grn, blu;
 	HSV2RGB(hue, sat, vel, &red, &grn, &blu);
 	RGB2HSL(red, grn, blu, _hue, _sat, lum);
@@ -544,14 +543,14 @@ void ColorConverter::HSV2HSL(double hue, double sat, double vel,
 
 // HSL<>RGB<>CMYK color conversion
 void ColorConverter::HSL2CMYK(double hue, double sat, double lum,
-		double *cyan, double *mgnta, double *ylw, double *blk) {
+                              double *cyan, double *mgnta, double *ylw, double *blk) {
 	double red, grn, blu;
 	HSL2RGB(hue, sat, lum, &red, &grn, &blu);
 	RGB2CMYK(red, grn, blu, cyan, mgnta, ylw, blk);
 }
 
 void ColorConverter::CMYK2HSL(double cyan, double mgnta, double ylw, double blk,
-		double *hue, double *sat, double *lum) {
+                              double *hue, double *sat, double *lum) {
 	double red, grn, blu;
 	CMYK2RGB(cyan, mgnta, ylw, blk, &red, &grn, &blu);
 	RGB2HSL(red, grn, blu, hue, sat, lum);
@@ -559,14 +558,14 @@ void ColorConverter::CMYK2HSL(double cyan, double mgnta, double ylw, double blk,
 
 // HSV<>RGB<>CMYK color conversion
 void ColorConverter::HSV2CMYK(double hue, double sat, double vel,
-		double *cyan, double *mgnta, double *ylw, double *blk) {
+                              double *cyan, double *mgnta, double *ylw, double *blk) {
 	double red, grn, blu;
 	HSV2RGB(hue, sat, vel, &red, &grn, &blu);
 	RGB2CMYK(red, grn, blu, cyan, mgnta, ylw, blk);
 }
 
 void ColorConverter::CMYK2HSV(double cyan, double mgnta, double ylw, double blk,
-		double *hue, double *sat, double *vel) {
+                              double *hue, double *sat, double *vel) {
 	double red, grn, blu;
 	CMYK2RGB(cyan, mgnta, ylw, blk, &red, &grn, &blu);
 	RGB2HSV(red, grn, blu, hue, sat, vel);
@@ -574,14 +573,14 @@ void ColorConverter::CMYK2HSV(double cyan, double mgnta, double ylw, double blk,
 
 // HSL<>RGB<>YIQ color conversion
 void ColorConverter::HSL2YIQ(double hue, double sat, double lum,
-		double *ylum, double *iphs, double *quad) {
+                             double *ylum, double *iphs, double *quad) {
 	double red, grn, blu;
 	HSL2RGB(hue, sat, lum, &red, &grn, &blu);
 	RGB2YIQ(red, grn, blu, ylum, iphs, quad);
 }
 
 void ColorConverter::YIQ2HSL(double ylum, double iphs, double quad,
-		double *hue, double *sat, double *lum) {
+                             double *hue, double *sat, double *lum) {
 	double red, grn, blu;
 	YIQ2RGB(ylum, iphs, quad, &red, &grn, &blu);
 	RGB2HSL(red, grn, blu, hue, sat, lum);
@@ -589,14 +588,14 @@ void ColorConverter::YIQ2HSL(double ylum, double iphs, double quad,
 
 // HSV<>RGB<>YIQ color conversion
 void ColorConverter::HSV2YIQ(double hue, double sat, double vel,
-		double *ylum, double *iphs, double *quad) {
+                             double *ylum, double *iphs, double *quad) {
 	double red, grn, blu;
 	HSV2RGB(hue, sat, vel, &red, &grn, &blu);
 	RGB2YIQ(red, grn, blu, ylum, iphs, quad);
 }
 
 void ColorConverter::YIQ2HSV(double ylum, double iphs, double quad,
-		double *hue, double *sat, double *vel) {
+                             double *hue, double *sat, double *vel) {
 	double red, grn, blu;
 	YIQ2RGB(ylum, iphs, quad, &red, &grn, &blu);
 	RGB2HSV(red, grn, blu, hue, sat, vel);
@@ -604,14 +603,14 @@ void ColorConverter::YIQ2HSV(double ylum, double iphs, double quad,
 
 // CMYK<>RGB<>YIQ color conversion
 void ColorConverter::CMYK2YIQ(double cyan, double mgnta, double ylw, double blk,
-		double *ylum, double *iphs, double *quad) {
+                              double *ylum, double *iphs, double *quad) {
 	double red, grn, blu;
 	CMYK2RGB(cyan, mgnta, ylw, blk, &red, &grn, &blu);
 	RGB2YIQ(red, grn, blu, ylum, iphs, quad);
 }
 
 void ColorConverter::YIQ2CMYK(double ylum, double iphs, double quad,
-		double *cyan, double *mgnta, double *ylw, double *blk) {
+                              double *cyan, double *mgnta, double *ylw, double *blk) {
 	double red, grn, blu;
 	YIQ2RGB(ylum, iphs, quad, &red, &grn, &blu);
 	RGB2CMYK(red, grn, blu, cyan, mgnta, ylw, blk);

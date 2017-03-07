@@ -27,12 +27,12 @@ wxGridCellRenderer *LightpadGridRenderer::Clone() const {
 }
 
 wxSize LightpadGridRenderer::GetBestSize(wxGrid &grid, wxGridCellAttr &attr,
-			wxDC &dc, int row, int col) {
+        wxDC &dc, int row, int col) {
 	return wxSize(0, 0);
 }
 
 void LightpadGridRenderer::Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc,
-			const wxRect &rect, int row, int col, bool isSelected) {
+                                const wxRect &rect, int row, int col, bool isSelected) {
 	wxPen pen = *wxTRANSPARENT_PEN;
 	if (isSelected) pen = *wxWHITE_PEN;
 	pen.SetWidth(pen_width);
@@ -46,6 +46,6 @@ void LightpadGridRenderer::Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc,
 		pen.SetWidth(pen_width);
 		dc.SetPen(pen);
 	}
-	dc.DrawRectangle(rect.GetX()+pen_width, rect.GetY()+pen_width,
-		rect.GetWidth()-(pen_width*2), rect.GetHeight()-(pen_width*2));
+	dc.DrawRectangle(rect.GetX() + pen_width, rect.GetY() + pen_width,
+	                 rect.GetWidth() - (pen_width * 2), rect.GetHeight() - (pen_width * 2));
 }

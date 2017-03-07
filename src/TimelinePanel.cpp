@@ -26,7 +26,7 @@ const int COLS = 32;
 const int ROWS = 16;
 
 TimelinePanel::TimelinePanel(wxPanel *parent)
-	   : wxPanel(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+	: wxPanel(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 
 	sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -37,9 +37,9 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 
 	// Create a wxGrid object
 	grid = new wxGrid( this,
-						ID_TimelinePanel_TimelineGrid,
-						wxPoint( 0, 0 ),
-						wxSize( -1, -1 ));
+	                   ID_TimelinePanel_TimelineGrid,
+	                   wxPoint( 0, 0 ),
+	                   wxSize( -1, -1 ));
 	// Then we call CreateGrid to set the dimensions of the grid
 	// (100 rows and 10 columns in this example)
 
@@ -52,7 +52,7 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 	grid->SetDefaultColSize(75, true);
 	grid->SetDefaultRowSize(18, true);
 	for (int c = 0; c < COLS; c++) {
-		snprintf(buf, 7, "%d.%d.%d", c/16+1, c/4%4+1, c%4+1);
+		snprintf(buf, 7, "%d.%d.%d", c / 16 + 1, c / 4 % 4 + 1, c % 4 + 1);
 		grid->SetColLabelValue(c, buf);
 		grid->DisableColResize(c);
 	}
@@ -70,16 +70,16 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 
 void TimelinePanel::ChangeNoteColor(wxColourPickerEvent &event) {
 	wxGridCellCoordsArray cells = grid->GetSelectedCells();
-    wxGridCellCoordsArray btops = grid->GetSelectionBlockTopLeft();
-    wxGridCellCoordsArray bbots = grid->GetSelectionBlockBottomRight();
+	wxGridCellCoordsArray btops = grid->GetSelectionBlockTopLeft();
+	wxGridCellCoordsArray bbots = grid->GetSelectionBlockBottomRight();
 
-    if (cells.Count() > 0) {
-		for (int i=0; i < cells.Count(); i++ )
+	if (cells.Count() > 0) {
+		for (int i = 0; i < cells.Count(); i++ )
 			grid->SetCellBackgroundColour(cells[i].GetRow(), cells[i].GetCol(), event.GetColour());
-    }
-    if (btops.Count() > 0 && bbots.Count() > 0) {
-		for (int i=btops[0].GetRow(); i <= bbots[0].GetRow(); i++ ) {
-			for (int j=btops[0].GetCol(); j <= bbots[0].GetCol(); j++ )
+	}
+	if (btops.Count() > 0 && bbots.Count() > 0) {
+		for (int i = btops[0].GetRow(); i <= bbots[0].GetRow(); i++ ) {
+			for (int j = btops[0].GetCol(); j <= bbots[0].GetCol(); j++ )
 				grid->SetCellBackgroundColour(i, j, event.GetColour());
 		}
 	}
@@ -88,11 +88,11 @@ void TimelinePanel::ChangeNoteColor(wxColourPickerEvent &event) {
 	Update();
 }
 
-void TimelinePanel::OnSingleSelectCell(wxGridEvent& event) {
+void TimelinePanel::OnSingleSelectCell(wxGridEvent &event) {
 	grid->SelectBlock(event.GetRow(), event.GetCol(), event.GetRow(), event.GetCol());
 
 	wxColourPickerEvent evt(this, ID_TimelinePanel_TimelineGrid,
-		grid->GetCellBackgroundColour(event.GetRow(), event.GetCol()));
+	                        grid->GetCellBackgroundColour(event.GetRow(), event.GetCol()));
 	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Properties), evt);
 }
 

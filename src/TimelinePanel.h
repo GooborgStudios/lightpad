@@ -24,13 +24,13 @@ class TimelinePanel: public wxPanel {
 	public:
 		TimelinePanel(wxPanel *parent);
 		void ChangeNoteColor(wxColourPickerEvent &event);
-		void OnSingleSelectCell(wxGridEvent& event);
-		void OnCellLeftClick(wxGridEvent& event);
+		void OnSingleSelectCell(wxGridEvent &event);
+		void OnCellLeftClick(wxGridEvent &event);
 	private:
 		wxPanel *m_parent;
 		wxGrid *grid;
 		wxBoxSizer *sizer;
 		int id;
 
-	wxDECLARE_EVENT_TABLE();
+		wxDECLARE_EVENT_TABLE();
 };

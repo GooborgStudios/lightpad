@@ -24,9 +24,11 @@
 	//SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
 
 	const wxString max_user_library_path = /*wxString(documents_path) +*/ wxString("\\MIDIext");
-	const wxString max_shared_library_path = /*wxString(documents_path) +*/ wxString("\\MIDIext"); // XXX Inaccurate
+	const wxString max_shared_library_path = /*wxString(documents_path) +*/
+	wxString("\\MIDIext"); // XXX Inaccurate
 #else
-	const wxString max_user_library_path = wxString(getenv("HOME")) + wxString("/Documents/Max 7/Library/MIDIext");
+	const wxString max_user_library_path = wxString(getenv("HOME")) +
+	wxString("/Documents/Max 7/Library/MIDIext");
 	const wxString max_shared_library_path = wxString("/Users/Shared/Max 7/Library/MIDIext");
 #endif
 
@@ -37,7 +39,7 @@ class FilePanel: public wxPanel {
 		void RefreshFileList();
 		void Update();
 		wxString GetFilePath(wxDataViewItem item);
-		void ChangeSelectedFile(wxDataViewEvent& event);
+		void ChangeSelectedFile(wxDataViewEvent &event);
 		//void RenameFile(wxDataViewEvent &event);
 	private:
 		void ListDirectory(wxString path, wxDataViewItem files);

@@ -25,8 +25,8 @@ class PropertiesPanel: public wxPanel {
 	public:
 		PropertiesPanel(wxPanel *parent);
 		void Update();
-		void OnSelectCell(wxGridEvent& event);
-		void SelectColor(wxColourPickerEvent& event);
+		void OnSelectCell(wxGridEvent &event);
+		void SelectColor(wxColourPickerEvent &event);
 	private:
 		wxPanel *m_parent;
 		wxBoxSizer *sizer;

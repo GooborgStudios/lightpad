@@ -25,10 +25,10 @@
 class DisplayPanel: public wxPanel {
 	public:
 		DisplayPanel(wxPanel *parent);
-		void paintEvent(wxPaintEvent & evt);
+		void paintEvent(wxPaintEvent &evt);
 		void paintNow();
-		void OnSize(wxSizeEvent& event);
-		void render(wxDC& dc);
+		void OnSize(wxSizeEvent &event);
+		void render(wxDC &dc);
 		float getButtonPosition(int digit);
 		void colorButton(int button, wxColor color);
 
@@ -36,15 +36,15 @@ class DisplayPanel: public wxPanel {
 	private:
 		wxPanel *m_parent;
 		#if wxDRAW_BUTTONS
-			wxImage *launchpad_base_image;
-			wxImage *launchpad_button_image;
-			wxImage *launchpad_button_images[6];
-			wxBitmap resized;
+		wxImage *launchpad_base_image;
+		wxImage *launchpad_button_image;
+		wxImage *launchpad_button_images[6];
+		wxBitmap resized;
 		#else
-			Magick::Image launchpad_base_image;
-			Magick::Image launchpad_button_image;
-			Magick::Image *launchpad_button_images[6];
-			Magick::Image resized;
+		Magick::Image launchpad_base_image;
+		Magick::Image launchpad_button_image;
+		Magick::Image *launchpad_button_images[6];
+		Magick::Image resized;
 		#endif
 		std::string base_image_path;
 		std::string button_image_path;

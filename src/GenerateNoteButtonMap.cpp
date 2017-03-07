@@ -24,9 +24,9 @@ int note_to_button(int note) {
 
 int main() {
 	std::cout << "int note_button_map[] = {";
-	for (int x=28; x<=123; x++) {
+	for (int x = 28; x <= 123; x++) {
 		std::cout << note_to_button(x);
-		if (x<123) std::cout << ", ";
+		if (x < 123) std::cout << ", ";
 	}
 	std::cout << "};" << std::endl << "const int note_button_offset = 28;" << std::endl;
 	std::cout << "const int note_button_size = sizeof(note_button_map)/sizeof(int);" << std::endl;

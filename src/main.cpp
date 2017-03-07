@@ -33,7 +33,7 @@ class MainApp: public wxApp {
 // Main window frame
 class MainFrame: public wxFrame {
 	public:
-		MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+		MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size);
 		wxPanel *m_parent;
 		FilePanel *m_fp;
 		PropertiesPanel *m_pp;
@@ -41,13 +41,13 @@ class MainFrame: public wxFrame {
 		TimelinePanel *m_tlp;
 
 	private:
-		void OnHello(wxCommandEvent& event);
-		void OnExit(wxCommandEvent& event);
-		void OnAbout(wxCommandEvent& event);
-		void OnSaveRequest(wxCommandEvent& event);
-		void OnSelectFile(wxCommandEvent& event);
+		void OnHello(wxCommandEvent &event);
+		void OnExit(wxCommandEvent &event);
+		void OnAbout(wxCommandEvent &event);
+		void OnSaveRequest(wxCommandEvent &event);
+		void OnSelectFile(wxCommandEvent &event);
 
-	wxDECLARE_EVENT_TABLE(); // Initialize event listener
+		wxDECLARE_EVENT_TABLE(); // Initialize event listener
 };
 
 wxIMPLEMENT_APP(MainApp); // Tell wxWidgets to commence our app
@@ -60,14 +60,14 @@ bool MainApp::OnInit() {
 	if (launchpad->connect() < 0) launchpad->disconnect();
 	else launchpad->setPulse(LAUNCHPAD_PRO_SIDE_LED_ID, 53);
 
-	MainFrame *frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800,600));
-	frame->SetMinSize(wxSize(800,600));
+	MainFrame *frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800, 600));
+	frame->SetMinSize(wxSize(800, 600));
 	frame->Show(true);
 	return true;
 }
 
-MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
-		: wxFrame(NULL, ID_Frame_Main, title, pos, size) {
+MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size)
+	: wxFrame(NULL, ID_Frame_Main, title, pos, size) {
 
 	wxBitmap lightpad_icon(wxT("graphics/icons/icon_24.png"), wxBITMAP_TYPE_PNG);
 	SetIcon(wxIcon(APP_ICON));
@@ -78,9 +78,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	wxMenu *menuFile = new wxMenu;
 	wxMenu *menuHelp = new wxMenu;
 	menuFile->Append(ID_Menu_Hello, "&Hello...\tCtrl-H",
-					 "Help string shown in status bar for this menu item");
+	                 "Help string shown in status bar for this menu item");
 	menuFile->Append(ID_Menu_Save, "&Save\tCtrl-S",
-					 "Saves the file");
+	                 "Saves the file");
 	menuFile->AppendSeparator();
 	menuFile->Append(wxID_EXIT);
 	menuHelp->Append(wxID_ABOUT);
@@ -120,25 +120,25 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	Bind(FILE_SELECT, &MainFrame::OnSelectFile, this, ID_Frame_Main);
 }
 
-void MainFrame::OnExit(wxCommandEvent& event) {
+void MainFrame::OnExit(wxCommandEvent &event) {
 	launchpad->disconnect();
 	Close(true); // Make sure that we safely quit the program
 }
 
-void MainFrame::OnAbout(wxCommandEvent& event) {
+void MainFrame::OnAbout(wxCommandEvent &event) {
 	wxMessageBox("Lightpad Copyright 2017 Nightwave Studios, all rights reserved.  The application is coded by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3.  Some features based upon those found in LightshowCreator by LaunchpadFun with exclusive permission.  Big thanks to the support from the Launchpad Lightshow Community.",
-				"About Lightpad", wxOK | wxICON_INFORMATION);
+	             "About Lightpad", wxOK | wxICON_INFORMATION);
 }
 
-void MainFrame::OnSelectFile(wxCommandEvent& event) {
+void MainFrame::OnSelectFile(wxCommandEvent &event) {
 	wxMessageBox(event.GetString(), "File Selected", wxOK | wxICON_INFORMATION);
 }
 
-void MainFrame::OnSaveRequest(wxCommandEvent& event) {
+void MainFrame::OnSaveRequest(wxCommandEvent &event) {
 	//activeProject.save("./foo.lightsave");
 }
 
-void MainFrame::OnHello(wxCommandEvent& event) {
+void MainFrame::OnHello(wxCommandEvent &event) {
 	wxLogMessage("Testing the menu bars! -Vadu");
 	m_tlp->Update();
 }

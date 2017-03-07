@@ -49,29 +49,29 @@ int main() {
 	unsigned int nPorts = midiin->getPortCount();
 	std::cout << "There are " << nPorts << " MIDI input ports available:" << std::endl;
 	std::string portName;
-	for ( unsigned int i=0; i<nPorts; i++ ) {
+	for ( unsigned int i = 0; i < nPorts; i++ ) {
 		try {
 			portName = midiin->getPortName(i);
 		} catch (RtMidiError &error) {
 			quit(error);
 		}
-		std::cout << " - Input Port #" << i+1 << ": " << portName << std::endl;
+		std::cout << " - Input Port #" << i + 1 << ": " << portName << std::endl;
 	}
 	std::cout << std::endl;
 
 	// Check outputs.
 	nPorts = midiout->getPortCount();
 	std::cout << "There are " << nPorts << " MIDI output ports available:" << std::endl;
-	for ( unsigned int i=0; i<nPorts; i++ ) {
+	for ( unsigned int i = 0; i < nPorts; i++ ) {
 		try {
 			portName = midiout->getPortName(i);
 		} catch (RtMidiError &error) {
 			quit(error);
 		}
-		std::cout << " - Output Port #" << i+1 << ": " << portName << std::endl;
+		std::cout << " - Output Port #" << i + 1 << ": " << portName << std::endl;
 	}
 	std::cout << std::endl;
 
- 	std::cin.ignore(); // Wait for keypress before quitting
+	std::cin.ignore(); // Wait for keypress before quitting
 	quit(0);
 }

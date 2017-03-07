@@ -31,7 +31,7 @@ wxDEFINE_EVENT(FILE_SELECT, wxCommandEvent);
 
 // Initialize the file panel and it's elements
 FilePanel::FilePanel(wxPanel *parent)
-	   : wxPanel(parent, ID_Panel_File, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+	: wxPanel(parent, ID_Panel_File, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 
 	// Initialize icons
@@ -45,7 +45,7 @@ FilePanel::FilePanel(wxPanel *parent)
 
 	// Set up the file list
 	filelistbox = new wxDataViewTreeCtrl(this, ID_FilePanel_Tree, wxPoint(-1, -1),
-			wxSize(-1, -1), wxDV_SINGLE|wxDV_NO_HEADER);
+	                                     wxSize(-1, -1), wxDV_SINGLE | wxDV_NO_HEADER);
 	filelistbox->SetImageList(icon_list);
 	parent_dvi = wxDataViewItem();
 	RefreshFileList();
@@ -67,8 +67,8 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	wxDir dir(path);
 	wxString filename;
 	#ifdef LIB_MAGIC
-		magic_t myt = magic_open(MAGIC_ERROR|MAGIC_MIME_TYPE);
-		magic_load(myt,NULL);
+	magic_t myt = magic_open(MAGIC_ERROR | MAGIC_MIME_TYPE);
+	magic_load(myt, NULL);
 	#endif
 
 	if (!dir.IsOpened()) {
@@ -81,9 +81,9 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	bool cont = dir.GetFirst(&filename, "", wxDIR_FILES);
 	while (cont) {
 		#ifdef LIB_MAGIC
-			std::string filetype(magic_file(myt, (path+"/"+filename).c_str()));
+		std::string filetype(magic_file(myt, (path + "/" + filename).c_str()));
 		#else
-			std::string filetype("audio/midi"); // XXX Use file extension instead
+		std::string filetype("audio/midi"); // XXX Use file extension instead
 		#endif
 		if (filetype == "audio/midi") { // Only add if a MIDI file
 			int icon_type = 2;
@@ -97,7 +97,7 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	cont = dir.GetFirst(&filename, "", wxDIR_DIRS);
 	while (cont) {
 		wxDataViewItem current_file = filelistbox->AppendContainer(files, filename, 0, 1);
-		ListDirectory(path+"/"+filename, current_file);
+		ListDirectory(path + "/" + filename, current_file);
 		// Obtain the contents of the directories by running the function in itself
 		cont = dir.GetNext(&filename);
 	}
@@ -115,12 +115,12 @@ wxString FilePanel::GetFilePath(wxDataViewItem item) {
 
 	for (int i = 0; i <= 1; i++) {
 		if (i == 0)
-			path = max_user_library_path+"/";
+			path = max_user_library_path + "/";
 		else
-			path = max_shared_library_path+"/";
+			path = max_shared_library_path + "/";
 
 		if (!store->IsContainer(item))
-			path += filelistbox->GetItemText(parent)+"/";
+			path += filelistbox->GetItemText(parent) + "/";
 		path += filelistbox->GetItemText(item);
 		if (wxFile::Exists(path))
 			break;

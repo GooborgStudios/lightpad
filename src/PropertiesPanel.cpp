@@ -24,7 +24,7 @@
 
 // Initialize the properties panel and it's elements
 PropertiesPanel::PropertiesPanel(wxPanel *parent)
-	   : wxPanel(parent, ID_Panel_Properties, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+	: wxPanel(parent, ID_Panel_Properties, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 
 	sizer = new wxBoxSizer(wxVERTICAL);
@@ -48,8 +48,8 @@ PropertiesPanel::PropertiesPanel(wxPanel *parent)
 	}
 
 	for (int i = 0; i < COLORCOUNT; i++) {
-		int col = i/8;
-		int row = i%8;
+		int col = i / 8;
+		int row = i % 8;
 		grid->SetCellBackgroundColour(col, row, velocitycolors[i]);
 	}
 
@@ -62,19 +62,19 @@ void PropertiesPanel::Update() {
 
 }
 
-void PropertiesPanel::OnSelectCell(wxGridEvent& event) {
+void PropertiesPanel::OnSelectCell(wxGridEvent &event) {
 	grid->SelectBlock(event.GetRow(), event.GetCol(), event.GetRow(), event.GetCol());
 
 	wxColourPickerEvent evt(this, ID_PropertiesPanel_ColorSelector,
-		grid->GetCellBackgroundColour(event.GetRow(), event.GetCol()));
+	                        grid->GetCellBackgroundColour(event.GetRow(), event.GetCol()));
 	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Timeline), evt);
 }
 
-void PropertiesPanel::SelectColor(wxColourPickerEvent& event) {
+void PropertiesPanel::SelectColor(wxColourPickerEvent &event) {
 	int color = get_color_velocity(event.GetColour());
 	if (color > -1) {
-		int col = color/8;
-		int row = color%8;
+		int col = color / 8;
+		int row = color % 8;
 		grid->SelectBlock(col, row, col, row);
 	}
 }
