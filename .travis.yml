@@ -12,7 +12,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install graphicsmagick; brew install libmagic; brew install wxwidgets --devel; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install graphicsmagick libmagic && brew install wxwidgets --devel; fi
 
 before_script:
   - mkdir build
