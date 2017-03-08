@@ -34,6 +34,7 @@
 #define ABLETON_LIVE_MODE 4
 #define MIDI_MESSAGE_SYSEX_BEGIN 240
 #define MIDI_MESSAGE_SYSEX_END 247
+#define MIDI_MESSAGE_END -1
 #define LAUNCHPAD_PRO_SIDE_LED_ID 99
 
 #define PI 3.14159265
@@ -92,6 +93,7 @@ class LaunchpadBase {
 		virtual void setPulse(unsigned char light, unsigned char color);
 		std::string INPORT_NAME;
 		std::string OUTPORT_NAME;
+		std::string PRODUCT_NAME;
 	protected:
 		RtMidiIn *midiin;
 		RtMidiOut *midiout;
