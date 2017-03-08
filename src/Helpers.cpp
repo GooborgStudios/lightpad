@@ -184,11 +184,11 @@ void LaunchpadBase::sendMessage(unsigned int first_byte, ...) {
 	va_list varlist;
 	va_start(varlist, first_byte);
 	unsigned int byte = first_byte;
-	while (byte != MIDI_MESSAGE_SYSEX_END && byte >= 0 && byte <= 255) {
+	while (byte != MIDI_MESSAGE_SYSEX_END && byte <= 255) {
 		message.push_back(byte);
 		byte = va_arg(varlist, unsigned int);
 	}
-	if (byte >= 0 && byte <= 255) message.push_back(byte);
+	if (byte <= 255) message.push_back(byte);
 	va_end(varlist);
 
 	midiout->sendMessage(&message);
@@ -205,9 +205,9 @@ void LaunchpadBase::setPulse(unsigned char light, unsigned char color) {
 
 LaunchpadPro::LaunchpadPro() {
 	#ifdef WINDOWS
-	PORT_REGEX = std::regex("MIDI(IN|OUT)2\s\((\d+\s-\s)?Launchpad Pro(\s\d+)?\)");
+	PORT_REGEX = std::regex("MIDI(IN|OUT)2\\s\\((\\d+\\s-\\s)?Launchpad\\sPro(\\s\\d+)?\\)");
 	#else
-	PORT_REGEX = std::regex("Launchpad Pro(\s\d+)? Standalone Port");
+	PORT_REGEX = std::regex("Launchpad\\sPro(\\s\\d+)?\\sStandalone\\sPort");
 	#endif
 }
 
