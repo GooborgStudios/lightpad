@@ -24,6 +24,8 @@
 	#define APP_ICON "graphics/icons/icon_64.png"
 #endif
 
+#include <regex>
+
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
@@ -34,7 +36,6 @@
 #define ABLETON_LIVE_MODE 4
 #define MIDI_MESSAGE_SYSEX_BEGIN 240
 #define MIDI_MESSAGE_SYSEX_END 247
-#define MIDI_MESSAGE_END -1
 #define LAUNCHPAD_PRO_SIDE_LED_ID 99
 
 #define PI 3.14159265
@@ -87,13 +88,11 @@ class LaunchpadBase {
 		int connect();
 		void disconnect();
 		bool isConnected();
-		int getMidiPort(std::string name, RtMidi *ports);
+		int getMidiPort(RtMidi *ports);
 		double getMessage(std::vector<unsigned char> *message_in);
 		virtual void setColor(unsigned char light, unsigned char color);
 		virtual void setPulse(unsigned char light, unsigned char color);
-		std::string INPORT_NAME;
-		std::string OUTPORT_NAME;
-		std::string PRODUCT_NAME;
+		std::regex PORT_REGEX;
 	protected:
 		RtMidiIn *midiin;
 		RtMidiOut *midiout;

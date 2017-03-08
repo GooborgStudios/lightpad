@@ -15,6 +15,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <regex>
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -126,8 +127,8 @@ LaunchpadBase::LaunchpadBase() {
 int LaunchpadBase::connect() {
 	connected = false;
 
-	inport = getMidiPort(INPORT_NAME, midiin);
-	outport = getMidiPort(OUTPORT_NAME, midiout);
+	inport = getMidiPort(midiin);
+	outport = getMidiPort(midiout);
 
 	if ((inport == -1) || (outport == -1)) {
 		delete midiin;
@@ -158,10 +159,10 @@ bool LaunchpadBase::isConnected() {
 	return connected;
 }
 
-int LaunchpadBase::getMidiPort(std::string name, RtMidi *ports) {
+int LaunchpadBase::getMidiPort(RtMidi *ports) {
 	for ( unsigned int i = 0; i < ports->getPortCount(); i++ ) {
 		try {
-			if (ports->getPortName(i).find(name) != string::npos  && ports->getPortName(i).find(PRODUCT_NAME) != string::npos)  {
+			if (std::regex_match(ports->getPortName(i), PORT_REGEX)) {
 				return i;
 			}
 		} catch (RtMidiError &error) {
@@ -183,7 +184,7 @@ void LaunchpadBase::sendMessage(unsigned int first_byte, ...) {
 	va_list varlist;
 	va_start(varlist, first_byte);
 	unsigned int byte = first_byte;
-	while (byte != MIDI_MESSAGE_SYSEX_END  && byte != MIDI_MESSAGE_END && byte >= 0 && byte <= 255) {
+	while (byte != MIDI_MESSAGE_SYSEX_END && byte >= 0 && byte <= 255) {
 		message.push_back(byte);
 		byte = va_arg(varlist, unsigned int);
 	}
@@ -196,22 +197,17 @@ void LaunchpadBase::sendMessage(unsigned int first_byte, ...) {
 
 void LaunchpadBase::setColor(unsigned char light, unsigned char color) {
 	if (isConnected() == false) return;
-
 }
 
 void LaunchpadBase::setPulse(unsigned char light, unsigned char color) {
 	if (isConnected() == false) return;
-
 }
 
 LaunchpadPro::LaunchpadPro() {
-	#ifdef _WIN32
-	INPORT_NAME = "MIDIIN2";
-	OUTPORT_NAME = "MIDIOUT2";
-	PRODUCT_NAME = "Launchpad Pro";
+	#ifdef WINDOWS
+	PORT_REGEX = std::regex("MIDI(IN|OUT)2\s\((\d+\s-\s)?Launchpad Pro(\s\d+)?\)");
 	#else
-	INPORT_NAME = "Launchpad Pro Standalone Port";
-	OUTPORT_NAME = "Launchpad Pro Standalone Port";
+	PORT_REGEX = std::regex("Launchpad Pro(\s\d+)? Standalone Port");
 	#endif
 }
 
@@ -285,12 +281,10 @@ void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
 }
 
 LaunchpadS::LaunchpadS() {
-	#ifdef WINDOWS // May not be accurate!
-	INPORT_NAME = "Launchpad S";
-	OUTPORT_NAME = "Launchpad S";
+	#ifdef WINDOWS
+	PORT_REGEX = std::regex("Launchpad S");
 	#else
-	INPORT_NAME = "Launchpad S";
-	OUTPORT_NAME = "Launchpad S";
+	PORT_REGEX = std::regex("Launchpad S");
 	#endif
 }
 
