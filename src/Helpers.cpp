@@ -161,7 +161,7 @@ bool LaunchpadBase::isConnected() {
 int LaunchpadBase::getMidiPort(std::string name, RtMidi *ports) {
 	for ( unsigned int i = 0; i < ports->getPortCount(); i++ ) {
 		try {
-			if (ports->getPortName(i).compare(0, name.length(), name) == 0) {
+			if (ports->getPortName(i).find(name) != string::npos  && ports->getPortName(i).find(PRODUCT_NAME) != string::npos)  {
 				return i;
 			}
 		} catch (RtMidiError &error) {
@@ -182,8 +182,8 @@ void LaunchpadBase::sendMessage(unsigned int first_byte, ...) {
 	if (isConnected() == false) return;
 	va_list varlist;
 	va_start(varlist, first_byte);
-	unsigned char byte = first_byte;
-	while (byte != MIDI_MESSAGE_SYSEX_END || byte < 0 || byte > 255) {
+	unsigned int byte = first_byte;
+	while (byte != MIDI_MESSAGE_SYSEX_END  && byte != MIDI_MESSAGE_END && byte >= 0 && byte <= 255) {
 		message.push_back(byte);
 		byte = va_arg(varlist, unsigned int);
 	}
@@ -206,8 +206,9 @@ void LaunchpadBase::setPulse(unsigned char light, unsigned char color) {
 
 LaunchpadPro::LaunchpadPro() {
 	#ifdef _WIN32
-	INPORT_NAME = "MIDIIN2 (Launchpad Pro)";
-	OUTPORT_NAME = "MIDIOUT2 (Launchpad Pro)";
+	INPORT_NAME = "MIDIIN2";
+	OUTPORT_NAME = "MIDIOUT2";
+	PRODUCT_NAME = "Launchpad Pro";
 	#else
 	INPORT_NAME = "Launchpad Pro Standalone Port";
 	OUTPORT_NAME = "Launchpad Pro Standalone Port";
