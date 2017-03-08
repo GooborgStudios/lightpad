@@ -1,29 +1,4 @@
-# macOS and CodeBlocks Debris
 */.DS_Store
 *.layout
-
-# Build files & folders
-*.o
-obj/
-bin/
-*.exe
-a.out
-
-# CMake files
-cmake_install.cmake
-CMakeFiles/
-CMakeScripts/
-CMakeCache.txt
-compile_commands.json
-Makefile
-*.xcodeproj
-*.build
-
-# OCLint/Clang (LLVM) analyzer files
-oclint/
-oclint_result.html
 *.plist
-
-# Doxygen files
-doxygen/
-doxygen.err.log
+build

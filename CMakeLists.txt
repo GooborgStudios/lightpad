@@ -9,34 +9,46 @@ set(lightpad_VERSION_MAJOR 0)
 set(lightpad_VERSION_MINOR 0)
 set(lightpad_VERSION_MICRO 1)
 
-set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_BINARY_DIR ${PROJECT_BINARY_DIR}/bin)
+set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 aux_source_directory(src source_file_list)
 set(SOURCE_FILES "")
+
+set(ROOT ${CMAKE_SOURCE_DIR})
+set(SRC ${PROJECT_SOURCE_DIR})
+set(BIN ${CMAKE_BINARY_DIR})
+set(INCL ${ROOT}/include)
+set(LIB ${ROOT}/lib)
+set(IMGS ${ROOT}/graphics)
+set(REFS ${ROOT}/references)
+set(BUILD ${PROJECT_BINARY_DIR})
+
+include_directories(${ROOT})
+include_directories(${INCL})
 
 set(wxDRAW_BUTTONS 0)
 if(wxDRAW_BUTTONS EQUAL 1)
 	add_definitions(-DwxDRAW_BUTTONS)
 endif(wxDRAW_BUTTONS EQUAL 1)
 
-add_executable(lightpad src/main.cpp src/FilePanel.cpp src/DisplayPanel.cpp src/TimelinePanel.cpp src/PropertiesPanel.cpp src/GridRenderer.cpp src/Colors.cpp src/Helpers.cpp)
-add_executable(midiprobe src/midiprobe.cpp src/Helpers.cpp)
-add_executable(midiout src/midiout.cpp src/Helpers.cpp)
-add_executable(GenerateNoteButtonMap src/GenerateNoteButtonMap.cpp)
+add_executable(lightpad ${SRC}/main.cpp ${SRC}/FilePanel.cpp ${SRC}/DisplayPanel.cpp ${SRC}/TimelinePanel.cpp ${SRC}/PropertiesPanel.cpp ${SRC}/GridRenderer.cpp ${SRC}/Colors.cpp ${SRC}/Helpers.cpp)
+add_executable(midiprobe ${SRC}/midiprobe.cpp ${SRC}/Helpers.cpp)
+add_executable(midiout ${SRC}/midiout.cpp ${SRC}/Helpers.cpp)
+add_executable(GenerateNoteButtonMap ${SRC}/GenerateNoteButtonMap.cpp)
 
-add_custom_target(Colors ALL DEPENDS src/Colors.cpp)
-add_custom_command(OUTPUT src/Colors.cpp COMMAND python "${CMAKE_CURRENT_SOURCE_DIR}/src/sample_colors.py" WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DEPENDS src/Colors.cpp.in graphics/rgbcolors1.png graphics/rgbcolors2.png src/sample_colors.py VERBATIM) # COMMENT "Generating color mapping with sample_colors.py"
+add_custom_target(Colors ALL DEPENDS ${SRC}/Colors.cpp)
+add_custom_command(OUTPUT ${SRC}/Colors.cpp COMMAND python "${SRC}/sample_colors.py" WORKING_DIRECTORY ${ROOT} DEPENDS ${SRC}/Colors.cpp.in ${IMGS}/rgbcolors1.png ${IMGS}/rgbcolors2.png ${SRC}/sample_colors.py VERBATIM) # COMMENT "Generating color mapping with sample_colors.py"
+add_dependencies(lightpad Colors)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
-	configure_file(doxygen.conf.in bin/doxygen.conf @ONLY)
-	add_custom_target(doc ALL DEPENDS doxygen/)
-	add_custom_command(OUTPUT doxygen/ COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/bin/doxygen.conf DEPENDS src/* readme.md doxygen.conf.in WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} VERBATIM) # COMMENT "Generating API documentation with Doxygen"
+	configure_file(${ROOT}/doxygen.conf.in ${BUILD}/doxygen.conf @ONLY)
+	add_custom_target(doc ALL DEPENDS ${BUILD}/doxygen/)
+	add_custom_command(OUTPUT ${BUILD}/doxygen/ COMMAND ${DOXYGEN_EXECUTABLE} ${BUILD}/doxygen.conf DEPENDS ${SRC}/* ${ROOT}/readme.md ${ROOT}/doxygen.conf.in VERBATIM) # COMMENT "Generating API documentation with Doxygen"
 endif(DOXYGEN_FOUND)
 
 set(CMAKE_CXX_COMPILER g++)
@@ -48,11 +60,9 @@ ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 ENDIF()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 ${wxConfig_CXX_FLAGS}")
 
-add_dependencies(lightpad Colors)
-
-target_link_libraries(lightpad "-L${CMAKE_CURRENT_SOURCE_DIR}/lib")
-target_link_libraries(midiprobe "-L${CMAKE_CURRENT_SOURCE_DIR}/lib")
-target_link_libraries(midiout "-L${CMAKE_CURRENT_SOURCE_DIR}/lib")
+target_link_libraries(lightpad "-L${LIB}")
+target_link_libraries(midiprobe "-L${LIB}")
+target_link_libraries(midiout "-L${LIB}")
 
 find_package(wxWidgets COMPONENTS html qa adv core xml net base REQUIRED)
 include(${wxWidgets_USE_FILE})
@@ -63,7 +73,7 @@ if(MAGICK++_FOUND)
 	add_definitions(-DLIB_GRAPHICSMAGICK)
 	include_directories(${MAGICK_INCLUDE_DIR})
 	include_directories(${MAGICK++_INCLUDE_DIR})
-	target_link_libraries(lightpad "graphicsmagick++")
+	target_link_libraries(lightpad "GraphicsMagick++")
 endif(MAGICK++_FOUND)
 
 find_package(LibMagic)
@@ -73,16 +83,16 @@ if(LibMagic_FOUND)
 	target_link_libraries(lightpad "magic")
 endif(LibMagic_FOUND)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/rtmidi)
+include_directories(${INCL}/rtmidi)
 target_link_libraries(lightpad "rtmidi")
 target_link_libraries(midiprobe "rtmidi")
 target_link_libraries(midiout "rtmidi")
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/midifile)
+include_directories(${INCL}/midifile)
 target_link_libraries(lightpad "midifile")
 target_link_libraries(midiout "midifile")
 
 foreach(f ${source_file_list})
-	list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/${f}")
+	list(APPEND SOURCE_FILES "${ROOT}/${f}")
 endforeach()
-add_custom_target(oclint oclint -p ${CMAKE_CURRENT_SOURCE_DIR} ${SOURCE_FILES} DEPENDS src/* compile_commands.json WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."
+add_custom_target(oclint oclint -p ${ROOT} ${SOURCE_FILES} DEPENDS ${SRC}/* ${BUILD}/compile_commands.json WORKING_DIRECTORY ${BUILD}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."
