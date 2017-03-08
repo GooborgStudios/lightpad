@@ -1,11 +1,11 @@
 language: cpp
 
 os:
-  # - linux
+  - linux
   - osx
 
 compiler:
-  # - gcc
+  - gcc
   - clang
 
 before_install:

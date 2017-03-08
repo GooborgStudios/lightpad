@@ -34,7 +34,7 @@ The software is mainly developed on a mid-2014 MacBook Pro, 2.5GHz Intel i7 with
 
 Supported Operating Systems:
 
-* Mac OS
+* Mac OS [![Build Status](https://travis-ci.org/vinyldarkscratch/lightpad.svg?branch=master)](https://travis-ci.org/vinyldarkscratch/lightpad)
 * Windows (broken at the moment)
 * Linux/Unix (implementing)
 

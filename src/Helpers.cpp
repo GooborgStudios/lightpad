@@ -217,21 +217,21 @@ int LaunchpadPro::connect() {
 		std::vector<unsigned char> device_info;
 
 		// Inquiry Device
-		sendMessage( 240, 126, 127, 6, 1, 247 );
+		sendMessage(240, 126, 127, 6, 1, 247);
 		while (device_info.size() == 0) {
 			getMessage(&device_info);
-			usleep( 10000 ); // Sleep for 10 milliseconds ... platform-dependent.
+			usleep(10000); // Sleep for 10 milliseconds ... platform-dependent.
 		}
 
-		sendMessage( 240, 0, 32, 41, 2, 16, 33, 1, 247 ); // Set to Standalone Mode
-		sendMessage( 240, 0, 32, 41, 2, 16, 44, 3, 247 ); // Set to Programmer Mode
+		sendMessage(240, 0, 32, 41, 2, 16, 33, 1, 247); // Set to Standalone Mode
+		sendMessage(240, 0, 32, 41, 2, 16, 44, 3, 247); // Set to Programmer Mode
 	}
 	return status;
 }
 
 void LaunchpadPro::disconnect() {
-	sendMessage( 240, 0, 32, 41, 2, 16, 14, 0, 247 ); // Clear all LED colors
-	sendMessage( 240, 0, 32, 41, 2, 16, 44, 0, 247 ); // Set to Note Mode
+	sendMessage(240, 0, 32, 41, 2, 16, 14, 0, 247); // Clear all LED colors
+	sendMessage(240, 0, 32, 41, 2, 16, 44, 0, 247); // Set to Note Mode
 	LaunchpadBase::disconnect();
 }
 
@@ -241,23 +241,23 @@ bool LaunchpadPro::isConnected() {
 
 void LaunchpadPro::setColor(unsigned char light, unsigned char color) {
 	if (isConnected() == false) return;
-	sendMessage( 240, 0, 32, 41, 2, 16, 10, light, color, 247 );
+	sendMessage(240, 0, 32, 41, 2, 16, 10, light, color, 247);
 }
 
 void LaunchpadPro::setColor(unsigned char light,
                             unsigned char red, unsigned char green, unsigned char blue) {
 	if (isConnected() == false) return;
-	sendMessage( 240, 0, 32, 41, 2, 16, 11, light, red, green, blue, 247 );
+	sendMessage(240, 0, 32, 41, 2, 16, 11, light, red, green, blue, 247);
 }
 
 void LaunchpadPro::setFlash(unsigned char light, unsigned char color) {
 	if (isConnected() == false) return;
-	sendMessage( 240, 0, 32, 41, 2, 16, 35, light, color, 247 );
+	sendMessage(240, 0, 32, 41, 2, 16, 35, light, color, 247);
 }
 
 void LaunchpadPro::setPulse(unsigned char light, unsigned char color) {
 	if (isConnected() == false) return;
-	sendMessage( 240, 0, 32, 41, 2, 16, 40, light, color, 247 );
+	sendMessage(240, 0, 32, 41, 2, 16, 40, light, color, 247);
 }
 
 void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
@@ -278,6 +278,11 @@ void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
 
 	midiout->sendMessage(&message);
 	message.erase(message.begin(), message.begin() + message.size());
+}
+
+void LaunchpadPro::stopText() {
+	if (isConnected() == false) return;
+	sendMessage(240, 0, 32, 41, 2, 16, 20, 247);
 }
 
 LaunchpadS::LaunchpadS() {

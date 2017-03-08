@@ -114,6 +114,7 @@ class LaunchpadPro : public LaunchpadBase {
 		void setFlash(unsigned char light, unsigned char color);
 		void setPulse(unsigned char light, unsigned char color);
 		void displayText(unsigned int color, unsigned int speed, std::string text);
+		void stopText();
 };
 
 class LaunchpadS : public LaunchpadBase {
