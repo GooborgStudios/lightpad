@@ -13,7 +13,7 @@ before_install:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install graphicsmagick libmagic; travis_wait 30 brew install wxwidgets; fi
-  pip install pillow
+  - pip install pillow
 
 before_script:
   - mkdir build
