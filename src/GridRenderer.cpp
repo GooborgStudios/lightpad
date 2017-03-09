@@ -27,25 +27,25 @@ wxGridCellRenderer *LightpadGridRenderer::Clone() const {
 }
 
 wxSize LightpadGridRenderer::GetBestSize(wxGrid &grid, wxGridCellAttr &attr,
-        wxDC &dc, int row, int col) {
-	return wxSize(0, 0);
+        wxDC &canvas, int row, int col) {
+	return wxSize(0, 0); // XXX Implement me
 }
 
-void LightpadGridRenderer::Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc,
+void LightpadGridRenderer::Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &canvas,
                                 const wxRect &rect, int row, int col, bool isSelected) {
 	wxPen pen = *wxTRANSPARENT_PEN;
 	if (isSelected) pen = *wxWHITE_PEN;
 	pen.SetWidth(pen_width);
-	dc.SetPen(pen);
+	canvas.SetPen(pen);
 
-	dc.SetBrush(wxBrush(attr.GetBackgroundColour()));
-	dc.DrawRectangle(rect);
+	canvas.SetBrush(wxBrush(attr.GetBackgroundColour()));
+	canvas.DrawRectangle(rect);
 
 	if (isSelected) {
 		pen = *wxBLACK_PEN;
 		pen.SetWidth(pen_width);
-		dc.SetPen(pen);
+		canvas.SetPen(pen);
 	}
-	dc.DrawRectangle(rect.GetX() + pen_width, rect.GetY() + pen_width,
-	                 rect.GetWidth() - (pen_width * 2), rect.GetHeight() - (pen_width * 2));
+	canvas.DrawRectangle(rect.GetX() + pen_width, rect.GetY() + pen_width,
+	                     rect.GetWidth() - (pen_width * 2), rect.GetHeight() - (pen_width * 2));
 }

@@ -46,7 +46,8 @@ void usleep(__int64 usec) {
 
 std::string getResourcePath(const char *resource_name) {
 	CFURLRef appUrlRef = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-	                     CFStringCreateWithCString(NULL, resource_name, kCFStringEncodingUTF8), NULL, NULL);
+	                     CFStringCreateWithCString(NULL, resource_name, kCFStringEncodingUTF8),
+	                     NULL, NULL);
 	CFStringRef filePathRef = CFURLCopyPath(appUrlRef);
 	std::string filePath(CFStringGetCStringPtr(filePathRef, kCFStringEncodingUTF8));
 
@@ -366,18 +367,18 @@ void LaunchpadS::setPulse(unsigned char light, unsigned char color) {
 }
 
 // Color conversion helpers
-double ColorConverter::Hue2RGB(double p, double q, double t) {
-	if (t < 0.0) t += 1;
-	if (t > 1.0) t -= 1;
-	if (t < 1 / 6.0) return p + (q - p) * 6.0 * t;
-	if (t < 1 / 2.0) return q;
-	if (t < 2 / 3.0) return p + (q - p) * (2 / 3.0 - t) * 6.0;
-	return p;
+double ColorConverter::Hue2RGB(double cc_p, double cc_q, double cc_t) {
+	if (cc_t < 0.0) cc_t += 1;
+	if (cc_t > 1.0) cc_t -= 1;
+	if (cc_t < 1 / 6.0) return cc_p + (cc_q - cc_p) * 6.0 * cc_t;
+	if (cc_t < 1 / 2.0) return cc_q;
+	if (cc_t < 2 / 3.0) return cc_p + (cc_q - cc_p) * (2 / 3.0 - cc_t) * 6.0;
+	return cc_p;
 }
 
-double ColorConverter::XYZ2H(double q) {
-	if (q > 0.008856) return pow(q, 0.333333);
-	return 7.787 * q + 0.137931;
+double ColorConverter::XYZ2H(double cc_q) {
+	if (cc_q > 0.008856) return pow(cc_q, 0.333333);
+	return 7.787 * cc_q + 0.137931;
 }
 
 // Compare two RGB colors via LAB
@@ -418,11 +419,11 @@ void ColorConverter::HSL2RGB(double hue, double sat, double lum,
 	if (sat == 0.0) {
 		*red = *grn = *blu = lum; // achromatic
 	} else {
-		double q = lum < 0.5 ? lum * (1 + sat) : lum + sat - lum * sat;
-		double p = 2.0 * lum - q;
-		*red = ColorConverter::Hue2RGB(p, q, hue + 1 / 3.0);
-		*grn = ColorConverter::Hue2RGB(p, q, hue);
-		*blu = ColorConverter::Hue2RGB(p, q, hue - 1 / 3.0);
+		double cc_q = lum < 0.5 ? lum * (1 + sat) : lum + sat - lum * sat;
+		double cc_p = 2.0 * lum - cc_q;
+		*red = ColorConverter::Hue2RGB(cc_p, cc_q, hue + 1 / 3.0);
+		*grn = ColorConverter::Hue2RGB(cc_p, cc_q, hue);
+		*blu = ColorConverter::Hue2RGB(cc_p, cc_q, hue - 1 / 3.0);
 	}
 }
 
@@ -447,25 +448,25 @@ void ColorConverter::RGB2HSV(double red, double grn, double blu,
 
 void ColorConverter::HSV2RGB(double hue, double sat, double vel,
                              double *red, double *grn, double *blu) {
-	unsigned int i = (unsigned int)(hue * 6.0);
-	double f = hue * 6.0 - i;
-	double p = vel * (1.0 - sat);
-	double q = vel * (1.0 - f * sat);
-	double t = vel * (1.0 - (1.0 - f) * sat);
+	unsigned int cc_i = (unsigned int)(hue * 6.0);
+	double cc_f = hue * 6.0 - cc_i;
+	double cc_p = vel * (1.0 - sat);
+	double cc_q = vel * (1.0 - cc_f * sat);
+	double cc_t = vel * (1.0 - (1.0 - cc_f) * sat);
 
-	switch (i % 6) {
+	switch (cc_i % 6) {
 		case 0:
-			*red = vel; *grn = t; *blu = p; break;
+			*red = vel; *grn = cc_t; *blu = cc_p; break;
 		case 1:
-			*red = q; *grn = vel; *blu = p; break;
+			*red = cc_q; *grn = vel; *blu = cc_p; break;
 		case 2:
-			*red = p; *grn = vel; *blu = t; break;
+			*red = cc_p; *grn = vel; *blu = cc_t; break;
 		case 3:
-			*red = p; *grn = q; *blu = vel; break;
+			*red = cc_p; *grn = cc_q; *blu = vel; break;
 		case 4:
-			*red = t; *grn = p; *blu = vel; break;
+			*red = cc_t; *grn = cc_p; *blu = vel; break;
 		default: // case 5
-			*red = vel; *grn = p; *blu = q; break;
+			*red = vel; *grn = cc_p; *blu = cc_q; break;
 	}
 }
 

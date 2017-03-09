@@ -34,11 +34,6 @@ add_definitions(-DRESOURCE_DIR="${IMGS}")
 include_directories(${ROOT})
 include_directories(${INCL})
 
-set(wxDRAW_BUTTONS 0)
-IF(wxDRAW_BUTTONS EQUAL 1)
-	add_definitions(-DwxDRAW_BUTTONS)
-ENDIF(wxDRAW_BUTTONS EQUAL 1)
-
 add_executable(lightpad ${SRC}/main.cpp ${SRC}/FilePanel.cpp ${SRC}/DisplayPanel.cpp ${SRC}/TimelinePanel.cpp ${SRC}/PropertiesPanel.cpp ${SRC}/GridRenderer.cpp ${SRC}/Colors.cpp ${SRC}/Helpers.cpp)
 add_executable(midiprobe ${SRC}/midiprobe.cpp ${SRC}/Helpers.cpp)
 add_executable(midiout ${SRC}/midiout.cpp ${SRC}/Helpers.cpp)

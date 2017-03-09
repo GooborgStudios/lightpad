@@ -39,17 +39,10 @@ class DisplayPanel: public wxPanel {
 
 		wxPanel *m_parent;
 		wxTimer *m_timer;
-		#if wxDRAW_BUTTONS
-		wxImage *launchpad_base_image;
-		wxImage *launchpad_button_image;
-		wxImage *launchpad_button_images[6];
-		wxBitmap resized;
-		#else
 		Magick::Image launchpad_base_image;
 		Magick::Image launchpad_button_image;
 		Magick::Image *launchpad_button_images[6];
 		Magick::Image resized;
-		#endif
 		std::string base_image_path;
 		std::string button_image_path;
 		int image_size;
