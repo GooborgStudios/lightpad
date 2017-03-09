@@ -1,46 +1,73 @@
 Libraries:
-wxWidgets          | https://wxwidgets.org/
-RGB2LAB (Modified) | http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
-LibMagic           | https://github.com/threatstack/libmagic
-RtMidi             | http://www.music.mcgill.ca/~gary/rtmidi/
-Midifile           | http://midifile.sapp.org/
-GraphicsMagick     | http://www.graphicsmagick.org/
-OCLint             | http://www.oclint.org/
+- wxWidgets                       | https://wxwidgets.org/
+- LibMagic                        | https://github.com/threatstack/libmagic
+- RtMidi                          | http://www.music.mcgill.ca/~gary/rtmidi/
+- MidiFile                        | http://midifile.sapp.org/
+- GraphicsMagick                  | http://www.graphicsmagick.org/
+- OCLint                          | http://www.oclint.org/
 
-Software:
-Sublime Text
-Code::Blocks
-Photoshop CC 2017
-GitHub
-Image2icon
+Referenced Code:
+- RGB2LAB (Modified)              | http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
+- DKingCN/Launchpad-WinAPI        | https://github.com/DKingCN/Launchpad-WinAPI
+
+Software Used:
+- Sublime Text
+- Code::Blocks
+- GitHub
+- CMake
+- Doxygen
+- VirtualBox
+- Photoshop CC 2017
+- Image2icon
+- [Paws for] Trello
+- Ableton Live 9 Suite
+- Cycling '74 Max (for Live)
 
 Hardware (Main Computer, Laptop):
-OS        | macOS Sierra, 10.12.3 Beta (16D25a)
-Model     | MacBook Pro 15" Retina (Mid 2014)
-CPU       | 2.5GHz Intel Core i7 Quad-Core Hyperthreaded
-RAM       | 16GB DDR3
-GPU 1     | Intel Iris Pro 1.5GB VRAM (integrated)
-GPU 2     | NVIDIA GeForce GT 750M 2GB VRAM (dedicated)
-Storage   | 1 TB Flash Storage
-Display 1 | 15.4-inch (2880 x 1800)
-Display 2 | 24.0-inch (1920 x 1080)
+- Operating System                | macOS Sierra, 10.12.4 Beta (16E175b)
+- Model                           | MacBook Pro 15" Retina (Mid 2014)
+- Processor                       | 2.5GHz Intel Core i7 Quad-Core Hyperthreaded
+- Memory                          | 16GB DDR3
+- Graphics Card (Integrated)      | Intel Iris Pro 1.5GB VRAM
+- Graphics Card (Dedicated)       | NVIDIA GeForce GT 750M 2GB VRAM
+- Storage                         | 1 TB Flash Storage
+- Display 1                       | 15.4-inch (2880 x 1800)
+- Display 2                       | 24.0-inch (1920 x 1080)
 
 Hardware (Secondary Computer, Desktop):
-OS        | Windows 10 Professional 64-bit
-CPU       | 3.3GHz Intel Core i5 Quad-Core
-RAM       | 16GB DDR3
-GPU       | EVGA GeForce GTX 980 4GB VRAM
-Storage   | 256 GB SSD and 1 TB HDD
-Display 1 | 24.0-inch (1920 x 1080)
-Display 2 | 17.1-inch (1280 x 1024)
+- Operating System                | Windows 10 Professional 64-bit
+- Processor                       | 3.3GHz (4.0GHz) Intel Core i5 Quad-Core
+- Memory                          | 16GB DDR3
+- Graphics Card                   | EVGA GeForce GTX 980 4GB VRAM
+- Storage                         | 256 GB SSD and 1 TB HDD
+- Display 1                       | 24.0-inch (1920 x 1080)
+- Display 2                       | 17.1-inch (1280 x 1024)
 
-References:
-Exige’s MIDI Extension         | http://forum.launchpad-pro.com/viewtopic.php?id=4968
-Launchpad Pro User Guide       | https://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/10594/launchpad-pro-user-guide-en.pdf
-Launchpad Pro Programmer Guide | https://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/10598/launchpad-pro-programmers-reference-guide_0.pdf
+Additional References:
+- Exige’s MIDI Extension          | http://forum.launchpad-pro.com/viewtopic.php?id=4968
+- Launchpad Pro User Guide        | http://tinyurl.com/hjnsldm
+- Launchpad Pro Programmer Guide  | http://tinyurl.com/hhoefae
 
 Utilized Lightshow Projects: (Lightshow Creator | Video Link | Song Name | Usage Details)
-Kaskobi | https://youtu.be/Bq3wmW24D_o | Zomboy - Like A Bitch                  | App icon inspiration
-ProdiG  | https://youtu.be/Z3NDxo04Roc | Nanomake - Crying Ice                  | Loading animation & testing use
-ProdiG  | https://youtu.be/B32JC3Fhf8M | Bro Safari - Reality                   | Testing use
-Ixen    | https://youtu.be/nejK-_Fivsg | Dodge & Fuski vs. Virtual Riot - Alien | Testing use
+- Kaskobi | https://youtu.be/Bq3wmW24D_o | Zomboy - Like A Bitch                  | App icon inspiration
+- ProdiG  | https://youtu.be/Z3NDxo04Roc | Nanomake - Crying Ice                  | Loading animation & testing use
+- ProdiG  | https://youtu.be/B32JC3Fhf8M | Bro Safari - Reality                   | Testing use
+- Ixen    | https://youtu.be/nejK-_Fivsg | Dodge & Fuski vs. Virtual Riot - Alien | Testing use
+
+
+
+Dependencies:
+	- All Platforms
+		- Make
+		- CMake
+		- GCC/Clang (or other C++ Compiler)
+		- wxWidgets
+		- GraphicsMagick++
+		- MidiFile [Precompiled library included (XXX Compile Linux Dynamic Library)]
+		- RtMidi [Precompiled library included (XXX Compile Linux Dynamic Library)]
+		- LibMagic (Optional)
+		- Doxygen (Optional)
+		- OCLint (Optional)
+	- Windows
+		- MinGW
+		- MSYS
