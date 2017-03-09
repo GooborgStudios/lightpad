@@ -8,20 +8,20 @@
 #pragma once
 
 #ifdef _WIN32 // Windows
-	#define WINDOWS
+	#define WINDOWS 1
 	#include <windows.h>
-	#define APP_ICON "graphics/icons/icon.ico"
+	#define APP_ICON "icons/icon.ico"
 	#ifdef _WIN64 // Windows 64-bit
 		#define WINDOWS_64
 	#else // Windows 32-bit
 		#define WINDOWS_32
 	#endif
 #elif __APPLE__ // macOS
-	#define MACOS
-	#define APP_ICON "graphics/icons/icon.icns"
+	#define MACOS 1
+	#define APP_ICON "icons/icon.icns"
 #else // Linux, Unix, POSIX, iOS, Android...
 	#warning "Unknown/unsupported compiler/operating system"
-	#define APP_ICON "graphics/icons/icon_64.png"
+	#define APP_ICON "icons/icon_64.png"
 #endif
 
 #include <regex>
@@ -61,6 +61,8 @@ enum {
 #ifdef WINDOWS
 	void usleep(__int64 usec);
 #endif
+
+std::string getResourcePath(const char *resource_name);
 
 double threeway_max(double val_a, double val_b, double val_c);
 double threeway_min(double val_a, double val_b, double val_c);

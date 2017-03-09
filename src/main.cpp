@@ -70,8 +70,8 @@ bool MainApp::OnInit() {
 MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size)
 	: wxFrame(NULL, ID_Frame_Main, title, pos, size) {
 
-	wxBitmap lightpad_icon(wxT("graphics/icons/icon_24.png"), wxBITMAP_TYPE_PNG);
-	SetIcon(wxIcon(APP_ICON));
+	wxBitmap lightpad_icon(getResourcePath("icons/icon_24.png"), wxBITMAP_TYPE_PNG);
+	SetIcon(wxIcon(getResourcePath(APP_ICON)));
 
 	// Initialize the menubar and attach keyboard shortcuts
 	// wxWidgets automatically maps Ctrl to Cmd for us to enable cross-platform compatibility

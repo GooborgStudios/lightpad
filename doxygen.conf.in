@@ -38,7 +38,7 @@ PROJECT_NAME           = Lightpad
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = @lightpad_VERSION_MAJOR@.@lightpad_VERSION_MINOR@.@lightpad_VERSION_MICRO@
+PROJECT_NUMBER         = @TARGET_VERSION_MAJOR@.@TARGET_VERSION_MINOR@.@TARGET_VERSION_PATCH@
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -58,7 +58,7 @@ PROJECT_LOGO           = @IMGS@/icons/icon_128.png
 # entered, it will be relative to the location where doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = @BIN@/doxygen
+OUTPUT_DIRECTORY       = @BUILD@/doxygen
 
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create 4096 sub-
 # directories (in 2 levels) under the output directory of each output format and

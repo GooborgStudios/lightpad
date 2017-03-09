@@ -35,8 +35,8 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	m_timer = new wxTimer(this, ID_DisplayPanel_Timer);
 
 	// Initialize variables
-	base_image_path = "graphics/launchpad_display/base/base_4096.png";
-	button_image_path = "graphics/launchpad_display/buttons/buttons_4096.png";
+	base_image_path = getResourcePath("launchpad_display/base/base_4096.png");
+	button_image_path = getResourcePath("launchpad_display/buttons/buttons_4096.png");
 	image_size = MAXIMUM_LAUNCHPAD_IMAGE_SIZE;
 	button_size = image_size * 0.06982421875;
 	button_radius = image_size / 512;
