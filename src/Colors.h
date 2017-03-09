@@ -15,9 +15,6 @@
 const int COLORCOUNT = 128;
 extern wxColor velocitycolors[COLORCOUNT];
 
-unsigned char get_closest_velocity(wxColor c);
-char get_color_velocity(wxColor c);
-
 class ColorConverter { // All converters take values from 0.0 to 1.0
 	public:
 		// Color conversion helpers
@@ -76,3 +73,6 @@ class ColorConverter { // All converters take values from 0.0 to 1.0
 		static void YIQ2CMYK(double ylum, double iphs, double quad, double *cyan, double *mgnta,
 		                     double *ylw, double *blk); 	// XXX Convert to int (0-255)
 };
+
+unsigned char get_closest_velocity(wxColor c);
+char get_color_velocity(wxColor c);

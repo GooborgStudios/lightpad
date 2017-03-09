@@ -28,30 +28,6 @@
 
 !XXX!
 
-unsigned char get_closest_velocity(wxColor color) {
-	/* Take a wxColor and find the closest match to a Launchpad Pro available color */
-	int best_match_index = 0;
-	int best_match_value = 1024;
-	for (int i = 0; i < COLORCOUNT; i++) {
-		int comparison = ColorConverter::LAB_compare_RGB(velocitycolors[i], color);
-		if (comparison < best_match_value) {
-			best_match_index = i;
-			best_match_value = comparison;
-		}
-	}
-
-	return best_match_index;
-};
-
-char get_color_velocity(wxColor color) {
-	/* Take a wxColor and find the matching velocity of a Launchpad Pro available color */
-	for (int i = 0; i < COLORCOUNT; i++) {
-		if (color == velocitycolors[i]) return i;
-	}
-
-	return -1;
-};
-
 // Color conversion helpers
 double ColorConverter::Hue2RGB(double cc_p, double cc_q, double cc_t) {
 	if (cc_t < 0.0) cc_t += 1;
@@ -323,3 +299,27 @@ void ColorConverter::YIQ2CMYK(double ylum, double iphs, double quad,
 	YIQ2RGB(ylum, iphs, quad, &red, &grn, &blu);
 	RGB2CMYK(red, grn, blu, cyan, mgnta, ylw, blk);
 }
+
+unsigned char get_closest_velocity(wxColor color) {
+	/* Take a wxColor and find the closest match to a Launchpad Pro available color */
+	int best_match_index = 0;
+	int best_match_value = 1024;
+	for (int i = 0; i < COLORCOUNT; i++) {
+		int comparison = ColorConverter::LAB_compare_RGB(velocitycolors[i], color);
+		if (comparison < best_match_value) {
+			best_match_index = i;
+			best_match_value = comparison;
+		}
+	}
+
+	return best_match_index;
+};
+
+char get_color_velocity(wxColor color) {
+	/* Take a wxColor and find the matching velocity of a Launchpad Pro available color */
+	for (int i = 0; i < COLORCOUNT; i++) {
+		if (color == velocitycolors[i]) return i;
+	}
+
+	return -1;
+};
