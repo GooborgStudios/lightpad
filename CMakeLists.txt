@@ -94,7 +94,7 @@ ENDIF(LibMagic_FOUND)
 find_package(Doxygen)
 IF(DOXYGEN_FOUND)
 	configure_file(${ROOT}/doxygen.conf.in ${BUILD}/doxygen.conf @ONLY)
-	add_custom_target(doc ALL DEPENDS ${BUILD}/doxygen/)
+	add_custom_target(docs ALL DEPENDS ${BUILD}/doxygen/)
 	add_custom_command(OUTPUT ${BUILD}/doxygen/ COMMAND ${DOXYGEN_EXECUTABLE} ${BUILD}/doxygen.conf DEPENDS ${SRC}/* ${ROOT}/readme.md ${ROOT}/doxygen.conf.in VERBATIM) # COMMENT "Generating API documentation with Doxygen"
 ENDIF(DOXYGEN_FOUND)
 
@@ -111,5 +111,6 @@ IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
 	FOREACH(f ${source_file_list})
 		list(APPEND SOURCE_FILES "${ROOT}/${f}")
 	ENDFOREACH()
-	add_custom_target(oclint oclint -p ${ROOT} ${SOURCE_FILES} DEPENDS ${SRC}/* ${BUILD}/compile_commands.json WORKING_DIRECTORY ${BUILD}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."
+	file(MAKE_DIRECTORY ${BUILD}/oclint)
+	add_custom_target(oclint oclint -p ${BUILD} ${SOURCE_FILES} DEPENDS ${SRC}/* ${BUILD}/compile_commands.json WORKING_DIRECTORY ${BUILD}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."
 ENDIF()
