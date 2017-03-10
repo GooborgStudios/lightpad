@@ -68,7 +68,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	// for (int i = 1; i < 99; i++) {
 	// 	if (i == 9 || i == 90) continue;
 	// 	int j = (i + / 10) + (9 - (i % 10));
-	// 	button_colors[i] = get_closest_velocity(rainbow[j]);
+	// 	button_colors[i] = ColorConverter::get_closest_velocity(rainbow[j]);
 	// }
 
 	paintNow();
@@ -262,7 +262,7 @@ float DisplayPanel::getButtonPosition(int digit) {
 }
 
 void DisplayPanel::colorButton(int button, wxColor color) {
-	button_colors[button] = get_closest_velocity(color);
+	button_colors[button] = ColorConverter::get_closest_velocity(color);
 	// This should check for invalid buttons (0, 9, 99)
 }
 
