@@ -34,12 +34,17 @@ class MainApp: public wxApp {
 class MainFrame: public wxFrame {
 	public:
 		MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size);
+		wxMenuBar *menuBar;
+		wxMenu *menuFile;
+		wxMenu *menuHelp;
+		wxToolBar *toolbar;
 		wxPanel *m_parent;
 		FilePanel *m_fp;
 		PropertiesPanel *m_pp;
 		DisplayPanel *m_dp;
 		TimelinePanel *m_tlp;
-
+		wxBoxSizer *top_half;
+		wxBoxSizer *sizer;
 	private:
 		void OnHello(wxCommandEvent &event);
 		void OnExit(wxCommandEvent &event);
@@ -75,9 +80,9 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 
 	// Initialize the menubar and attach keyboard shortcuts
 	// wxWidgets automatically maps Ctrl to Cmd for us to enable cross-platform compatibility
-	wxMenuBar *menuBar = new wxMenuBar;
-	wxMenu *menuFile = new wxMenu;
-	wxMenu *menuHelp = new wxMenu;
+	menuBar = new wxMenuBar;
+	menuFile = new wxMenu;
+	menuHelp = new wxMenu;
 	menuFile->Append(ID_Menu_Hello, "&Hello...\tCtrl-H",
 	                 "Help string shown in status bar for this menu item");
 	menuFile->Append(ID_Menu_Save, "&Save\tCtrl-S",
@@ -96,7 +101,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	SetStatusText("Lightpad - Nightwave Studios");
 
 	// Toolbar
-	wxToolBar *toolbar = CreateToolBar(wxTB_FLAT);
+	toolbar = CreateToolBar(wxTB_FLAT);
 	toolbar->AddTool(ID_Menu_About, wxT("About"), lightpad_icon);
 	toolbar->Realize();
 
@@ -109,8 +114,8 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	m_dp = new DisplayPanel(m_parent);
 	m_tlp = new TimelinePanel(m_parent);
 
-	wxBoxSizer *top_half = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
+	sizer = new wxBoxSizer(wxVERTICAL);
+	top_half = new wxBoxSizer(wxHORIZONTAL);
 
 	top_half->Add(m_fp, 1, wxEXPAND | wxLEFT, PADDING);
 	top_half->Add(m_dp, 4, wxEXPAND | wxALL, PADDING);
@@ -125,6 +130,8 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 
 void MainFrame::OnExit(wxCommandEvent &event) {
 	launchpad->disconnect();
+	delete launchpad;
+
 	Close(true); // Make sure that we safely quit the program
 }
 

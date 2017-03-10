@@ -87,8 +87,9 @@ class Note {
 class LaunchpadBase {
 	public:
 		LaunchpadBase();
+		~LaunchpadBase();
 		int connect();
-		void disconnect();
+		virtual void disconnect();
 		bool isConnected();
 		int getMidiPort(RtMidi *ports);
 		double getMessage(std::vector<unsigned char> *message_in);
@@ -100,7 +101,7 @@ class LaunchpadBase {
 		RtMidiOut *midiout;
 		int inport;
 		int outport;
-		std::vector<unsigned char> message;
+		std::vector<unsigned char> *message;
 		void sendMessage();
 		void sendMessage(unsigned int first_byte, ...);
 		bool connected;

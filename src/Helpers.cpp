@@ -57,8 +57,6 @@ std::string getResourcePath(const char *resource_name) {
 }
 #endif
 
-LaunchpadPro *launchpad = new LaunchpadPro();
-
 // Generate with GenerateNoteButtonMap.cpp
 const int note_button_map[] = {
 	91, 92, 93, 94, 95, 96, 97, 98, 11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 34, 41, 42, 43, 44,
@@ -138,37 +136,31 @@ Note::Note(int pos, int col, int start, int dur) {
 LaunchpadBase::LaunchpadBase() {
 	midiin = new RtMidiIn();
 	midiout = new RtMidiOut();
+	message = new std::vector<unsigned char>();
+}
+
+LaunchpadBase::~LaunchpadBase() {
+	delete midiin;
+	delete midiout;
+	delete message;
 }
 
 int LaunchpadBase::connect() {
-	connected = false;
+	connected = true;
 
 	inport = getMidiPort(midiin);
 	outport = getMidiPort(midiout);
 
-	if ((inport == -1) || (outport == -1)) {
-		delete midiin;
-		delete midiout;
-		return -1;
-	}
+	if ((inport == -1) || (outport == -1)) return -1;
 
-	// Open (Pro) Standalone port.
 	midiin->openPort(inport);
 	midiout->openPort(outport);
-
-	// Don't ignore sysex, timing, or active sensing messages.
-	midiin->ignoreTypes(false, false, false);
-
-	connected = true;
+	midiin->ignoreTypes(false, false, false); // Don't ignore sysex, timing, or active sensing messages.
 	return 0;
 }
 
 void LaunchpadBase::disconnect() {
-	if (connected) {
-		connected = false;
-		delete midiin;
-		delete midiout;
-	}
+
 }
 
 bool LaunchpadBase::isConnected() {
@@ -191,36 +183,36 @@ int LaunchpadBase::getMidiPort(RtMidi *ports) {
 }
 
 double LaunchpadBase::getMessage(std::vector<unsigned char> *message_in) {
-	if (isConnected() == false) return -1;
+	if (!isConnected()) return -1;
 	return midiin->getMessage(message_in);
 }
 
 void LaunchpadBase::sendMessage() {
-	midiout->sendMessage(&message);
-	message.clear();
+	midiout->sendMessage(message);
+	message->clear();
 }
 
 void LaunchpadBase::sendMessage(unsigned int first_byte, ...) {
-	if (isConnected() == false) return;
+	if (!isConnected()) return;
 	va_list varlist;
 	va_start(varlist, first_byte);
 	unsigned int byte = first_byte;
 	while (byte != MIDI_MESSAGE_SYSEX_END && byte <= 255) {
-		message.push_back(byte);
+		message->push_back(byte);
 		byte = va_arg(varlist, unsigned int);
 	}
-	if (byte <= 255) message.push_back(byte);
+	if (byte <= 255) message->push_back(byte);
 	va_end(varlist);
 
 	sendMessage();
 }
 
 void LaunchpadBase::setColor(unsigned char light, unsigned char color) {
-	if (isConnected() == false) return;
+	if (!isConnected()) return;
 }
 
 void LaunchpadBase::setPulse(unsigned char light, unsigned char color) {
-	if (isConnected() == false) return;
+	if (!isConnected()) return;
 }
 
 LaunchpadPro::LaunchpadPro() {
@@ -250,9 +242,11 @@ int LaunchpadPro::connect() {
 }
 
 void LaunchpadPro::disconnect() {
-	sendMessage(240, 0, 32, 41, 2, 16, 14, 0, 247); // Clear all LED colors
-	sendMessage(240, 0, 32, 41, 2, 16, 44, 0, 247); // Set to Note Mode
-	LaunchpadBase::disconnect();
+	if (isConnected()) {
+		sendMessage(240, 0, 32, 41, 2, 16, 14, 0, 247); // Clear all LED colors
+		sendMessage(240, 0, 32, 41, 2, 16, 44, 0, 247); // Set to Note Mode
+		LaunchpadBase::disconnect();
+	}
 }
 
 bool LaunchpadPro::isConnected() {
@@ -260,37 +254,37 @@ bool LaunchpadPro::isConnected() {
 }
 
 void LaunchpadPro::setColor(unsigned char light, unsigned char color) {
-	if (isConnected() == false) return;
+	if (!isConnected()) return;
 	sendMessage(240, 0, 32, 41, 2, 16, 10, light, color, 247);
 }
 
 void LaunchpadPro::setColor(unsigned char light,
                             unsigned char red, unsigned char green, unsigned char blue) {
-	if (isConnected() == false) return;
+	if (!isConnected()) return;
 	sendMessage(240, 0, 32, 41, 2, 16, 11, light, red, green, blue, 247);
 }
 
 void LaunchpadPro::setFlash(unsigned char light, unsigned char color) {
-	if (isConnected() == false) return;
+	if (!isConnected()) return;
 	sendMessage(240, 0, 32, 41, 2, 16, 35, light, color, 247);
 }
 
 void LaunchpadPro::setPulse(unsigned char light, unsigned char color) {
-	if (isConnected() == false) return;
+	if (!isConnected()) return;
 	sendMessage(240, 0, 32, 41, 2, 16, 40, light, color, 247);
 }
 
 void LaunchpadPro::displayText(unsigned int color, std::string text) {
-	if (isConnected() == false) return;
+	if (!isConnected()) return;
 
-	message.push_back(240);
-	message.push_back(0);
-	message.push_back(32);
-	message.push_back(41);
-	message.push_back(2);
-	message.push_back(16);
-	message.push_back(20);
-	message.push_back(color);
+	message->push_back(240);
+	message->push_back(0);
+	message->push_back(32);
+	message->push_back(41);
+	message->push_back(2);
+	message->push_back(16);
+	message->push_back(20);
+	message->push_back(color);
 
 	bool slash = false;
 	for (int i = 0; i < text.size(); ++i) {
@@ -298,40 +292,40 @@ void LaunchpadPro::displayText(unsigned int color, std::string text) {
 			slash = false;
 			switch (text[i]) { // XXX There's a better way to do this
 				case '/':
-					message.push_back('/');
+					message->push_back('/');
 					break;
 				case '1':
-					message.push_back(1);
+					message->push_back(1);
 					break;
 				case '2':
-					message.push_back(2);
+					message->push_back(2);
 					break;
 				case '3':
-					message.push_back(3);
+					message->push_back(3);
 					break;
 				case '4':
-					message.push_back(4);
+					message->push_back(4);
 					break;
 				case '5':
-					message.push_back(5);
+					message->push_back(5);
 					break;
 				case '6':
-					message.push_back(6);
+					message->push_back(6);
 					break;
 				case '7':
-					message.push_back(7);
+					message->push_back(7);
 					break;
 				default:
-					message.push_back(text[i]);
+					message->push_back(text[i]);
 					break;
 			}
 		} else if (text[i] == '/') {
 			slash = true;
 		} else {
-			message.push_back(text[i]);
+			message->push_back(text[i]);
 		}
 	}
-	message.push_back(247);
+	message->push_back(247);
 
 	sendMessage();
 }
@@ -342,7 +336,7 @@ void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
 }
 
 void LaunchpadPro::stopText() {
-	if (isConnected() == false) return;
+	if (!isConnected()) return;
 	sendMessage(240, 0, 32, 41, 2, 16, 20, 247);
 }
 
@@ -369,8 +363,10 @@ int LaunchpadS::connect() {
 }
 
 void LaunchpadS::disconnect() {
-	sendMessage( 176, 0, 0, -1 ); // Reset
-	LaunchpadBase::disconnect();
+	if (isConnected()) {
+		sendMessage( 176, 0, 0, -1 ); // Reset
+		LaunchpadBase::disconnect();
+	}
 }
 
 bool LaunchpadS::isConnected() {
@@ -387,15 +383,17 @@ unsigned char LaunchpadS::pro_to_s_color(unsigned char pro_color) {
 }
 
 void LaunchpadS::setColor(unsigned char light, unsigned char color) {
-	if (isConnected() == false) return;
-	message.push_back(144);
-	message.push_back(pro_to_s_note(light, 144 /*msg_type*/));
-	message.push_back(color);
+	if (!isConnected()) return;
+	message->push_back(144);
+	message->push_back(pro_to_s_note(light, 144 /*msg_type*/));
+	message->push_back(color);
 
 	sendMessage();
 }
 
 void LaunchpadS::setPulse(unsigned char light, unsigned char color) {
-	if (isConnected() == false) return;
+	if (!isConnected()) return;
 	// XXX Implement me!
 }
+
+LaunchpadPro *launchpad = new LaunchpadPro();
