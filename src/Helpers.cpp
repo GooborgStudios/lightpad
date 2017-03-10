@@ -280,8 +280,7 @@ void LaunchpadPro::setPulse(unsigned char light, unsigned char color) {
 	sendMessage(240, 0, 32, 41, 2, 16, 40, light, color, 247);
 }
 
-void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
-                               std::string text) {
+void LaunchpadPro::displayText(unsigned int color, std::string text) {
 	if (isConnected() == false) return;
 
 	message.push_back(240);
@@ -292,11 +291,54 @@ void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
 	message.push_back(16);
 	message.push_back(20);
 	message.push_back(color);
-	message.push_back(speed);
-	for (int i = 0; i < text.size(); ++i) message.push_back(text[i]);
+
+	bool slash = false;
+	for (int i = 0; i < text.size(); ++i) {
+		if (slash) {
+			slash = false;
+			switch (text[i]) { // XXX There's a better way to do this
+				case '/':
+					message.push_back('/');
+					break;
+				case '1':
+					message.push_back(1);
+					break;
+				case '2':
+					message.push_back(2);
+					break;
+				case '3':
+					message.push_back(3);
+					break;
+				case '4':
+					message.push_back(4);
+					break;
+				case '5':
+					message.push_back(5);
+					break;
+				case '6':
+					message.push_back(6);
+					break;
+				case '7':
+					message.push_back(7);
+					break;
+				default:
+					message.push_back(text[i]);
+					break;
+			}
+		} else if (text[i] == '/') {
+			slash = true;
+		} else {
+			message.push_back(text[i]);
+		}
+	}
 	message.push_back(247);
 
 	sendMessage();
+}
+
+void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
+                               std::string text) {
+	displayText(color, "/" + std::to_string(speed) + text);
 }
 
 void LaunchpadPro::stopText() {
@@ -305,11 +347,7 @@ void LaunchpadPro::stopText() {
 }
 
 LaunchpadS::LaunchpadS() {
-	#ifdef WINDOWS
 	PORT_REGEX = std::regex("Launchpad S");
-	#else
-	PORT_REGEX = std::regex("Launchpad S");
-	#endif
 }
 
 int LaunchpadS::connect() {
