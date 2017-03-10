@@ -72,7 +72,7 @@ class ColorConverter { // All converters take values from 0.0 to 1.0
 		                     double *quad); 		// XXX Convert to int (0-255)
 		static void YIQ2CMYK(double ylum, double iphs, double quad, double *cyan, double *mgnta,
 		                     double *ylw, double *blk); 	// XXX Convert to int (0-255)
+		static unsigned char get_closest_velocity(wxColor c);
 };
 
-unsigned char get_closest_velocity(wxColor c);
 char get_color_velocity(wxColor c);

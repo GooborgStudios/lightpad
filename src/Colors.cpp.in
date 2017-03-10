@@ -52,9 +52,9 @@ double ColorConverter::LAB_compare_RGB(int red1, int grn1, int blu1,
 	return pow((lum1 - lum2), 2) + pow((apt1 - apt2), 2) + pow((bpt1 - bpt2), 2);
 }
 
-double ColorConverter::LAB_compare_RGB(wxColor col1, wxColor col2) {
-	return LAB_compare_RGB(col1.Red(), col1.Green(), col1.Blue(),
-	                       col2.Red(), col2.Green(), col2.Blue());
+double ColorConverter::LAB_compare_RGB(wxColor clr1, wxColor clr2) {
+	return LAB_compare_RGB(clr1.Red(), clr1.Green(), clr1.Blue(),
+	                       clr2.Red(), clr2.Green(), clr2.Blue());
 }
 
 // RGB<>HSL color conversion
@@ -300,7 +300,7 @@ void ColorConverter::YIQ2CMYK(double ylum, double iphs, double quad,
 	RGB2CMYK(red, grn, blu, cyan, mgnta, ylw, blk);
 }
 
-unsigned char get_closest_velocity(wxColor color) {
+unsigned char ColorConverter::get_closest_velocity(wxColor color) {
 	/* Take a wxColor and find the closest match to a Launchpad Pro available color */
 	int best_match_index = 0;
 	int best_match_value = 1024;
