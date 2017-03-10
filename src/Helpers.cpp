@@ -197,7 +197,7 @@ double LaunchpadBase::getMessage(std::vector<unsigned char> *message_in) {
 
 void LaunchpadBase::sendMessage() {
 	midiout->sendMessage(&message);
-	message.erase(message.begin(), message.begin() + message.size());
+	message.clear();
 }
 
 void LaunchpadBase::sendMessage(unsigned int first_byte, ...) {
