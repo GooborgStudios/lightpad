@@ -101,6 +101,7 @@ class LaunchpadBase {
 		int inport;
 		int outport;
 		std::vector<unsigned char> message;
+		void sendMessage();
 		void sendMessage(unsigned int first_byte, ...);
 		bool connected;
 };

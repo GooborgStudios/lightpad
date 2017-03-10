@@ -195,6 +195,11 @@ double LaunchpadBase::getMessage(std::vector<unsigned char> *message_in) {
 	return midiin->getMessage(message_in);
 }
 
+void LaunchpadBase::sendMessage() {
+	midiout->sendMessage(&message);
+	message.erase(message.begin(), message.begin() + message.size());
+}
+
 void LaunchpadBase::sendMessage(unsigned int first_byte, ...) {
 	if (isConnected() == false) return;
 	va_list varlist;
@@ -207,8 +212,7 @@ void LaunchpadBase::sendMessage(unsigned int first_byte, ...) {
 	if (byte <= 255) message.push_back(byte);
 	va_end(varlist);
 
-	midiout->sendMessage(&message);
-	message.erase(message.begin(), message.begin() + message.size());
+	sendMessage();
 }
 
 void LaunchpadBase::setColor(unsigned char light, unsigned char color) {
@@ -286,14 +290,13 @@ void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
 	message.push_back(41);
 	message.push_back(2);
 	message.push_back(16);
-	message.push_back(40);
+	message.push_back(20);
 	message.push_back(color);
 	message.push_back(speed);
 	for (int i = 0; i < text.size(); ++i) message.push_back(text[i]);
 	message.push_back(247);
 
-	midiout->sendMessage(&message);
-	message.erase(message.begin(), message.begin() + message.size());
+	sendMessage();
 }
 
 void LaunchpadPro::stopText() {
@@ -351,8 +354,7 @@ void LaunchpadS::setColor(unsigned char light, unsigned char color) {
 	message.push_back(pro_to_s_note(light, 144 /*msg_type*/));
 	message.push_back(color);
 
-	midiout->sendMessage(&message);
-	message.erase(message.begin(), message.begin() + message.size());
+	sendMessage();
 }
 
 void LaunchpadS::setPulse(unsigned char light, unsigned char color) {
