@@ -2,3 +2,4 @@
 *.layout
 *.plist
 build
+src/Colors.cpp
