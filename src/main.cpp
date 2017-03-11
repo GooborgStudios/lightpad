@@ -28,6 +28,7 @@ const int PADDING = 0;
 class MainApp: public wxApp {
 	public:
 		virtual bool OnInit();
+		virtual int OnExit();
 };
 
 // Main window frame
@@ -66,10 +67,24 @@ bool MainApp::OnInit() {
 	if (launchpad->connect() < 0) launchpad->disconnect();
 	else launchpad->setPulse(LAUNCHPAD_PRO_SIDE_LED_ID, 53);
 
+	SetAppName("Lightpad");
+	SetAppDisplayName("Lightpad");
+	SetClassName("co.nightwave.launchpad");
+	SetVendorName("Nightwave Studios");
+	SetVendorDisplayName("Nightwave Studios");
+
 	MainFrame *frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800, 600));
 	frame->SetMinSize(wxSize(800, 600));
 	frame->Show(true);
 	return true;
+}
+
+int MainApp::OnExit() {
+	launchpad->disconnect();
+	delete launchpad;
+	// delete frame;
+
+	return 0;
 }
 
 MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size)
@@ -129,10 +144,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 }
 
 void MainFrame::OnExit(wxCommandEvent &event) {
-	launchpad->disconnect();
-	delete launchpad;
-
-	Close(true); // Make sure that we safely quit the program
+	Close(); // Make sure that we safely quit the program
 }
 
 void MainFrame::OnAbout(wxCommandEvent &event) {
