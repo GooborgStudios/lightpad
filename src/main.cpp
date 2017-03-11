@@ -24,11 +24,14 @@
 
 const int PADDING = 0;
 
+class MainFrame;
+
 // Main app
 class MainApp: public wxApp {
 	public:
 		virtual bool OnInit();
 		virtual int OnExit();
+		MainFrame *frame;
 };
 
 // Main window frame
@@ -73,7 +76,7 @@ bool MainApp::OnInit() {
 	SetVendorName("Nightwave Studios");
 	SetVendorDisplayName("Nightwave Studios");
 
-	MainFrame *frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800, 600));
+	frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800, 600));
 	frame->SetMinSize(wxSize(800, 600));
 	frame->Show(true);
 	return true;
@@ -82,7 +85,6 @@ bool MainApp::OnInit() {
 int MainApp::OnExit() {
 	launchpad->disconnect();
 	delete launchpad;
-	// delete frame;
 
 	return 0;
 }
@@ -144,7 +146,14 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 }
 
 void MainFrame::OnExit(wxCommandEvent &event) {
-	Close(); // Make sure that we safely quit the program
+	if (Close()) {
+		delete m_fp;
+		delete m_pp;
+		delete m_dp;
+		delete m_tlp;
+		delete m_parent;
+		delete toolbar;
+	}
 }
 
 void MainFrame::OnAbout(wxCommandEvent &event) {

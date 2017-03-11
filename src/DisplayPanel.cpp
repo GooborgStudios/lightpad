@@ -46,10 +46,10 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	image_ypos = 0;
 	frame = 0;
 
-	launchpad_base_image.read(base_image_path);
-	launchpad_button_image.read(button_image_path);
+	launchpad_base_image = new Magick::Image(base_image_path);
+	launchpad_button_image = new Magick::Image(button_image_path);
 	for (int i = 0; i < 6; i++) {
-		launchpad_button_images[i] = new Magick::Image(launchpad_button_image);
+		launchpad_button_images[i] = new Magick::Image(*launchpad_button_image);
 		launchpad_button_images[i]->crop(Magick::Geometry(286, 286, 286 * i, 0));
 	}
 
@@ -72,6 +72,13 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	// }
 
 	paintNow();
+}
+
+DisplayPanel::~DisplayPanel() {
+	delete m_timer;
+	delete launchpad_base_image;
+	delete launchpad_button_image;
+	for (int i = 0; i < 6; i++) delete launchpad_button_images[i];
 }
 
 void DisplayPanel::paintEvent(wxPaintEvent &event) {
@@ -105,7 +112,7 @@ void DisplayPanel::play_next_frame(wxTimerEvent &event) {
 
 void DisplayPanel::render(wxDC &canvas) {
 	int neww, newh, ratio, new_image_size, min_fit_size;
-	wxColor bcolor;
+	wxColor *bcolor;
 	Magick::Image *current_button;
 	Magick::Geometry size;
 
@@ -153,21 +160,22 @@ void DisplayPanel::render(wxDC &canvas) {
 			button_size = image_size * 0.06982421875;
 			button_radius = image_size / 512;
 
-			resized = Magick::Image(launchpad_button_image);
-			size = resized.size();
+			resized = new Magick::Image(*launchpad_button_image);
+			size = resized->size();
 			size.width(size.width() / ratio);
 			size.height(size.height() / ratio);
-			resized.scale(size);
+			resized->scale(size);
+			// delete[] launchpad_button_images;
 			for (int i = 0; i < 6; i++) {
-				launchpad_button_images[i] = new Magick::Image(resized);
+				launchpad_button_images[i] = new Magick::Image(*resized);
 				launchpad_button_images[i]->crop(Magick::Geometry(button_size, button_size,
 				                                 button_size * i, 0));
 			}
-			resized = Magick::Image(launchpad_base_image);
-			size = resized.size();
+			resized = new Magick::Image(*launchpad_base_image);
+			size = resized->size();
 			size.width(size.width() / ratio);
 			size.height(size.height() / ratio);
-			resized.scale(size);
+			resized->scale(size);
 		}
 
 		// Reposition as needed
@@ -190,7 +198,7 @@ void DisplayPanel::render(wxDC &canvas) {
 		int btn_y = 9 - (i / 10);
 		int button_style;
 
-		bcolor = wxColor(velocitycolors[button_colors[i]]);
+		bcolor = &velocitycolors[button_colors[i]];
 
 		// Choose button style
 		if (btn_x == 0 || btn_x == 9 || btn_y == 0 || btn_y == 9) {
@@ -217,40 +225,41 @@ void DisplayPanel::render(wxDC &canvas) {
 
 		current_button = new Magick::Image(*launchpad_button_images[button_style]);
 		current_button->modulate(180.0, 0.0, 100.0);
-		current_button->colorize(50, 50, 50, Magick::ColorRGB(bcolor.Red() / 255.0,
-		                         bcolor.Green() / 255.0, bcolor.Blue() / 255.0));
-
-		resized.composite(*current_button, getButtonPosition(btn_x)*image_size,
-		                  getButtonPosition(btn_y)*image_size,
-		                  Magick::OverCompositeOp);
+		current_button->colorize(50, 50, 50, Magick::ColorRGB(bcolor->Red() / 255.0,
+		                         bcolor->Green() / 255.0, bcolor->Blue() / 255.0));
+		resized->composite(*current_button, getButtonPosition(btn_x)*image_size,
+		                   getButtonPosition(btn_y)*image_size,
+		                   Magick::OverCompositeOp);
+		delete current_button;
 
 		if (launchpad->isConnected()) {
-			// std::cout << i << " " << button_colors[i] << std::endl;
 			if (button_style == 1) launchpad->setColor(i, button_colors[i]);
 			else launchpad->setColor(i, button_colors[i]);
 		}
 	}
 
 	// Derived from http://stackoverflow.com/questions/28151240/get-rgb-color-with-magick-using-c
-	int width = resized.columns();
-	int height = resized.rows();
-	int range = std::pow(2, resized.modulusDepth());
-	assert(range > 0); // Better do some assertion/error checking here
-	Magick::PixelPacket *pixels = resized.getPixels(0, 0, width, height);
+	int width = resized->columns();
+	int height = resized->rows();
+	int range = std::pow(2, resized->modulusDepth());
+	Magick::PixelPacket *pixels = resized->getPixels(0, 0, width, height);
 	Magick::ColorRGB color_sample;
-	wxImage out(width, height);
-	out.SetAlpha();
+	wxImage *out = new wxImage(width, height);
+	out->SetAlpha();
 
 	for (int x = 0; x < width - 1; x++) {
 		for (int y = 0; y < height - 1; y++) {
 			color_sample = pixels[width * y + x];
-			out.SetRGB(x, y, color_sample.red() * 255, color_sample.green() * 255,
-			           color_sample.blue() * 255);
-			out.SetAlpha(x, y, (1 - color_sample.alpha()) * 255);
+			out->SetRGB(x, y, color_sample.red() * 255, color_sample.green() * 255,
+			            color_sample.blue() * 255);
+			out->SetAlpha(x, y, (1 - color_sample.alpha()) * 255);
 		}
 	}
 
-	canvas.DrawBitmap(wxBitmap(out.Scale(min_fit_size, min_fit_size)), image_xpos, image_ypos);
+	canvas.DrawBitmap(wxBitmap(out->Scale(min_fit_size, min_fit_size)), image_xpos, image_ypos);
+
+	delete pixels;
+	delete out;
 }
 
 float DisplayPanel::getButtonPosition(int digit) {

@@ -25,6 +25,7 @@
 class DisplayPanel: public wxPanel {
 	public:
 		DisplayPanel(wxPanel *parent);
+		~DisplayPanel();
 		void paintEvent(wxPaintEvent &evt);
 		void paintNow();
 		void OnSize(wxSizeEvent &event);
@@ -39,10 +40,10 @@ class DisplayPanel: public wxPanel {
 
 		wxPanel *m_parent;
 		wxTimer *m_timer;
-		Magick::Image launchpad_base_image;
-		Magick::Image launchpad_button_image;
+		Magick::Image *launchpad_base_image;
+		Magick::Image *launchpad_button_image;
 		Magick::Image *launchpad_button_images[6];
-		Magick::Image resized;
+		Magick::Image *resized;
 		std::string base_image_path;
 		std::string button_image_path;
 		int image_size;
