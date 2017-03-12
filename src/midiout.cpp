@@ -29,6 +29,7 @@ void finish(int code) {
 	int err_code = 0;
 	if (code == -1) err_code = 1;
 	launchpad->disconnect();
+	delete launchpad;
 	std::cout << std::endl;
 	exit(err_code);
 }
@@ -39,17 +40,17 @@ void launchpad_not_found_quit() {
 }
 
 void playback_file(const char *file) {
-	MidiFile midifile;
+	MidiFile *midifile;
 	MidiEvent *mev;
 	int color, deltatick;
 
-	midifile.read(file);
-	midifile.joinTracks();
+	midifile->read(file);
+	midifile->joinTracks();
 
-	for (int event = 0; event < midifile[0].size(); event++) {
-		mev = &midifile[0][event];
+	for (int event = 0; event < (*midifile)[0].size(); event++) {
+		mev = &(*midifile)[0][event];
 		if (event == 0) deltatick = mev->tick;
-		else deltatick = mev->tick - midifile[0][event - 1].tick;
+		else deltatick = mev->tick - (*midifile)[0][event - 1].tick;
 		if ((int)(*mev)[0] == 128 || (int)(*mev)[0] == 144) {
 			color = (int)(*mev)[2];
 			if ((int)(*mev)[0] == 128) color = 0;
@@ -57,6 +58,9 @@ void playback_file(const char *file) {
 			launchpad->setColor(note_to_button((int)(*mev)[1]), color);
 		}
 	}
+
+	delete midifile;
+	delete mev;
 }
 
 int main() {

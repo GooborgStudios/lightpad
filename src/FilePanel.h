@@ -15,6 +15,10 @@
 #include <wx/dataview.h>
 #include <wx/imaglist.h>
 
+#ifdef LIB_MAGIC
+	#include <magic.h>
+#endif
+
 #ifdef WINDOWS
 	#include <windows.h>
 	#include <shlobj.h>
@@ -36,18 +40,22 @@
 class FilePanel: public wxPanel {
 	public:
 		FilePanel(wxPanel *parent);
+		~FilePanel();
 		void RefreshFileList();
 		void Update();
 		wxString GetFilePath(wxDataViewItem item);
 		void ChangeSelectedFile(wxDataViewEvent &event);
 		//void RenameFile(wxDataViewEvent &event);
 	private:
-		void ListDirectory(wxString path, wxDataViewItem files);
+		void ListDirectory(wxString path, wxDataViewItem *files);
 		wxPanel *m_parent;
 		wxBoxSizer *sizer;
 		wxDataViewTreeCtrl *filelistbox;
-		wxDataViewItem parent_dvi;
+		wxDataViewItem *parent_dvi;
 		wxImageList *icon_list;
+		#ifdef LIB_MAGIC
+		magic_t myt;
+		#endif
 
 		wxDECLARE_EVENT_TABLE();
 };

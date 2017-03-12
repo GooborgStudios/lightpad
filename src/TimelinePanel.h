@@ -23,6 +23,7 @@
 class TimelinePanel: public wxPanel {
 	public:
 		TimelinePanel(wxPanel *parent);
+		~TimelinePanel();
 		void ChangeNoteColor(wxColourPickerEvent &event);
 		void OnSingleSelectCell(wxGridEvent &event);
 		void OnCellLeftClick(wxGridEvent &event);
@@ -30,7 +31,9 @@ class TimelinePanel: public wxPanel {
 		wxPanel *m_parent;
 		wxGrid *grid;
 		wxBoxSizer *sizer;
+		LightpadGridRenderer *renderer;
 		int id;
+		char buf[8];
 
 		wxDECLARE_EVENT_TABLE();
 };

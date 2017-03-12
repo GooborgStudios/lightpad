@@ -34,6 +34,11 @@ FilePanel::FilePanel(wxPanel *parent)
 	: wxPanel(parent, ID_Panel_File, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 
+	#ifdef LIB_MAGIC
+	myt = magic_open(MAGIC_ERROR | MAGIC_MIME_TYPE);
+	magic_load(myt, NULL);
+	#endif
+
 	// Initialize icons
 	icon_list = new wxImageList();
 	icon_list->Add(wxArtProvider::GetIcon(wxART_FOLDER, wxART_MENU));
@@ -47,12 +52,18 @@ FilePanel::FilePanel(wxPanel *parent)
 	filelistbox = new wxDataViewTreeCtrl(this, ID_FilePanel_Tree, wxPoint(-1, -1),
 	                                     wxSize(-1, -1), wxDV_SINGLE | wxDV_NO_HEADER);
 	filelistbox->SetImageList(icon_list);
-	parent_dvi = wxDataViewItem();
+	parent_dvi = new wxDataViewItem();
 	RefreshFileList();
 
 	sizer->Add(filelistbox, 1, wxEXPAND | wxALL, 0);
 	this->SetSizer(sizer);
 	Update();
+}
+
+FilePanel::~FilePanel() {
+	delete filelistbox;
+	delete parent_dvi;
+	delete icon_list;
 }
 
 // List all project directories
@@ -63,13 +74,13 @@ void FilePanel::RefreshFileList() {
 }
 
 // Obtain all of the contents of a directory and add it to a specified file list
-void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
+void FilePanel::ListDirectory(wxString path, wxDataViewItem *files) {
+	wxDataViewItem *current_file;
 	wxDir dir(path);
 	wxString filename;
-	#ifdef LIB_MAGIC
-	magic_t myt = magic_open(MAGIC_ERROR | MAGIC_MIME_TYPE);
-	magic_load(myt, NULL);
-	#endif
+	std::string filetype;
+	bool cont;
+	int icon_type;
 
 	if (!dir.IsOpened()) {
 		// deal with the error here - wxDir would already log an error message
@@ -78,17 +89,17 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	}
 
 	// List files
-	bool cont = dir.GetFirst(&filename, "", wxDIR_FILES);
+	cont = dir.GetFirst(&filename, "", wxDIR_FILES);
 	while (cont) {
 		#ifdef LIB_MAGIC
-		std::string filetype(magic_file(myt, (path + "/" + filename).c_str()));
+		filetype = magic_file(myt, (path + "/" + filename).c_str());
 		#else
-		std::string filetype("audio/midi"); // XXX Use file extension instead
+		filetype = "audio/midi"; // XXX Use file extension instead
 		#endif
 		if (filetype == "audio/midi") { // Only add if a MIDI file
-			int icon_type = 2;
+			icon_type = 2;
 			if (filetype == "text/plain") icon_type = 3;
-			filelistbox->AppendItem(files, filename, icon_type);
+			filelistbox->AppendItem(*files, filename, icon_type);
 		}
 		cont = dir.GetNext(&filename);
 	}
@@ -96,10 +107,11 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem files) {
 	// List directories
 	cont = dir.GetFirst(&filename, "", wxDIR_DIRS);
 	while (cont) {
-		wxDataViewItem current_file = filelistbox->AppendContainer(files, filename, 0, 1);
+		current_file = new wxDataViewItem(filelistbox->AppendContainer(*files, filename, 0, 1));
 		ListDirectory(path + "/" + filename, current_file);
 		// Obtain the contents of the directories by running the function in itself
 		cont = dir.GetNext(&filename);
+		delete current_file;
 	}
 }
 
@@ -110,21 +122,19 @@ void FilePanel::Update() {
 
 wxString FilePanel::GetFilePath(wxDataViewItem item) {
 	wxDataViewTreeStore *store = filelistbox->GetStore();
-	wxDataViewItem parent(store->GetParent(item));
 	wxString path;
 
-	for (int i = 0; i <= 1; i++) {
-		if (i == 0)
-			path = max_user_library_path + "/";
-		else
-			path = max_shared_library_path + "/";
+	for (int i = 0; i <= 1; i++) { // XXX Improve me!
+		if (i == 0) path = max_user_library_path + "/";
+		else path = max_shared_library_path + "/";
 
 		if (!store->IsContainer(item))
-			path += filelistbox->GetItemText(parent) + "/";
+			path += filelistbox->GetItemText(store->GetParent(item)) + "/";
 		path += filelistbox->GetItemText(item);
 		if (wxFile::Exists(path))
 			break;
 	}
+	delete store;
 	return path;
 }
 

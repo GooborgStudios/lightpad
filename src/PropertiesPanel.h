@@ -24,6 +24,7 @@
 class PropertiesPanel: public wxPanel {
 	public:
 		PropertiesPanel(wxPanel *parent);
+		~PropertiesPanel();
 		void Update();
 		void OnSelectCell(wxGridEvent &event);
 		void SelectColor(wxColourPickerEvent &event);
@@ -31,6 +32,7 @@ class PropertiesPanel: public wxPanel {
 		wxPanel *m_parent;
 		wxBoxSizer *sizer;
 		wxGrid *grid;
+		LightpadGridRenderer *renderer;
 
 		wxDECLARE_EVENT_TABLE();
 };

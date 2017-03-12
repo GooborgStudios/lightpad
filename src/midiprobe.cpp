@@ -36,6 +36,8 @@ void quit() {
 }
 
 int main() {
+	int nPorts;
+
 	std::cout << "Operating System: " << OPERATING_SYSTEM << std::endl << std::endl;
 
 	try {
@@ -46,10 +48,10 @@ int main() {
 	}
 
 	// Check inputs.
-	unsigned int nPorts = midiin->getPortCount();
+	nPorts = midiin->getPortCount();
 	std::cout << "There are " << nPorts << " MIDI input ports available:" << std::endl;
 	std::string portName;
-	for ( unsigned int i = 0; i < nPorts; i++ ) {
+	for (int i = 0; i < nPorts; i++) {
 		try {
 			portName = midiin->getPortName(i);
 		} catch (RtMidiError &error) {
@@ -62,7 +64,7 @@ int main() {
 	// Check outputs.
 	nPorts = midiout->getPortCount();
 	std::cout << "There are " << nPorts << " MIDI output ports available:" << std::endl;
-	for ( unsigned int i = 0; i < nPorts; i++ ) {
+	for (int i = 0; i < nPorts; i++) {
 		try {
 			portName = midiout->getPortName(i);
 		} catch (RtMidiError &error) {

@@ -28,27 +28,16 @@ const int ROWS = 16;
 TimelinePanel::TimelinePanel(wxPanel *parent)
 	: wxPanel(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
-
 	sizer = new wxBoxSizer(wxHORIZONTAL);
-
-	char buf[8];
-
 	this->DestroyChildren();
 
-	// Create a wxGrid object
-	grid = new wxGrid( this,
-	                   ID_TimelinePanel_TimelineGrid,
-	                   wxPoint( 0, 0 ),
-	                   wxSize( -1, -1 ));
-	// Then we call CreateGrid to set the dimensions of the grid
-	// (100 rows and 10 columns in this example)
+	grid = new wxGrid(this, ID_TimelinePanel_TimelineGrid, wxPoint(0, 0), wxSize(-1, -1));
 
-	grid->CreateGrid( ROWS, COLS );
-	grid->SetDefaultRenderer(new LightpadGridRenderer(1));
+	renderer = new LightpadGridRenderer(1);
+	grid->CreateGrid(ROWS, COLS);
+	grid->SetDefaultRenderer(renderer);
 	grid->SetCellHighlightPenWidth(0);
 	grid->SetCellHighlightROPenWidth(0);
-	// We can set the sizes of individual rows and columns
-	// in pixels
 	grid->SetDefaultColSize(75, true);
 	grid->SetDefaultRowSize(18, true);
 	for (int c = 0; c < COLS; c++) {
@@ -67,6 +56,9 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 	Update();
 }
 
+TimelinePanel::~TimelinePanel() {
+	delete grid;
+}
 
 void TimelinePanel::ChangeNoteColor(wxColourPickerEvent &event) {
 	wxGridCellCoordsArray cells = grid->GetSelectedCells();

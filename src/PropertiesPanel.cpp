@@ -30,13 +30,14 @@ PropertiesPanel::PropertiesPanel(wxPanel *parent)
 	sizer = new wxBoxSizer(wxVERTICAL);
 	grid = new wxGrid(this, ID_PropertiesPanel_ColorSelector);
 
+	renderer = new LightpadGridRenderer(2);
 	grid->CreateGrid(16, 8);
 	grid->DisableCellEditControl();
 	grid->HideColLabels();
 	grid->HideRowLabels();
 	grid->SetDefaultColSize(28, true);
 	grid->SetDefaultRowSize(28, true);
-	grid->SetDefaultRenderer(new LightpadGridRenderer(2));
+	grid->SetDefaultRenderer(renderer);
 	grid->SetCellHighlightPenWidth(0);
 	grid->SetCellHighlightROPenWidth(0);
 
@@ -56,6 +57,10 @@ PropertiesPanel::PropertiesPanel(wxPanel *parent)
 	sizer->Add(grid, 1, wxSHRINK);
 	this->SetSizer(sizer);
 	Update();
+}
+
+PropertiesPanel::~PropertiesPanel() {
+	delete grid;
 }
 
 void PropertiesPanel::Update() {
