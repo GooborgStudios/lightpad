@@ -20,6 +20,10 @@
 #include "Helpers.h"
 
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
+#define MINIMUM_LAUNCHPAD_IMAGE_SIZE 128
+#define MAXIMUM_LAUNCHPAD_BUTTON_SIZE 286
+#define ANIMATED_BUTTON_COLOR
+// #define BUTTON_RATIO 0.06982421875
 
 // Graphical interface panel
 class DisplayPanel: public wxPanel {
@@ -30,8 +34,12 @@ class DisplayPanel: public wxPanel {
 		void paintNow();
 		void OnSize(wxSizeEvent &event);
 		void startstop(wxCommandEvent &event);
+		void resize_images(int min_fit_size);
+		void set_debug_button_colors();
+		void render_buttons();
 		void render(wxDC &dc);
-		float getButtonPosition(int digit);
+		int get_button_style(int btn_x, int btn_y);
+		float get_button_position(int digit);
 		void colorButton(int button, wxColor color);
 
 		wxDECLARE_EVENT_TABLE();
@@ -43,7 +51,7 @@ class DisplayPanel: public wxPanel {
 		Magick::Image *launchpad_base_image;
 		Magick::Image *launchpad_button_image;
 		Magick::Image *launchpad_button_images[6];
-		Magick::Image *resized;
+		Magick::Image *lp_img;
 		std::string base_image_path;
 		std::string button_image_path;
 		int image_size;
