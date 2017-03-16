@@ -76,7 +76,6 @@ void PropertiesPanel::OnSelectCell(wxGridEvent &event) {
 	evt.SetEventObject(this);
 	evt.SetInt(event.GetRow() * 8 + event.GetCol());
 	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Timeline), evt);
-	// std::cout << ProcessEvent(evt) << std::endl;
 }
 
 void PropertiesPanel::SelectColor(wxColourPickerEvent &event) {
