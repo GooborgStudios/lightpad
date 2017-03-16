@@ -8,6 +8,7 @@
 #include "TimelinePanel.h"
 
 #include <iostream>
+#include <vector>
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -44,6 +45,9 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 		snprintf(buf, 7, "%d.%d.%d", c / 16 + 1, c / 4 % 4 + 1, c % 4 + 1);
 		grid->SetColLabelValue(c, buf);
 		grid->DisableColResize(c);
+		unsigned char *newframe = new unsigned char[96];
+		bzero(newframe, sizeof(newframe));
+		frames.push_back(newframe);
 	}
 	for (int r = 0; r < ROWS; r++) {
 		grid->DisableRowResize(r);
@@ -66,13 +70,19 @@ void TimelinePanel::ChangeNoteColor(wxColourPickerEvent &event) {
 	wxGridCellCoordsArray bbots = grid->GetSelectionBlockBottomRight();
 
 	if (cells.Count() > 0) {
-		for (int i = 0; i < cells.Count(); i++ )
-			grid->SetCellBackgroundColour(cells[i].GetRow(), cells[i].GetCol(), event.GetColour());
+		for (int i = 0; i < cells.Count(); i++) {
+			int col = cells[i].GetCol();
+			int row = cells[i].GetRow();
+			grid->SetCellBackgroundColour(row, col, velocitycolors[event.GetInt()]);
+			frames[col][row] = event.GetInt();
+		}
 	}
 	if (btops.Count() > 0 && bbots.Count() > 0) {
-		for (int i = btops[0].GetRow(); i <= bbots[0].GetRow(); i++ ) {
-			for (int j = btops[0].GetCol(); j <= bbots[0].GetCol(); j++ )
-				grid->SetCellBackgroundColour(i, j, event.GetColour());
+		for (int row = btops[0].GetRow(); row <= bbots[0].GetRow(); row++) {
+			for (int col = btops[0].GetCol(); col <= bbots[0].GetCol(); col++) {
+				grid->SetCellBackgroundColour(row, col, velocitycolors[event.GetInt()]);
+				frames[col][row] = event.GetInt();
+			}
 		}
 	}
 
@@ -90,5 +100,5 @@ void TimelinePanel::OnSingleSelectCell(wxGridEvent &event) {
 
 wxBEGIN_EVENT_TABLE(TimelinePanel, wxPanel)
 	EVT_GRID_SELECT_CELL(TimelinePanel::OnSingleSelectCell)
-	EVT_COLOURPICKER_CHANGED(ID_PropertiesPanel_ColorSelector, TimelinePanel::ChangeNoteColor)
+	EVT_COMMAND(ID_Panel_Timeline, COLOR_SELECT, TimelinePanel::ChangeNoteColor)
 wxEND_EVENT_TABLE()

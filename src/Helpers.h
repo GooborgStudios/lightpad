@@ -54,6 +54,7 @@ enum {
 	ID_Menu_PlayPause,
 	ID_FilePanel_Tree,
 	ID_PropertiesPanel_ColorSelector,
+	ID_PropertiesPanel_ColorSelect,
 	ID_TimelinePanel_TimelineGrid,
 	ID_DisplayPanel_Timer
 };

@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
@@ -18,13 +20,14 @@
 #include "Colors.h"
 #include "Helpers.h"
 #include "GridRenderer.h"
+#include "PropertiesPanel.h"
 
 // Timeline panel
 class TimelinePanel: public wxPanel {
 	public:
 		TimelinePanel(wxPanel *parent);
 		~TimelinePanel();
-		void ChangeNoteColor(wxColourPickerEvent &event);
+		void ChangeNoteColor(wxCommandEvent &event);
 		void OnSingleSelectCell(wxGridEvent &event);
 		void OnCellLeftClick(wxGridEvent &event);
 	private:
@@ -34,6 +37,7 @@ class TimelinePanel: public wxPanel {
 		LightpadGridRenderer *renderer;
 		int id;
 		char buf[8];
+		std::vector<unsigned char *> frames;
 
 		wxDECLARE_EVENT_TABLE();
 };

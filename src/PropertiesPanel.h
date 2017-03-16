@@ -36,3 +36,5 @@ class PropertiesPanel: public wxPanel {
 
 		wxDECLARE_EVENT_TABLE();
 };
+
+wxDECLARE_EVENT(COLOR_SELECT, wxCommandEvent);

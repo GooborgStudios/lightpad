@@ -22,6 +22,8 @@
 #include "Helpers.h"
 #include "GridRenderer.h"
 
+wxDEFINE_EVENT(COLOR_SELECT, wxCommandEvent);
+
 // Initialize the properties panel and it's elements
 PropertiesPanel::PropertiesPanel(wxPanel *parent)
 	: wxPanel(parent, ID_Panel_Properties, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
@@ -70,9 +72,11 @@ void PropertiesPanel::Update() {
 void PropertiesPanel::OnSelectCell(wxGridEvent &event) {
 	grid->SelectBlock(event.GetRow(), event.GetCol(), event.GetRow(), event.GetCol());
 
-	wxColourPickerEvent evt(this, ID_PropertiesPanel_ColorSelector,
-	                        grid->GetCellBackgroundColour(event.GetRow(), event.GetCol()));
+	wxCommandEvent evt(COLOR_SELECT, ID_PropertiesPanel_ColorSelect);
+	evt.SetEventObject(this);
+	evt.SetInt(event.GetRow() * 8 + event.GetCol());
 	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Timeline), evt);
+	// std::cout << ProcessEvent(evt) << std::endl;
 }
 
 void PropertiesPanel::SelectColor(wxColourPickerEvent &event) {
