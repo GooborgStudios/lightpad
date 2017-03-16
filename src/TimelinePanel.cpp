@@ -21,6 +21,7 @@
 #include "Colors.h"
 #include "Helpers.h"
 #include "GridRenderer.h"
+#include "PropertiesPanel.h"
 
 // Initialize the timeline panel and it's elements
 const int COLS = 32;
@@ -58,13 +59,17 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 	sizer->Layout();
 
 	Update();
+
+	Bind(COLOR_SELECT, &TimelinePanel::ChangeNoteColor, this, ID_PropertiesPanel_ColorSelect);
 }
 
 TimelinePanel::~TimelinePanel() {
 	delete grid;
 }
 
-void TimelinePanel::ChangeNoteColor(wxColourPickerEvent &event) {
+void TimelinePanel::ChangeNoteColor(wxCommandEvent &event) {
+	wxMessageBox("Blah", "Few baaaaaar!", wxOK | wxICON_INFORMATION);
+
 	wxGridCellCoordsArray cells = grid->GetSelectedCells();
 	wxGridCellCoordsArray btops = grid->GetSelectionBlockTopLeft();
 	wxGridCellCoordsArray bbots = grid->GetSelectionBlockBottomRight();
