@@ -39,10 +39,6 @@ add_executable(midiprobe ${SRC}/midiprobe.cpp ${SRC}/Helpers.cpp)
 add_executable(midiout ${SRC}/midiout.cpp ${SRC}/Helpers.cpp)
 add_executable(GenerateNoteButtonMap ${SRC}/GenerateNoteButtonMap.cpp)
 
-add_custom_target(Colors ALL DEPENDS ${SRC}/Colors.cpp)
-add_custom_command(OUTPUT ${SRC}/Colors.cpp COMMAND python "${SRC}/sample_colors.py" WORKING_DIRECTORY ${ROOT} DEPENDS ${SRC}/Colors.cpp.in ${IMGS}/rgbcolors.png ${SRC}/sample_colors.py VERBATIM) # COMMENT "Generating color mapping with sample_colors.py"
-add_dependencies(lightpad Colors)
-
 set(CMAKE_CXX_COMPILER g++)
 find_package(wxWidgets COMPONENTS html qa adv core xml net base REQUIRED)
 execute_process(COMMAND "wx-config --cxxflags" OUTPUT_VARIABLE wxConfig_CXX_FLAGS)

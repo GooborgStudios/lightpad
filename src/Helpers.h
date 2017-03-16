@@ -39,6 +39,7 @@
 #define LAUNCHPAD_PRO_SIDE_LED_ID 99
 
 #define PI 3.14159265
+#define Color wxColor
 
 // Element IDs
 enum {
