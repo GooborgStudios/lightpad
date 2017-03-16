@@ -49,9 +49,9 @@ PropertiesPanel::PropertiesPanel(wxPanel *parent)
 	}
 
 	for (int i = 0; i < COLORCOUNT; i++) {
-		int col = i / 8;
-		int row = i % 8;
-		grid->SetCellBackgroundColour(col, row, velocitycolors[i]);
+		int row = i / 8;
+		int col = i % 8;
+		grid->SetCellBackgroundColour(row, col, velocitycolors[i]);
 	}
 
 	sizer->Add(grid, 1, wxSHRINK);
@@ -78,9 +78,9 @@ void PropertiesPanel::OnSelectCell(wxGridEvent &event) {
 void PropertiesPanel::SelectColor(wxColourPickerEvent &event) {
 	int color = get_color_velocity(event.GetColour());
 	if (color > -1) {
-		int col = color / 8;
-		int row = color % 8;
-		grid->SelectBlock(col, row, col, row);
+		int row = color / 8;
+		int col = color % 8;
+		grid->SelectBlock(row, col, row, col);
 	}
 }
 
