@@ -21,11 +21,14 @@
 #include <wx/sizer.h>
 #include <wx/bitmap.h>
 #include <wx/dcbuffer.h>
+#include <wx/clrpicker.h>
 
 #include "Magick++.h"
 
 #include "Colors.h"
 #include "Helpers.h"
+
+wxDEFINE_EVENT(DISPLAY_REFRESH, wxCommandEvent);
 
 // Initialize the file panel and it's elements
 DisplayPanel::DisplayPanel(wxPanel *parent)
@@ -51,7 +54,13 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	bzero(launchpad_button_images, sizeof(launchpad_button_images));
 	lp_img = NULL;
 
+	for (int i = 1; i < 99; i++) {
+		if (i == 9 || i == 90) continue;
+		button_colors[i] = 0;
+	}
 	paintNow();
+
+	Bind(DISPLAY_REFRESH, &DisplayPanel::RefreshNow, this, ID_TimelinePanel_CellSelect);
 }
 
 DisplayPanel::~DisplayPanel() {
@@ -71,6 +80,15 @@ void DisplayPanel::paintNow() {
 	// depending on your system you may need to look at double-buffered dcs
 	wxClientDC canvas(this);
 	render(canvas);
+}
+
+void DisplayPanel::RefreshNow() {
+	Refresh();
+	Update();
+}
+
+void DisplayPanel::RefreshNow(wxCommandEvent &event) {
+	RefreshNow();
 }
 
 void DisplayPanel::OnSize(wxSizeEvent &event) {
@@ -127,51 +145,56 @@ void DisplayPanel::resize_images(int min_fit_size) {
 	}
 }
 
-void DisplayPanel::set_debug_button_colors() {
-	// Set the button colors
-	#if defined(ANIMATED_BUTTON_COLOR)
-	for (int i = 1; i < 99; i++) {
-		if (i == 9 || i == 90) continue;
-		int btn_x = i % 10;
-		int btn_y = 9 - (i / 10);
-		int offset = std::abs(sin(frame * PI / 6) * 3);
+// void DisplayPanel::set_debug_button_colors() {
+// 	// Set the button colors
+// 	#if defined(ANIMATED_BUTTON_COLOR)
+// 	for (int i = 1; i < 99; i++) {
+// 		if (i == 9 || i == 90) continue;
+// 		int btn_x = i % 10;
+// 		int btn_y = 9 - (i / 10);
+// 		int offset = std::abs(sin(frame * PI / 6) * 3);
 
-		if (btn_x == 0 || btn_y == 0 || btn_x == 9 || btn_y == 9) {
-			button_colors[i] = 0;
-		} else if (btn_x == 3 || btn_y == 3 || btn_x == 6 || btn_y == 6) {
-			if ((btn_x == 3 || btn_x == 6) && (btn_y == 3 || btn_y == 6)) {
-				button_colors[i] = 81;
-			} else {
-				if (btn_x < 3) offset += std::abs(sin(btn_x + 1 * PI / 6) * 3);
-				if (btn_x > 6) offset += std::abs(sin(btn_x * PI / 6) * 3);
-				if (btn_y < 3) offset += std::abs(sin(btn_y + 1 * PI / 6) * 3);
-				if (btn_y > 6) offset += std::abs(sin(btn_y * PI / 6) * 3);
-				button_colors[i] = 45 + offset;
-			}
-		} else {
-			button_colors[i] = 0;
-		}
-	}
-	#elif defined(RAINBOW_BUTTON_COLOR)
-	wxColor rainbow[18];
-	for (int j = 0; j < 18; j++) {
-		int red = 0, grn = 0, blu = 0;
-		if (j >= 15) red = 255 * ((18 - j) / 3.0);
-		else red = 255 * ((j - 9) / 3.0);
-		if (j >= 12) grn = 255 * ((15 - j) / 3.0);
-		else grn = 255 * ((j - 3) / 3.0);
-		if (j >= 6) blu = 255 * ((9 - j) / 3.0);
-		else blu = 255 * ((j) / 3.0);
-		rainbow[j] = wxColor(val_in_range(red, 0, 255), val_in_range(grn, 0, 255), val_in_range(blu, 0,
-		                     255));
-	}
-	for (int i = 1; i < 99; i++) {
-		if (i == 9 || i == 90) continue;
-		int j = (i + / 10) + (9 - (i % 10));
-		button_colors[i] = ColorConverter::get_closest_velocity(rainbow[j]);
-	}
-	#endif
-}
+// 		if (btn_x == 0 || btn_y == 0 || btn_x == 9 || btn_y == 9) {
+// 			button_colors[i] = 0;
+// 		} else if (btn_x == 3 || btn_y == 3 || btn_x == 6 || btn_y == 6) {
+// 			if ((btn_x == 3 || btn_x == 6) && (btn_y == 3 || btn_y == 6)) {
+// 				button_colors[i] = 81;
+// 			} else {
+// 				if (btn_x < 3) offset += std::abs(sin(btn_x + 1 * PI / 6) * 3);
+// 				if (btn_x > 6) offset += std::abs(sin(btn_x * PI / 6) * 3);
+// 				if (btn_y < 3) offset += std::abs(sin(btn_y + 1 * PI / 6) * 3);
+// 				if (btn_y > 6) offset += std::abs(sin(btn_y * PI / 6) * 3);
+// 				button_colors[i] = 45 + offset;
+// 			}
+// 		} else {
+// 			button_colors[i] = 0;
+// 		}
+// 	}
+// 	#elif defined(RAINBOW_BUTTON_COLOR)
+// 	wxColor rainbow[18];
+// 	for (int j = 0; j < 18; j++) {
+// 		int red = 0, grn = 0, blu = 0;
+// 		if (j >= 15) red = 255 * ((18 - j) / 3.0);
+// 		else red = 255 * ((j - 9) / 3.0);
+// 		if (j >= 12) grn = 255 * ((15 - j) / 3.0);
+// 		else grn = 255 * ((j - 3) / 3.0);
+// 		if (j >= 6) blu = 255 * ((9 - j) / 3.0);
+// 		else blu = 255 * ((j) / 3.0);
+// 		rainbow[j] = wxColor(val_in_range(red, 0, 255), val_in_range(grn, 0, 255), val_in_range(blu, 0,
+// 		                     255));
+// 	}
+// 	for (int i = 1; i < 99; i++) {
+// 		if (i == 9 || i == 90) continue;
+// 		int rnb = (i / 10) + (9 - (i % 10));
+// 		button_colors[i] = ColorConverter::get_closest_velocity(rainbow[rnb]);
+// 	}
+// 	#else
+// 	for (int i = 1; i < 99; i++) {
+// 		if (i == 9 || i == 90) continue;
+// 		button_colors[i] = 0;
+// 	}
+// 	#endif
+// }
 
 void DisplayPanel::render_buttons() {
 	// Draw the buttons on the screen (and set Launchpad colors)
@@ -220,7 +243,6 @@ void DisplayPanel::render(wxDC &canvas) {
 		panel_height = newh;
 	}
 
-	set_debug_button_colors();
 	render_buttons();
 
 	// Derived from http://stackoverflow.com/questions/28151240/get-rgb-color-with-magick-using-c
@@ -280,8 +302,12 @@ float DisplayPanel::get_button_position(int digit) {
 }
 
 void DisplayPanel::colorButton(int button, wxColor color) {
+	if (button < 1 || button > 98 || button == 9 || button == 90) return;
 	button_colors[button] = ColorConverter::get_closest_velocity(color);
-	// This should check for invalid buttons (0, 9, 99)
+}
+
+void DisplayPanel::colorButton(wxColourPickerEvent &event) {
+	colorButton(event.GetInt(), event.GetColour());
 }
 
 wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
@@ -289,4 +315,6 @@ wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
 	EVT_SIZE(DisplayPanel::OnSize)
 	EVT_MENU(ID_Menu_PlayPause, DisplayPanel::startstop)
 	EVT_TIMER(ID_DisplayPanel_Timer, DisplayPanel::play_next_frame)
+	EVT_COLOURPICKER_CHANGED(ID_TimelinePanel_TimelineGrid, DisplayPanel::colorButton)
+	EVT_COMMAND(ID_Panel_Display, DISPLAY_REFRESH, DisplayPanel::RefreshNow)
 wxEND_EVENT_TABLE()

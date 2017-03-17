@@ -57,6 +57,7 @@ enum {
 	ID_PropertiesPanel_ColorSelector,
 	ID_PropertiesPanel_ColorSelect,
 	ID_TimelinePanel_TimelineGrid,
+	ID_TimelinePanel_CellSelect,
 	ID_DisplayPanel_Timer
 };
 

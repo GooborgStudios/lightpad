@@ -137,7 +137,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	top_half->Add(m_fp, 1, wxEXPAND | wxLEFT, PADDING);
 	top_half->Add(m_dp, 4, wxEXPAND | wxALL, PADDING);
 	top_half->Add(m_pp, 0, wxEXPAND | wxRIGHT, PADDING);
-	sizer->Add(top_half, 3, wxEXPAND | wxALL, PADDING);
+	sizer->Add(top_half, 7, wxEXPAND | wxALL, PADDING);
 	sizer->Add(m_tlp, 1, wxEXPAND | wxALL, PADDING);
 
 	m_parent->SetSizer(sizer);

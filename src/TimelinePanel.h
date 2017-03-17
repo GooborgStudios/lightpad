@@ -27,6 +27,7 @@ class TimelinePanel: public wxPanel {
 	public:
 		TimelinePanel(wxPanel *parent);
 		~TimelinePanel();
+		void set_debug_button_colors(unsigned char *frame, int frame_num);
 		void ChangeNoteColor(wxCommandEvent &event);
 		void OnSingleSelectCell(wxGridEvent &event);
 		void OnCellLeftClick(wxGridEvent &event);

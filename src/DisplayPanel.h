@@ -13,6 +13,7 @@
 #endif
 
 #include <wx/sizer.h>
+#include <wx/clrpicker.h>
 
 #include "Magick++.h"
 
@@ -22,8 +23,10 @@
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
 #define MINIMUM_LAUNCHPAD_IMAGE_SIZE 128
 #define MAXIMUM_LAUNCHPAD_BUTTON_SIZE 286
-#define ANIMATED_BUTTON_COLOR
 // #define BUTTON_RATIO 0.06982421875
+
+// #define ANIMATED_BUTTON_COLOR
+// #define RAINBOW_BUTTON_COLOR
 
 // Graphical interface panel
 class DisplayPanel: public wxPanel {
@@ -32,15 +35,18 @@ class DisplayPanel: public wxPanel {
 		~DisplayPanel();
 		void paintEvent(wxPaintEvent &evt);
 		void paintNow();
+		void RefreshNow();
+		void RefreshNow(wxCommandEvent &event);
 		void OnSize(wxSizeEvent &event);
 		void startstop(wxCommandEvent &event);
 		void resize_images(int min_fit_size);
-		void set_debug_button_colors();
+		// void set_debug_button_colors();
 		void render_buttons();
 		void render(wxDC &dc);
 		int get_button_style(int btn_x, int btn_y);
 		float get_button_position(int digit);
 		void colorButton(int button, wxColor color);
+		void colorButton(wxColourPickerEvent &event);
 
 		wxDECLARE_EVENT_TABLE();
 	private:
@@ -64,3 +70,5 @@ class DisplayPanel: public wxPanel {
 		int button_colors[100];
 		int frame;
 };
+
+wxDECLARE_EVENT(DISPLAY_REFRESH, wxCommandEvent);
