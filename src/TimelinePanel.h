@@ -17,7 +17,6 @@
 #include <wx/grid.h>
 #include <wx/clrpicker.h>
 
-#include "Colors.h"
 #include "Helpers.h"
 #include "GridRenderer.h"
 #include "PropertiesPanel.h"
@@ -28,6 +27,9 @@ class TimelinePanel: public wxPanel {
 		TimelinePanel(wxPanel *parent);
 		~TimelinePanel();
 		void set_debug_button_colors(unsigned char *frame, int frame_num);
+		void SetCellColor(int row, int col, int velocity);
+		void MovePlayhead(int frame_num);
+		void RefreshDisplay();
 		void ChangeNoteColor(wxCommandEvent &event);
 		void OnSingleSelectCell(wxGridEvent &event);
 		void OnCellLeftClick(wxGridEvent &event);
@@ -38,7 +40,6 @@ class TimelinePanel: public wxPanel {
 		LightpadGridRenderer *renderer;
 		int id;
 		char buf[8];
-		std::vector<unsigned char *> frames;
 
 		wxDECLARE_EVENT_TABLE();
 };

@@ -20,6 +20,7 @@
 
 #include "Colors.h"
 #include "Helpers.h"
+#include "Project.h"
 #include "GridRenderer.h"
 #include "PropertiesPanel.h"
 #include "DisplayPanel.h"
@@ -39,8 +40,8 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 	this->DestroyChildren();
 
 	grid = new wxGrid(this, ID_TimelinePanel_TimelineGrid, wxPoint(0, 0), wxSize(-1, -1));
-
 	renderer = new LightpadGridRenderer(1);
+
 	grid->CreateGrid(ROWS, COLS);
 	grid->SetDefaultRenderer(renderer);
 	grid->SetCellHighlightPenWidth(0);
@@ -48,11 +49,12 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 	grid->SetDefaultColSize(75, true);
 	grid->SetDefaultRowSize(10, true);
 	grid->EnableEditing(false);
+
 	for (int col = 0; col < COLS; col++) {
 		snprintf(buf, 7, "%d.%d.%d", col / 16 + 1, col / 4 % 4 + 1, col % 4 + 1);
 		grid->SetColLabelValue(col, buf);
 		grid->DisableColResize(col);
-		unsigned char *newframe = new unsigned char[100];
+		unsigned char *newframe = new unsigned char[ROWS];
 		bzero(newframe, sizeof(newframe));
 		set_debug_button_colors(newframe, col); // Remove me after development
 		frames.push_back(newframe);
@@ -61,20 +63,15 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 		grid->DisableRowResize(row);
 	}
 	for (int col = 0; col < COLS; col++) {
-		for (int row = 0; row < ROWS; row++) {
-			int b = row;
-			if (row >= 9) b += 1;
-			if (row >= 90) b += 1;
-			grid->SetCellBackgroundColour(row, col, velocitycolors[frames[col][b]]);
-			wxColourPickerEvent evt(this, ID_TimelinePanel_TimelineGrid, velocitycolors[frames[col][b]]);
-			evt.SetInt(row);
-			wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), evt);
+		for (int row = 0; row < 100; row++) {
+//			int b = row + 1;
+//			if (row >= 9) b += 1;
+//			if (row >= 90) b += 1;
+			SetCellColor(col, row, frames[col][row]);
 		}
 	}
 
-	wxCommandEvent fin_evt(DISPLAY_REFRESH, ID_TimelinePanel_CellSelect);
-	fin_evt.SetEventObject(this);
-	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), fin_evt);
+	RefreshDisplay();
 
 	sizer->Add(grid, 1, wxEXPAND);
 	this->SetSizer(sizer);
@@ -101,15 +98,28 @@ void TimelinePanel::set_debug_button_colors(unsigned char *frame, int frame_num)
 		else grn = 255 * ((j - 3) / 3.0);
 		if (j >= 6) blu = 255 * ((9 - j) / 3.0);
 		else blu = 255 * ((j) / 3.0);
-		rainbow[j] = Color(val_in_range(red, 0, 255), val_in_range(grn, 0, 255), val_in_range(blu, 0,
-		                   255));
+		rainbow[j] = Color(val_in_range(red, 0, 255), val_in_range(grn, 0, 255), val_in_range(blu, 0, 255));
 	}
 	#endif
+	
+	int btn_x = 0;
+	int btn_y = 9;
 
-	for (int i = 1; i < 99; i++) {
-		if (i == 9 || i == 90) continue;
-		int btn_x = i % 10;
-		int btn_y = 9 - (i / 10);
+	for (int i = 0; i < ROWS; i++) {
+		btn_x++;
+		if (i == 8) btn_x++;
+		if (i == 88) btn_x++;
+		if (btn_x / 10 > 0) {
+			btn_x = btn_x % 10;
+			btn_y--;
+		}
+		
+//		if (i == 8 || i == 89) {
+//			frame[i] = 0;
+//			continue;
+//		}
+		
+		std::cout << i << " " << btn_x << "," << btn_y << " = " << btn_x + btn_y << std::endl;
 
 		#if defined(ANIMATED_BUTTON_COLOR)
 		int offset = std::abs(sin(frame_num * PI / 6) * 3);
@@ -137,6 +147,29 @@ void TimelinePanel::set_debug_button_colors(unsigned char *frame, int frame_num)
 	}
 }
 
+void TimelinePanel::SetCellColor(int col, int row, int velocity) {
+	// We're mapping from 96 rows to 98 buttons, since two of them are non-existant, and from index start 0 to 1
+	int btn = row + 1;
+	if (row >= 8) btn++;
+	if (row >= 88) btn++;
+	grid->SetCellBackgroundColour(row, col, velocitycolors[velocity]);
+	frames[col][row] = velocity;
+	wxColourPickerEvent evt(this, ID_TimelinePanel_TimelineGrid, velocitycolors[velocity]);
+	evt.SetInt(btn);
+	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), evt);
+}
+
+void TimelinePanel::MovePlayhead(int frame_num) {
+	for (int i = 0; i < ROWS; i++) SetCellColor(frame_num, i, frames[frame_num][i]);
+	RefreshDisplay();
+}
+
+void TimelinePanel::RefreshDisplay() {
+	wxCommandEvent fin_evt(DISPLAY_REFRESH, ID_TimelinePanel_CellSelect);
+	fin_evt.SetEventObject(this);
+	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), fin_evt);
+}
+
 void TimelinePanel::ChangeNoteColor(wxCommandEvent &event) {
 	wxGridCellCoordsArray cells = grid->GetSelectedCells();
 	wxGridCellCoordsArray btops = grid->GetSelectionBlockTopLeft();
@@ -144,39 +177,24 @@ void TimelinePanel::ChangeNoteColor(wxCommandEvent &event) {
 
 	if (cells.Count() > 0) {
 		for (int i = 0; i < cells.Count(); i++) {
-			int col = cells[i].GetCol();
-			int row = cells[i].GetRow();
-			grid->SetCellBackgroundColour(row, col, velocitycolors[event.GetInt()]);
-			frames[col][row] = event.GetInt();
-			wxColourPickerEvent evt(this, ID_TimelinePanel_TimelineGrid,
-			                        grid->GetCellBackgroundColour(row, col));
-			evt.SetInt(row);
-			wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), evt);
+			SetCellColor(cells[i].GetCol(), cells[i].GetRow(), event.GetInt());
 		}
 	}
 	if (btops.Count() > 0 && bbots.Count() > 0) {
 		for (int row = btops[0].GetRow(); row <= bbots[0].GetRow(); row++) {
 			for (int col = btops[0].GetCol(); col <= bbots[0].GetCol(); col++) {
-				grid->SetCellBackgroundColour(row, col, velocitycolors[event.GetInt()]);
-				frames[col][row] = event.GetInt();
-				wxColourPickerEvent evt(this, ID_TimelinePanel_TimelineGrid,
-				                        grid->GetCellBackgroundColour(row, col));
-				evt.SetInt(row);
-				wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), evt);
+				SetCellColor(col, row, event.GetInt());
 			}
 		}
 	}
 
-	wxCommandEvent fin_evt(DISPLAY_REFRESH, ID_TimelinePanel_CellSelect);
-	fin_evt.SetEventObject(this);
-	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), fin_evt);
+	RefreshDisplay();
 
 	Refresh();
 	Update();
 }
 
 void TimelinePanel::OnSingleSelectCell(wxGridEvent &event) {
-	int btn;
 	int row = event.GetRow();
 	int col = event.GetCol();
 	grid->SelectBlock(row, col, row, col);
@@ -184,15 +202,8 @@ void TimelinePanel::OnSingleSelectCell(wxGridEvent &event) {
 	wxColourPickerEvent evt(this, ID_TimelinePanel_TimelineGrid,
 	                        grid->GetCellBackgroundColour(row, col));
 	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Properties), evt);
-	for (int i = 0; i < 96; i++) {
-		evt.SetColour(grid->GetCellBackgroundColour(i, col));
-		evt.SetInt(i + 1);
-		wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), evt);
-	}
-
-	wxCommandEvent fin_evt(DISPLAY_REFRESH, ID_TimelinePanel_CellSelect);
-	fin_evt.SetEventObject(this);
-	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), fin_evt);
+	MovePlayhead(col);
+	RefreshDisplay();
 }
 
 wxBEGIN_EVENT_TABLE(TimelinePanel, wxPanel)

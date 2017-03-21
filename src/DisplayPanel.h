@@ -19,6 +19,7 @@
 
 #include "Colors.h"
 #include "Helpers.h"
+#include "Project.h"
 
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
 #define MINIMUM_LAUNCHPAD_IMAGE_SIZE 128

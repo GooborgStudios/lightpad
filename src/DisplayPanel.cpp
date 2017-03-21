@@ -27,6 +27,7 @@
 
 #include "Colors.h"
 #include "Helpers.h"
+#include "Project.h"
 
 wxDEFINE_EVENT(DISPLAY_REFRESH, wxCommandEvent);
 
@@ -144,57 +145,6 @@ void DisplayPanel::resize_images(int min_fit_size) {
 		delete buttons_image;
 	}
 }
-
-// void DisplayPanel::set_debug_button_colors() {
-// 	// Set the button colors
-// 	#if defined(ANIMATED_BUTTON_COLOR)
-// 	for (int i = 1; i < 99; i++) {
-// 		if (i == 9 || i == 90) continue;
-// 		int btn_x = i % 10;
-// 		int btn_y = 9 - (i / 10);
-// 		int offset = std::abs(sin(frame * PI / 6) * 3);
-
-// 		if (btn_x == 0 || btn_y == 0 || btn_x == 9 || btn_y == 9) {
-// 			button_colors[i] = 0;
-// 		} else if (btn_x == 3 || btn_y == 3 || btn_x == 6 || btn_y == 6) {
-// 			if ((btn_x == 3 || btn_x == 6) && (btn_y == 3 || btn_y == 6)) {
-// 				button_colors[i] = 81;
-// 			} else {
-// 				if (btn_x < 3) offset += std::abs(sin(btn_x + 1 * PI / 6) * 3);
-// 				if (btn_x > 6) offset += std::abs(sin(btn_x * PI / 6) * 3);
-// 				if (btn_y < 3) offset += std::abs(sin(btn_y + 1 * PI / 6) * 3);
-// 				if (btn_y > 6) offset += std::abs(sin(btn_y * PI / 6) * 3);
-// 				button_colors[i] = 45 + offset;
-// 			}
-// 		} else {
-// 			button_colors[i] = 0;
-// 		}
-// 	}
-// 	#elif defined(RAINBOW_BUTTON_COLOR)
-// 	wxColor rainbow[18];
-// 	for (int j = 0; j < 18; j++) {
-// 		int red = 0, grn = 0, blu = 0;
-// 		if (j >= 15) red = 255 * ((18 - j) / 3.0);
-// 		else red = 255 * ((j - 9) / 3.0);
-// 		if (j >= 12) grn = 255 * ((15 - j) / 3.0);
-// 		else grn = 255 * ((j - 3) / 3.0);
-// 		if (j >= 6) blu = 255 * ((9 - j) / 3.0);
-// 		else blu = 255 * ((j) / 3.0);
-// 		rainbow[j] = wxColor(val_in_range(red, 0, 255), val_in_range(grn, 0, 255), val_in_range(blu, 0,
-// 		                     255));
-// 	}
-// 	for (int i = 1; i < 99; i++) {
-// 		if (i == 9 || i == 90) continue;
-// 		int rnb = (i / 10) + (9 - (i % 10));
-// 		button_colors[i] = ColorConverter::get_closest_velocity(rainbow[rnb]);
-// 	}
-// 	#else
-// 	for (int i = 1; i < 99; i++) {
-// 		if (i == 9 || i == 90) continue;
-// 		button_colors[i] = 0;
-// 	}
-// 	#endif
-// }
 
 void DisplayPanel::render_buttons() {
 	// Draw the buttons on the screen (and set Launchpad colors)
