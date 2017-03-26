@@ -63,10 +63,7 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 		grid->DisableRowResize(row);
 	}
 	for (int col = 0; col < COLS; col++) {
-		for (int row = 0; row < 100; row++) {
-//			int b = row + 1;
-//			if (row >= 9) b += 1;
-//			if (row >= 90) b += 1;
+		for (int row = 0; row < ROWS; row++) {
 			SetCellColor(col, row, frames[col][row]);
 		}
 	}
@@ -101,7 +98,7 @@ void TimelinePanel::set_debug_button_colors(unsigned char *frame, int frame_num)
 		rainbow[j] = Color(val_in_range(red, 0, 255), val_in_range(grn, 0, 255), val_in_range(blu, 0, 255));
 	}
 	#endif
-	
+
 	int btn_x = 0;
 	int btn_y = 9;
 
@@ -113,13 +110,11 @@ void TimelinePanel::set_debug_button_colors(unsigned char *frame, int frame_num)
 			btn_x = btn_x % 10;
 			btn_y--;
 		}
-		
+
 //		if (i == 8 || i == 89) {
 //			frame[i] = 0;
 //			continue;
 //		}
-		
-		std::cout << i << " " << btn_x << "," << btn_y << " = " << btn_x + btn_y << std::endl;
 
 		#if defined(ANIMATED_BUTTON_COLOR)
 		int offset = std::abs(sin(frame_num * PI / 6) * 3);

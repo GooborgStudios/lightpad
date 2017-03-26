@@ -84,7 +84,7 @@ bool MainApp::OnInit() {
 
 int MainApp::OnExit() {
 	launchpad->disconnect();
-	delete launchpad;
+//	delete launchpad;
 
 	return 0;
 }

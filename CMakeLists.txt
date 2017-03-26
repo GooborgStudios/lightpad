@@ -34,9 +34,9 @@ add_definitions(-DRESOURCE_DIR="${IMGS}")
 include_directories(${ROOT})
 include_directories(${INCL})
 
-add_executable(lightpad ${SRC}/main.cpp ${SRC}/FilePanel.cpp ${SRC}/DisplayPanel.cpp ${SRC}/TimelinePanel.cpp ${SRC}/PropertiesPanel.cpp ${SRC}/GridRenderer.cpp ${SRC}/Colors.cpp ${SRC}/Helpers.cpp ${SRC}/Project.cpp)
-add_executable(midiprobe ${SRC}/midiprobe.cpp ${SRC}/Helpers.cpp)
-add_executable(midiout ${SRC}/midiout.cpp ${SRC}/Helpers.cpp)
+add_executable(lightpad ${SRC}/main.cpp ${SRC}/FilePanel.cpp ${SRC}/DisplayPanel.cpp ${SRC}/TimelinePanel.cpp ${SRC}/PropertiesPanel.cpp ${SRC}/GridRenderer.cpp ${SRC}/Colors.cpp ${SRC}/Launchpad.cpp ${SRC}/Helpers.cpp ${SRC}/Project.cpp)
+add_executable(midiprobe ${SRC}/midiprobe.cpp ${SRC}/Launchpad.cpp ${SRC}/Helpers.cpp)
+add_executable(midiout ${SRC}/midiout.cpp ${SRC}/Launchpad.cpp ${SRC}/Helpers.cpp)
 add_executable(GenerateNoteButtonMap ${SRC}/GenerateNoteButtonMap.cpp)
 
 set(CMAKE_CXX_COMPILER g++)

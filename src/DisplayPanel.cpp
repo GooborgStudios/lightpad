@@ -148,6 +148,9 @@ void DisplayPanel::resize_images(int min_fit_size) {
 
 void DisplayPanel::render_buttons() {
 	// Draw the buttons on the screen (and set Launchpad colors)
+
+	launchpad->beginColorUpdate();
+
 	for (int i = 1; i < 99; i++) {
 		if (i == 9 || i == 90) continue;
 		int btn_x = i % 10;
@@ -163,11 +166,10 @@ void DisplayPanel::render_buttons() {
 		                  get_button_position(btn_y)*image_size,
 		                  Magick::OverCompositeOp);
 
-		if (launchpad->isConnected()) {
-			if (button_style == 0) launchpad->setColor(i, button_colors[i]);
-			else launchpad->setColor(i, button_colors[i]);
-		}
+		launchpad->setColor(i, button_colors[i]);
 	}
+
+	launchpad->endColorUpdate();
 }
 
 void DisplayPanel::render(wxDC &canvas) {
@@ -198,7 +200,6 @@ void DisplayPanel::render(wxDC &canvas) {
 	// Derived from http://stackoverflow.com/questions/28151240/get-rgb-color-with-magick-using-c
 	int width = lp_img->columns();
 	int height = lp_img->rows();
-	int range = std::pow(2, lp_img->modulusDepth());
 	Magick::PixelPacket *pixels = lp_img->getPixels(0, 0, width, height);
 	Magick::ColorRGB color_sample;
 	wxImage *out = new wxImage(width, height);
