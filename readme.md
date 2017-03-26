@@ -1,6 +1,6 @@
 # Lightpad
 Software Designed, Developed, and Published by [Nightwave Studios](https://www.nightwave.co) (Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3), ©2017 all rights reserved.
-Additional support from [LaunchpadFun](http://www.launchpadfun.com/en/) and [DKingCN](https://github.com/DKingCN).
+Additional support from [LaunchpadFun](http://www.launchpadfun.com/en/).
 
 # This software is in early development and is not ready for use.  Please check back later!
 
