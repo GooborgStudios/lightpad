@@ -12,6 +12,8 @@
 
 #include <wx/gdicmn.h>
 #include <wx/artprov.h>
+#include <wx/debugrpt.h>
+#include <wx/app.h>
 
 #include "Magick++.h"
 #include "RtMidi.h"
@@ -22,7 +24,8 @@
 #include "TimelinePanel.h"
 #include "PropertiesPanel.h"
 
-const int PADDING = 0;
+#define wxUSE_ON_FATAL_EXCEPTION 1
+#define PADDING 0
 
 class MainFrame;
 
@@ -31,6 +34,7 @@ class MainApp: public wxApp {
 	public:
 		virtual bool OnInit();
 		virtual int OnExit();
+		virtual void OnFatalException();
 		MainFrame *frame;
 };
 
@@ -64,6 +68,8 @@ wxIMPLEMENT_APP(MainApp); // Tell wxWidgets to commence our app
 
 // Construct and display main window frame
 bool MainApp::OnInit() {
+	wxHandleFatalExceptions(true); // Enable error handler
+
 	Magick::InitializeMagick(NULL);
 	wxImage::AddHandler(new wxPNGHandler); // Enable PNG support(?)
 
@@ -87,6 +93,13 @@ int MainApp::OnExit() {
 //	delete launchpad;
 
 	return 0;
+}
+
+void MainApp::OnFatalException() {
+	wxDebugReport report;
+	wxDebugReportPreviewStd preview;
+	report.AddAll();
+	if (preview.Show(report)) report.Process();
 }
 
 MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size)
