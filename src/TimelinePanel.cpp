@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -30,7 +31,7 @@ const int COLS = 32;
 const int ROWS = 96;
 
 // Set debugger colors
-// #define ANIMATED_BUTTON_COLOR
+#define ANIMATED_BUTTON_COLOR
 #define RAINBOW_BUTTON_COLOR
 
 TimelinePanel::TimelinePanel(wxPanel *parent)
@@ -60,9 +61,13 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 		frames.push_back(newframe);
 	}
 	for (int row = 0; row < ROWS; row++) {
+		int btn = row + 1;
+		if (row >= 8) btn++;
+		if (row >= 88) btn++;
+		grid->SetRowLabelValue(row, std::to_string(btn));
 		grid->DisableRowResize(row);
 	}
-	for (int col = 0; col < COLS; col++) {
+	for (int col = COLS - 1; col >= 0; col--) { // Reversed to start the display with the first frame's colors
 		for (int row = 0; row < ROWS; row++) {
 			SetCellColor(col, row, frames[col][row]);
 		}
@@ -116,7 +121,11 @@ void TimelinePanel::set_debug_button_colors(unsigned char *frame, int frame_num)
 //			continue;
 //		}
 
-		#if defined(ANIMATED_BUTTON_COLOR)
+		#if defined(RAINBOW_BUTTON_COLOR) && defined(ANIMATED_BUTTON_COLOR)
+		frame[i] = ColorConverter::get_closest_velocity(rainbow[(btn_x + btn_y + frame_num) % 18]);
+		#elif defined(RAINBOW_BUTTON_COLOR)
+		frame[i] = ColorConverter::get_closest_velocity(rainbow[btn_x + btn_y]);
+		#elif defined(ANIMATED_BUTTON_COLOR)
 		int offset = std::abs(sin(frame_num * PI / 6) * 3);
 
 		if (btn_x == 0 || btn_y == 0 || btn_x == 9 || btn_y == 9) {
@@ -134,8 +143,6 @@ void TimelinePanel::set_debug_button_colors(unsigned char *frame, int frame_num)
 		} else {
 			frame[i] = 0;
 		}
-		#elif defined(RAINBOW_BUTTON_COLOR)
-		frame[i] = ColorConverter::get_closest_velocity(rainbow[btn_x + btn_y]);
 		#else
 		frame[i] = 0;
 		#endif
