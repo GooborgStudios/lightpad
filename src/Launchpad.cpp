@@ -90,6 +90,10 @@ std::vector<unsigned char> *SysExMessage::serialize() {
 }
 
 LaunchpadBase::LaunchpadBase() {
+	PORT_REGEX = std::regex(".*");
+	connected = true;
+	inport = -1;
+	outport = -1;
 	midiin = new RtMidiIn();
 	midiout = new RtMidiOut();
 	color_update = NULL;
