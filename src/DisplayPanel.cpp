@@ -61,7 +61,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	}
 	paintNow();
 
-	Bind(DISPLAY_REFRESH, &DisplayPanel::RefreshNow, this, ID_TimelinePanel_CellSelect);
+	Bind(DISPLAY_REFRESH, &DisplayPanel::refreshNow, this, ID_TimelinePanel_CellSelect);
 }
 
 DisplayPanel::~DisplayPanel() {
@@ -83,16 +83,16 @@ void DisplayPanel::paintNow() {
 	render(canvas);
 }
 
-void DisplayPanel::RefreshNow() {
+void DisplayPanel::refreshNow() {
 	Refresh();
 	Update();
 }
 
-void DisplayPanel::RefreshNow(wxCommandEvent &event) {
-	RefreshNow();
+void DisplayPanel::refreshNow(wxCommandEvent &event) {
+	refreshNow();
 }
 
-void DisplayPanel::OnSize(wxSizeEvent &event) {
+void DisplayPanel::onSize(wxSizeEvent &event) {
 	// Re-render when resizing
 	Refresh();
 	event.Skip();
@@ -263,9 +263,9 @@ void DisplayPanel::colorButton(wxColourPickerEvent &event) {
 
 wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
 	EVT_PAINT(DisplayPanel::paintEvent)
-	EVT_SIZE(DisplayPanel::OnSize)
+	EVT_SIZE(DisplayPanel::onSize)
 	EVT_MENU(ID_Menu_PlayPause, DisplayPanel::startstop)
 	EVT_TIMER(ID_DisplayPanel_Timer, DisplayPanel::play_next_frame)
 	EVT_COLOURPICKER_CHANGED(ID_TimelinePanel_TimelineGrid, DisplayPanel::colorButton)
-	EVT_COMMAND(ID_Panel_Display, DISPLAY_REFRESH, DisplayPanel::RefreshNow)
+	EVT_COMMAND(ID_Panel_Display, DISPLAY_REFRESH, DisplayPanel::refreshNow)
 wxEND_EVENT_TABLE()

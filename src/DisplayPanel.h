@@ -34,11 +34,11 @@ class DisplayPanel: public wxPanel {
 	public:
 		DisplayPanel(wxPanel *parent);
 		~DisplayPanel();
-		void paintEvent(wxPaintEvent &evt);
+		void paintEvent(wxPaintEvent &event);
 		void paintNow();
-		void RefreshNow();
-		void RefreshNow(wxCommandEvent &event);
-		void OnSize(wxSizeEvent &event);
+		void refreshNow();
+		void refreshNow(wxCommandEvent &event);
+		void onSize(wxSizeEvent &event);
 		void startstop(wxCommandEvent &event);
 		void resize_images(int min_fit_size);
 		// void set_debug_button_colors();
