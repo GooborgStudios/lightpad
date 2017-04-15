@@ -251,7 +251,6 @@ float DisplayPanel::buttonIndexToPos(int index) {
 	assert(index < 10);
 	return button_pos[index] * image_size;
 }
-}
 
 void DisplayPanel::colorButton(int button, wxColor color) {
 	if (button < 1 || button > 98 || button == 9 || button == 90) return;
