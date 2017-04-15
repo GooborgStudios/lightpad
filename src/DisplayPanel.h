@@ -24,6 +24,8 @@
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
 #define MINIMUM_LAUNCHPAD_IMAGE_SIZE 128
 #define MAXIMUM_LAUNCHPAD_BUTTON_SIZE 286
+#define DISPLAY_LEFT_MARGIN 0.113525390625
+#define DISPLAY_BUTTON_PADDING 0.078125
 // #define BUTTON_RATIO 0.06982421875
 
 // #define ANIMATED_BUTTON_COLOR
@@ -55,15 +57,14 @@ class DisplayPanel: public wxPanel {
 
 		wxPanel *m_parent;
 		wxTimer *m_timer;
-		Magick::Image *launchpad_base_image;
-		Magick::Image *launchpad_button_image;
-		Magick::Image *launchpad_button_images[6];
+		Magick::Image *fullres_base_image;
+		Magick::Image *fullres_button_images[6];
+		Magick::Image *scaled_base_image;
+		Magick::Image *scaled_button_images[6];
 		Magick::Image *lp_img;
 		std::string base_image_path;
 		std::string button_image_path;
 		int image_size;
-		int button_size;
-		int button_radius;
 		int panel_width;
 		int panel_height;
 		int image_xpos;

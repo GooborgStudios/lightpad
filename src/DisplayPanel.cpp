@@ -45,17 +45,22 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	base_image_path = getResourcePath("launchpad_display/base/base_4096.png");
 	button_image_path = getResourcePath("launchpad_display/buttons/buttons_4096.png");
 	image_size = MAXIMUM_LAUNCHPAD_IMAGE_SIZE;
-	button_size = MAXIMUM_LAUNCHPAD_BUTTON_SIZE;
-	button_radius = image_size / 512;
 	panel_width = -1;
 	panel_height = -1;
 	image_xpos = 0;
 	image_ypos = 0;
 	frame = 0;
 
-	launchpad_base_image = new Magick::Image(base_image_path);
-	launchpad_button_image = new Magick::Image(button_image_path);
-	bzero(launchpad_button_images, sizeof(launchpad_button_images));
+	fullres_base_image = new Magick::Image(base_image_path);
+	Magick::Image button_image(button_image_path);
+	
+	for (int i = 0; i < 6; i++) {
+		fullres_button_images[i] = new Magick::Image(button_image);
+		fullres_button_images[i]->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * i, 0));
+	}
+	bzero(scaled_button_images, sizeof(scaled_button_images));
+	
+	scaled_base_image = NULL;
 	lp_img = NULL;
 
 	for (int i = 1; i < 99; i++) {
@@ -69,9 +74,8 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 
 DisplayPanel::~DisplayPanel() {
 	delete m_timer;
-	delete launchpad_base_image;
-	delete launchpad_button_image;
-	for (int i = 0; i < 6; i++) delete launchpad_button_images[i];
+	delete fullres_base_image;
+	for (int i = 0; i < 6; i++) delete fullres_button_images[i];
 }
 
 void DisplayPanel::paintEvent(wxPaintEvent &event) {
@@ -112,45 +116,39 @@ void DisplayPanel::play_next_frame(wxTimerEvent &event) {
 	Refresh();
 }
 
-void DisplayPanel::resize_images(int min_fit_size) {
-	int new_image_size = closest_two_power(min_fit_size, MINIMUM_LAUNCHPAD_IMAGE_SIZE,
-	                                       MAXIMUM_LAUNCHPAD_IMAGE_SIZE);
-	double ratio = MAXIMUM_LAUNCHPAD_IMAGE_SIZE / new_image_size;
+void DisplayPanel::resize_images(int new_size) {
+	double ratio = new_size / (MAXIMUM_LAUNCHPAD_IMAGE_SIZE * 1.0);
 
 	// Load the other resolutions of the image as needed
-	if (new_image_size != image_size) {
-		// launchpad_base_image->LoadFile(base_image_path, wxBITMAP_TYPE_PNG);
+	if (new_size != image_size) {
+		// int img_res = closest_two_power(new_size, MINIMUM_LAUNCHPAD_IMAGE_SIZE,
+		// 										MAXIMUM_LAUNCHPAD_IMAGE_SIZE);
+		// fullres_base_image->LoadFile(base_image_path, wxBITMAP_TYPE_PNG);
 		// launchpad_button_image->LoadFile(button_image_path, wxBITMAP_TYPE_PNG);
 
-		image_size = new_image_size;
-		button_size = image_size * ((MAXIMUM_LAUNCHPAD_BUTTON_SIZE * 1.0) / MAXIMUM_LAUNCHPAD_IMAGE_SIZE);
-		button_radius = image_size / 512;
-
-		Magick::Image *buttons_image = new Magick::Image(*launchpad_button_image);
-		Magick::Geometry size = buttons_image->size();
-		size.width(size.width() / ratio);
-		size.height(size.height() / ratio);
-		buttons_image->scale(size);
+		image_size = new_size;
+		Magick::Geometry size(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * ratio, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * ratio);
 
 		for (int i = 0; i < 6; i++) {
-			if (launchpad_button_images[i]) delete launchpad_button_images[i];
-			launchpad_button_images[i] = new Magick::Image(*buttons_image);
-			launchpad_button_images[i]->crop(Magick::Geometry(button_size, button_size, button_size * i, 0));
+			if (scaled_button_images[i]) delete scaled_button_images[i];
+			scaled_button_images[i] = new Magick::Image(*fullres_button_images[i]);
+			scaled_button_images[i]->scale(size);
 		}
+		
+		if (scaled_base_image) delete scaled_base_image;
+		scaled_base_image = new Magick::Image(*fullres_base_image);
+		scaled_base_image->scale(Magick::Geometry(new_size, new_size));
 
 		if (lp_img) delete lp_img;
-		lp_img = new Magick::Image(*launchpad_base_image);
-		size = lp_img->size();
-		size.width(size.width() / ratio);
-		size.height(size.height() / ratio);
-		lp_img->scale(size);
-
-		delete buttons_image;
+		lp_img = new Magick::Image(*scaled_base_image);
 	}
 }
 
 void DisplayPanel::render_buttons() {
 	// Draw the buttons on the screen (and set Launchpad colors)
+	
+	delete lp_img;
+	lp_img = new Magick::Image(*scaled_base_image);
 
 	launchpad->beginColorUpdate();
 
@@ -161,7 +159,7 @@ void DisplayPanel::render_buttons() {
 		int button_style = get_button_style(btn_x, btn_y);
 		wxColor bcolor = velocitycolors[button_colors[i]];
 
-		Magick::Image current_button(*launchpad_button_images[button_style]);
+		Magick::Image current_button(*scaled_button_images[button_style]);
 		current_button.modulate(180.0, 0.0, 100.0);
 		current_button.colorize(50, 50, 50, Magick::ColorRGB(bcolor.Red() / 255.0,
 		                        bcolor.Green() / 255.0, bcolor.Blue() / 255.0));
@@ -204,21 +202,19 @@ void DisplayPanel::render(wxDC &canvas) {
 	int height = lp_img->rows();
 	Magick::PixelPacket *pixels = lp_img->getPixels(0, 0, width, height);
 	Magick::ColorRGB color_sample;
-	wxImage *out = new wxImage(width, height);
-	out->SetAlpha();
+	wxImage out(width, height);
+	out.SetAlpha();
 
-	for (int x = 0; x < width - 1; x++) {
-		for (int y = 0; y < height - 1; y++) {
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
 			color_sample = pixels[width * y + x];
-			out->SetRGB(x, y, color_sample.red() * 255, color_sample.green() * 255,
+			out.SetRGB(x, y, color_sample.red() * 255, color_sample.green() * 255,
 			            color_sample.blue() * 255);
-			out->SetAlpha(x, y, (1 - color_sample.alpha()) * 255);
+			out.SetAlpha(x, y, (1 - color_sample.alpha()) * 255);
 		}
 	}
 
-	canvas.DrawBitmap(wxBitmap(out->Scale(min_fit_size, min_fit_size)), image_xpos, image_ypos);
-
-	delete out;
+	canvas.DrawBitmap(wxBitmap(out), image_xpos, image_ypos);
 }
 
 int DisplayPanel::get_button_style(int btn_x, int btn_y) {
