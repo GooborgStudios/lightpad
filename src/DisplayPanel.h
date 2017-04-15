@@ -45,7 +45,7 @@ class DisplayPanel: public wxPanel {
 		void render_buttons();
 		void render(wxDC &dc);
 		int get_button_style(int btn_x, int btn_y);
-		float get_button_position(int digit);
+		float buttonIndexToPos(int index);
 		void colorButton(int button, wxColor color);
 		void colorButton(wxColourPickerEvent &event);
 

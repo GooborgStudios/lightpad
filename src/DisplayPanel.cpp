@@ -31,6 +31,9 @@
 
 wxDEFINE_EVENT(DISPLAY_REFRESH, wxCommandEvent);
 
+const float button_pos[10] = {0.113525390625, 0.199462890625, 0.277587890625, 0.355712890625, 0.433837890625, 0.511962890625, 0.590087890625, 0.668212890625, 0.746337890625, 0.832275390625};
+const float button_size = 0.06982421875;
+
 // Initialize the file panel and it's elements
 DisplayPanel::DisplayPanel(wxPanel *parent)
 	: wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
@@ -162,9 +165,8 @@ void DisplayPanel::render_buttons() {
 		current_button.modulate(180.0, 0.0, 100.0);
 		current_button.colorize(50, 50, 50, Magick::ColorRGB(bcolor.Red() / 255.0,
 		                        bcolor.Green() / 255.0, bcolor.Blue() / 255.0));
-		lp_img->composite(current_button, get_button_position(btn_x)*image_size,
-		                  get_button_position(btn_y)*image_size,
-		                  Magick::OverCompositeOp);
+		lp_img->composite(current_button, buttonIndexToPos(btn_x),
+		                  buttonIndexToPos(btn_y),  Magick::OverCompositeOp);
 
 		launchpad->setColor(i, button_colors[i]);
 	}
@@ -244,12 +246,15 @@ int DisplayPanel::get_button_style(int btn_x, int btn_y) {
 	}
 }
 
-float DisplayPanel::get_button_position(int digit) {
-	float pos = 0.113525390625 + (digit * 0.078125);
-	int padding = 0;
-	if (digit > 0) padding = 1;
-	if (digit == 9) padding = 2;
-	return pos + (padding * 0.0078125);
+float DisplayPanel::buttonIndexToPos(int index) {
+//	float pos = DISPLAY_LEFT_MARGIN + (index * DISPLAY_BUTTON_PADDING);
+//	int padding = (index + 7) / 8;
+//	return (pos + (padding * (DISPLAY_BUTTON_PADDING / 10))) * image_size;
+	
+	assert(index >= 0);
+	assert(index < 10);
+	return button_pos[index] * image_size;
+}
 }
 
 void DisplayPanel::colorButton(int button, wxColor color) {
