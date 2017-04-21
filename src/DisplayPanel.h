@@ -38,6 +38,9 @@ class DisplayPanel: public wxPanel {
 		~DisplayPanel();
 		void paintEvent(wxPaintEvent &event);
 		void paintNow();
+		wxRealPoint buttonAtCoords(wxPoint coords);
+		void onLeftDown(wxMouseEvent &event);
+		void onLeftUp(wxMouseEvent &event);
 		void refreshNow();
 		void refreshNow(wxCommandEvent &event);
 		void onSize(wxSizeEvent &event);
@@ -48,6 +51,7 @@ class DisplayPanel: public wxPanel {
 		void render(wxDC &dc);
 		int get_button_style(int btn_x, int btn_y);
 		float buttonIndexToPos(int index);
+		float buttonPosToIndex(float pos);
 		void colorButton(int button, wxColor color);
 		void colorButton(wxColourPickerEvent &event);
 
@@ -71,6 +75,7 @@ class DisplayPanel: public wxPanel {
 		int image_ypos;
 		int button_colors[100];
 		int frame;
+		wxPoint clickpos;
 };
 
 wxDECLARE_EVENT(DISPLAY_REFRESH, wxCommandEvent);

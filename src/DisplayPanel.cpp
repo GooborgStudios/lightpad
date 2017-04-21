@@ -68,6 +68,8 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 		button_colors[i] = 0;
 	}
 	paintNow();
+		
+	clickpos = wxPoint(-1, -1);
 
 	Bind(DISPLAY_REFRESH, &DisplayPanel::refreshNow, this, ID_TimelinePanel_CellSelect);
 }
@@ -88,6 +90,23 @@ void DisplayPanel::paintNow() {
 	// depending on your system you may need to look at double-buffered dcs
 	wxClientDC canvas(this);
 	render(canvas);
+}
+
+wxRealPoint DisplayPanel::buttonAtCoords(wxPoint coords) {
+	return wxRealPoint(buttonPosToIndex((coords.x - image_xpos) * 1.0 / image_size), buttonPosToIndex((image_size - coords.y + image_ypos) * 1.0 / image_size));
+}
+
+void DisplayPanel::onLeftDown(wxMouseEvent &event) {
+	clickpos = event.GetLogicalPosition(wxClientDC(this));
+	wxRealPoint btn = buttonAtCoords(clickpos);
+	std::cout << "Clicked!  " << clickpos.x << "-" << btn.x << " | " << clickpos.y << "-" << btn.y << std::endl;
+}
+
+void DisplayPanel::onLeftUp(wxMouseEvent &event) {
+	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
+	wxRealPoint btn = buttonAtCoords(mousepos);
+	std::cout << "Click released!  " << mousepos.x << "-" << btn.x << " | " << mousepos.y << "-" << btn.y << std::endl;
+	clickpos = wxPoint(-1, -1);
 }
 
 void DisplayPanel::refreshNow() {
@@ -252,6 +271,15 @@ float DisplayPanel::buttonIndexToPos(int index) {
 	return button_pos[index] * image_size;
 }
 
+float DisplayPanel::buttonPosToIndex(float pos) {
+	int i = 0;
+	while (button_pos[i] < pos && i < 10) i++;
+	i--;
+	if (i == -1) return -0.5;
+	else if (pos - button_pos[i] < button_size) return i * 1.0;
+	else return i + 0.5;
+}
+
 void DisplayPanel::colorButton(int button, wxColor color) {
 	if (button < 1 || button > 98 || button == 9 || button == 90) return;
 	button_colors[button] = ColorConverter::get_closest_velocity(color);
@@ -262,6 +290,8 @@ void DisplayPanel::colorButton(wxColourPickerEvent &event) {
 }
 
 wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
+	EVT_LEFT_DOWN(DisplayPanel::onLeftDown)
+	EVT_LEFT_UP(DisplayPanel::onLeftUp)
 	EVT_PAINT(DisplayPanel::paintEvent)
 	EVT_SIZE(DisplayPanel::onSize)
 	EVT_MENU(ID_Menu_PlayPause, DisplayPanel::startstop)
