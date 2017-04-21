@@ -60,10 +60,10 @@ TimelinePanel::TimelinePanel(wxPanel *parent)
 		set_debug_button_colors(newframe, col); // Remove me after development
 		frames.push_back(newframe);
 	}
-	for (int row = 0; row < ROWS; row++) {
-		int btn = row + 1;
-		if (row >= 8) btn++;
-		if (row >= 88) btn++;
+	for (int row = ROWS - 1; row >= 0; row--) {
+		int btn = ROWS - row;
+		if (row <= 7) btn++;
+		if (row <= 87) btn++;
 		grid->SetRowLabelValue(row, std::to_string(btn));
 		grid->DisableRowResize(row);
 	}
@@ -151,9 +151,9 @@ void TimelinePanel::set_debug_button_colors(unsigned char *frame, int frame_num)
 
 void TimelinePanel::SetCellColor(int col, int row, int velocity) {
 	// We're mapping from 96 rows to 98 buttons, since two of them are non-existant, and from index start 0 to 1
-	int btn = row + 1;
-	if (row >= 8) btn++;
-	if (row >= 88) btn++;
+	int btn = ROWS - row;
+	if (row <= 7) btn++;
+	if (row <= 87) btn++;
 	grid->SetCellBackgroundColour(row, col, velocitycolors[velocity]);
 	frames[col][row] = velocity;
 	wxColourPickerEvent evt(this, ID_TimelinePanel_TimelineGrid, velocitycolors[velocity]);
