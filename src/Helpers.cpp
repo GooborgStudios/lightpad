@@ -20,9 +20,8 @@
 #include <CoreFoundation/CoreFoundation.h>
 
 std::string getResourcePath(const char *resource_name) {
-	CFURLRef appUrlRef = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-	                     CFStringCreateWithCString(NULL, resource_name, kCFStringEncodingUTF8),
-	                     NULL, NULL);
+	CFStringRef resourceName = CFStringCreateWithCString(NULL, resource_name, kCFStringEncodingUTF8);
+	CFURLRef appUrlRef = CFBundleCopyResourceURL(CFBundleGetMainBundle(), resourceName, NULL, NULL);
 	CFStringRef filePathRef = CFURLCopyPath(appUrlRef);
 	std::string filePath(CFStringGetCStringPtr(filePathRef, kCFStringEncodingUTF8));
 
