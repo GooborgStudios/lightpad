@@ -11,10 +11,10 @@
 #include <algorithm>
 #include <cmath>
 
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-	#include <wx/wx.h>
-#endif
+// #include <wx/wxprec.h>
+// #ifndef WX_PRECOMP
+// 	#include <wx/wx.h>
+// #endif
 
 #ifdef XCODE_BUNDLE
 #include <CoreFoundation/CoreFoundation.h>

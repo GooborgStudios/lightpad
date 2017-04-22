@@ -13,10 +13,10 @@
 #include <ctime>
 #include <unistd.h>
 
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-	#include <wx/wx.h>
-#endif
+// #include <wx/wxprec.h>
+// #ifndef WX_PRECOMP
+// 	#include <wx/wx.h>
+// #endif
 
 #include "RtMidi.h"
 #include "MidiFile.h"

@@ -26,13 +26,12 @@
 
 #include "Launchpad.h"
 
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-	#include <wx/wx.h>
-#endif
+// #include <wx/wxprec.h>
+// #ifndef WX_PRECOMP
+// 	#include <wx/wx.h>
+// #endif
 
 #define PI 3.14159265
-#define Color wxColor
 
 // Element IDs
 enum {

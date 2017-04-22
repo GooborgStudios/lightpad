@@ -12,6 +12,8 @@
 	#include <wx/wx.h>
 #endif
 
+#define Color wxColor
+
 const int COLORCOUNT = 128;
 extern wxColor velocitycolors[COLORCOUNT];
 
