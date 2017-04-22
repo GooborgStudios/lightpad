@@ -42,7 +42,7 @@ add_executable(GenerateNoteButtonMap ${SRC}/GenerateNoteButtonMap.cpp)
 set(CMAKE_CXX_COMPILER g++)
 find_package(wxWidgets COMPONENTS html qa adv core xml net base REQUIRED)
 execute_process(COMMAND "wx-config --cxxflags" OUTPUT_VARIABLE wxConfig_CXX_FLAGS)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 ${wxConfig_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${wxConfig_CXX_FLAGS}")
 
 IF(APPLE)
 	IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
