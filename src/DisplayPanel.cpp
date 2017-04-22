@@ -44,6 +44,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	// Initialize variables
 	base_image_path = getResourcePath("launchpad_display/base/base_4096.png");
 	button_image_path = getResourcePath("launchpad_display/buttons/buttons_4096.png");
+	button_halo_image_path = getResourcePath("launchpad_display/buttons/halo/buttons_halo_4096.png");
 	image_size = MAXIMUM_LAUNCHPAD_IMAGE_SIZE;
 	panel_width = -1;
 	panel_height = -1;
@@ -53,12 +54,19 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 
 	fullres_base_image = new Magick::Image(base_image_path);
 	Magick::Image button_image(button_image_path);
+	Magick::Image button_halo_image(button_halo_image_path);
 	
 	for (int i = 0; i < 6; i++) {
 		fullres_button_images[i] = new Magick::Image(button_image);
 		fullres_button_images[i]->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * i, 0));
 	}
 	bzero(scaled_button_images, sizeof(scaled_button_images));
+		
+	for (int i = 0; i < 6; i++) {
+		fullres_button_halo_images[i] = new Magick::Image(button_halo_image);
+		fullres_button_halo_images[i]->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * i, 0));
+	}
+	bzero(scaled_button_halo_images, sizeof(scaled_button_halo_images));
 	
 	scaled_base_image = NULL;
 	lp_img = NULL;
@@ -66,6 +74,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	for (int i = 1; i < 99; i++) {
 		if (i == 9 || i == 90) continue;
 		button_colors[i] = 0;
+		selected_buttons[i] = false;
 	}
 	paintNow();
 		
@@ -97,16 +106,33 @@ wxRealPoint DisplayPanel::buttonAtCoords(wxPoint coords) {
 }
 
 void DisplayPanel::onLeftDown(wxMouseEvent &event) {
-	clickpos = event.GetLogicalPosition(wxClientDC(this));
-	wxRealPoint btn = buttonAtCoords(clickpos);
-	std::cout << "Clicked!  " << clickpos.x << "-" << btn.x << " | " << clickpos.y << "-" << btn.y << std::endl;
+	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
+	wxRealPoint btn = buttonAtCoords(mousepos);
+	
+	if (!event.ControlDown()) {
+		for (int i = 0; i < 100; i++) selected_buttons[i] = false;
+	}
+	
+	if (event.ShiftDown()) {
+		wxRealPoint first_btn = buttonAtCoords(clickpos);
+		for (int x = ceil(std::min(btn.x, first_btn.x)); x <= floor(std::max(btn.x, first_btn.x)); x++) {
+			for (int y = ceil(std::min(btn.y, first_btn.y)); y <= floor(std::max(btn.y, first_btn.y)); y++) {
+				selected_buttons[x + (y * 10)] = true;
+			}
+		}
+	} else {
+		if (btn.x == floor(btn.x) && btn.y == floor(btn.y)) selected_buttons[(int)(btn.x + (btn.y * 10))] = !selected_buttons[(int)(btn.x + (btn.y * 10))] ;
+		clickpos = mousepos;
+	}
+	refreshNow();
 }
 
 void DisplayPanel::onLeftUp(wxMouseEvent &event) {
 	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
 	wxRealPoint btn = buttonAtCoords(mousepos);
-	std::cout << "Click released!  " << mousepos.x << "-" << btn.x << " | " << mousepos.y << "-" << btn.y << std::endl;
-	clickpos = wxPoint(-1, -1);
+//	std::cout << "Click released!  " << mousepos.x << "-" << btn.x << " | " << mousepos.y << "-" << btn.y << std::endl;
+	
+//	clickpos = wxPoint(-1, -1);
 }
 
 void DisplayPanel::refreshNow() {
@@ -152,6 +178,10 @@ void DisplayPanel::resize_images(int new_size) {
 			if (scaled_button_images[i]) delete scaled_button_images[i];
 			scaled_button_images[i] = new Magick::Image(*fullres_button_images[i]);
 			scaled_button_images[i]->scale(size);
+			
+			if (scaled_button_halo_images[i]) delete scaled_button_halo_images[i];
+			scaled_button_halo_images[i] = new Magick::Image(*fullres_button_halo_images[i]);
+			scaled_button_halo_images[i]->scale(size);
 		}
 		
 		if (scaled_base_image) delete scaled_base_image;
@@ -177,6 +207,10 @@ void DisplayPanel::render_buttons() {
 		int btn_y = 9 - (i / 10);
 		int button_style = get_button_style(btn_x, btn_y);
 		wxColor bcolor = velocitycolors[button_colors[i]];
+		
+		if (selected_buttons[i])
+			lp_img->composite(*scaled_button_halo_images[button_style], buttonIndexToPos(btn_x),
+							  buttonIndexToPos(btn_y),  Magick::OverCompositeOp);
 
 		Magick::Image current_button(*scaled_button_images[button_style]);
 		current_button.modulate(180.0, 0.0, 100.0);
