@@ -40,6 +40,7 @@ class DisplayPanel: public wxPanel {
 		void paintNow();
 		wxRealPoint buttonAtCoords(wxPoint coords);
 		void onLeftDown(wxMouseEvent &event);
+		void onMouseMove(wxMouseEvent &event);
 		void onLeftUp(wxMouseEvent &event);
 		void refreshNow();
 		void refreshNow(wxCommandEvent &event);
@@ -78,6 +79,7 @@ class DisplayPanel: public wxPanel {
 		int image_ypos;
 		int button_colors[100];
 		bool selected_buttons[100];
+		bool selected_buttons_box[100];
 		int frame;
 		wxPoint clickpos;
 };

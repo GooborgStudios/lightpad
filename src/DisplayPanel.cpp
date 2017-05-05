@@ -75,6 +75,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 		if (i == 9 || i == 90) continue;
 		button_colors[i] = 0;
 		selected_buttons[i] = false;
+		selected_buttons_box[i] = false;
 	}
 	paintNow();
 		
@@ -124,15 +125,42 @@ void DisplayPanel::onLeftDown(wxMouseEvent &event) {
 		if (btn.x == floor(btn.x) && btn.y == floor(btn.y)) selected_buttons[(int)(btn.x + (btn.y * 10))] = !selected_buttons[(int)(btn.x + (btn.y * 10))] ;
 		clickpos = mousepos;
 	}
+	
+	refreshNow();
+}
+
+void DisplayPanel::onMouseMove(wxMouseEvent &event) {
+	if (!event.LeftIsDown()) return;
+	
+	for (int i = 0; i < 100; i++) selected_buttons_box[i] = false;
+	
+	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
+	wxRealPoint btn = buttonAtCoords(mousepos);
+	wxRealPoint first_btn = buttonAtCoords(clickpos);
+	
+	if (btn.x == first_btn.x && btn.y == first_btn.y) return;
+	
+	for (int x = ceil(std::min(btn.x, first_btn.x)); x <= floor(std::max(btn.x, first_btn.x)); x++) {
+		for (int y = ceil(std::min(btn.y, first_btn.y)); y <= floor(std::max(btn.y, first_btn.y)); y++) {
+			selected_buttons_box[x + (y * 10)] = true;
+		}
+	}
+	
 	refreshNow();
 }
 
 void DisplayPanel::onLeftUp(wxMouseEvent &event) {
 	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
 	wxRealPoint btn = buttonAtCoords(mousepos);
-//	std::cout << "Click released!  " << mousepos.x << "-" << btn.x << " | " << mousepos.y << "-" << btn.y << std::endl;
 	
-//	clickpos = wxPoint(-1, -1);
+	for (int i = 0; i < 100; i++) {
+		if (selected_buttons_box[i]) {
+			selected_buttons[i] = true;
+			selected_buttons_box[i] = false;
+		}
+	}
+	
+	refreshNow();
 }
 
 void DisplayPanel::refreshNow() {
@@ -208,7 +236,7 @@ void DisplayPanel::render_buttons() {
 		int button_style = get_button_style(btn_x, btn_y);
 		wxColor bcolor = velocitycolors[button_colors[i]];
 		
-		if (selected_buttons[i])
+		if (selected_buttons[i] || selected_buttons_box[i])
 			lp_img->composite(*scaled_button_halo_images[button_style], buttonIndexToPos(btn_x),
 							  buttonIndexToPos(btn_y),  Magick::OverCompositeOp);
 
@@ -325,6 +353,7 @@ void DisplayPanel::colorButton(wxColourPickerEvent &event) {
 
 wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
 	EVT_LEFT_DOWN(DisplayPanel::onLeftDown)
+	EVT_MOTION(DisplayPanel::onMouseMove)
 	EVT_LEFT_UP(DisplayPanel::onLeftUp)
 	EVT_PAINT(DisplayPanel::paintEvent)
 	EVT_SIZE(DisplayPanel::onSize)
