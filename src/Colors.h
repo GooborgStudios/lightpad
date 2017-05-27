@@ -16,58 +16,38 @@
 
 namespace ColorConverter {
 	// Color conversion helpers
-	double Hue2RGB(double p, double q, double t);
-	double XYZ2H(double q);
-	double LAB_compare_RGB(int red1, int grn1, int blu1, int red2, int grn2, int blu2);
-	double LAB_compare_RGB(wxColor clr1, wxColor clr2);
+	double Hue2RGB(double cc_p, double cc_q, double cc_t);
+	double XYZ2H(double cc_q);
+	double LAB_compare_RGB(int red1, int green1, int blue1, int red2, int green2, int blue2);
+	double LAB_compare_RGB(wxColor color1, wxColor color2);
 
 	// Base converters
-	void RGB2HSL(double red, double grn, double blu, double *hue, double *sat,
-	             double *lum); // XXX Convert to int (0-255)
-	void HSL2RGB(double hue, double sat, double lum, double *red, double *grn,
-	             double *blu); // XXX Convert to int (0-255)
-	void RGB2HSV(double red, double grn, double blu, double *hue, double *sat,
-	             double *vel); // XXX Convert to int (0-255)
-	void HSV2RGB(double hue, double sat, double vel, double *red, double *grn,
-	             double *blu); // XXX Convert to int (0-255)
-	void RGB2CMYK(double red, double grn, double blu, double *cyan, double *mgnta, double *ylw,
-	              double *blk); // XXX Convert to int (0-255)
-	void CMYK2RGB(double cyan, double mgnta, double ylw, double blk, double *red, double *grn,
-	              double *blu); // XXX Convert to int (0-255)
-	void RGB2YIQ(double red, double grn, double blu, double *ylum, double *iphs,
-	             double *quad); // XXX Convert to int (0-255)
-	void YIQ2RGB(double ylum, double iphs, double quad, double *red, double *grn,
-	             double *blu); // XXX Convert to int (0-255)
-	void RGB2XYZ(int red, int grn, int blu, double *xrsp, double *ylum, double *zblu);
-	void XYZ2RGB(double xrsp, double ylum, double zblu, int *red, int *grn, int *blu);
-	void XYZ2LAB(double xrsp, double ylum, double zblu, double *lum, double *apt, double *bpt);
-	void LAB2XYZ(double lum, double apt, double bpt, double *xrsp, double *ylum, double *zblu);
+	void RGB2HSL(double red, double green, double blue, double *hue, double *saturation, double *luminosity); // XXX Convert to int (0-255)
+	void HSL2RGB(double hue, double saturation, double luminosity, double *red, double *green, double *blue); // XXX Convert to int (0-255)
+	void RGB2HSV(double red, double green, double blue, double *hue, double *saturation, double *velocity); // XXX Convert to int (0-255)
+	void HSV2RGB(double hue, double saturation, double velocity, double *red, double *green, double *blue); // XXX Convert to int (0-255)
+	void RGB2CMYK(double red, double green, double blue, double *cyan, double *magenta, double *yellow, double *black); // XXX Convert to int (0-255)
+	void CMYK2RGB(double cyan, double magenta, double yellow, double black, double *red, double *green, double *blue); // XXX Convert to int (0-255)
+	void RGB2YIQ(double red, double green, double blue, double *yluma, double *inphase, double *quadrature); // XXX Convert to int (0-255)
+	void YIQ2RGB(double yluma, double inphase, double quadrature, double *red, double *green, double *blue); // XXX Convert to int (0-255)
+	void RGB2XYZ(int red, int green, int blue, double *xresponse, double *yluminance, double *zblue);
+	void XYZ2RGB(double xresponse, double yluminance, double zblue, int *red, int *green, int *blue);
+	void XYZ2LAB(double xresponse, double yluminance, double zblue, double *luminosity, double *apoint, double *bpoint);
+	void LAB2XYZ(double luminosity, double apoint, double bpoint, double *xresponse, double *yluminance, double *zblue);
 
 	// Two-step converters
-	void RGB2LAB(int red, int grn, int blu, double *lum, double *apt, double *bpt);
-	void LAB2RGB(double lum, double apt, double bpt, int *red, int *grn, int *blu);
-	void HSL2HSV(double hue, double sat, double lum, double *_hue, double *_sat,
-	             double *vel); // XXX Convert to int (0-255)
-	void HSV2HSL(double hue, double sat, double vel, double *_hue, double *_sat,
-	             double *lum); // XXX Convert to int (0-255)
-	void HSL2CMYK(double hue, double sat, double lum, double *cyan, double *mgnta, double *ylw,
-	              double *blk); // XXX Convert to int (0-255)
-	void CMYK2HSL(double cyan, double mgnta, double ylw, double blk, double *hue, double *sat,
-	              double *lum); // XXX Convert to int (0-255)
-	void HSV2CMYK(double hue, double sat, double vel, double *cyan, double *mgnta, double *ylw,
-	              double *blk); // XXX Convert to int (0-255)
-	void CMYK2HSV(double cyan, double mgnta, double ylw, double blk, double *hue, double *sat,
-	              double *vel); // XXX Convert to int (0-255)
-	void HSL2YIQ(double hue, double sat, double lum, double *ylum, double *iphs,
-	             double *quad); // XXX Convert to int (0-255)
-	void YIQ2HSL(double ylum, double iphs, double quad, double *hue, double *sat,
-	             double *lum); // XXX Convert to int (0-255)
-	void HSV2YIQ(double hue, double sat, double vel, double *ylum, double *iphs,
-	             double *quad); // XXX Convert to int (0-255)
-	void YIQ2HSV(double ylum, double iphs, double quad, double *hue, double *sat,
-	             double *vel); // XXX Convert to int (0-255)
-	void CMYK2YIQ(double cyan, double mgnta, double ylw, double blk, double *ylum, double *iphs,
-	              double *quad); // XXX Convert to int (0-255)
-	void YIQ2CMYK(double ylum, double iphs, double quad, double *cyan, double *mgnta, double *ylw,
-	              double *blk); // XXX Convert to int (0-255)
+	void RGB2LAB(int red, int green, int blue, double *luminosity, double *apoint, double *bpoint);
+	void LAB2RGB(double luminosity, double apoint, double bpoint, int *red, int *green, int *blue);
+	void HSL2HSV(double hue, double saturation, double luminosity, double *_hue, double *_saturation, double *velocity); // XXX Convert to int (0-255)
+	void HSV2HSL(double hue, double saturation, double velocity, double *_hue, double *_saturation, double *luminosity); // XXX Convert to int (0-255)
+	void HSL2CMYK(double hue, double saturation, double luminosity, double *cyan, double *magenta, double *yellow, double *black); // XXX Convert to int (0-255)
+	void CMYK2HSL(double cyan, double magenta, double yellow, double black, double *hue, double *saturation, double *luminosity); // XXX Convert to int (0-255)
+	void HSV2CMYK(double hue, double saturation, double velocity, double *cyan, double *magenta, double *yellow, double *black); // XXX Convert to int (0-255)
+	void CMYK2HSV(double cyan, double magenta, double yellow, double black, double *hue, double *saturation, double *velocity); // XXX Convert to int (0-255)
+	void HSL2YIQ(double hue, double saturation, double luminosity, double *yluma, double *inphase, double *quadrature); // XXX Convert to int (0-255)
+	void YIQ2HSL(double yluma, double inphase, double quadrature, double *hue, double *saturation, double *luminosity); // XXX Convert to int (0-255)
+	void HSV2YIQ(double hue, double saturation, double velocity, double *yluma, double *inphase, double *quadrature); // XXX Convert to int (0-255)
+	void YIQ2HSV(double yluma, double inphase, double quadrature, double *hue, double *saturation, double *velocity); // XXX Convert to int (0-255)
+	void CMYK2YIQ(double cyan, double magenta, double yellow, double black, double *yluma, double *inphase, double *quadrature); // XXX Convert to int (0-255)
+	void YIQ2CMYK(double yluma, double inphase, double quadrature, double *cyan, double *magenta, double *yellow, double *black); // XXX Convert to int (0-255)
 };
