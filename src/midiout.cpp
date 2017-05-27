@@ -22,6 +22,7 @@
 #include "MidiFile.h"
 
 #include "Helpers.h"
+#include "NoteHelpers.h"
 #include "Launchpad.h"
 
 int BPM = 120;
