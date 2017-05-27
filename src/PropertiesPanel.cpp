@@ -18,6 +18,7 @@
 #include <wx/grid.h>
 #include <wx/clrpicker.h>
 
+#include "ElementIDs.h"
 #include "Colors.h"
 #include "Helpers.h"
 #include "GridRenderer.h"

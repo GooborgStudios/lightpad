@@ -19,6 +19,8 @@
 	#include <magic.h>
 #endif
 
+#include "ElementIDs.h"
+
 #ifdef WINDOWS
 	#include <windows.h>
 	#include <shlobj.h>

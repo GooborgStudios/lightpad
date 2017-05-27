@@ -25,6 +25,7 @@
 	#include <magic.h>
 #endif
 
+#include "ElementIDs.h"
 #include "Helpers.h"
 
 wxDEFINE_EVENT(FILE_SELECT, wxCommandEvent);

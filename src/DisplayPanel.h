@@ -17,8 +17,9 @@
 
 #include "Magick++.h"
 
-#include "Colors.h"
+#include "ElementIDs.h"
 #include "Helpers.h"
+#include "Colors.h"
 #include "Project.h"
 
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096

@@ -18,6 +18,7 @@
 #include "Magick++.h"
 #include "RtMidi.h"
 
+#include "ElementIDs.h"
 #include "Helpers.h"
 #include "FilePanel.h"
 #include "DisplayPanel.h"

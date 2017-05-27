@@ -19,6 +19,7 @@
 #include <wx/grid.h>
 #include <wx/clrpicker.h>
 
+#include "ElementIDs.h"
 #include "Colors.h"
 #include "Helpers.h"
 #include "Project.h"
@@ -100,7 +101,7 @@ void TimelinePanel::set_debug_button_colors(unsigned char *frame, int frame_num)
 		else grn = 255 * ((j - 3) / 3.0);
 		if (j >= 6) blu = 255 * ((9 - j) / 3.0);
 		else blu = 255 * ((j) / 3.0);
-		rainbow[j] = Color(val_in_range(red, 0, 255), val_in_range(grn, 0, 255), val_in_range(blu, 0, 255));
+		rainbow[j] = Color(clamp(red, 0, 255), clamp(grn, 0, 255), clamp(blu, 0, 255));
 	}
 	#endif
 

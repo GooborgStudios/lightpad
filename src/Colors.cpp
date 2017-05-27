@@ -7,8 +7,8 @@
 
 // RGB->XYZ->LAB conversion modified from: http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
 // RGB<-XYZ<-LAB conversion modified from: http://stackoverflow.com/a/9372718
-// 3-way min/max, RGB<>HSL, RGB<>HSV, RGB<>CMYK, RGB<>YIQ conversions, and HSL<>RGB<>HSV,
-//   HSL->RGB->CMYK, HSL->RGB->YIQ, HSV->RGB->CMYK, HSV->RGB->YIQ conversions modified from:
+// RGB<>HSL, RGB<>HSV, RGB<>CMYK, RGB<>YIQ conversions, and HSL<>RGB<>HSV, HSL->RGB->CMYK,
+//   HSL->RGB->YIQ, HSV->RGB->CMYK, HSV->RGB->YIQ conversions modified from:
 //   https://github.com/aleksandaratanasov/RGBConverter/blob/master/RGBConverter.cpp
 
 #include "Colors.h"

@@ -25,8 +25,10 @@
 
 #include "Magick++.h"
 
-#include "Colors.h"
+#include "ElementIDs.h"
 #include "Helpers.h"
+#include "Launchpad.h"
+#include "Colors.h"
 #include "Project.h"
 
 wxDEFINE_EVENT(DISPLAY_REFRESH, wxCommandEvent);
