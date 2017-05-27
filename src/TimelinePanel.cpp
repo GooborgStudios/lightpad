@@ -26,6 +26,7 @@
 #include "GridRenderer.h"
 #include "PropertiesPanel.h"
 #include "DisplayPanel.h"
+#include "Launchpad.h"
 
 // Initialize the timeline panel and it's elements
 const int COLS = 32;
@@ -123,9 +124,9 @@ void TimelinePanel::set_debug_button_colors(unsigned char *frame, int frame_num)
 //		}
 
 		#if defined(RAINBOW_BUTTON_COLOR) && defined(ANIMATED_BUTTON_COLOR)
-		frame[i] = ColorConverter::get_closest_velocity(rainbow[(btn_x + btn_y + frame_num) % 18]);
+		frame[i] = get_closest_velocity(rainbow[(btn_x + btn_y + frame_num) % 18]);
 		#elif defined(RAINBOW_BUTTON_COLOR)
-		frame[i] = ColorConverter::get_closest_velocity(rainbow[btn_x + btn_y]);
+		frame[i] = get_closest_velocity(rainbow[btn_x + btn_y]);
 		#elif defined(ANIMATED_BUTTON_COLOR)
 		int offset = std::abs(sin(frame_num * PI / 6) * 3);
 

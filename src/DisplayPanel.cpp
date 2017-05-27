@@ -346,7 +346,7 @@ float DisplayPanel::buttonPosToIndex(float pos) {
 
 void DisplayPanel::colorButton(int button, wxColor color) {
 	if (button < 1 || button > 98 || button == 9 || button == 90) return;
-	button_colors[button] = ColorConverter::get_closest_velocity(color);
+	button_colors[button] = get_closest_velocity (color);
 }
 
 void DisplayPanel::colorButton(wxColourPickerEvent &event) {

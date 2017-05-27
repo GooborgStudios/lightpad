@@ -7,6 +7,11 @@
 
 #pragma once
 
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+	#include <wx/wx.h>
+#endif
+
 #include <cstdarg>
 #include <ctime>
 #include <regex>
@@ -95,5 +100,8 @@ class LaunchpadS: public LaunchpadBase {
 		unsigned char pro_to_s_note(unsigned char pro_note, unsigned char msg_type);
 		unsigned char pro_to_s_color(unsigned char pro_color);
 };
+
+unsigned char get_closest_velocity(wxColor c);
+char get_color_velocity(wxColor c);
 
 extern LaunchpadPro *launchpad;

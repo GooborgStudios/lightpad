@@ -22,6 +22,7 @@
 #include "Colors.h"
 #include "Helpers.h"
 #include "GridRenderer.h"
+#include "Launchpad.h"
 
 wxDEFINE_EVENT(COLOR_SELECT, wxCommandEvent);
 
