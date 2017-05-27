@@ -14,9 +14,6 @@
 
 #define Color wxColor
 
-const int COLORCOUNT = 128;
-extern wxColor velocitycolors[COLORCOUNT];
-
 namespace ColorConverter {
 	// Color conversion helpers
 	double Hue2RGB(double p, double q, double t);

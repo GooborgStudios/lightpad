@@ -103,6 +103,9 @@ class LaunchpadS: public LaunchpadBase {
 		unsigned char pro_to_s_color(unsigned char pro_color);
 };
 
+const int COLORCOUNT = 128;
+extern wxColor velocitycolors[COLORCOUNT];
+
 unsigned char get_closest_velocity(wxColor c);
 char get_color_velocity(wxColor c);
 
