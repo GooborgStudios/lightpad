@@ -18,6 +18,8 @@
 
 #include "RtMidi.h"
 
+#include "Colors.h"
+
 #define ABLETON_LIVE_MODE 4
 #define MIDI_MESSAGE_SYSEX_BEGIN 240
 #define MIDI_MESSAGE_SYSEX_END 247

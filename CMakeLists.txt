@@ -35,8 +35,8 @@ include_directories(${ROOT})
 include_directories(${INCL})
 
 add_executable(lightpad ${SRC}/main.cpp ${SRC}/FilePanel.cpp ${SRC}/FilePanel.h ${SRC}/DisplayPanel.cpp ${SRC}/DisplayPanel.h ${SRC}/TimelinePanel.cpp ${SRC}/TimelinePanel.h ${SRC}/PropertiesPanel.cpp ${SRC}/PropertiesPanel.h ${SRC}/GridRenderer.cpp ${SRC}/GridRenderer.h ${SRC}/Colors.cpp ${SRC}/Colors.h ${SRC}/Launchpad.cpp ${SRC}/Launchpad.h ${SRC}/Helpers.cpp ${SRC}/Helpers.h ${SRC}/Project.cpp ${SRC}/Project.h ${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h ${SRC}/ElementIDs.h)
-add_executable(midiprobe ${SRC}/midiprobe.cpp ${SRC}/Launchpad.cpp ${SRC}/Launchpad.h ${SRC}/Helpers.cpp ${SRC}/Helpers.h ${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h)
-add_executable(midiout ${SRC}/midiout.cpp ${SRC}/Launchpad.cpp ${SRC}/Launchpad.h ${SRC}/Helpers.cpp ${SRC}/Helpers.h ${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h)
+add_executable(midiprobe ${SRC}/midiprobe.cpp ${SRC}/Launchpad.cpp ${SRC}/Launchpad.h ${SRC}/Helpers.cpp ${SRC}/Helpers.h ${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h ${SRC}/Colors.cpp ${SRC}/Colors.h)
+add_executable(midiout ${SRC}/midiout.cpp ${SRC}/Launchpad.cpp ${SRC}/Launchpad.h ${SRC}/Helpers.cpp ${SRC}/Helpers.h ${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h ${SRC}/Colors.cpp ${SRC}/Colors.h)
 add_executable(GenerateNoteButtonMap ${SRC}/GenerateNoteButtonMap.cpp)
 
 set(CMAKE_CXX_COMPILER g++)
@@ -66,6 +66,8 @@ target_link_libraries(midiout "-L${LIB}")
 
 include(${wxWidgets_USE_FILE})
 target_link_libraries(lightpad ${wxWidgets_LIBRARIES})
+target_link_libraries(midiprobe ${wxWidgets_LIBRARIES})
+target_link_libraries(midiout ${wxWidgets_LIBRARIES})
 
 find_package(GraphicsMagick REQUIRED)
 add_definitions(-DLIB_GRAPHICSMAGICK)
