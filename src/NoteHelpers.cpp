@@ -54,5 +54,3 @@ Note::Note(int pos, int col, int start, int dur) {
 	time = start;
 	duration = dur;
 }
-
-LaunchpadPro *launchpad = new LaunchpadPro();

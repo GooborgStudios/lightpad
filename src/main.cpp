@@ -24,6 +24,7 @@
 #include "DisplayPanel.h"
 #include "TimelinePanel.h"
 #include "PropertiesPanel.h"
+#include "Launchpad.h"
 
 #define wxUSE_ON_FATAL_EXCEPTION 1
 #define PADDING 0

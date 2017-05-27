@@ -22,5 +22,3 @@ class Note {
 		int time; // Note start time
 		int duration; // Note duration
 };
-
-extern LaunchpadPro *launchpad;

@@ -354,3 +354,5 @@ void LaunchpadS::setPulse(unsigned char light, unsigned char color) {
 	if (!isConnected()) return;
 	// XXX Implement me!
 }
+
+LaunchpadPro *launchpad = new LaunchpadPro();

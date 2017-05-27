@@ -36,7 +36,7 @@ class Message {
 		std::vector<unsigned char> *data;
 };
 
-class SysExMessage : public Message {
+class SysExMessage: public Message {
 	public:
 		SysExMessage(unsigned int msg_type);
 		SysExMessage(unsigned int msg_type, unsigned int first_byte, ...);
@@ -69,7 +69,7 @@ class LaunchpadBase {
 		SysExMessage *color_update;
 };
 
-class LaunchpadPro : public LaunchpadBase {
+class LaunchpadPro: public LaunchpadBase {
 	public:
 		LaunchpadPro();
 		int connect();
@@ -84,7 +84,7 @@ class LaunchpadPro : public LaunchpadBase {
 		void stopText();
 };
 
-class LaunchpadS : public LaunchpadBase {
+class LaunchpadS: public LaunchpadBase {
 	public:
 		LaunchpadS();
 		int connect();
@@ -95,3 +95,5 @@ class LaunchpadS : public LaunchpadBase {
 		unsigned char pro_to_s_note(unsigned char pro_note, unsigned char msg_type);
 		unsigned char pro_to_s_color(unsigned char pro_color);
 };
+
+extern LaunchpadPro *launchpad;
