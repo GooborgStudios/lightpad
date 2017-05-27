@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
+	<string>en_US</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleGetInfoString</key>
@@ -19,17 +19,19 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>v@TARGET_VERSION_MAJOR@.@TARGET_VERSION_MINOR@.@TARGET_VERSION_PATCH@</string>
+	<string>@TARGET_VERSION_MAJOR@.@TARGET_VERSION_MINOR@.@TARGET_VERSION_PATCH@</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>Version @TARGET_VERSION_MAJOR@.@TARGET_VERSION_MINOR@.@TARGET_VERSION_PATCH@</string>
+	<string>@TARGET_VERSION_MAJOR@.@TARGET_VERSION_MINOR@.@TARGET_VERSION_PATCH@d1</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 	<key>LSApplicationCategoryType</key>
 	<string>Productivity</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
+	<key>CFBundleDisplayName</key>
+	<string>Lightpad</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>@TARGET_COPYRIGHT@</string>
 </dict>
