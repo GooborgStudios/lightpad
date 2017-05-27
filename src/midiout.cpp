@@ -42,11 +42,10 @@ void launchpad_not_found_quit() {
 }
 
 void playback_file(const char *file) {
-	MidiFile *midifile;
+	MidiFile *midifile = new MidiFile(file);
 	MidiEvent *mev;
 	int color, deltatick;
 
-	midifile->read(file);
 	midifile->joinTracks();
 
 	for (int event = 0; event < (*midifile)[0].size(); event++) {
