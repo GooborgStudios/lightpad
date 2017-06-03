@@ -27,7 +27,6 @@ class TimelinePanel: public wxPanel {
 	public:
 		TimelinePanel(wxPanel *parent);
 		~TimelinePanel();
-		void set_debug_button_colors(unsigned char *frame, int frame_num);
 		void SetCellColor(int row, int col, int velocity);
 		void MovePlayhead(int frame_num);
 		void RefreshDisplay();
