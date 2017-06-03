@@ -153,7 +153,7 @@ void DisplayPanel::onMouseMove(wxMouseEvent &event) {
 
 void DisplayPanel::onLeftUp(wxMouseEvent &event) {
 	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
-	wxRealPoint btn = buttonAtCoords(mousepos);
+//	wxRealPoint btn = buttonAtCoords(mousepos);
 	
 	for (int i = 0; i < 100; i++) {
 		if (selected_buttons_box[i]) {

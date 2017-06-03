@@ -12,7 +12,7 @@
 	#include <wx/wx.h>
 #endif
 
-#define Color wxColor
+#define Color wxColour
 
 namespace ColorConverter {
 	// Color conversion helpers
