@@ -9,4 +9,13 @@
 
 #include <vector>
 
-extern std::vector<unsigned char *> frames;
+#include "MidiLayer.h"
+
+class Project {
+	public:
+//		int BPM;
+		MidiLayer *layer;
+//		int save(std::string fileLocation);
+};
+
+extern Project *activeProject;

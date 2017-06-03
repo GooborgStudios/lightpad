@@ -5,6 +5,14 @@
 // https://www.nightwave.co/lightpad
 //
 
+#include "Project.h"
+
 #include <vector>
 
-std::vector<unsigned char *> frames;
+#include "MidiLayer.h"
+
+//int Project::save(std::string fileLocation) {
+//	return 0;
+//}
+
+
