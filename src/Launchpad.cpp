@@ -40,8 +40,7 @@ Message::Message() {
 	data = new std::vector<unsigned char>;
 }
 
-Message::Message(unsigned int first_byte, ...) {
-	Message::Message();
+Message::Message(unsigned int first_byte, ...): Message::Message() {
 
 	va_list varlist;
 	va_start(varlist, first_byte);
