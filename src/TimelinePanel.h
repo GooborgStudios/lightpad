@@ -7,39 +7,32 @@
 
 #pragma once
 
-#include <vector>
-
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
 #endif
 
-#include <wx/grid.h>
-#include <wx/clrpicker.h>
-
-#include "ElementIDs.h"
-#include "Helpers.h"
-#include "GridRenderer.h"
-#include "PropertiesPanel.h"
+#include <wx/dcbuffer.h>
 
 // Timeline panel
 class TimelinePanel: public wxPanel {
-	public:
-		TimelinePanel(wxPanel *parent);
-		~TimelinePanel();
-		void SetCellColor(int row, int col, int velocity);
-		void MovePlayhead(int frame_num);
-		void RefreshDisplay();
-		void ChangeNoteColor(wxCommandEvent &event);
-		void OnSingleSelectCell(wxGridEvent &event);
-		void OnCellLeftClick(wxGridEvent &event);
-	private:
-		wxPanel *m_parent;
-		wxGrid *grid;
-		wxBoxSizer *sizer;
-		LightpadGridRenderer *renderer;
-		int id;
-		char buf[8];
-
-		wxDECLARE_EVENT_TABLE();
+public:
+	TimelinePanel(wxPanel *parent);
+	~TimelinePanel();
+//	void SetCellColor(int row, int col, int velocity);
+	void MovePlayhead(int index);
+	void RefreshDisplay();
+	void ChangeNoteColor(wxCommandEvent &event);
+//	void OnSingleSelectCell(wxGridEvent &event);
+//	void OnCellLeftClick(wxGridEvent &event);
+private:
+	wxPanel *m_parent;
+//	wxGrid *grid;
+	wxBufferedDC dc;
+	wxBoxSizer *sizer;
+//	LightpadGridRenderer *renderer;
+	int id;
+//	char buf[8];
+	
+	wxDECLARE_EVENT_TABLE();
 };
