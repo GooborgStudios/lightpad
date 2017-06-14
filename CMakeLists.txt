@@ -51,6 +51,18 @@ add_executable(lightpad
 	${SRC}/TimelinePanel.cpp ${SRC}/TimelinePanel.h
 )
 
+add_executable(timeline
+	${SRC}/timeline.cpp ${SRC}/ElementIDs.h
+	${SRC}/Colors.cpp ${SRC}/Colors.h
+	${SRC}/Helpers.cpp ${SRC}/Helpers.h
+	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
+	${SRC}/Layer.cpp ${SRC}/Layer.h
+	${SRC}/MidiLayer.cpp ${SRC}/MidiLayer.h
+	${SRC}/Project.cpp ${SRC}/Project.h
+	${SRC}/TestProject.cpp ${SRC}/TestProject.h
+	${SRC}/TimelinePanel.cpp ${SRC}/TimelinePanel.h
+)
+
 add_executable(midiprobe
 	${SRC}/midiprobe.cpp
 	${SRC}/Colors.cpp ${SRC}/Colors.h
@@ -86,18 +98,25 @@ IF(APPLE)
 		target_sources(lightpad PUBLIC ${RESOURCE_FILES})
 		target_link_libraries(lightpad "-framework CoreFoundation")
 		set_target_properties(lightpad PROPERTIES MACOSX_BUNDLE TRUE MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
+		target_compile_definitions(timeline PUBLIC -DXCODE_BUNDLE)
+		target_sources(timeline PUBLIC ${RESOURCE_FILES})
+		target_link_libraries(timeline "-framework CoreFoundation")
+		set_target_properties(timeline PROPERTIES MACOSX_BUNDLE TRUE MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad.timeline RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
 	ENDIF()
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	add_definitions(-D__NO_INLINE__)
 	set_target_properties(lightpad PROPERTIES WIN32_EXECUTABLE TRUE)
+	set_target_properties(timeline PROPERTIES WIN32_EXECUTABLE TRUE)
 ENDIF()
 
 target_link_libraries(lightpad "-L${LIB}")
+target_link_libraries(timeline "-L${LIB}")
 target_link_libraries(midiprobe "-L${LIB}")
 target_link_libraries(midiout "-L${LIB}")
 
 include(${wxWidgets_USE_FILE})
 target_link_libraries(lightpad ${wxWidgets_LIBRARIES})
+target_link_libraries(timeline ${wxWidgets_LIBRARIES})
 target_link_libraries(midiprobe ${wxWidgets_LIBRARIES})
 target_link_libraries(midiout ${wxWidgets_LIBRARIES})
 
@@ -106,12 +125,14 @@ add_definitions(-DLIB_GRAPHICSMAGICK)
 include_directories(${MAGICK_INCLUDE_DIR})
 include_directories(${MAGICK++_INCLUDE_DIR})
 target_link_libraries(lightpad "GraphicsMagick++")
+target_link_libraries(timeline "GraphicsMagick++")
 
 find_package(LibMagic)
 IF(LibMagic_FOUND)
 	add_definitions(-DLIB_MAGIC)
 	include_directories(${LibMagic_INCLUDE_DIR})
 	target_link_libraries(lightpad "magic")
+	target_link_libraries(timeline "magic")
 ENDIF(LibMagic_FOUND)
 
 find_package(Doxygen)
@@ -123,11 +144,13 @@ ENDIF(DOXYGEN_FOUND)
 
 include_directories(${INCL}/rtmidi)
 target_link_libraries(lightpad "rtmidi")
+target_link_libraries(timeline "rtmidi")
 target_link_libraries(midiprobe "rtmidi")
 target_link_libraries(midiout "rtmidi")
 
 include_directories(${INCL}/midifile)
 target_link_libraries(lightpad "midifile")
+target_link_libraries(timeline "midifile")
 target_link_libraries(midiout "midifile")
 
 IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
