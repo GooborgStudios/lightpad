@@ -12,7 +12,12 @@
 	#include <wx/wx.h>
 #endif
 
+#include <string>
+
 #include "Layer.h"
+
+template <typename T> std::string to_string_with_precision(const T a_value, const int n = 6);
+std::string lp_note_to_string(int note);
 
 class NoteKeyframe: public Keyframe {
 	public:

@@ -16,7 +16,23 @@
 
 #include "Layer.h"
 
-NoteKeyframe::NoteKeyframe(int name, double time, unsigned char velocity) : Keyframe(std::to_string(name), time) {
+#include <sstream>
+#include <iomanip>
+
+template <typename T> std::string to_string_with_precision(const T value, const int width) {
+	std::ostringstream out;
+	out << std::setfill('0') << std::setw(width) << value;
+	return out.str();
+}
+
+std::string lp_note_to_string(int note) {
+	note++;
+	if (note >= 9) note++;
+	if (note >= 89) note++;
+	return to_string_with_precision(note, 2);
+}
+
+NoteKeyframe::NoteKeyframe(int name, double time, unsigned char velocity) : Keyframe(lp_note_to_string(name), time) {
 	this->velocity = velocity;
 }
 
