@@ -40,48 +40,33 @@ const float button_size = 0.06982421875;
 DisplayPanel::DisplayPanel(wxPanel *parent)
 	: wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
-
 	m_timer = new wxTimer(this, ID_DisplayPanel_Timer);
 
 	// Initialize variables
 	base_image_path = getResourcePath("launchpad_display/base/base_4096.png");
 	button_image_path = getResourcePath("launchpad_display/buttons/buttons_4096.png");
 	button_halo_image_path = getResourcePath("launchpad_display/buttons/halo/buttons_halo_4096.png");
-	image_size = MAXIMUM_LAUNCHPAD_IMAGE_SIZE;
-	panel_width = -1;
-	panel_height = -1;
-	image_xpos = 0;
-	image_ypos = 0;
-	frame = 0;
 
 	fullres_base_image = new Magick::Image(base_image_path);
 	Magick::Image button_image(button_image_path);
 	Magick::Image button_halo_image(button_halo_image_path);
+		
+	bzero(scaled_button_images, sizeof(scaled_button_images));
+	bzero(scaled_button_halo_images, sizeof(scaled_button_halo_images));
+	scaled_base_image = NULL;
+	lp_img = NULL;
 	
 	for (int i = 0; i < 6; i++) {
 		fullres_button_images[i] = new Magick::Image(button_image);
 		fullres_button_images[i]->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * i, 0));
 	}
-	bzero(scaled_button_images, sizeof(scaled_button_images));
 		
 	for (int i = 0; i < 6; i++) {
 		fullres_button_halo_images[i] = new Magick::Image(button_halo_image);
 		fullres_button_halo_images[i]->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * i, 0));
 	}
-	bzero(scaled_button_halo_images, sizeof(scaled_button_halo_images));
-	
-	scaled_base_image = NULL;
-	lp_img = NULL;
 
-	for (int i = 1; i < 99; i++) {
-		if (i == 9 || i == 90) continue;
-		button_colors[i] = 0;
-		selected_buttons[i] = false;
-		selected_buttons_box[i] = false;
-	}
 	paintNow();
-		
-	clickpos = wxPoint(-1, -1);
 
 	Bind(DISPLAY_REFRESH, &DisplayPanel::refreshNow, this, ID_TimelinePanel_CellSelect);
 }
@@ -152,7 +137,6 @@ void DisplayPanel::onMouseMove(wxMouseEvent &event) {
 }
 
 void DisplayPanel::onLeftUp(wxMouseEvent &event) {
-	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
 //	wxRealPoint btn = buttonAtCoords(mousepos);
 	
 	for (int i = 0; i < 100; i++) {
@@ -205,20 +189,20 @@ void DisplayPanel::resize_images(int new_size) {
 		Magick::Geometry size(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * ratio, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * ratio);
 
 		for (int i = 0; i < 6; i++) {
-			if (scaled_button_images[i]) delete scaled_button_images[i];
+			delete scaled_button_images[i];
 			scaled_button_images[i] = new Magick::Image(*fullres_button_images[i]);
 			scaled_button_images[i]->scale(size);
 			
-			if (scaled_button_halo_images[i]) delete scaled_button_halo_images[i];
+			delete scaled_button_halo_images[i];
 			scaled_button_halo_images[i] = new Magick::Image(*fullres_button_halo_images[i]);
 			scaled_button_halo_images[i]->scale(size);
 		}
 		
-		if (scaled_base_image) delete scaled_base_image;
+		delete scaled_base_image;
 		scaled_base_image = new Magick::Image(*fullres_base_image);
 		scaled_base_image->scale(Magick::Geometry(new_size, new_size));
 
-		if (lp_img) delete lp_img;
+		delete lp_img;
 		lp_img = new Magick::Image(*scaled_base_image);
 	}
 }
@@ -257,7 +241,6 @@ void DisplayPanel::render_buttons() {
 
 void DisplayPanel::render(wxDC &canvas) {
 	int neww, newh, min_fit_size;
-	Magick::Geometry size;
 
 	canvas.GetSize(&neww, &newh);
 	min_fit_size = std::max(std::min(neww, newh), MINIMUM_LAUNCHPAD_IMAGE_SIZE);
@@ -302,46 +285,39 @@ void DisplayPanel::render(wxDC &canvas) {
 
 int DisplayPanel::get_button_style(int btn_x, int btn_y) {
 	// Choose button style
-	if (btn_x == 0 || btn_x == 9 || btn_y == 0 || btn_y == 9) {
-		return 0;
-	} else {
-		switch (btn_x + (btn_y * 10)) {
-			case 44:
-				return 2;
-				break;
-			case 45:
-				return 3;
-				break;
-			case 54:
-				return 4;
-				break;
-			case 55:
-				return 5;
-				break;
-			default:
-				return 1;
-				break;
-		}
+	if (btn_x == 0 || btn_x == 9 || btn_y == 0 || btn_y == 9) return 0;
+	switch (btn_x + (btn_y * 10)) {
+		case 44:
+			return 2;
+			break;
+		case 45:
+			return 3;
+			break;
+		case 54:
+			return 4;
+			break;
+		case 55:
+			return 5;
+			break;
+		default:
+			return 1;
+			break;
 	}
 }
 
 float DisplayPanel::buttonIndexToPos(int index) {
-//	float pos = DISPLAY_LEFT_MARGIN + (index * DISPLAY_BUTTON_PADDING);
-//	int padding = (index + 7) / 8;
-//	return (pos + (padding * (DISPLAY_BUTTON_PADDING / 10))) * image_size;
-	
 	assert(index >= 0);
 	assert(index < 10);
 	return button_pos[index] * image_size;
 }
 
 float DisplayPanel::buttonPosToIndex(float pos) {
-	int i = 0;
-	while (button_pos[i] < pos && i < 10) i++;
-	i--;
-	if (i == -1) return -0.5;
-	else if (pos - button_pos[i] < button_size) return i * 1.0;
-	else return i + 0.5;
+	int idx = 0;
+	while (button_pos[idx] < pos && idx < 10) idx++;
+	idx--;
+	if (idx == -1) return -0.5;
+	else if (pos - button_pos[idx] < button_size) return idx * 1.0;
+	return idx + 0.5;
 }
 
 void DisplayPanel::colorButton(int button, wxColor color) {

@@ -33,8 +33,7 @@
 	const wxString max_shared_library_path = /*wxString(documents_path) +*/
 	wxString("\\MIDIext"); // XXX Inaccurate
 #else
-	const wxString max_user_library_path = wxString(getenv("HOME")) +
-	wxString("/Documents/Max 7/Library/MIDIext");
+	const wxString max_user_library_path = wxString(getenv("HOME")) + wxString("/Documents/Max 7/Library/MIDIext");
 	const wxString max_shared_library_path = wxString("/Users/Shared/Max 7/Library/MIDIext");
 #endif
 

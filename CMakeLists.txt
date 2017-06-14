@@ -34,10 +34,42 @@ add_definitions(-DRESOURCE_DIR="${IMGS}")
 include_directories(${ROOT})
 include_directories(${INCL})
 
-add_executable(lightpad ${SRC}/main.cpp ${SRC}/FilePanel.cpp ${SRC}/FilePanel.h ${SRC}/DisplayPanel.cpp ${SRC}/DisplayPanel.h ${SRC}/TimelinePanel.cpp ${SRC}/TimelinePanel.h ${SRC}/PropertiesPanel.cpp ${SRC}/PropertiesPanel.h ${SRC}/GridRenderer.cpp ${SRC}/GridRenderer.h ${SRC}/Colors.cpp ${SRC}/Colors.h ${SRC}/Launchpad.cpp ${SRC}/Launchpad.h ${SRC}/Helpers.cpp ${SRC}/Helpers.h ${SRC}/Project.cpp ${SRC}/Project.h ${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h ${SRC}/ElementIDs.h ${SRC}/Layer.cpp ${SRC}/Layer.h ${SRC}/MidiLayer.cpp ${SRC}/MidiLayer.h ${SRC}/TestProject.cpp ${SRC}/TestProject.h)
-add_executable(midiprobe ${SRC}/midiprobe.cpp ${SRC}/Launchpad.cpp ${SRC}/Launchpad.h ${SRC}/Helpers.cpp ${SRC}/Helpers.h ${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h ${SRC}/Colors.cpp ${SRC}/Colors.h)
-add_executable(midiout ${SRC}/midiout.cpp ${SRC}/Launchpad.cpp ${SRC}/Launchpad.h ${SRC}/Helpers.cpp ${SRC}/Helpers.h ${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h ${SRC}/Colors.cpp ${SRC}/Colors.h)
-add_executable(GenerateNoteButtonMap ${SRC}/GenerateNoteButtonMap.cpp)
+add_executable(lightpad
+	${SRC}/main.cpp ${SRC}/ElementIDs.h
+	${SRC}/Colors.cpp ${SRC}/Colors.h
+	${SRC}/DisplayPanel.cpp ${SRC}/DisplayPanel.h
+	${SRC}/FilePanel.cpp ${SRC}/FilePanel.h
+	${SRC}/GridRenderer.cpp ${SRC}/GridRenderer.h
+	${SRC}/Helpers.cpp ${SRC}/Helpers.h
+	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
+	${SRC}/Layer.cpp ${SRC}/Layer.h
+	${SRC}/MidiLayer.cpp ${SRC}/MidiLayer.h
+	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
+	${SRC}/Project.cpp ${SRC}/Project.h
+	${SRC}/PropertiesPanel.cpp ${SRC}/PropertiesPanel.h
+	${SRC}/TestProject.cpp ${SRC}/TestProject.h
+	${SRC}/TimelinePanel.cpp ${SRC}/TimelinePanel.h
+)
+
+add_executable(midiprobe
+	${SRC}/midiprobe.cpp
+	${SRC}/Colors.cpp ${SRC}/Colors.h
+	${SRC}/Helpers.cpp ${SRC}/Helpers.h
+	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
+	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
+)
+
+add_executable(midiout
+	${SRC}/midiout.cpp
+	${SRC}/Colors.cpp ${SRC}/Colors.h
+	${SRC}/Helpers.cpp ${SRC}/Helpers.h
+	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
+	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
+)
+
+add_executable(GenerateNoteButtonMap
+	${SRC}/GenerateNoteButtonMap.cpp
+)
 
 set(CMAKE_CXX_COMPILER g++)
 find_package(wxWidgets COMPONENTS html qa adv core xml net base REQUIRED)
@@ -49,10 +81,10 @@ IF(APPLE)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.12")
 	ENDIF()
 	IF(${CMAKE_GENERATOR} MATCHES "Xcode")
+		set(OSX_ICON_FILES ${IMGS}/icon.icns)
 		target_compile_definitions(lightpad PUBLIC -DXCODE_BUNDLE)
 		target_sources(lightpad PUBLIC ${RESOURCE_FILES})
 		target_link_libraries(lightpad "-framework CoreFoundation")
-		set(OSX_ICON_FILES ${IMGS}/icon.icns)
 		set_target_properties(lightpad PROPERTIES MACOSX_BUNDLE TRUE MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
 	ENDIF()
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")

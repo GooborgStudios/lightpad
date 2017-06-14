@@ -48,9 +48,8 @@ class DisplayPanel: public wxPanel {
 		void onSize(wxSizeEvent &event);
 		void startstop(wxCommandEvent &event);
 		void resize_images(int min_fit_size);
-		// void set_debug_button_colors();
 		void render_buttons();
-		void render(wxDC &dc);
+		void render(wxDC &canvas);
 		int get_button_style(int btn_x, int btn_y);
 		float buttonIndexToPos(int index);
 		float buttonPosToIndex(float pos);
@@ -73,16 +72,16 @@ class DisplayPanel: public wxPanel {
 		std::string base_image_path;
 		std::string button_image_path;
 		std::string button_halo_image_path;
-		int image_size;
-		int panel_width;
-		int panel_height;
-		int image_xpos;
-		int image_ypos;
-		int button_colors[100];
-		bool selected_buttons[100];
-		bool selected_buttons_box[100];
-		int frame;
-		wxPoint clickpos;
+		int image_size = MAXIMUM_LAUNCHPAD_IMAGE_SIZE;
+		int panel_width = -1;
+		int panel_height = -1;
+		int image_xpos = 0;
+		int image_ypos = 0;
+		int button_colors[100] = {0};
+		bool selected_buttons[100] = {false};
+		bool selected_buttons_box[100] = {false};
+		int frame = 0;
+		wxPoint clickpos = wxPoint(-1, -1);
 };
 
 wxDECLARE_EVENT(DISPLAY_REFRESH, wxCommandEvent);
