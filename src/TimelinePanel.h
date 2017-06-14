@@ -13,26 +13,30 @@
 #endif
 
 #include <wx/dcbuffer.h>
+#include <wx/vscroll.h>
+
+#include "Project.h"
+#include "MidiLayer.h"
 
 // Timeline panel
-class TimelinePanel: public wxPanel {
-public:
-	TimelinePanel(wxPanel *parent);
-	~TimelinePanel();
-//	void SetCellColor(int row, int col, int velocity);
-	void MovePlayhead(int index);
-	void RefreshDisplay();
-	void ChangeNoteColor(wxCommandEvent &event);
-//	void OnSingleSelectCell(wxGridEvent &event);
-//	void OnCellLeftClick(wxGridEvent &event);
-private:
-	wxPanel *m_parent;
-//	wxGrid *grid;
-	wxBufferedDC dc;
-	wxBoxSizer *sizer;
-//	LightpadGridRenderer *renderer;
-	int id;
-//	char buf[8];
+class TimelinePanel: public wxHVScrolledWindow {
+	protected:
+		wxCoord OnGetRowHeight(size_t row) const;
+		wxCoord OnGetColumnWidth(size_t column) const;
 	
-	wxDECLARE_EVENT_TABLE();
+	public:
+		TimelinePanel(wxPanel *parent);
+		~TimelinePanel();
+		void paintEvent(wxPaintEvent &event);
+		void paintNow();
+		void render(wxDC &canvas);
+		void render_row(wxDC &canvas, std::string rowname, KeyframeSet *keyframes, wxRect bounding_box);
+//		void MovePlayhead(int index);
+//		void RefreshDisplay();
+//		void ChangeNoteColor(wxCommandEvent &event);
+	private:
+		wxPanel *m_parent;
+		wxBoxSizer *sizer;
+		
+		wxDECLARE_EVENT_TABLE();
 };
