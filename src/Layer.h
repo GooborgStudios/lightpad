@@ -81,12 +81,11 @@ class KeyframeSet {
 
 // XXX Turn this into an empty base class, and move basically everything over to a new, vector-like "KeyframeData" class
 class Layer {
-	protected:
-		std::map<std::string, KeyframeSet *> keyframes;
 	public:
 		Layer();
 		Layer(std::string d);
 
+		std::map<std::string, KeyframeSet *> keyframes;
 		std::string description;
 		std::string type;
 		double currentTime;
