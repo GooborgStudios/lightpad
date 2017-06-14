@@ -85,18 +85,18 @@ KeyframeSet::KeyframeSet(Layer *parent) {
 //	seek();
 }
 
-void KeyframeSet::AddKeyframe(Keyframe *f) {
-	KeyframeIterator it = keyframes.begin();
+void KeyframeSet::AddKeyframe(Keyframe *keyframe) {
+	KeyframeIterator iter = keyframes.begin();
 	
-	for (; it != keyframes.end(); ++it) {
-		if ( f->time < (*it)->time ) {
-			keyframes.insert(it, f);
+	for (; iter != keyframes.end(); ++iter) {
+		if ( keyframe->time < (*iter)->time ) {
+			keyframes.insert(iter, keyframe);
 			break;
 		}
 	}
 	
-	if (it == keyframes.end()) {
-		keyframes.push_back(f);
+	if (iter == keyframes.end()) {
+		keyframes.push_back(keyframe);
 	}
 }
 
@@ -124,7 +124,7 @@ double KeyframeSet::smoother_fraction() {
 	assert(parent->currentTime >= (*prevKF)->time);
 	assert((*nextKF)->time >= parent->currentTime);
 	
-	double dur = ((*nextKF)->time - (*prevKF)->time);
+	double dur = (*nextKF)->time - (*prevKF)->time;
 	if (dur == 0.0) return 0.0; // Avoid divide-by-zero crash
 	return (parent->currentTime - (*prevKF)->time) / dur;
 }
@@ -143,30 +143,30 @@ Layer::Layer() {
 	description = "";
 };
 
-Layer::Layer(std::string d) {
-	description = d;
+Layer::Layer(std::string description) {
+	this->description = description;
 }
 
-void Layer::AddKeyframe(Keyframe *f) {
-	std::string type = f->name;
+void Layer::AddKeyframe(Keyframe *keyframe) {
+	std::string type = keyframe->name;
 	if (keyframes.find(type) == keyframes.end()) {
 		keyframes[type] = new KeyframeSet(this);
 	}
-	keyframes[type]->AddKeyframe(f);
+	keyframes[type]->AddKeyframe(keyframe);
 }
 
 void Layer::seek(double newTime) {
 	currentTime = newTime;
-	for (auto it = keyframes.begin(); it != keyframes.end(); ++it) {
-		it->second->seek();
+	for (auto iter : keyframes) {
+		iter.second->seek();
 	}
 	
 }
 
 void Layer::advanceFrame(double increment) {
 	currentTime += increment;
-	for (auto it = keyframes.begin(); it != keyframes.end(); ++it) {
-		it->second->advanceFrame();
+	for (auto iter : keyframes) {
+		iter.second->advanceFrame();
 	}
 }
 

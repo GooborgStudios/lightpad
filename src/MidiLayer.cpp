@@ -26,16 +26,13 @@ std::string NoteKeyframe::serialize() {
 
 unsigned char MidiLayer::getVelocity(int position) {
 	std::string type = std::to_string(position);
-	if (keyframes[type]->getFirst() == NULL) return NULL;
+	if (keyframes[type]->getFirst() == NULL) return '\0';
 	return ((NoteKeyframe *)(keyframes[type]->getFirst()))->velocity;
 }
 
 void MidiLayer::setVelocity(int position, unsigned char velocity) {
 	std::string type = std::to_string(position);
-	NoteKeyframe *kf = (NoteKeyframe *)(keyframes[type]->getFirst());
-	if (kf == NULL) {
-		AddKeyframe(new NoteKeyframe(position, currentTime, velocity));
-	} else {
-		kf->velocity = velocity;
-	}
+	NoteKeyframe *keyframe = (NoteKeyframe *)(keyframes[type]->getFirst());
+	if (keyframe == NULL) AddKeyframe(new NoteKeyframe(position, currentTime, velocity));
+	else keyframe->velocity = velocity;
 }
