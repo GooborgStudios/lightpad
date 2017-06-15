@@ -5,6 +5,8 @@
 // https://www.nightwave.co/lightpad
 //
 
+// XXX Found a bunch of memory leaks in this file
+
 #include "Launchpad.h"
 
 #include <wx/wxprec.h>

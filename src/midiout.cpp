@@ -43,25 +43,24 @@ void launchpad_not_found_quit() {
 
 void playback_file(const char *file) {
 	MidiFile *midifile = new MidiFile(file);
-	MidiEvent *mev;
+	MidiEvent mev;
 	int color, deltatick;
 
 	midifile->joinTracks();
 
 	for (int event = 0; event < (*midifile)[0].size(); event++) {
-		mev = &(*midifile)[0][event];
-		if (event == 0) deltatick = mev->tick;
-		else deltatick = mev->tick - (*midifile)[0][event - 1].tick;
-		if ((int)(*mev)[0] == 128 || (int)(*mev)[0] == 144) {
-			color = (int)(*mev)[2];
-			if ((int)(*mev)[0] == 128) color = 0;
+		mev = (*midifile)[0][event];
+		if (event == 0) deltatick = mev.tick;
+		else deltatick = mev.tick - (*midifile)[0][event - 1].tick;
+		if ((int)mev[0] == 128 || (int)mev[0] == 144) {
+			color = (int)mev[2];
+			if ((int)mev[0] == 128) color = 0;
 			if (deltatick > 0) usleep(60000 * 1000 / (BPM * deltatick));
-			launchpad->setColor(note_to_button((int)(*mev)[1]), color);
+			launchpad->setColor(note_to_button((int)mev[1]), color);
 		}
 	}
 
 	delete midifile;
-	delete mev;
 }
 
 int main() {

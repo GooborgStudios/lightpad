@@ -20,6 +20,7 @@
 		std::string filePath(CFStringGetCStringPtr(filePathRef, kCFStringEncodingUTF8));
 
 		// Release references
+		CFRelease(resourceName);
 		CFRelease(filePathRef);
 		CFRelease(appUrlRef);
 
