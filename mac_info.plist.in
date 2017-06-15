@@ -27,7 +27,7 @@
 	<key>CSResourcesFileMapped</key>
 	<true/>
 	<key>LSApplicationCategoryType</key>
-	<string>Productivity</string>
+	<string>public.app-category.productivity</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>CFBundleDisplayName</key>
