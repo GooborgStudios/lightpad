@@ -102,25 +102,35 @@ void ColorConverter::RGB2HSV(double red, double green, double blue, double *hue,
 }
 
 void ColorConverter::HSV2RGB(double hue, double saturation, double velocity, double *red, double *green, double *blue) {
-	unsigned int cc_i = (unsigned int)(hue * 6.0);
-	double cc_f = hue * 6.0 - cc_i;
-	double cc_p = velocity * (1.0 - saturation);
-	double cc_q = velocity * (1.0 - cc_f * saturation);
-	double cc_t = velocity * (1.0 - (1.0 - cc_f) * saturation);
+	double cc_i = hue * 6.0;
+	double cc_is = (cc_i - floor(cc_i)) * saturation;
+	*red = *green = *blue = velocity;
 
-	switch (cc_i % 6) {
+	switch ((int)(floor(cc_i)) % 6) {
 		case 0:
-			*red = velocity; *green = cc_t; *blue = cc_p; break;
+			*green = velocity * cc_is;
+			*blue = velocity * (1.0 - saturation);
+			break;
 		case 1:
-			*red = cc_q; *green = velocity; *blue = cc_p; break;
+			*red = velocity * (1.0 - cc_is);
+			*blue = velocity * (1.0 - saturation);
+			break;
 		case 2:
-			*red = cc_p; *green = velocity; *blue = cc_t; break;
+			*red = velocity * (1.0 - saturation);
+			*blue = velocity * cc_is;
+			break;
 		case 3:
-			*red = cc_p; *green = cc_q; *blue = velocity; break;
+			*red = velocity * (1.0 - saturation);
+			*green = velocity * (1.0 - cc_is);
+			break;
 		case 4:
-			*red = cc_t; *green = cc_p; *blue = velocity; break;
+			*red = velocity * cc_is;
+			*green = velocity * (1.0 - saturation);
+			break;
 		default: // case 5
-			*red = velocity; *green = cc_p; *blue = cc_q; break;
+			*green = velocity * (1.0 - saturation);
+			*blue = velocity * (1.0 - cc_is);
+			break;
 	}
 }
 

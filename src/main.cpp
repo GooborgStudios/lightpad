@@ -119,12 +119,9 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	menuBar = new wxMenuBar;
 	menuFile = new wxMenu;
 	menuHelp = new wxMenu;
-	menuFile->Append(ID_Menu_Hello, "&Hello...\tCtrl-H",
-	                 "Help string shown in status bar for this menu item");
-	menuFile->Append(ID_Menu_Save, "&Save\tCtrl-S",
-	                 "Saves the file");
-	menuFile->Append(ID_Menu_PlayPause, "&Play/Pause\tSpace",
-	                 "Plays/pauses the animation");
+	menuFile->Append(ID_Menu_Hello, "&Hello...\tCtrl-H", "Help string shown in status bar for this menu item");
+	menuFile->Append(ID_Menu_Save, "&Save\tCtrl-S", "Saves the file");
+	menuFile->Append(ID_Menu_PlayPause, "&Play/Pause\tSpace", "Plays/pauses the animation");
 	menuFile->AppendSeparator();
 	menuFile->Append(wxID_EXIT);
 	menuHelp->Append(wxID_ABOUT);

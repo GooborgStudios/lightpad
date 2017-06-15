@@ -286,23 +286,8 @@ void DisplayPanel::render(wxDC &canvas) {
 int DisplayPanel::get_button_style(int btn_x, int btn_y) {
 	// Choose button style
 	if (btn_x == 0 || btn_x == 9 || btn_y == 0 || btn_y == 9) return 0;
-	switch (btn_x + (btn_y * 10)) {
-		case 44:
-			return 2;
-			break;
-		case 45:
-			return 3;
-			break;
-		case 54:
-			return 4;
-			break;
-		case 55:
-			return 5;
-			break;
-		default:
-			return 1;
-			break;
-	}
+	if ((btn_x == 4 || btn_x == 5) && (btn_y == 4 || btn_y == 5)) return 2 + (btn_x - 4) + ((btn_y - 4) * 2);
+	return 1;
 }
 
 float DisplayPanel::buttonIndexToPos(int index) {

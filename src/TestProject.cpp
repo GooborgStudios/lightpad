@@ -39,8 +39,7 @@ TestProject::TestProject() {
 	layer = new MidiLayer();
 	for (int row = 0; row < ROWS; row++) {
 		btn_x++;
-		if (row == 8) btn_x++;
-		if (row == 88) btn_x++;
+		if (row == 8 || row == 88) btn_x++;
 		if (btn_x / 10 > 0) {
 			btn_x = btn_x % 10;
 			btn_y--;

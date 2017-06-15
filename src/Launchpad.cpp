@@ -260,43 +260,19 @@ void LaunchpadPro::displayText(unsigned int color, std::string text) {
 
 	SysExMessage msg(20);
 	msg.append(color, END_MSG);
+	char letter;
 
 	for (int i = 0; i < text.size(); ++i) {
+		letter = text[i];
 		if (slash) {
 			slash = false;
-			switch (text[i]) { // XXX There's a better way to do this
-				case '/':
-					msg.append('/', END_MSG);
-					break;
-				case '1':
-					msg.append(1, END_MSG);
-					break;
-				case '2':
-					msg.append(2, END_MSG);
-					break;
-				case '3':
-					msg.append(3, END_MSG);
-					break;
-				case '4':
-					msg.append(4, END_MSG);
-					break;
-				case '5':
-					msg.append(5, END_MSG);
-					break;
-				case '6':
-					msg.append(6, END_MSG);
-					break;
-				case '7':
-					msg.append(7, END_MSG);
-					break;
-				default:
-					msg.append('/', text[i], END_MSG);
-					break;
-			}
-		} else if (text[i] == '/') {
+			if (letter == '/') msg.append('/', END_MSG);
+			else if (letter >= '1' && letter <= '7') msg.append(letter-'1', END_MSG);
+			else msg.append('/', letter, END_MSG);
+		} else if (letter == '/') {
 			slash = true;
 		} else {
-			msg.append(text[i], END_MSG);
+			msg.append(letter, END_MSG);
 		}
 	}
 
