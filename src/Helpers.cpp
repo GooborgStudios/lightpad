@@ -7,9 +7,12 @@
 #include "Helpers.h"
 
 #include <string>
+#include <sstream>
+#include <iomanip>
 #include <algorithm>
 #include <cmath>
 
+// Mac app bundle vs. unbundled executable resource obtainer
 #ifdef XCODE_BUNDLE
 	#include <CoreFoundation/CoreFoundation.h>
 	
@@ -31,6 +34,19 @@
 		return std::string(RESOURCE_DIR) + "/" + std::string(resource_name);
 	}
 #endif
+
+// Variable conversion
+std::string to_padded_string(int value, int width) {
+	std::ostringstream out;
+	out << std::setfill('0') << std::setw(width) << value;
+	return out.str();
+}
+
+std::string to_padded_string(double value, int width, int precision) {
+	std::ostringstream out;
+	out << std::setfill('0') << std::setw(width+precision) << std::setprecision(precision) << value;
+	return out.str();
+}
 
 // Math helpers
 double threeway_max(double val_a, double val_b, double val_c) {

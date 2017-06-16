@@ -19,12 +19,13 @@
 #include "Project.h"
 #include "Layer.h"
 #include "MidiLayer.h"
+#include "Launchpad.h"
 
 TimelinePanel::TimelinePanel(wxPanel *parent): wxHVScrolledWindow(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, 250), wxBORDER_SUNKEN) {
 	m_parent = parent;
 	sizer = new wxBoxSizer(wxHORIZONTAL);
 	
-	SetRowColumnCount(97, 1);
+	SetRowColumnCount(97, 100);
 	
 	Update();
 }
@@ -38,7 +39,7 @@ wxCoord TimelinePanel::OnGetRowHeight(size_t row) const {
 }
 
 wxCoord TimelinePanel::OnGetColumnWidth(size_t column) const {
-	return 400;
+	return 80;
 //	return wxClientDC(this).GetSize().GetX();
 }
 
@@ -55,9 +56,6 @@ void TimelinePanel::paintNow() {
 }
 
 void TimelinePanel::render(wxDC &canvas) {
-	canvas.SetPen(*wxBLACK_PEN);
-	canvas.SetBrush(*wxTRANSPARENT_BRUSH);
-	
 	int width = canvas.GetSize().GetX();
 	int ypos = 30-(GetVisibleBegin().GetRow()*20);
 	for (auto iter : activeProject->layer->keyframes) {
@@ -67,13 +65,28 @@ void TimelinePanel::render(wxDC &canvas) {
 	}
 	
 	canvas.SetPen(*wxTRANSPARENT_PEN);
-	canvas.SetBrush(*wxRED_BRUSH);
+	canvas.SetBrush(*wxBLACK_BRUSH);
+	
 	canvas.DrawRectangle(0, 0, width, 30);
 }
 
 void TimelinePanel::render_row(wxDC &canvas, std::string rowname, KeyframeSet *keyframes, wxRect bounding_box) {
+	canvas.SetPen(*wxBLACK_PEN);
+	canvas.SetBrush(*wxTRANSPARENT_BRUSH);
+	
 	canvas.DrawText(rowname, bounding_box.GetTopLeft());
 	canvas.DrawLine(bounding_box.GetBottomLeft(), bounding_box.GetBottomRight());
+	
+	canvas.SetPen(*wxTRANSPARENT_PEN);
+	
+	int colcount = 0;
+	for (auto iter : keyframes->keyframes) {
+		canvas.SetBrush(wxBrush(velocitycolors[((NoteKeyframe *)(iter))->velocity]));
+		canvas.DrawRectangle(bounding_box.GetLeft()+30+(80*(iter->time)), bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
+		colcount++;
+	}
+	
+	if (colcount > GetColumnCount()) SetColumnCount(colcount);
 }
 
 wxBEGIN_EVENT_TABLE(TimelinePanel, wxPanel)

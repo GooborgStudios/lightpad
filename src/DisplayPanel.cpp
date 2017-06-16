@@ -166,7 +166,7 @@ void DisplayPanel::onSize(wxSizeEvent &event) {
 
 void DisplayPanel::startstop(wxCommandEvent &event) {
 	if (m_timer->IsRunning()) m_timer->Stop();
-	else m_timer->Start(1000 / 60);
+	else m_timer->Start(1000 / 4);
 }
 
 void DisplayPanel::play_next_frame(wxTimerEvent &event) {

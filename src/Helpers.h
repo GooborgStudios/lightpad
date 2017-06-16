@@ -7,6 +7,10 @@
 #pragma once
 
 #include <string>
+#include <sstream>
+#include <iomanip>
+#include <algorithm>
+#include <cmath>
 
 #ifdef _WIN32 // Windows
 	#define WINDOWS 1
@@ -28,6 +32,8 @@
 #define PI 3.14159265
 
 std::string getResourcePath(const char *resource_name);
+std::string to_padded_string(int value, int width);
+std::string to_padded_string(double value, int width, int precision);
 
 double threeway_max(double val_a, double val_b, double val_c);
 int threeway_max(int val_a, int val_b, int val_c);
