@@ -30,9 +30,16 @@ set(IMGS  ${ROOT}/graphics)
 set(REFS  ${ROOT}/references)
 set(BUILD ${PROJECT_BINARY_DIR})
 
+find_package(GraphicsMagick REQUIRED)
+
 add_definitions(-DRESOURCE_DIR="${IMGS}")
 include_directories(${ROOT})
 include_directories(${INCL})
+
+include_directories(${MAGICK_INCLUDE_DIR})
+include_directories(${MAGICK++_INCLUDE_DIR})
+link_directories(${MAGICK_LIBRARY_DIR})
+link_directories(${MAGICK++_LIBRARY_DIR})
 
 add_executable(lightpad
 	${SRC}/main.cpp ${SRC}/ElementIDs.h
@@ -120,10 +127,7 @@ target_link_libraries(timeline ${wxWidgets_LIBRARIES})
 target_link_libraries(midiprobe ${wxWidgets_LIBRARIES})
 target_link_libraries(midiout ${wxWidgets_LIBRARIES})
 
-find_package(GraphicsMagick REQUIRED)
 add_definitions(-DLIB_GRAPHICSMAGICK)
-include_directories(${MAGICK_INCLUDE_DIR})
-include_directories(${MAGICK++_INCLUDE_DIR})
 target_link_libraries(lightpad "GraphicsMagick++")
 target_link_libraries(timeline "GraphicsMagick++")
 
