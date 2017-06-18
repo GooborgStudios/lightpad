@@ -13,9 +13,18 @@
 
 class Project {
 	public:
-//		int BPM;
+		Project();
+		Project(int BPM);
+		Project(int BPM, int ticksPerBeat);
+	
+		int BPM;
+		int ticksPerBeat;
 		MidiLayer *layer;
+		long currentTime;
 //		int save(std::string fileLocation);
+	
+		void seek(long newTime);
+		void advanceFrame(long increment);
 };
 
 extern Project *activeProject;

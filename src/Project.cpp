@@ -11,8 +11,29 @@
 
 #include "MidiLayer.h"
 
+Project::Project() : Project::Project(120) {
+	currentTime = 0;
+}
+
+Project::Project(int BPM) : Project::Project(BPM, 32) {
+	
+}
+
+Project::Project(int BPM, int ticksPerBeat) {
+	this->BPM = BPM;
+	this->ticksPerBeat = ticksPerBeat;
+}
+
 //int Project::save(std::string fileLocation) {
 //	return 0;
 //}
 
+void Project::seek(long newTime) {
+	currentTime = newTime;
+	layer->seek(newTime);
+}
 
+void Project::advanceFrame(long increment) {
+	currentTime += increment;
+	layer->advanceFrame(increment);
+}

@@ -17,7 +17,7 @@
 #include "Helpers.h"
 #include "Layer.h"
 
-NoteKeyframe::NoteKeyframe(int name, double time, unsigned char velocity) : Keyframe(to_padded_string(name, 2), time) {
+NoteKeyframe::NoteKeyframe(int name, long time, unsigned char velocity) : Keyframe(to_padded_string(name, 2), time) {
 	this->velocity = velocity;
 }
 
@@ -34,6 +34,6 @@ unsigned char MidiLayer::getVelocity(int position) {
 void MidiLayer::setVelocity(int position, unsigned char velocity) {
 	std::string type = std::to_string(position);
 	NoteKeyframe *keyframe = (NoteKeyframe *)(keyframes[type]->getFirst());
-	if (keyframe == NULL) AddKeyframe(new NoteKeyframe(position, currentTime, velocity));
+	if (keyframe == NULL) AddKeyframe(new NoteKeyframe(position, keyframes[type]->currentTime, velocity));
 	else keyframe->velocity = velocity;
 }

@@ -25,12 +25,13 @@
 #include <wx/dcbuffer.h>
 
 #include "Helpers.h"
+#include "Project.h"
 
 Keyframe::Keyframe() {
 
 }
 
-Keyframe::Keyframe(std::string name, double time) {
+Keyframe::Keyframe(std::string name, long time) {
 	this->name = name;
 	this->time = time;
 	this->smoother = SMOOTH_LINEAR;
@@ -44,15 +45,15 @@ void Keyframe::toBuffer(char *outbuf, int len) {
 //	snprintf(outbuf, len, "keyframe %s %f %s %s %d\n", this->parent->description.c_str(), this->time, this->name.c_str(), this->serialize().c_str(), this->smoother);
 }
 
-DoubleKeyframe::DoubleKeyframe(std::string name, double time, double value) : Keyframe(name, time) {
+DoubleKeyframe::DoubleKeyframe(std::string name, long time, double value) : Keyframe(name, time) {
 	this->value = value;
 };
 
-DoubleKeyframe::DoubleKeyframe(std::string name, double time, float value) : Keyframe(name, time) {
+DoubleKeyframe::DoubleKeyframe(std::string name, long time, float value) : Keyframe(name, time) {
 	this->value = (double)value;
 };
 
-DoubleKeyframe::DoubleKeyframe(std::string name, double time, int value) : Keyframe(name, time) {
+DoubleKeyframe::DoubleKeyframe(std::string name, long time, int value) : Keyframe(name, time) {
 	this->value = (double)value;
 };
 
@@ -62,12 +63,12 @@ std::string DoubleKeyframe::serialize() {
 	return stream.str();
 }
 
-StringKeyframe::StringKeyframe(std::string name, double time, std::string *value) : Keyframe(name, time) {
+StringKeyframe::StringKeyframe(std::string name, long time, std::string *value) : Keyframe(name, time) {
 	this->value = value;
 	this->smoother = SMOOTH_HOLD;
 };
 
-StringKeyframe::StringKeyframe(std::string name, double time, const char *value) : Keyframe(name, time) {
+StringKeyframe::StringKeyframe(std::string name, long time, const char *value) : Keyframe(name, time) {
 	this->value = new std::string(value);
 	this->smoother = SMOOTH_HOLD;
 };
@@ -100,18 +101,20 @@ void KeyframeSet::AddKeyframe(Keyframe *keyframe) {
 	}
 }
 
-void KeyframeSet::seek() {
+void KeyframeSet::seek(long newTime) {
+	currentTime = 0;
 	prevKF = keyframes.begin();
 	if (prevKF != keyframes.end()) {
 		nextKF = std::next(prevKF, 1);
 	} else {
 		nextKF = keyframes.end();
 	}
-	advanceFrame();
+	advanceFrame(newTime);
 }
 
-void KeyframeSet::advanceFrame() {
-	while (nextKF != keyframes.end() && parent->currentTime >= (*nextKF)->time) {
+void KeyframeSet::advanceFrame(long increment) {
+	currentTime += increment;
+	while (nextKF != keyframes.end() && currentTime >= (*nextKF)->time) {
 		++prevKF;
 		++nextKF;
 	}
@@ -121,12 +124,12 @@ double KeyframeSet::smoother_fraction() {
 	// XXX Only does Linear smoothing, add other smoother types
 	if (nextKF == keyframes.end()) return 0.0;
 	
-	assert(parent->currentTime >= (*prevKF)->time);
-	assert((*nextKF)->time >= parent->currentTime);
+	assert(currentTime >= (*prevKF)->time);
+	assert((*nextKF)->time >= currentTime);
 	
 	double dur = (*nextKF)->time - (*prevKF)->time;
-	if (dur == 0.0) return 0.0; // Avoid divide-by-zero crash
-	return (parent->currentTime - (*prevKF)->time) / dur;
+	if (dur == 0) return 0.0; // Avoid divide-by-zero crash
+	return (currentTime - (*prevKF)->time) / dur;
 }
 
 Keyframe *KeyframeSet::getFirst() {
@@ -149,25 +152,16 @@ Layer::Layer(std::string description) {
 
 void Layer::AddKeyframe(Keyframe *keyframe) {
 	std::string type = keyframe->name;
-	if (keyframes.find(type) == keyframes.end()) {
-		keyframes[type] = new KeyframeSet(this);
-	}
+	if (keyframes.find(type) == keyframes.end()) keyframes[type] = new KeyframeSet(this);
 	keyframes[type]->AddKeyframe(keyframe);
 }
 
-void Layer::seek(double newTime) {
-	currentTime = newTime;
-	for (auto iter : keyframes) {
-		iter.second->seek();
-	}
-	
+void Layer::seek(long newTime) {
+	for (auto iter : keyframes) iter.second->seek(newTime);
 }
 
-void Layer::advanceFrame(double increment) {
-	currentTime += increment;
-	for (auto iter : keyframes) {
-		iter.second->advanceFrame();
-	}
+void Layer::advanceFrame(long increment) {
+	for (auto iter : keyframes) iter.second->advanceFrame(increment);
 }
 
 double Layer::getDouble(std::string type) {

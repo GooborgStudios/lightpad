@@ -32,10 +32,10 @@ class Keyframe {
 	public:
 		std::string name;
 		SmootherType smoother;
-		double time;
+		long time;
 
 		Keyframe();
-		Keyframe(std::string name, double time);
+		Keyframe(std::string name, long time);
 	
         virtual std::string serialize();
 		void toBuffer(char *outbuf, int len);
@@ -46,33 +46,35 @@ typedef std::vector<Keyframe *>::iterator KeyframeIterator;
 class DoubleKeyframe: public Keyframe {
 	public:
 		double value;
-		DoubleKeyframe(std::string name, double time, double value);
-		DoubleKeyframe(std::string name, double time, float value);
-		DoubleKeyframe(std::string name, double time, int value);
+		DoubleKeyframe(std::string name, long time, double value);
+		DoubleKeyframe(std::string name, long time, float value);
+		DoubleKeyframe(std::string name, long time, int value);
 		std::string serialize();
 };
 
 class StringKeyframe: public Keyframe {
 	public:
 		std::string *value;
-		StringKeyframe(std::string name, double time, std::string *value);
-		StringKeyframe(std::string name, double time, const char *value);
+		StringKeyframe(std::string name, long time, std::string *value);
+		StringKeyframe(std::string name, long time, const char *value);
 		std::string serialize();
 };
 
 class KeyframeSet {
 	protected:
-		std::vector<Keyframe *> keyframes;
 		KeyframeIterator prevKF;
 		KeyframeIterator nextKF;
 		Layer *parent;
 	public:
+		std::vector<Keyframe *> keyframes;
+		long currentTime;
+		
 //		KeyframeSet();
 		KeyframeSet(Layer *parent);
 	
 		void AddKeyframe(Keyframe *f);
-		void seek();
-		void advanceFrame();
+		void seek(long newTime);
+		void advanceFrame(long increment);
 		double smoother_fraction();
 	
 		Keyframe *getFirst();
@@ -88,10 +90,9 @@ class Layer {
 		std::map<std::string, KeyframeSet *> keyframes;
 		std::string description;
 		std::string type;
-		double currentTime;
 		void AddKeyframe(Keyframe *f);
-		void seek(double newTime);
-		void advanceFrame(double increment);
+		void seek(long newTime);
+		void advanceFrame(long increment);
 	
 		double getDouble(std::string type);
 		std::string *getString(std::string type);

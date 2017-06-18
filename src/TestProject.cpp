@@ -20,7 +20,7 @@
 const int COLS = 32;
 const int ROWS = 96;
 
-TestProject::TestProject() {
+TestProject::TestProject() : Project(120, 32) {
 	Color rainbow[18];
 	for (int j = 0; j < 18; j++) {
 		int red = 0, grn = 0, blu = 0;
@@ -46,7 +46,7 @@ TestProject::TestProject() {
 		}
 		
 		for (int col = 0; col < COLS; col++) {
-			layer->AddKeyframe(new NoteKeyframe(row, col, get_closest_velocity(rainbow[(btn_x + btn_y + col) % 18])));
+			layer->AddKeyframe(new NoteKeyframe(btn_x + (btn_y * 10), col*ticksPerBeat, get_closest_velocity(rainbow[(btn_x + btn_y + col) % 18])));
 		}
 	}
 //	layer->seek(0.0);

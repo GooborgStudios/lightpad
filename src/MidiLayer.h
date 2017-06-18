@@ -19,7 +19,7 @@
 class NoteKeyframe: public Keyframe {
 	public:
 		unsigned char velocity;
-		NoteKeyframe(int name, double time, unsigned char velocity);
+		NoteKeyframe(int name, long time, unsigned char velocity);
 		std::string serialize();
 };
 

@@ -21,11 +21,17 @@
 #include "MidiLayer.h"
 #include "Launchpad.h"
 
+#define headersize 30
+#define labelsize 40
+
 TimelinePanel::TimelinePanel(wxPanel *parent): wxHVScrolledWindow(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, 250), wxBORDER_SUNKEN) {
 	m_parent = parent;
 	sizer = new wxBoxSizer(wxHORIZONTAL);
 	
-	SetRowColumnCount(97, 100);
+	rowsize = 20;
+	colsize = 80;
+	
+	SetRowColumnCount(97, 1);
 	
 	Update();
 }
@@ -35,11 +41,11 @@ TimelinePanel::~TimelinePanel() {
 }
 
 wxCoord TimelinePanel::OnGetRowHeight(size_t row) const {
-	return 20;
+	return rowsize;
 }
 
 wxCoord TimelinePanel::OnGetColumnWidth(size_t column) const {
-	return 80;
+	return colsize;
 //	return wxClientDC(this).GetSize().GetX();
 }
 
@@ -57,36 +63,68 @@ void TimelinePanel::paintNow() {
 
 void TimelinePanel::render(wxDC &canvas) {
 	int width = canvas.GetSize().GetX();
-	int ypos = 30-(GetVisibleBegin().GetRow()*20);
+	int ypos = headersize-(GetVisibleBegin().GetRow()*rowsize);
 	for (auto iter : activeProject->layer->keyframes) {
-		if (ypos >= 10) render_row(canvas, iter.first, iter.second, wxRect(0, ypos, width, 20));
-		ypos += 20;
+		if (ypos >= headersize-rowsize) render_row(canvas, iter.first, iter.second, wxRect(0, ypos, width, rowsize));
+		ypos += rowsize;
 		if (ypos >= canvas.GetSize().GetY()) break;
 	}
 	
-	canvas.SetPen(*wxTRANSPARENT_PEN);
-	canvas.SetBrush(*wxBLACK_BRUSH);
-	
-	canvas.DrawRectangle(0, 0, width, 30);
+	render_header(canvas);
+	render_playhead(canvas);
 }
 
 void TimelinePanel::render_row(wxDC &canvas, std::string rowname, KeyframeSet *keyframes, wxRect bounding_box) {
-	canvas.SetPen(*wxBLACK_PEN);
-	canvas.SetBrush(*wxTRANSPARENT_BRUSH);
-	
-	canvas.DrawText(rowname, bounding_box.GetTopLeft());
-	canvas.DrawLine(bounding_box.GetBottomLeft(), bounding_box.GetBottomRight());
-	
 	canvas.SetPen(*wxTRANSPARENT_PEN);
 	
 	int colcount = 0;
 	for (auto iter : keyframes->keyframes) {
 		canvas.SetBrush(wxBrush(velocitycolors[((NoteKeyframe *)(iter))->velocity]));
-		canvas.DrawRectangle(bounding_box.GetLeft()+30+(80*(iter->time)), bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
+		canvas.DrawRectangle(bounding_box.GetLeft()+labelsize+(colsize*(iter->time)/activeProject->ticksPerBeat), bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
 		colcount++;
 	}
 	
 	if (colcount > GetColumnCount()) SetColumnCount(colcount);
+	
+	canvas.SetPen(*wxBLACK_PEN);
+	canvas.SetBrush(*wxTRANSPARENT_BRUSH);
+	
+	canvas.DrawText(rowname, bounding_box.GetTopLeft());
+	canvas.DrawLine(bounding_box.GetBottomLeft(), bounding_box.GetBottomRight());
+}
+
+void TimelinePanel::render_header(wxDC &canvas) {
+	int width = canvas.GetSize().GetX();
+	int col = 0;
+	char buf[16];
+	
+	canvas.SetPen(*wxTRANSPARENT_PEN);
+	canvas.SetBrush(*wxWHITE_BRUSH);
+	
+	canvas.DrawRectangle(0, 0, width, headersize);
+	
+	canvas.SetPen(*wxBLACK_PEN);
+	canvas.SetBrush(*wxTRANSPARENT_BRUSH);
+	
+	for (int x = labelsize; x < width; x += colsize) {
+		snprintf(buf, 7, "%d.%d", col / 4 + 1, col % 4 + 1);
+		canvas.DrawLine(x, 0, x, headersize-2);
+		canvas.DrawText(buf, x+4, 0);
+		col++;
+	}
+	
+	canvas.SetPen(wxPen(*wxBLACK, 3));
+	
+	canvas.DrawLine(0, headersize-2, width, headersize-2);
+}
+
+void TimelinePanel::render_playhead(wxDC &canvas) {
+	int x = colsize*activeProject->currentTime/activeProject->ticksPerBeat;
+	
+	canvas.SetPen(wxPen(*wxBLACK, 6));
+	canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
+	canvas.SetPen(wxPen(*wxWHITE, 3));
+	canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
 }
 
 wxBEGIN_EVENT_TABLE(TimelinePanel, wxPanel)
