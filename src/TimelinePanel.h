@@ -48,4 +48,5 @@ class TimelinePanel: public wxHVScrolledWindow {
 		wxDECLARE_EVENT_TABLE();
 };
 
+wxDECLARE_EVENT(DISPLAY_REFRESH, wxCommandEvent);
 wxDECLARE_EVENT(PLAYHEAD_MOVED, wxCommandEvent);

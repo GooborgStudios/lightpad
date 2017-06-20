@@ -83,5 +83,3 @@ class DisplayPanel: public wxPanel {
 		int frame = 0;
 		wxPoint clickpos = wxPoint(-1, -1);
 };
-
-wxDECLARE_EVENT(DISPLAY_REFRESH, wxCommandEvent);
