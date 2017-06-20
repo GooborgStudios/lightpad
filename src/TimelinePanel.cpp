@@ -119,12 +119,13 @@ void TimelinePanel::render_header(wxDC &canvas) {
 }
 
 void TimelinePanel::render_playhead(wxDC &canvas) {
-	int x = colsize*activeProject->currentTime/activeProject->ticksPerBeat;
+	int x = colsize*activeProject->currentTime/activeProject->ticksPerBeat + labelsize;
 	
 	canvas.SetPen(wxPen(*wxBLACK, 6));
 	canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
 	canvas.SetPen(wxPen(*wxWHITE, 3));
 	canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
+	canvas.DrawCircle(x, headersize, 5.0);
 }
 
 wxBEGIN_EVENT_TABLE(TimelinePanel, wxPanel)
