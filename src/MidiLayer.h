@@ -26,5 +26,6 @@ class NoteKeyframe: public Keyframe {
 class MidiLayer: public Layer {
 	public:
 		unsigned char getVelocity(int position);
+		unsigned char getVelocity(std::string position);
 		void setVelocity(int position, unsigned char velocity);
 };
