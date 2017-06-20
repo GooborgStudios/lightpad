@@ -33,7 +33,7 @@ class TimelinePanel: public wxHVScrolledWindow {
 		void render_row(wxDC &canvas, std::string rowname, KeyframeSet *keyframes, wxRect bounding_box);
 		void render_header(wxDC &canvas);
 		void render_playhead(wxDC &canvas);
-//		void MovePlayhead(int index);
+		void movePlayhead(int pos);
 //		void RefreshDisplay();
 //		void ChangeNoteColor(wxCommandEvent &event);
 	private:
@@ -45,3 +45,5 @@ class TimelinePanel: public wxHVScrolledWindow {
 	
 		wxDECLARE_EVENT_TABLE();
 };
+
+wxDECLARE_EVENT(PLAYHEAD_MOVED, wxCommandEvent);

@@ -14,15 +14,19 @@
 
 #include <wx/dcbuffer.h>
 #include <wx/vscroll.h>
+#include <wx/clrpicker.h>
 
 #include "ElementIDs.h"
 #include "Project.h"
 #include "Layer.h"
 #include "MidiLayer.h"
 #include "Launchpad.h"
+#include "DisplayPanel.h"
 
 #define headersize 30
 #define labelsize 40
+
+wxDEFINE_EVENT(PLAYHEAD_MOVED, wxCommandEvent);
 
 TimelinePanel::TimelinePanel(wxPanel *parent): wxHVScrolledWindow(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, 250), wxBORDER_SUNKEN) {
 	m_parent = parent;
@@ -34,6 +38,8 @@ TimelinePanel::TimelinePanel(wxPanel *parent): wxHVScrolledWindow(parent, ID_Pan
 	SetRowColumnCount(97, 1);
 	
 	Update();
+	
+	movePlayhead(labelsize);
 }
 
 TimelinePanel::~TimelinePanel() {
@@ -126,6 +132,22 @@ void TimelinePanel::render_playhead(wxDC &canvas) {
 	canvas.SetPen(wxPen(*wxWHITE, 3));
 	canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
 	canvas.DrawCircle(x, headersize, 5.0);
+}
+
+void TimelinePanel::movePlayhead(int pos) {
+	activeProject->seek((pos - labelsize) / colsize * activeProject->ticksPerBeat);
+	for (auto iter : activeProject->layer->keyframes) {
+		wxColourPickerEvent evt(this, ID_Panel_Timeline, velocitycolors[activeProject->layer->getVelocity(iter.first)]);
+		evt.SetInt(std::stoi(iter.first));
+		wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), evt);
+	}
+	
+	wxCommandEvent fin_evt(DISPLAY_REFRESH, ID_Panel_Display);
+	fin_evt.SetEventObject(this);
+	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), fin_evt);
+	playhead = pos;
+	
+	Refresh();
 }
 
 wxBEGIN_EVENT_TABLE(TimelinePanel, wxPanel)
