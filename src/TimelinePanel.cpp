@@ -134,6 +134,10 @@ void TimelinePanel::render_playhead(wxDC &canvas) {
 	canvas.DrawCircle(x, headersize, 5.0);
 }
 
+void TimelinePanel::nextBeat(wxCommandEvent &event) {
+	movePlayhead(playhead+colsize);
+}
+
 void TimelinePanel::movePlayhead(int pos) {
 	activeProject->seek((pos - labelsize) / colsize * activeProject->ticksPerBeat);
 	for (auto iter : activeProject->layer->keyframes) {
@@ -152,6 +156,7 @@ void TimelinePanel::movePlayhead(int pos) {
 
 wxBEGIN_EVENT_TABLE(TimelinePanel, wxPanel)
 	EVT_PAINT(TimelinePanel::paintEvent)
+	EVT_COMMAND(ID_Frame_Main, PLAYHEAD_MOVED, TimelinePanel::nextBeat)
 wxEND_EVENT_TABLE()
 
 //draw the background rows

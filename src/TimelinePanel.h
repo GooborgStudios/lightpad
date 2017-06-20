@@ -23,6 +23,7 @@ class TimelinePanel: public wxHVScrolledWindow {
 	protected:
 		wxCoord OnGetRowHeight(size_t row) const;
 		wxCoord OnGetColumnWidth(size_t column) const;
+		int playhead;
 	
 	public:
 		TimelinePanel(wxPanel *parent);
@@ -34,6 +35,7 @@ class TimelinePanel: public wxHVScrolledWindow {
 		void render_header(wxDC &canvas);
 		void render_playhead(wxDC &canvas);
 		void movePlayhead(int pos);
+		void nextBeat(wxCommandEvent &event);
 //		void RefreshDisplay();
 //		void ChangeNoteColor(wxCommandEvent &event);
 	private:
