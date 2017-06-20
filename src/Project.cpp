@@ -12,7 +12,7 @@
 #include "MidiLayer.h"
 
 Project::Project() : Project::Project(120) {
-	currentTime = 0;
+
 }
 
 Project::Project(int BPM) : Project::Project(BPM, 32) {
@@ -20,6 +20,7 @@ Project::Project(int BPM) : Project::Project(BPM, 32) {
 }
 
 Project::Project(int BPM, int ticksPerBeat) {
+	currentTime = 0;
 	this->BPM = BPM;
 	this->ticksPerBeat = ticksPerBeat;
 }
