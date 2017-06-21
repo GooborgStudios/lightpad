@@ -44,6 +44,8 @@ class TimelinePanel: public wxHVScrolledWindow {
 	
 		int rowsize;
 		int colsize;
+		int headersize;
+		int labelsize;
 	
 		wxDECLARE_EVENT_TABLE();
 };

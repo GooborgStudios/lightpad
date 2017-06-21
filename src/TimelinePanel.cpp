@@ -23,9 +23,6 @@
 #include "Launchpad.h"
 #include "DisplayPanel.h"
 
-#define headersize 30
-#define labelsize 40
-
 wxDEFINE_EVENT(DISPLAY_REFRESH, wxCommandEvent);
 wxDEFINE_EVENT(PLAYHEAD_MOVED, wxCommandEvent);
 
@@ -35,6 +32,8 @@ TimelinePanel::TimelinePanel(wxPanel *parent): wxHVScrolledWindow(parent, ID_Pan
 	
 	rowsize = 20;
 	colsize = 80;
+	headersize = 30;
+	labelsize = 40;
 	
 	SetRowColumnCount(97, 1);
 	
