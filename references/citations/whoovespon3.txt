@@ -1,4 +1,0 @@
-Icon: http://www.piskelapp.com/
-IDE: Sublime Text 3
-Linux distro: Xubuntu
-Midi parsing: http://midifile.sapp.org/

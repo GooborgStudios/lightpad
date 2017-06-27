@@ -1,0 +1,77 @@
+Libraries:
+- wxWidgets                      | https://wxwidgets.org/
+- LibMagic                       | https://github.com/threatstack/libmagic
+- RtMidi                         | http://www.music.mcgill.ca/~gary/rtmidi/
+- MidiFile                       | http://midifile.sapp.org/
+- GraphicsMagick                 | http://www.graphicsmagick.org/
+- OCLint                         | http://www.oclint.org/
+
+Referenced Code:
+- RGB2LAB (Modified)             | http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c
+- RGB<-XYZ<-LAB (Modified)       | http://stackoverflow.com/a/9372718
+- RGBConverter (Modified)        | https://github.com/aleksandaratanasov/RGBConverter/blob/master/RGBConverter.cpp
+
+Software Used:
+- Sublime Text
+- Code::Blocks
+- Xcode
+- GitHub
+- CMake
+- Doxygen
+- VirtualBox
+- Photoshop CC 2017
+- Image2icon
+- [Paws for] Trello
+- Ableton Live 9 Suite
+- Cycling '74 Max (for Live)
+- Homebrew
+
+Hardware (Vinyl Darkscratch’s Main Computer, Laptop):
+- Operating System               | macOS Sierra, 10.12.6 Beta
+- Model                          | MacBook Pro (15-inch, 2016)
+- Processor                      | 2.9GHz Intel Core i7 Quad-Core Hyperthreaded
+- Memory                         | 16GB DDR3
+- Graphics Card (Integrated)     | Intel HD Graphics 530 1.5GB VRAM
+- Graphics Card (Dedicated)      | Radeon Pro 460 4GB VRAM
+- Storage                        | 1 TB Flash Storage
+- Display 1                      | 15.4-inch (3840 x 2400)
+- Display 2                      | 24.0-inch (1920 x 1080)
+
+Hardware (Vinyl Darkscratch’s Secondary Computer, Desktop):
+- Operating System               | Windows 10 Professional 64-bit
+- Processor                      | 3.3GHz (4.0GHz) Intel Core i5 Quad-Core
+- Memory                         | 16GB DDR3
+- Graphics Card                  | EVGA GeForce GTX 980 4GB VRAM
+- Storage                        | 256 GB SSD and 1 TB HDD
+- Display 1                      | 24.0-inch (1920 x 1080)
+- Display 2                      | 17.1-inch (1280 x 1024)
+
+Additional References:
+- Exige’s MIDI Extension         | http://forum.launchpad-pro.com/viewtopic.php?id=4968
+- Launchpad Pro User Guide       | http://tinyurl.com/hjnsldm
+- Launchpad Pro Programmer Guide | http://tinyurl.com/hhoefae
+- Application Icon               | https://www.musicandmorestore.de/messe-neuheiten/novation-launchpad-pro.html
+
+Utilized Lightshow Projects: (All used for testing)
+- Kaskobi: Zomboy - Like A Bitch               | https://youtu.be/Bq3wmW24D_o | App icon inspiration
+- ProdiG: Nanomake - Crying Ice                | https://youtu.be/Z3NDxo04Roc | Loading animation
+- ProdiG: Bro Safari - Reality                 | https://youtu.be/B32JC3Fhf8M
+- Ixen: Dodge & Fuski vs. Virtual Riot - Alien | https://youtu.be/nejK-_Fivsg
+
+DEPENDENCIES
+	- All Platforms
+		- Make
+		- CMake
+		- GCC/Clang (or other C++ Compiler)
+		- wxWidgets
+		- GraphicsMagick++
+		- MidiFile [Precompiled library included (XXX Compile for Linux), not on Homebrew]
+		- RtMidi [Precompiled library included (XXX Compile for Linux)]
+		- LibMagic (Optional)
+		- Doxygen (Optional)
+		- OCLint (Optional)
+	- Mac
+		- Xcode
+	- Windows
+		- MinGW
+		- MSYS
