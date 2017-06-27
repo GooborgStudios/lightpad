@@ -178,8 +178,8 @@ void MainFrame::OnAbout(wxCommandEvent &event) {
 }
 
 void MainFrame::OnSelectFile(wxCommandEvent &event) {
-	wxMessageBox(event.GetString(), "File Selected", wxOK | wxICON_INFORMATION);
-//	activeProject = new Project(event.GetString().ToStdString());
+	activeProject = new Project(event.GetString().ToStdString());
+	m_tlp->movePlayhead(0);
 }
 
 void MainFrame::OnSaveRequest(wxCommandEvent &event) {
