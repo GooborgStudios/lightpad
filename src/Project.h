@@ -8,6 +8,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "MidiLayer.h"
 
@@ -16,6 +17,7 @@ class Project {
 		Project();
 		Project(int BPM);
 		Project(int BPM, int ticksPerBeat);
+		Project(std::string filePath);
 	
 		int BPM;
 		int ticksPerBeat;

@@ -8,8 +8,12 @@
 #include "Project.h"
 
 #include <vector>
+#include <string>
+
+#include "MidiFile.h"
 
 #include "MidiLayer.h"
+#include "NoteHelpers.h"
 
 Project::Project() : Project::Project(120) {
 
@@ -39,6 +43,33 @@ Project::Project(int BPM, int ticksPerBeat) {
 		
 		layer->AddKeyframe(new NoteKeyframe(btn_x + (btn_y * 10), 0, 0));
 	}
+}
+
+Project::Project(std::string filePath) : Project::Project() {
+	MidiFile *midifile = new MidiFile(filePath);
+	MidiEvent mev;
+	int color;
+	
+	midifile->joinTracks();
+	this->ticksPerBeat = midifile->getTicksPerQuarterNote();
+	
+	for (int event = 0; event < (*midifile)[0].size(); event++) {
+		mev = (*midifile)[0][event];
+		switch ((int)mev[0]) {
+			case 128:
+				color = 0;
+				break;
+			case 144:
+				color = (int)mev[2];
+				break;
+			default:
+				continue;
+		}
+		
+		layer->AddKeyframe(new NoteKeyframe(note_to_button((int)mev[1]), mev.tick, color));
+	}
+	
+	delete midifile;
 }
 
 //int Project::save(std::string fileLocation) {

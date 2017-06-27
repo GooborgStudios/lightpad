@@ -179,6 +179,7 @@ void MainFrame::OnAbout(wxCommandEvent &event) {
 
 void MainFrame::OnSelectFile(wxCommandEvent &event) {
 	wxMessageBox(event.GetString(), "File Selected", wxOK | wxICON_INFORMATION);
+//	activeProject = new Project(event.GetString().ToStdString());
 }
 
 void MainFrame::OnSaveRequest(wxCommandEvent &event) {
