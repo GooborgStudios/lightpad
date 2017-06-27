@@ -23,6 +23,22 @@ Project::Project(int BPM, int ticksPerBeat) {
 	currentTime = 0;
 	this->BPM = BPM;
 	this->ticksPerBeat = ticksPerBeat;
+	
+	layer = new MidiLayer();
+	
+	int btn_x = 0;
+	int btn_y = 9;
+	
+	for (int row = 0; row < 96; row++) {
+		btn_x++;
+		if (row == 8 || row == 88) btn_x++;
+		if (btn_x / 10 > 0) {
+			btn_x = btn_x % 10;
+			btn_y--;
+		}
+		
+		layer->AddKeyframe(new NoteKeyframe(btn_x + (btn_y * 10), 0, 0));
+	}
 }
 
 //int Project::save(std::string fileLocation) {
