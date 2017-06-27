@@ -72,9 +72,9 @@ Project::Project(std::string filePath) : Project::Project() {
 	delete midifile;
 }
 
-//int Project::save(std::string fileLocation) {
-//	return 0;
-//}
+int Project::save(std::string filePath) {
+	return 0;
+}
 
 void Project::seek(long newTime) {
 	currentTime = newTime;

@@ -23,7 +23,7 @@ class Project {
 		int ticksPerBeat;
 		MidiLayer *layer;
 		long currentTime;
-//		int save(std::string fileLocation);
+		int save(std::string filePath);
 	
 		void seek(long newTime);
 		void advanceFrame(long increment);
