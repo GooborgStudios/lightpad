@@ -18,6 +18,7 @@ enum {
 	ID_Menu_Hello,
 	ID_Menu_Save,
 	ID_Menu_PlayPause,
+	ID_Menu_Restart,
 	ID_FilePanel_Tree,
 	ID_PropertiesPanel_ColorSelector,
 	ID_PropertiesPanel_ColorSelect,

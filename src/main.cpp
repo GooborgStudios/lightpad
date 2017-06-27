@@ -66,6 +66,7 @@ class MainFrame: public wxFrame {
 		void OnSaveRequest(wxCommandEvent &event);
 		void OnSelectFile(wxCommandEvent &event);
 		void OnStartStop(wxCommandEvent &event);
+		void OnRestart(wxCommandEvent &event);
 
 		wxDECLARE_EVENT_TABLE(); // Initialize event listener
 };
@@ -122,6 +123,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	menuFile->Append(ID_Menu_Hello, "&Hello...\tCtrl-H", "Help string shown in status bar for this menu item");
 	menuFile->Append(ID_Menu_Save, "&Save\tCtrl-S", "Saves the file");
 	menuFile->Append(ID_Menu_PlayPause, "&Play/Pause\tSpace", "Plays/pauses the animation");
+	menuFile->Append(ID_Menu_Restart, "&Return to Start\tEnter", "Returns the playhead to the beginning of the timeline");
 	menuFile->AppendSeparator();
 	menuFile->Append(wxID_EXIT);
 	menuHelp->Append(wxID_ABOUT);
@@ -195,12 +197,17 @@ void MainFrame::OnStartStop(wxCommandEvent &event) {
 	m_tlp->nextBeat();
 }
 
+void MainFrame::OnRestart(wxCommandEvent &event) {
+	m_tlp->movePlayhead(0);
+}
+
 // Initialize event listeners
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_Menu_Hello, MainFrame::OnHello)
 	EVT_MENU(ID_Menu_Save, MainFrame::OnSaveRequest)
 	EVT_MENU(ID_Menu_About, MainFrame::OnAbout)
 	EVT_MENU(ID_Menu_PlayPause, MainFrame::OnStartStop)
+	EVT_MENU(ID_Menu_Restart, MainFrame::OnRestart)
 	EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 	EVT_MENU(wxID_EXIT, MainFrame::OnExit)
 	EVT_COMMAND(ID_Frame_Main, FILE_SELECT, MainFrame::OnSelectFile)
