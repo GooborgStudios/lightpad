@@ -135,15 +135,16 @@ wxString FilePanel::GetFilePath(wxDataViewItem item) {
 		if (wxFile::Exists(path))
 			break;
 	}
-	delete store;
 	return path;
 }
 
 void FilePanel::ChangeSelectedFile(wxDataViewEvent &event) {
-	wxCommandEvent evt(FILE_SELECT);
-	evt.SetEventObject(this);
-	evt.SetString(GetFilePath(event.GetItem()));
-	if (!filelistbox->GetStore()->IsContainer(event.GetItem())) ProcessEvent(evt);
+	if (!filelistbox->GetStore()->IsContainer(event.GetItem())) {
+		wxCommandEvent evt(FILE_SELECT);
+		evt.SetEventObject(this);
+		evt.SetString(GetFilePath(event.GetItem()));
+		ProcessEvent(evt);
+	}
 }
 
 // void FilePanel::RenameFile(wxDataViewEvent &event) {
