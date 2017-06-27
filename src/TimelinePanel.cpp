@@ -86,7 +86,7 @@ void TimelinePanel::render_row(wxDC &canvas, std::string rowname, KeyframeSet *k
 	int colcount = 0;
 	for (auto iter : keyframes->keyframes) {
 		canvas.SetBrush(wxBrush(velocitycolors[((NoteKeyframe *)(iter))->velocity]));
-		canvas.DrawRectangle(bounding_box.GetLeft()+labelsize+(colsize*(iter->time)/activeProject->ticksPerBeat), bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
+		canvas.DrawRectangle(bounding_box.GetLeft()+labelsize+(colsize*(iter->time)/activeProject->ticksPerBeat * 4), bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
 		colcount++;
 	}
 	
@@ -113,7 +113,7 @@ void TimelinePanel::render_header(wxDC &canvas) {
 	canvas.SetBrush(*wxTRANSPARENT_BRUSH);
 	
 	for (int x = labelsize; x < width; x += colsize) {
-		snprintf(buf, 7, "%d.%d", col / 4 + 1, col % 4 + 1);
+		snprintf(buf, 7, "%d.%d.%d", col / 16 + 1, col / 4 % 4 + 1, col % 4 + 1);
 		canvas.DrawLine(x, 0, x, headersize-2);
 		canvas.DrawText(buf, x+4, 0);
 		col++;
@@ -125,7 +125,7 @@ void TimelinePanel::render_header(wxDC &canvas) {
 }
 
 void TimelinePanel::render_playhead(wxDC &canvas) {
-	int x = colsize*activeProject->currentTime/activeProject->ticksPerBeat + labelsize;
+	int x = colsize*activeProject->currentTime/activeProject->ticksPerBeat * 4 + labelsize;
 	
 	canvas.SetPen(wxPen(*wxBLACK, 6));
 	canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
@@ -139,7 +139,7 @@ void TimelinePanel::nextBeat(wxCommandEvent &event) {
 }
 
 void TimelinePanel::movePlayhead(int pos) {
-	activeProject->seek((pos - labelsize) / colsize * activeProject->ticksPerBeat);
+	activeProject->seek((pos - labelsize) / colsize * activeProject->ticksPerBeat / 4);
 	for (auto iter : activeProject->layer->keyframes) {
 		wxColourPickerEvent evt(this, ID_Panel_Timeline, velocitycolors[activeProject->layer->getVelocity(iter.first)]);
 		evt.SetInt(std::stoi(iter.first));
