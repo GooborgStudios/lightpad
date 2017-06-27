@@ -192,9 +192,7 @@ void MainFrame::OnHello(wxCommandEvent &event) {
 }
 
 void MainFrame::OnStartStop(wxCommandEvent &event) {
-	wxCommandEvent fin_evt(PLAYHEAD_MOVED, ID_Frame_Main);
-	fin_evt.SetEventObject(this);
-	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Timeline), fin_evt);
+	m_tlp->nextBeat();
 }
 
 // Initialize event listeners
