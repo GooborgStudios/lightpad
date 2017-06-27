@@ -62,6 +62,7 @@ add_executable(timeline
 	${SRC}/timeline.cpp ${SRC}/ElementIDs.h
 	${SRC}/Colors.cpp ${SRC}/Colors.h
 	${SRC}/Helpers.cpp ${SRC}/Helpers.h
+	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
 	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
 	${SRC}/Layer.cpp ${SRC}/Layer.h
 	${SRC}/MidiLayer.cpp ${SRC}/MidiLayer.h
