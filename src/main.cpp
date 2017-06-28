@@ -13,6 +13,7 @@
 #include <wx/gdicmn.h>
 #include <wx/artprov.h>
 #include <wx/debugrpt.h>
+#include <wx/splash.h>
 #include <wx/app.h>
 
 #include "Magick++.h"
@@ -88,6 +89,11 @@ bool MainApp::OnInit() {
 	SetClassName("co.nightwave.launchpad");
 	SetVendorName("Nightwave Studios");
 	SetVendorDisplayName("Nightwave Studios");
+	
+	wxBitmap splash_image(getResourcePath("splash.png"), wxBITMAP_TYPE_PNG);
+	splash_image.UseAlpha();
+	wxSplashScreen *splash = new wxSplashScreen(splash_image, wxSPLASH_CENTRE_ON_SCREEN|wxSPLASH_TIMEOUT, 6000, NULL, -1, wxDefaultPosition, wxDefaultSize, wxBORDER_SIMPLE|wxSTAY_ON_TOP);
+	wxYield();
 
 	frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800, 600));
 	frame->SetMinSize(wxSize(800, 600));

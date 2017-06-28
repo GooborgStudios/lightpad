@@ -18,7 +18,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(SOURCE_FILES "")
 aux_source_directory(src source_file_list)
-file(GLOB RESOURCE_FILES "${CMAKE_SOURCE_DIR}/graphics/icons" "${CMAKE_SOURCE_DIR}/graphics/launchpad_display")
+file(GLOB RESOURCE_FILES "${CMAKE_SOURCE_DIR}/graphics/icons" "${CMAKE_SOURCE_DIR}/graphics/launchpad_display" "${CMAKE_SOURCE_DIR}/graphics/splash.png")
 list(FILTER RESOURCE_FILES EXCLUDE REGEX ".*\.DS_Store")
 
 set(ROOT  ${CMAKE_SOURCE_DIR})
