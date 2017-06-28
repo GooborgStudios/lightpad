@@ -19,11 +19,12 @@
 	std::string getResourcePath(const char *resource_name) {
 		CFStringRef resourceName = CFStringCreateWithCString(NULL, resource_name, kCFStringEncodingUTF8);
 		CFURLRef appUrlRef = CFBundleCopyResourceURL(CFBundleGetMainBundle(), resourceName, NULL, NULL);
+		CFRelease(resourceName);
+		if (appUrlRef == NULL) return std::string(resource_name);
 		CFStringRef filePathRef = CFURLCopyPath(appUrlRef);
 		std::string filePath(CFStringGetCStringPtr(filePathRef, kCFStringEncodingUTF8));
 
 		// Release references
-		CFRelease(resourceName);
 		CFRelease(filePathRef);
 		CFRelease(appUrlRef);
 
