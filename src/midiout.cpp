@@ -31,7 +31,6 @@ void finish(int code) {
 	int err_code = 0;
 	if (code == -1) err_code = 1;
 	launchpad->disconnect();
-	delete launchpad;
 	std::cout << std::endl;
 	exit(err_code);
 }
