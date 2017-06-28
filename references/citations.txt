@@ -51,6 +51,7 @@ Additional References:
 - Launchpad Pro User Guide       | http://tinyurl.com/hjnsldm
 - Launchpad Pro Programmer Guide | http://tinyurl.com/hhoefae
 - Application Icon               | https://www.musicandmorestore.de/messe-neuheiten/novation-launchpad-pro.html
+- Splash Screen Brushes          | https://www.behance.net/gallery/31115821/Powder-Explosion-brush-set
 
 Utilized Lightshow Projects: (All used for testing)
 - Kaskobi: Zomboy - Like A Bitch               | https://youtu.be/Bq3wmW24D_o | App icon inspiration
