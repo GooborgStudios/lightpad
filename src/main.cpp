@@ -49,6 +49,7 @@ class MainApp: public wxApp {
 class MainFrame: public wxFrame {
 	public:
 		MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size);
+		void ShowSplash();
 		wxMenuBar *menuBar;
 		wxMenu *menuFile;
 		wxMenu *menuHelp;
@@ -89,13 +90,9 @@ bool MainApp::OnInit() {
 	SetClassName("co.nightwave.launchpad");
 	SetVendorName("Nightwave Studios");
 	SetVendorDisplayName("Nightwave Studios");
-	
-	wxBitmap splash_image(getResourcePath("splash.png"), wxBITMAP_TYPE_PNG);
-	splash_image.UseAlpha();
-	wxSplashScreen *splash = new wxSplashScreen(splash_image, wxSPLASH_CENTRE_ON_SCREEN|wxSPLASH_TIMEOUT, 6000, NULL, -1, wxDefaultPosition, wxDefaultSize, wxBORDER_SIMPLE|wxSTAY_ON_TOP);
-	wxYield();
 
 	frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800, 600));
+	frame->ShowSplash();
 	frame->SetMinSize(wxSize(800, 600));
 	frame->Show(true);
 	return true;
@@ -103,7 +100,6 @@ bool MainApp::OnInit() {
 
 int MainApp::OnExit() {
 	launchpad->disconnect();
-//	delete launchpad;
 
 	return 0;
 }
@@ -180,9 +176,15 @@ void MainFrame::OnExit(wxCommandEvent &event) {
 	}
 }
 
+void MainFrame::ShowSplash() {
+	wxBitmap splash_image(getResourcePath("splash.png"), wxBITMAP_TYPE_PNG);
+	splash_image.UseAlpha();
+	wxSplashScreen *splash = new wxSplashScreen(splash_image, wxSPLASH_CENTRE_ON_SCREEN|wxSPLASH_NO_TIMEOUT, 1, NULL, -1, wxDefaultPosition, wxDefaultSize, wxBORDER_SIMPLE|wxSTAY_ON_TOP);
+	wxYield();
+}
+
 void MainFrame::OnAbout(wxCommandEvent &event) {
-	wxMessageBox("Lightpad Copyright 2017 Nightwave Studios, all rights reserved.  The application is coded by Vinyl Darkscratch, Light Apacha, Eric Busch (Origami1105), and WhoovesPON3.  Some features based upon those found in LightshowCreator by LaunchpadFun with exclusive permission.  Big thanks to the support from the Launchpad Lightshow Community.",
-	             "About Lightpad", wxOK | wxICON_INFORMATION);
+	ShowSplash();
 }
 
 void MainFrame::OnSelectFile(wxCommandEvent &event) {
