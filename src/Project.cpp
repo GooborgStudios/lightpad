@@ -28,6 +28,7 @@ Project::Project(int BPM, int ticksPerBeat) {
 	this->BPM = BPM;
 	this->ticksPerBeat = ticksPerBeat;
 	
+	midifile = new MidiFile();
 	layer = new MidiLayer();
 	
 	int btn_x = 0;
@@ -46,7 +47,7 @@ Project::Project(int BPM, int ticksPerBeat) {
 }
 
 Project::Project(std::string filePath) : Project::Project() {
-	MidiFile *midifile = new MidiFile(filePath);
+	midifile = new MidiFile(filePath);
 	MidiEvent mev;
 	int color;
 	
@@ -72,7 +73,36 @@ Project::Project(std::string filePath) : Project::Project() {
 	delete midifile;
 }
 
+void Project::pushButton(int tick, std::string button, unsigned char velocity) {
+	vector<unsigned char> data;
+	
+	data.push_back(velocity == 0 ? 128 : 144);
+	data.push_back(button_to_note(stoi(button)));
+	data.push_back(velocity);
+	midifile->addEvent(0, tick, data);
+}
+
 int Project::save(std::string filePath) {
+//	MidiFile *midifile = new MidiFile();
+	unsigned char velocity = 0;
+	
+	midifile->setTicksPerQuarterNote(this->ticksPerBeat);
+	
+	for (auto button: layer->keyframes) {
+		unsigned char last_command = 128;
+		for (auto keyframe: button.second->keyframes) {
+			velocity = ((NoteKeyframe *)(keyframe))->velocity;
+			
+			if (velocity > 0 && last_command != 128) pushButton(keyframe->time, keyframe->name, 0);
+			pushButton(keyframe->time, keyframe->name, velocity);
+			
+			last_command = velocity == 0 ? 128 : 144;
+		}
+	}
+	
+	midifile->sortTracks();
+	midifile->write(filePath);
+	
 	return 0;
 }
 

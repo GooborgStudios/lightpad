@@ -10,9 +10,14 @@
 #include <vector>
 #include <string>
 
+#include "MidiFile.h"
+
 #include "MidiLayer.h"
 
 class Project {
+	private:
+		MidiFile *midifile;
+	
 	public:
 		Project();
 		Project(int BPM);
@@ -23,8 +28,9 @@ class Project {
 		int ticksPerBeat;
 		MidiLayer *layer;
 		long currentTime;
-		int save(std::string filePath);
 	
+		void pushButton(int tick, std::string button, unsigned char velocity);
+		int save(std::string filePath);
 		void seek(long newTime);
 		void advanceFrame(long increment);
 };
