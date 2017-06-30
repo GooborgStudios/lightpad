@@ -17,6 +17,7 @@
 class Project {
 	private:
 		MidiFile *midifile;
+		std::string filePath;
 	
 	public:
 		Project();
@@ -30,6 +31,7 @@ class Project {
 		long currentTime;
 	
 		void pushButton(int tick, std::string button, unsigned char velocity);
+		int save();
 		int save(std::string filePath);
 		void seek(long newTime);
 		void advanceFrame(long increment);

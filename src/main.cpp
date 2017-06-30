@@ -62,10 +62,13 @@ class MainFrame: public wxFrame {
 		wxBoxSizer *top_half;
 		wxBoxSizer *sizer;
 	private:
+		void SaveAs();
+	
 		void OnHello(wxCommandEvent &event);
 		void OnExit(wxCommandEvent &event);
 		void OnAbout(wxCommandEvent &event);
 		void OnSaveRequest(wxCommandEvent &event);
+		void OnSaveAsRequest(wxCommandEvent &event);
 		void OnSelectFile(wxCommandEvent &event);
 		void OnStartStop(wxCommandEvent &event);
 		void OnRestart(wxCommandEvent &event);
@@ -124,6 +127,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	menuHelp = new wxMenu;
 	menuFile->Append(ID_Menu_Hello, "&Hello...\tCtrl-H", "Help string shown in status bar for this menu item");
 	menuFile->Append(ID_Menu_Save, "&Save\tCtrl-S", "Saves the file");
+	menuFile->Append(ID_Menu_SaveAs, "&Save As...\tCtrl-Shift-S", "Saves the file to a specified location");
 	menuFile->Append(ID_Menu_PlayPause, "&Play/Pause\tSpace", "Plays/pauses the animation");
 	menuFile->Append(ID_Menu_Restart, "&Return to Start\tEnter", "Returns the playhead to the beginning of the timeline");
 	menuFile->AppendSeparator();
@@ -192,8 +196,18 @@ void MainFrame::OnSelectFile(wxCommandEvent &event) {
 	m_tlp->movePlayhead(0);
 }
 
+void MainFrame::SaveAs() {
+	wxFileDialog saveFileDialog(this, "Save file", "", "", "MIDI file (*.mid)|*.mid", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+	if (saveFileDialog.ShowModal() == wxID_CANCEL) return;
+	activeProject->save(saveFileDialog.GetPath().ToStdString());
+}
+
 void MainFrame::OnSaveRequest(wxCommandEvent &event) {
-	//activeProject.save("./foo.lightsave");
+	if (activeProject->save() == -1) SaveAs();
+}
+
+void MainFrame::OnSaveAsRequest(wxCommandEvent &event) {
+	SaveAs();
 }
 
 void MainFrame::OnHello(wxCommandEvent &event) {
@@ -213,6 +227,7 @@ void MainFrame::OnRestart(wxCommandEvent &event) {
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_Menu_Hello, MainFrame::OnHello)
 	EVT_MENU(ID_Menu_Save, MainFrame::OnSaveRequest)
+	EVT_MENU(ID_Menu_SaveAs, MainFrame::OnSaveAsRequest)
 	EVT_MENU(ID_Menu_About, MainFrame::OnAbout)
 	EVT_MENU(ID_Menu_PlayPause, MainFrame::OnStartStop)
 	EVT_MENU(ID_Menu_Restart, MainFrame::OnRestart)

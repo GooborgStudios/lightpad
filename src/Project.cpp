@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <string>
+#include <cassert>
 
 #include "MidiFile.h"
 
@@ -28,6 +29,7 @@ Project::Project(int BPM, int ticksPerBeat) {
 	this->BPM = BPM;
 	this->ticksPerBeat = ticksPerBeat;
 	
+	this->filePath = "";
 	midifile = new MidiFile();
 	layer = new MidiLayer();
 	
@@ -47,6 +49,7 @@ Project::Project(int BPM, int ticksPerBeat) {
 }
 
 Project::Project(std::string filePath) : Project::Project() {
+	this->filePath = filePath;
 	midifile = new MidiFile(filePath);
 	MidiEvent mev;
 	int color;
@@ -79,15 +82,21 @@ void Project::pushButton(int tick, std::string button, unsigned char velocity) {
 	data.push_back(velocity == 0 ? 128 : 144);
 	data.push_back(button_to_note(stoi(button)));
 	data.push_back(velocity);
+	assert(midifile != NULL);
 	midifile->addEvent(0, tick, data);
 }
 
+int Project::save() {
+	return save(this->filePath);
+}
+
 int Project::save(std::string filePath) {
-//	MidiFile *midifile = new MidiFile();
-	unsigned char velocity = 0;
+	if (filePath == "") return -1;
+	this->filePath = filePath;
 	
 	midifile->setTicksPerQuarterNote(this->ticksPerBeat);
 	
+	unsigned char velocity = 0;
 	for (auto button: layer->keyframes) {
 		unsigned char last_command = 128;
 		for (auto keyframe: button.second->keyframes) {
@@ -101,7 +110,7 @@ int Project::save(std::string filePath) {
 	}
 	
 	midifile->sortTracks();
-	midifile->write(filePath);
+	midifile->write(this->filePath);
 	
 	return 0;
 }
