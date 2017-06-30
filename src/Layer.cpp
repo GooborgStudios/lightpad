@@ -16,13 +16,7 @@
 #include <vector>
 #include <map>
 #include <cmath>
-
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-	#include <wx/wx.h>
-#endif
-
-#include <wx/dcbuffer.h>
+#include <cassert>
 
 #include "Helpers.h"
 #include "Project.h"

@@ -12,11 +12,6 @@
 #include <vector>
 #include <map>
 
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-	#include <wx/wx.h>
-#endif
-
 #define PLAYBACK_DEBUG 0
 
 enum SmootherType {

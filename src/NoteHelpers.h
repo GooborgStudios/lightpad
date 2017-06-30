@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include "Launchpad.h"
-
 int note_to_button(int note);
 int button_to_note(int button);
 

@@ -7,11 +7,6 @@
 
 #include "MidiLayer.h"
 
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-	#include <wx/wx.h>
-#endif
-
 #include <string>
 
 #include "Helpers.h"

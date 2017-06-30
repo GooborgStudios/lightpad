@@ -6,7 +6,6 @@
 //
 
 #include "NoteHelpers.h"
-#include "Launchpad.h"
 
 #include <algorithm>
 #include <cmath>
