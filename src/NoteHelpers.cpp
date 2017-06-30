@@ -32,24 +32,3 @@ int button_to_note(int button) {
 		if (note_button_map[i] == button) return i + note_button_offset;
 	return 0;
 }
-
-Note::Note() {
-	position = 0;
-	color = 0;
-	time = 0;
-	duration = 0;
-}
-
-Note::Note(int pos, int col, int start) {
-	position = pos;
-	color = col;
-	time = start;
-	duration = 0;
-}
-
-Note::Note(int pos, int col, int start, int dur) {
-	position = pos;
-	color = col;
-	time = start;
-	duration = dur;
-}
