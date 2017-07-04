@@ -1,6 +1,6 @@
 //
 // Nightwave Global - Helpers.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch and Light Apacha.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105.
 // https://www.nightwave.co/
 //
 

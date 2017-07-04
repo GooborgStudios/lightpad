@@ -1,8 +1,7 @@
 //
-// Lightpad - Colors.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3.
-// Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// Nightwave Global - Colors.cpp
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// https://www.nightwave.co/
 //
 
 // RGB->XYZ->LAB conversion modified from: http://www.csie.ntu.edu.tw/~b92069/HWs/rgb2lab.c

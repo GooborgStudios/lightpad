@@ -1,8 +1,7 @@
 //
-// Lightpad - Colors.h
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3.
-// Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// Nightwave Global - Colors.h
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// https://www.nightwave.co/
 //
 
 #pragma once
@@ -30,14 +29,14 @@ namespace ColorConverter {
 	void CMYK2RGB(double cyan, double magenta, double yellow, double black, double *red, double *green, double *blue); // XXX Convert to int (0-255)
 	void RGB2YIQ(double red, double green, double blue, double *yluma, double *inphase, double *quadrature); // XXX Convert to int (0-255)
 	void YIQ2RGB(double yluma, double inphase, double quadrature, double *red, double *green, double *blue); // XXX Convert to int (0-255)
-	void RGB2XYZ(int red, int green, int blue, double *xresponse, double *yluminance, double *zblue);
-	void XYZ2RGB(double xresponse, double yluminance, double zblue, int *red, int *green, int *blue);
-	void XYZ2LAB(double xresponse, double yluminance, double zblue, double *luminosity, double *apoint, double *bpoint);
-	void LAB2XYZ(double luminosity, double apoint, double bpoint, double *xresponse, double *yluminance, double *zblue);
+	void RGB2XYZ(int red, int green, int blue, double *xresponse, double *yluminance, double *zblue); // XXX Convert to int (0-255)
+	void XYZ2RGB(double xresponse, double yluminance, double zblue, int *red, int *green, int *blue); // XXX Convert to int (0-255)
+	void XYZ2LAB(double xresponse, double yluminance, double zblue, double *luminosity, double *apoint, double *bpoint); // XXX Convert to int (0-255)
+	void LAB2XYZ(double luminosity, double apoint, double bpoint, double *xresponse, double *yluminance, double *zblue); // XXX Convert to int (0-255)
 
 	// Two-step converters
-	void RGB2LAB(int red, int green, int blue, double *luminosity, double *apoint, double *bpoint);
-	void LAB2RGB(double luminosity, double apoint, double bpoint, int *red, int *green, int *blue);
+	void RGB2LAB(int red, int green, int blue, double *luminosity, double *apoint, double *bpoint); // XXX Convert to int (0-255)
+	void LAB2RGB(double luminosity, double apoint, double bpoint, int *red, int *green, int *blue); // XXX Convert to int (0-255)
 	void HSL2HSV(double hue, double saturation, double luminosity, double *_hue, double *_saturation, double *velocity); // XXX Convert to int (0-255)
 	void HSV2HSL(double hue, double saturation, double velocity, double *_hue, double *_saturation, double *luminosity); // XXX Convert to int (0-255)
 	void HSL2CMYK(double hue, double saturation, double luminosity, double *cyan, double *magenta, double *yellow, double *black); // XXX Convert to int (0-255)
