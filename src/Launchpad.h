@@ -104,9 +104,9 @@ class LaunchpadS: public LaunchpadBase {
 };
 
 const int COLORCOUNT = 128;
-extern wxColor velocitycolors[COLORCOUNT];
+extern Color velocitycolors[COLORCOUNT];
 
-unsigned char get_closest_velocity(wxColor c);
-char get_color_velocity(wxColor c);
+unsigned char get_closest_velocity(Color c);
+char get_color_velocity(Color c);
 
 extern LaunchpadPro *launchpad;

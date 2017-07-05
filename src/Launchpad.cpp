@@ -374,7 +374,7 @@ Color velocitycolors[] = {
 	Color(184, 177, 0),   Color(60, 48, 0),     Color(180, 93, 0),    Color(74, 21, 4)
 };
 
-unsigned char get_closest_velocity(wxColor color) {
+unsigned char get_closest_velocity(Color color) {
 	/* Take a wxColor and find the closest match to a Launchpad Pro available color */
 	int best_match_index = 0;
 	int best_match_value = 1024;
@@ -389,7 +389,7 @@ unsigned char get_closest_velocity(wxColor color) {
 	return best_match_index;
 };
 
-char get_color_velocity(wxColor color) {
+char get_color_velocity(Color color) {
 	/* Take a wxColor and find the matching velocity of a Launchpad Pro available color */
 	for (int i = 0; i < COLORCOUNT; i++) {
 		if (color == velocitycolors[i]) return i;

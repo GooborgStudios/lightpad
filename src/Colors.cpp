@@ -25,6 +25,109 @@
 
 #include "Helpers.h"
 
+Color::Color() {
+
+}
+
+Color::Color(int red, int green, int blue) {
+	SetRGB(red, green, blue);
+}
+
+Color::Color(int cyan, int magenta, int yellow, int black) {
+	SetCMYK(cyan, magenta, yellow, black);
+}
+
+Color::Color(wxColor color) {
+	SetRGB(color.Red(), color.Green(), color.Blue());
+}
+
+void Color::SetRGB(int red, int green, int blue) {
+	// XXX Convert for other types
+	RGB[0] = red;
+	RGB[1] = green;
+	RGB[2] = blue;
+}
+
+void Color::SetHSL(int hue, int saturation, int luminosity) {
+	// XXX Convert for other types
+	HSL[0] = hue;
+	HSL[1] = saturation;
+	HSL[2] = luminosity;
+}
+
+void Color::SetHSV(int hue, int saturation, int velocity) {
+	// XXX Convert for other types
+	HSV[0] = hue;
+	HSV[1] = saturation;
+	HSV[2] = velocity;
+}
+
+void Color::SetCMYK(int cyan, int magenta, int yellow, int black) {
+	// XXX Convert for other types
+	CMYK[0] = cyan;
+	CMYK[1] = magenta;
+	CMYK[2] = yellow;
+	CMYK[3] = black;
+}
+
+void Color::SetYIQ(int yluma, int inphase, int quadrature) {
+	// XXX Convert for other types
+	YIQ[0] = yluma;
+	YIQ[1] = inphase;
+	YIQ[2] = quadrature;
+}
+
+void Color::SetXYZ(int xresponse, int yluminance, int zblue) {
+	// XXX Convert for other types
+	XYZ[0] = xresponse;
+	XYZ[1] = yluminance;
+	XYZ[2] = zblue;
+}
+
+void Color::SetLAB(int luminosity, int apoint, int bpoint) {
+	// XXX Convert for other types
+	LAB[0] = luminosity;
+	LAB[1] = apoint;
+	LAB[2] = bpoint;
+}
+
+int* Color::AsRGB() {
+	return RGB;
+}
+
+int* Color::AsHSL() {
+	return HSL;
+}
+
+int* Color::AsHSV() {
+	return HSV;
+}
+
+int* Color::AsCMYK() {
+	return CMYK;
+}
+
+int* Color::AsYIQ() {
+	return YIQ;
+}
+
+int* Color::AsXYZ() {
+	return XYZ;
+}
+
+int* Color::AsLAB() {
+	return LAB;
+}
+
+Color::operator wxColour() const {
+	return wxColor(RGB[0], RGB[1], RGB[2]);
+}
+
+bool Color::operator==(Color &a) {
+	int *oRGB = a.AsRGB();
+	return (RGB[0] == oRGB[0] && RGB[1] == oRGB[1] && RGB[2] == oRGB[2]);
+}
+
 // Color conversion helpers
 double ColorConverter::Hue2RGB(double cc_p, double cc_q, double cc_t) {
 	if (cc_t < 0.0) cc_t += 1;
