@@ -18,10 +18,10 @@ class Color {
 		int RGB[3] = {0, 0, 0};
 		int HSL[3] = {0, 0, 0};
 		int HSV[3] = {0, 0, 0};
-		int CMYK[4] = {0, 0, 0, 0};
 		int YIQ[3] = {0, 0, 0};
 		int XYZ[3] = {0, 0, 0};
 		int LAB[3] = {0, 0, 0};
+		int CMYK[4] = {0, 0, 0, 0};
 	
 	public:
 		Color();
@@ -32,18 +32,18 @@ class Color {
 		void SetRGB(int red, int green, int blue);
 		void SetHSL(int hue, int saturation, int luminosity);
 		void SetHSV(int hue, int saturation, int velocity);
-		void SetCMYK(int cyan, int magenta, int yellow, int black);
 		void SetYIQ(int yluma, int inphase, int quadrature);
 		void SetXYZ(int xresponse, int yluminance, int zblue);
 		void SetLAB(int luminosity, int apoint, int bpoint);
+		void SetCMYK(int cyan, int magenta, int yellow, int black);
 
 		int* AsRGB();
 		int* AsHSL();
 		int* AsHSV();
-		int* AsCMYK();
 		int* AsYIQ();
 		int* AsXYZ();
 		int* AsLAB();
+		int* AsCMYK();
 		operator wxColor() const;
 	
 		bool operator ==(Color &a);

@@ -62,14 +62,6 @@ void Color::SetHSV(int hue, int saturation, int velocity) {
 	HSV[2] = velocity;
 }
 
-void Color::SetCMYK(int cyan, int magenta, int yellow, int black) {
-	// XXX Convert for other types
-	CMYK[0] = cyan;
-	CMYK[1] = magenta;
-	CMYK[2] = yellow;
-	CMYK[3] = black;
-}
-
 void Color::SetYIQ(int yluma, int inphase, int quadrature) {
 	// XXX Convert for other types
 	YIQ[0] = yluma;
@@ -91,6 +83,14 @@ void Color::SetLAB(int luminosity, int apoint, int bpoint) {
 	LAB[2] = bpoint;
 }
 
+void Color::SetCMYK(int cyan, int magenta, int yellow, int black) {
+	// XXX Convert for other types
+	CMYK[0] = cyan;
+	CMYK[1] = magenta;
+	CMYK[2] = yellow;
+	CMYK[3] = black;
+}
+
 int* Color::AsRGB() {
 	return RGB;
 }
@@ -103,10 +103,6 @@ int* Color::AsHSV() {
 	return HSV;
 }
 
-int* Color::AsCMYK() {
-	return CMYK;
-}
-
 int* Color::AsYIQ() {
 	return YIQ;
 }
@@ -117,6 +113,10 @@ int* Color::AsXYZ() {
 
 int* Color::AsLAB() {
 	return LAB;
+}
+
+int* Color::AsCMYK() {
+	return CMYK;
 }
 
 Color::operator wxColour() const {
