@@ -46,6 +46,12 @@ void Color::SetRGB(int red, int green, int blue) {
 	RGB[0] = red;
 	RGB[1] = green;
 	RGB[2] = blue;
+	// ColorConverter::RGB2HSL(RGB[0], RGB[1], RGB[2], &HSL[0], &HSL[1], &HSL[2]);
+	// ColorConverter::RGB2HSV(RGB[0], RGB[1], RGB[2], &HSV[0], &HSV[1], &HSV[2]);
+	// ColorConverter::RGB2YIQ(RGB[0], RGB[1], RGB[2], &YIQ[0], &YIQ[1], &YIQ[2]);
+	// ColorConverter::RGB2XYZ(RGB[0], RGB[1], RGB[2], &XYZ[0], &XYZ[1], &XYZ[2]);
+	// ColorConverter::RGB2LAB(RGB[0], RGB[1], RGB[2], &LAB[0], &LAB[1], &LAB[2]);
+	// ColorConverter::RGB2CMYK(RGB[0], RGB[1], RGB[2], &CMYK[0], &CMYK[1], &CMYK[2], &CMYK[3]);
 }
 
 void Color::SetHSL(int hue, int saturation, int luminosity) {
@@ -53,6 +59,12 @@ void Color::SetHSL(int hue, int saturation, int luminosity) {
 	HSL[0] = hue;
 	HSL[1] = saturation;
 	HSL[2] = luminosity;
+	// ColorConverter::HSL2RGB(HSL[0], HSL[1], HSL[2], &RGB[0], &RGB[1], &RGB[2]);
+	// ColorConverter::HSL2HSV(HSL[0], HSL[1], HSL[2], &HSV[0], &HSV[1], &HSV[2]);
+	// ColorConverter::HSL2YIQ(HSL[0], HSL[1], HSL[2], &YIQ[0], &YIQ[1], &YIQ[2]);
+	// ColorConverter::HSL2XYZ(HSL[0], HSL[1], HSL[2], &XYZ[0], &XYZ[1], &XYZ[2]);
+	// ColorConverter::HSL2LAB(HSL[0], HSL[1], HSL[2], &LAB[0], &LAB[1], &LAB[2]);
+	// ColorConverter::HSL2CMYK(HSL[0], HSL[1], HSL[2], &CMYK[0], &CMYK[1], &CMYK[2], &CMYK[3]);
 }
 
 void Color::SetHSV(int hue, int saturation, int velocity) {
@@ -60,6 +72,12 @@ void Color::SetHSV(int hue, int saturation, int velocity) {
 	HSV[0] = hue;
 	HSV[1] = saturation;
 	HSV[2] = velocity;
+	// ColorConverter::HSV2RGB(HSV[0], HSV[1], HSV[2], &RGB[0], &RGB[1], &RGB[2]);
+	// ColorConverter::HSV2HSL(HSV[0], HSV[1], HSV[2], &HSL[0], &HSL[1], &HSL[2]);
+	// ColorConverter::HSV2YIQ(HSV[0], HSV[1], HSV[2], &YIQ[0], &YIQ[1], &YIQ[2]);
+	// ColorConverter::HSV2XYZ(HSV[0], HSV[1], HSV[2], &XYZ[0], &XYZ[1], &XYZ[2]);
+	// ColorConverter::HSV2LAB(HSV[0], HSV[1], HSV[2], &LAB[0], &LAB[1], &LAB[2]);
+	// ColorConverter::HSV2CMYK(HSV[0], HSV[1], HSV[2], &CMYK[0], &CMYK[1], &CMYK[2], &CMYK[3]);
 }
 
 void Color::SetYIQ(int yluma, int inphase, int quadrature) {
@@ -67,6 +85,12 @@ void Color::SetYIQ(int yluma, int inphase, int quadrature) {
 	YIQ[0] = yluma;
 	YIQ[1] = inphase;
 	YIQ[2] = quadrature;
+	// ColorConverter::YIQ2RGB(YIQ[0], YIQ[1], YIQ[2], &RGB[0], &RGB[1], &RGB[2]);
+	// ColorConverter::YIQ2HSL(YIQ[0], YIQ[1], YIQ[2], &HSL[0], &HSL[1], &HSL[2]);
+	// ColorConverter::YIQ2HSV(YIQ[0], YIQ[1], YIQ[2], &HSV[0], &HSV[1], &HSV[2]);
+	// ColorConverter::YIQ2XYZ(YIQ[0], YIQ[1], YIQ[2], &XYZ[0], &XYZ[1], &XYZ[2]);
+	// ColorConverter::YIQ2LAB(YIQ[0], YIQ[1], YIQ[2], &LAB[0], &LAB[1], &LAB[2]);
+	// ColorConverter::YIQ2CMYK(YIQ[0], YIQ[1], YIQ[2], &CMYK[0], &CMYK[1], &CMYK[2], &CMYK[3]);
 }
 
 void Color::SetXYZ(int xresponse, int yluminance, int zblue) {
@@ -74,6 +98,12 @@ void Color::SetXYZ(int xresponse, int yluminance, int zblue) {
 	XYZ[0] = xresponse;
 	XYZ[1] = yluminance;
 	XYZ[2] = zblue;
+	// ColorConverter::XYZ2RGB(XYZ[0], XYZ[1], XYZ[2], &RGB[0], &RGB[1], &RGB[2]);
+	// ColorConverter::XYZ2HSL(XYZ[0], XYZ[1], XYZ[2], &HSL[0], &HSL[1], &HSL[2]);
+	// ColorConverter::XYZ2HSV(XYZ[0], XYZ[1], XYZ[2], &HSV[0], &HSV[1], &HSV[2]);
+	// ColorConverter::XYZ2YIQ(XYZ[0], XYZ[1], XYZ[2], &YIQ[0], &YIQ[1], &YIQ[2]);
+	// ColorConverter::XYZ2LAB(XYZ[0], XYZ[1], XYZ[2], &LAB[0], &LAB[1], &LAB[2]);
+	// ColorConverter::XYZ2CMYK(XYZ[0], XYZ[1], XYZ[2], &CMYK[0], &CMYK[1], &CMYK[2], &CMYK[3]);
 }
 
 void Color::SetLAB(int luminosity, int apoint, int bpoint) {
@@ -81,6 +111,12 @@ void Color::SetLAB(int luminosity, int apoint, int bpoint) {
 	LAB[0] = luminosity;
 	LAB[1] = apoint;
 	LAB[2] = bpoint;
+	// ColorConverter::LAB2RGB(LAB[0], LAB[1], LAB[2], &RGB[0], &RGB[1], &RGB[2]);
+	// ColorConverter::LAB2HSL(LAB[0], LAB[1], LAB[2], &HSL[0], &HSL[1], &HSL[2]);
+	// ColorConverter::LAB2HSV(LAB[0], LAB[1], LAB[2], &HSV[0], &HSV[1], &HSV[2]);
+	// ColorConverter::LAB2YIQ(LAB[0], LAB[1], LAB[2], &YIQ[0], &YIQ[1], &YIQ[2]);
+	// ColorConverter::LAB2XYZ(LAB[0], LAB[1], LAB[2], &XYZ[0], &XYZ[1], &XYZ[2]);
+	// ColorConverter::LAB2CMYK(LAB[0], LAB[1], LAB[2], &CMYK[0], &CMYK[1], &CMYK[2], &CMYK[3]);
 }
 
 void Color::SetCMYK(int cyan, int magenta, int yellow, int black) {
@@ -89,6 +125,12 @@ void Color::SetCMYK(int cyan, int magenta, int yellow, int black) {
 	CMYK[1] = magenta;
 	CMYK[2] = yellow;
 	CMYK[3] = black;
+	// ColorConverter::CMYK2RGB(CMYK[0], CMYK[1], CMYK[2], CMYK[3], &RGB[0], &RGB[1], &RGB[2]);
+	// ColorConverter::CMYK2HSL(CMYK[0], CMYK[1], CMYK[2], CMYK[3], &HSL[0], &HSL[1], &HSL[2]);
+	// ColorConverter::CMYK2HSV(CMYK[0], CMYK[1], CMYK[2], CMYK[3], &HSV[0], &HSV[1], &HSV[2]);
+	// ColorConverter::CMYK2YIQ(CMYK[0], CMYK[1], CMYK[2], CMYK[3], &YIQ[0], &YIQ[1], &YIQ[2]);
+	// ColorConverter::CMYK2XYZ(CMYK[0], CMYK[1], CMYK[2], CMYK[3], &XYZ[0], &XYZ[1], &XYZ[2]);
+	// ColorConverter::CMYK2LAB(CMYK[0], CMYK[1], CMYK[2], CMYK[3], &LAB[0], &LAB[1], &LAB[2]);
 }
 
 int* Color::AsRGB() {
