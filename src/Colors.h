@@ -57,8 +57,8 @@ namespace ColorConverter {
 	double LAB_compare_RGB(wxColor color1, wxColor color2);
 
 	// Base converters
-	void RGB2HSL(double red, double green, double blue, double *hue, double *saturation, double *luminosity); // XXX Convert to int (0-255)
-	void HSL2RGB(double hue, double saturation, double luminosity, double *red, double *green, double *blue); // XXX Convert to int (0-255)
+	void RGB2HSL(int red, int green, int blue, int *hue, int *saturation, int *luminosity);
+	void HSL2RGB(int hue, int saturation, int luminosity, int *red, int *green, int *blue);
 	void RGB2HSV(double red, double green, double blue, double *hue, double *saturation, double *velocity); // XXX Convert to int (0-255)
 	void HSV2RGB(double hue, double saturation, double velocity, double *red, double *green, double *blue); // XXX Convert to int (0-255)
 	void RGB2CMYK(double red, double green, double blue, double *cyan, double *magenta, double *yellow, double *black); // XXX Convert to int (0-255)
