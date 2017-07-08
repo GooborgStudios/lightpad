@@ -28,6 +28,7 @@
 #include "TimelinePanel.h"
 #include "PropertiesPanel.h"
 #include "Launchpad.h"
+#include "SplashScreen.h"
 
 #define wxUSE_ON_FATAL_EXCEPTION 1
 #define PADDING 0
@@ -183,7 +184,7 @@ void MainFrame::OnExit(wxCommandEvent &event) {
 void MainFrame::ShowSplash() {
 	wxBitmap splash_image(getResourcePath("splash.png"), wxBITMAP_TYPE_PNG);
 	splash_image.UseAlpha();
-	wxSplashScreen *splash = new wxSplashScreen(splash_image, wxSPLASH_CENTRE_ON_SCREEN|wxSPLASH_NO_TIMEOUT, 1, NULL, -1, wxDefaultPosition, wxDefaultSize, wxBORDER_SIMPLE|wxSTAY_ON_TOP);
+	SplashScreen *splash = new SplashScreen(splash_image, SPLASH_CENTRE_ON_SCREEN, NULL, -1, wxDefaultPosition, wxDefaultSize, wxBORDER_SIMPLE|wxSTAY_ON_TOP);
 	wxYield();
 }
 
