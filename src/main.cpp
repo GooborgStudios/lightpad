@@ -96,7 +96,6 @@ bool MainApp::OnInit() {
 	SetVendorDisplayName("Nightwave Studios");
 
 	frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(1280, 720));
-	frame->ShowSplash();
 	frame->SetMinSize(wxSize(800, 600));
 	frame->Show(true);
 	return true;
@@ -115,8 +114,8 @@ void MainApp::OnFatalException() {
 	if (preview.Show(report)) report.Process();
 }
 
-MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size)
-	: wxFrame(NULL, ID_Frame_Main, title, pos, size) {
+MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size): wxFrame(NULL, ID_Frame_Main, title, pos, size) {
+	ShowSplash();
 
 	wxBitmap lightpad_icon(getResourcePath("icons/icon_24.png"), wxBITMAP_TYPE_PNG);
 	SetIcon(wxIcon(getResourcePath(APP_ICON)));
