@@ -95,7 +95,7 @@ bool MainApp::OnInit() {
 	SetVendorName("Nightwave Studios");
 	SetVendorDisplayName("Nightwave Studios");
 
-	frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800, 600));
+	frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(1280, 720));
 	frame->ShowSplash();
 	frame->SetMinSize(wxSize(800, 600));
 	frame->Show(true);
