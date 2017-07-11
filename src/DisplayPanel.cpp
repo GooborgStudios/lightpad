@@ -36,8 +36,7 @@ const float button_pos[10] = {0.113525390625, 0.199462890625, 0.277587890625, 0.
 const float button_size = 0.06982421875;
 
 // Initialize the file panel and it's elements
-DisplayPanel::DisplayPanel(wxPanel *parent)
-	: wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+DisplayPanel::DisplayPanel(wxPanel *parent): wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 	m_timer = new wxTimer(this, ID_DisplayPanel_Timer);
 
@@ -55,9 +54,21 @@ DisplayPanel::DisplayPanel(wxPanel *parent)
 	scaled_base_image = NULL;
 	lp_img = NULL;
 	
-	for (int i = 0; i < 6; i++) {
-		fullres_button_images[i] = new Magick::Image(button_image);
-		fullres_button_images[i]->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * i, 0));
+	for (int j = 0; j < 6; j++) {
+		Magick::Image *fullres_button_image = new Magick::Image(button_image);
+		fullres_button_image->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * j, 0));
+		
+		for (int i = 0; i < 128; i++) {
+			wxColor bcolor = velocitycolors[i];
+			int arraypos = i + (128 * j);
+			
+			fullres_button_images[arraypos] = new Magick::Image(*fullres_button_image);
+			fullres_button_images[arraypos]->modulate(180.0, 0.0, 100.0);
+			fullres_button_images[arraypos]->colorize(50, 50, 50, Magick::ColorRGB(bcolor.Red() / 255.0,
+														bcolor.Green() / 255.0, bcolor.Blue() / 255.0));
+		}
+		
+		delete fullres_button_image;
 	}
 		
 	for (int i = 0; i < 6; i++) {
@@ -187,26 +198,16 @@ void DisplayPanel::resize_images(int new_size) {
 		image_size = new_size;
 		Magick::Geometry size(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * ratio, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * ratio);
 
-		for (int j = 0; j < 6; j++) {
-			Magick::Image *scaled_button_image = new Magick::Image(*fullres_button_images[j]);
-			scaled_button_image->scale(size);
-			
-			delete scaled_button_halo_images[j];
-			scaled_button_halo_images[j] = new Magick::Image(*fullres_button_halo_images[j]);
-			scaled_button_halo_images[j]->scale(size);
-			
-			for (int i = 0; i < 128; i++) {
-				wxColor bcolor = velocitycolors[i];
-				int arraypos = i + (128 * j);
-				
-				delete scaled_button_images[arraypos];
-				scaled_button_images[arraypos] = new Magick::Image(*scaled_button_image);
-				scaled_button_images[arraypos]->modulate(180.0, 0.0, 100.0);
-				scaled_button_images[arraypos]->colorize(50, 50, 50, Magick::ColorRGB(bcolor.Red() / 255.0,
-														bcolor.Green() / 255.0, bcolor.Blue() / 255.0));
-			}
-			
-			delete scaled_button_image;
+		for (int i = 0; i < 768; i++) {
+			delete scaled_button_images[i];
+			scaled_button_images[i] = new Magick::Image(*fullres_button_images[i]);
+			scaled_button_images[i]->scale(size);
+		}
+		
+		for (int i = 0; i < 6; i++) {
+			delete scaled_button_halo_images[i];
+			scaled_button_halo_images[i] = new Magick::Image(*fullres_button_halo_images[i]);
+			scaled_button_halo_images[i]->scale(size);
 		}
 		
 		delete scaled_base_image;

@@ -63,10 +63,10 @@ class DisplayPanel: public wxPanel {
 		wxPanel *m_parent;
 		wxTimer *m_timer;
 		Magick::Image *fullres_base_image;
-		Magick::Image *fullres_button_images[6];
+		Magick::Image *fullres_button_images[768];
 		Magick::Image *fullres_button_halo_images[6];
 		Magick::Image *scaled_base_image;
-		Magick::Image *scaled_button_images[6*128];
+		Magick::Image *scaled_button_images[768];
 		Magick::Image *scaled_button_halo_images[6];
 		Magick::Image *lp_img;
 		std::string base_image_path;
