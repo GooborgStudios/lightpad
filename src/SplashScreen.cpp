@@ -65,11 +65,13 @@ void SplashScreen::Init() {
 
 SplashScreen::SplashScreen(const wxBitmap& bitmap, long splashStyle,
                                wxWindow* parent, wxWindowID id, const wxPoint& pos,
-                               const wxSize& size, long style)
-    : wxFrame() {
-    //SetBackgroundStyle(wxBG_STYLE_TRANSPARENT);
+                               const wxSize& size, long style) : wxFrame() {
     Create(parent, id, wxEmptyString, wxPoint(0,0), wxSize(100, 100),
-            style | wxFRAME_TOOL_WINDOW | wxFRAME_NO_TASKBAR);
+            style | wxFRAME_TOOL_WINDOW | wxFRAME_NO_TASKBAR | wxTRANSPARENT_WINDOW);
+    
+    SetBackgroundColour(wxTransparentColor);
+    Refresh();
+    
     Init();
 
     // splash screen must not be used as parent by the other windows because it
