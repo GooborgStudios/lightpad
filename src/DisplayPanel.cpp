@@ -187,14 +187,26 @@ void DisplayPanel::resize_images(int new_size) {
 		image_size = new_size;
 		Magick::Geometry size(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * ratio, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * ratio);
 
-		for (int i = 0; i < 6; i++) {
-			delete scaled_button_images[i];
-			scaled_button_images[i] = new Magick::Image(*fullres_button_images[i]);
-			scaled_button_images[i]->scale(size);
+		for (int j = 0; j < 6; j++) {
+			Magick::Image *scaled_button_image = new Magick::Image(*fullres_button_images[j]);
+			scaled_button_image->scale(size);
 			
-			delete scaled_button_halo_images[i];
-			scaled_button_halo_images[i] = new Magick::Image(*fullres_button_halo_images[i]);
-			scaled_button_halo_images[i]->scale(size);
+			delete scaled_button_halo_images[j];
+			scaled_button_halo_images[j] = new Magick::Image(*fullres_button_halo_images[j]);
+			scaled_button_halo_images[j]->scale(size);
+			
+			for (int i = 0; i < 128; i++) {
+				wxColor bcolor = velocitycolors[i];
+				int arraypos = i + (128 * j);
+				
+				delete scaled_button_images[arraypos];
+				scaled_button_images[arraypos] = new Magick::Image(*scaled_button_image);
+				scaled_button_images[arraypos]->modulate(180.0, 0.0, 100.0);
+				scaled_button_images[arraypos]->colorize(50, 50, 50, Magick::ColorRGB(bcolor.Red() / 255.0,
+														bcolor.Green() / 255.0, bcolor.Blue() / 255.0));
+			}
+			
+			delete scaled_button_image;
 		}
 		
 		delete scaled_base_image;
@@ -225,10 +237,7 @@ void DisplayPanel::render_buttons() {
 			lp_img->composite(*scaled_button_halo_images[button_style], buttonIndexToPos(btn_x),
 							  buttonIndexToPos(btn_y),  Magick::OverCompositeOp);
 
-		Magick::Image current_button(*scaled_button_images[button_style]);
-		current_button.modulate(180.0, 0.0, 100.0);
-		current_button.colorize(50, 50, 50, Magick::ColorRGB(bcolor.Red() / 255.0,
-		                        bcolor.Green() / 255.0, bcolor.Blue() / 255.0));
+		Magick::Image current_button(*scaled_button_images[button_colors[i] + (128 * button_style)]);
 		lp_img->composite(current_button, buttonIndexToPos(btn_x),
 		                  buttonIndexToPos(btn_y),  Magick::OverCompositeOp);
 
