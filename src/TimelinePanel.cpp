@@ -82,15 +82,37 @@ void TimelinePanel::render(wxDC &canvas) {
 
 void TimelinePanel::render_row(wxDC &canvas, std::string rowname, KeyframeSet *keyframes, wxRect bounding_box) {
 	canvas.SetPen(*wxTRANSPARENT_PEN);
+	int colsPerBeat = 4;
+	int ticksPerCol = activeProject->ticksPerBeat / colsPerBeat;
+	int col1time = GetVisibleBegin().GetCol() * ticksPerCol;
+	int colNtime = GetVisibleEnd().GetCol() * ticksPerCol;
+	int lastCol = 0;
 	
-	int colcount = 0;
-	for (auto iter : keyframes->keyframes) {
+	for (auto iter: keyframes->keyframes) {
+		auto time = iter->time;
+		if (time < (col1time - activeProject->ticksPerBeat)) continue;
+		//if (time > colNtime ) return;
+		int col = (time - col1time) / ticksPerCol;
+		if (col < 0) col = 0;
+		if (col > lastCol) lastCol = col;
 		canvas.SetBrush(wxBrush(velocitycolors[((NoteKeyframe *)(iter))->velocity]));
-		canvas.DrawRectangle(bounding_box.GetLeft()+labelsize+(colsize*(iter->time)/activeProject->ticksPerBeat * 4), bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
-		colcount++;
+		canvas.DrawRectangle(bounding_box.GetLeft()+labelsize+(col*colsize), bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
 	}
 	
-	if (colcount > GetColumnCount()) SetColumnCount(colcount);
+	if (lastCol > GetColumnCount()) SetColumnCount(lastCol);
+	
+	/*int colcount = 0;
+	int xpos = GetVisibleBegin().GetCol() * colsize;
+	int colsPerBeat = 4;
+	for (auto iter : keyframes->keyframes) {
+		int left = (colsize*(iter->time)/activeProject->ticksPerBeat * colsPerBeat);
+		if (left < xpos) continue;
+		canvas.SetBrush(wxBrush(velocitycolors[((NoteKeyframe *)(iter))->velocity]));
+		canvas.DrawRectangle(bounding_box.GetLeft()+labelsize+left, bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
+		colcount++;
+	}*/
+	
+	//if (colcount > GetColumnCount()) SetColumnCount(colcount);
 	
 	canvas.SetPen(*wxBLACK_PEN);
 	canvas.SetBrush(*wxTRANSPARENT_BRUSH);
