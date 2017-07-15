@@ -183,7 +183,7 @@ void MainFrame::OnExit(wxCommandEvent &event) {
 void MainFrame::ShowSplash() {
 	wxBitmap splash_image(getResourcePath("splash.png"), wxBITMAP_TYPE_PNG);
 	splash_image.UseAlpha();
-	SplashScreen *splash = new SplashScreen(splash_image, SPLASH_CENTRE_ON_SCREEN, NULL, -1, wxDefaultPosition, wxDefaultSize, wxBORDER_SIMPLE|wxSTAY_ON_TOP);
+	SplashScreen *splash = new SplashScreen(splash_image, this, ID_Frame_Splash);
 	wxYield();
 }
 

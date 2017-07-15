@@ -9,6 +9,7 @@
 
 enum {
 	ID_Frame_Main,
+    ID_Frame_Splash,
 	ID_Panel_Main,
 	ID_Panel_Properties,
 	ID_Panel_Timeline,

@@ -52,27 +52,12 @@ static void DrawSplashBitmap(wxDC& dc, const wxBitmap& bitmap, int WXUNUSED(x), 
 	if (bitmap.GetPalette() && !hiColour) dcMem.SetPalette(wxNullPalette);
 }
 
-void SplashScreen::Init() {
-    //m_window = NULL;
-
-    wxEvtHandler::AddFilter(this);
-}
-
-/* Note that unless we pass a non-default size to the frame, SetClientSize
- * won't work properly under Windows, and the splash screen frame is sized
- * slightly too small.
- */
-
-SplashScreen::SplashScreen(const wxBitmap& bitmap, long splashStyle,
-                               wxWindow* parent, wxWindowID id, const wxPoint& pos,
-                               const wxSize& size, long style) : wxFrame() {
-    Create(parent, id, wxEmptyString, wxPoint(0,0), wxSize(100, 100),
-            style | wxFRAME_TOOL_WINDOW | wxFRAME_NO_TASKBAR | wxTRANSPARENT_WINDOW);
+SplashScreen::SplashScreen(const wxBitmap& bitmap, wxWindow* parent, wxWindowID id) : wxFrame() {
+    Create(parent, id, wxEmptyString, wxPoint(0,0), wxSize(100, 100), wxSIMPLE_BORDER | wxSTAY_ON_TOP | wxFRAME_TOOL_WINDOW | wxFRAME_NO_TASKBAR | wxTRANSPARENT_WINDOW);
     
     SetBackgroundColour(wxTransparentColor);
     Refresh();
-    
-    Init();
+    wxEvtHandler::AddFilter(this);
 
     // splash screen must not be used as parent by the other windows because it
     // is going to disappear soon, indicate it by giving it this special style
@@ -82,10 +67,7 @@ SplashScreen::SplashScreen(const wxBitmap& bitmap, long splashStyle,
 		gtk_window_set_type_hint(GTK_WINDOW(m_widget), GDK_WINDOW_TYPE_HINT_SPLASHSCREEN);
 	#endif
 
-    m_splashStyle = splashStyle;
 	m_bitmap = bitmap;
-
-    //m_window = new SplashScreenWindow(bitmap, this, wxID_ANY, pos, size, wxNO_BORDER);
 	
 	#if !defined(__WXGTK__) && wxUSE_PALETTE
 		bool hiColour = (wxDisplayDepth() >= 16);
@@ -94,12 +76,8 @@ SplashScreen::SplashScreen(const wxBitmap& bitmap, long splashStyle,
 	#endif
 
     SetClientSize(bitmap.GetWidth(), bitmap.GetHeight());
-
-    if (m_splashStyle & SPLASH_CENTRE_ON_PARENT) CentreOnParent();
-    else if (m_splashStyle & SPLASH_CENTRE_ON_SCREEN) CentreOnScreen();
-
+    CentreOnScreen();
     Show(true);
-    //m_window->SetFocus();
 	Update(); // Without this, you see a blank screen for an instant
 }
 
@@ -122,13 +100,6 @@ void SplashScreen::OnNotify(wxTimerEvent& WXUNUSED(event)) {
 void SplashScreen::OnCloseWindow(wxCloseEvent& WXUNUSED(event)) {
     this->Destroy();
 }
-
-/*SplashScreenWindow::SplashScreenWindow(const wxBitmap& bitmap, wxWindow* parent,
-                                           wxWindowID id, const wxPoint& pos,
-                                           const wxSize& size, long style)
-    : wxWindow() {
-    Create(parent, id, pos, size, style);
-}*/
 
 void SplashScreen::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     wxPaintDC dc(this);
