@@ -80,18 +80,20 @@ static void DrawSplashBitmap(wxDC& dc, const wxBitmap& bitmap, const wxString te
 	dc.Blit(0, 0, bitmap.GetWidth(), bitmap.GetHeight(), &dcMem, 0, 0, wxCOPY, true);
 	dcMem.SelectObject(wxNullBitmap);
 	
-	dc.SetTextForeground(textcolor);
-	dc.SetFont(textfont);
-	
-	std::vector<std::string> *lines = wrap(std::string(text.c_str()), dc, textbox.GetWidth());
-	
-	wxRect box(textbox);
-	for (std::string line : *lines) {
-		dc.DrawLabel(line, box, wxALIGN_CENTER|wxALIGN_TOP);
-		box.SetTop(box.GetTop() + dc.GetTextExtent(line).GetHeight() + 4);
+	if (text.size() > 0) {
+		dc.SetTextForeground(textcolor);
+		dc.SetFont(textfont);
+		
+		std::vector<std::string> *lines = wrap(std::string(text.c_str()), dc, textbox.GetWidth());
+		
+		wxRect box(textbox);
+		for (std::string line : *lines) {
+			dc.DrawLabel(line, box, wxALIGN_CENTER|wxALIGN_TOP);
+			box.SetTop(box.GetTop() + dc.GetTextExtent(line).GetHeight() + 4);
+		}
+		
+		delete lines;
 	}
-	
-	delete lines;
 	
 	if (bitmap.GetPalette() && !hiColour) dcMem.SetPalette(wxNullPalette);
 }
