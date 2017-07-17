@@ -21,9 +21,9 @@
 #include "wx/timer.h"
 
 class SplashScreen: public wxFrame, public wxEventFilter {
-        SplashScreen() { Init(); }
 	public:
 		SplashScreen();
+		SplashScreen(wxWindow* parent, wxWindowID id, const wxBitmap& bitmap, wxString text = "", wxRect textbox = wxRect(0, 0, 0, 0), wxColor textcolor = *wxBLACK, wxFont textfont = wxFont());
 		virtual ~SplashScreen();
 
 		void OnCloseWindow(wxCloseEvent& event);

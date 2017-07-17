@@ -96,8 +96,11 @@ static void DrawSplashBitmap(wxDC& dc, const wxBitmap& bitmap, const wxString te
 	if (bitmap.GetPalette() && !hiColour) dcMem.SetPalette(wxNullPalette);
 }
 
-SplashScreen::SplashScreen(wxWindow* parent, wxWindowID id, const wxBitmap& bitmap, std::string text, wxRect textbox, wxFont textfont, wxColor textcolor) : wxFrame() {
+SplashScreen::SplashScreen() {
+	Init();
+}
 
+SplashScreen::SplashScreen(wxWindow* parent, wxWindowID id, const wxBitmap& bitmap, wxString text, wxRect textbox, wxColor textcolor, wxFont textfont) : wxFrame() {
 	Create(parent, id, wxEmptyString, wxPoint(0,0), wxSize(100, 100), wxSIMPLE_BORDER | wxSTAY_ON_TOP | wxFRAME_TOOL_WINDOW | wxFRAME_NO_TASKBAR | wxTRANSPARENT_WINDOW);
 	
 	SetBackgroundColour(wxTransparentColor);
