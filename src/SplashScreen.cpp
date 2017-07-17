@@ -26,6 +26,10 @@
 #include "wx/dcmemory.h"
 #include "wx/dcclient.h"
 
+#include <sstream>
+#include <queue>
+#include <vector>
+
 // ----------------------------------------------------------------------------
 // SplashScreen
 // ----------------------------------------------------------------------------
@@ -39,7 +43,39 @@ BEGIN_EVENT_TABLE(SplashScreen, wxFrame)
 	EVT_ERASE_BACKGROUND(SplashScreen::OnEraseBackground)
 END_EVENT_TABLE()
 
-static void DrawSplashBitmap(wxDC& dc, const wxBitmap& bitmap, int WXUNUSED(x), int WXUNUSED(y)) {
+
+std::vector<std::string> *wrap(std::string text, wxDC &dc, const int width) {
+	std::queue<std::string> words;
+	std::vector<std::string> *lines = new std::vector<std::string>();
+	
+	std::stringstream ssin(text);
+	std::string word;
+	while (ssin.good()) {
+		ssin >> word;
+		words.push(word);
+	}
+	
+	std::string currentLine = words.front();
+	words.pop();
+	while (!words.empty()) {
+		std::string c = currentLine + " " + words.front();
+		wxSize size = dc.GetTextExtent(c);
+		if (size.GetWidth() > width) {
+			lines->push_back(currentLine);
+			currentLine = words.front();
+		} else {
+			currentLine = c;
+		}
+		
+		words.pop();
+	}
+	
+	lines->push_back(currentLine);
+	
+	return lines;
+}
+
+static void DrawSplashBitmap(wxDC& dc, const wxBitmap& bitmap, const wxString text, const wxRect textbox, const wxFont textfont, const wxColor textcolor) {
 	wxMemoryDC dcMem;
 	
 	bool hiColour = (wxDisplayDepth() >= 16);
@@ -49,10 +85,23 @@ static void DrawSplashBitmap(wxDC& dc, const wxBitmap& bitmap, int WXUNUSED(x), 
 	dc.Blit(0, 0, bitmap.GetWidth(), bitmap.GetHeight(), &dcMem, 0, 0, wxCOPY, true);
 	dcMem.SelectObject(wxNullBitmap);
 	
+	dc.SetTextForeground(textcolor);
+	dc.SetFont(textfont);
+	
+	std::vector<std::string> *lines = wrap(std::string(text.c_str()), dc, textbox.GetWidth());
+	
+	wxRect box(textbox);
+	for (std::string line : *lines) {
+		dc.DrawLabel(line, box, wxALIGN_CENTER|wxALIGN_TOP);
+		box.SetTop(box.GetTop() + dc.GetTextExtent(line).GetHeight() + 4);
+	}
+	
+	delete lines;
+	
 	if (bitmap.GetPalette() && !hiColour) dcMem.SetPalette(wxNullPalette);
 }
 
-SplashScreen::SplashScreen(const wxBitmap& bitmap, wxWindow* parent, wxWindowID id) : wxFrame() {
+SplashScreen::SplashScreen(wxWindow* parent, wxWindowID id, const wxBitmap& bitmap, std::string text, wxRect textbox, wxFont textfont, wxColor textcolor) : wxFrame() {
     Create(parent, id, wxEmptyString, wxPoint(0,0), wxSize(100, 100), wxSIMPLE_BORDER | wxSTAY_ON_TOP | wxFRAME_TOOL_WINDOW | wxFRAME_NO_TASKBAR | wxTRANSPARENT_WINDOW);
     
     SetBackgroundColour(wxTransparentColor);
@@ -68,10 +117,13 @@ SplashScreen::SplashScreen(const wxBitmap& bitmap, wxWindow* parent, wxWindowID 
 	#endif
 
 	m_bitmap = bitmap;
+	m_text = text;
+	m_textbox = textbox;
+	m_textfont = textfont;
+	m_textcolor = textcolor;
 	
 	#if !defined(__WXGTK__) && wxUSE_PALETTE
 		bool hiColour = (wxDisplayDepth() >= 16);
-		
 		if (bitmap.GetPalette() && !hiColour) SetPalette(* bitmap.GetPalette());
 	#endif
 
@@ -105,7 +157,7 @@ void SplashScreen::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     wxPaintDC dc(this);
 	dc.SetBackgroundMode(wxTRANSPARENT);
 	dc.SetBackground(*wxTRANSPARENT_BRUSH);
-    if (m_bitmap.IsOk()) DrawSplashBitmap(dc, m_bitmap, 0, 0);
+    if (m_bitmap.IsOk()) DrawSplashBitmap(dc, m_bitmap, m_text, m_textbox, m_textfont, m_textcolor);
 }
 
 void SplashScreen::OnEraseBackground(wxEraseEvent& event) {
@@ -113,11 +165,11 @@ void SplashScreen::OnEraseBackground(wxEraseEvent& event) {
 		wxDC *dc = event.GetDC();
 		dc->SetBackgroundMode(wxTRANSPARENT);
 		dc->SetBackground(*wxTRANSPARENT_BRUSH);
-        DrawSplashBitmap(*dc, m_bitmap, 0, 0);
+        DrawSplashBitmap(*dc, m_bitmap, m_text, m_textbox, m_textfont, m_textcolor);
     } else {
         wxClientDC dc(this);
 		dc.SetBackgroundMode(wxTRANSPARENT);
 		dc.SetBackground(*wxTRANSPARENT_BRUSH);
-        if (m_bitmap.IsOk()) DrawSplashBitmap(dc, m_bitmap, 0, 0);
+        if (m_bitmap.IsOk()) DrawSplashBitmap(dc, m_bitmap, m_text, m_textbox, m_textfont, m_textcolor);
     }
 }

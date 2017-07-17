@@ -20,21 +20,14 @@
 #include "wx/frame.h"
 #include "wx/timer.h"
 
-
-/*
- * A window for displaying a splash screen
- */
-
-class WXDLLIMPEXP_FWD_ADV SplashScreenWindow;
-
 /*
  * SplashScreen
  */
 
-class WXDLLIMPEXP_ADV SplashScreen: public wxFrame, public wxEventFilter {
+class SplashScreen: public wxFrame, public wxEventFilter {
     public:
         SplashScreen() { Init(); }
-        SplashScreen(const wxBitmap& bitmap, wxWindow* parent, wxWindowID id);
+        SplashScreen(wxWindow* parent, wxWindowID id, const wxBitmap& bitmap, std::string text, wxRect textbox, wxFont textfont, wxColor textcolor);
         virtual ~SplashScreen();
 
         void OnCloseWindow(wxCloseEvent& event);
@@ -51,23 +44,12 @@ class WXDLLIMPEXP_ADV SplashScreen: public wxFrame, public wxEventFilter {
 
     protected:
         wxBitmap m_bitmap;
+		wxString m_text;
+		wxRect m_textbox;
+		wxFont m_textfont;
+		wxColor m_textcolor;
 
         DECLARE_DYNAMIC_CLASS(SplashScreen)
         DECLARE_EVENT_TABLE()
         wxDECLARE_NO_COPY_CLASS(SplashScreen);
 };
-
-/*
- * SplashScreenWindow
- */
-
-/*class WXDLLIMPEXP_ADV SplashScreenWindow: public wxWindow
-{
-public:
-    SplashScreenWindow(const wxBitmap& bitmap, wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxNO_BORDER);
-
-protected:
-
-    DECLARE_EVENT_TABLE()
-    wxDECLARE_NO_COPY_CLASS(SplashScreenWindow);
-};*/
