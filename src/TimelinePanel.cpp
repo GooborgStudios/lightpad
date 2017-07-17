@@ -123,7 +123,7 @@ void TimelinePanel::render_row(wxDC &canvas, std::string rowname, KeyframeSet *k
 
 void TimelinePanel::render_header(wxDC &canvas) {
 	int width = canvas.GetSize().GetX();
-	int col = 0;
+	int col = GetVisibleBegin().GetCol();
 	char buf[16];
 	
 	canvas.SetPen(*wxTRANSPARENT_PEN);
@@ -147,13 +147,15 @@ void TimelinePanel::render_header(wxDC &canvas) {
 }
 
 void TimelinePanel::render_playhead(wxDC &canvas) {
-	int x = colsize*activeProject->currentTime/activeProject->ticksPerBeat * 4 + labelsize;
+	int x = (colsize * activeProject->currentTime / activeProject->ticksPerBeat * 4) - (colsize * GetVisibleBegin().GetCol()) + labelsize;
 	
-	canvas.SetPen(wxPen(*wxBLACK, 6));
-	canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
-	canvas.SetPen(wxPen(*wxWHITE, 3));
-	canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
-	canvas.DrawCircle(x, headersize, 5.0);
+	if (x >= labelsize) {
+		canvas.SetPen(wxPen(*wxBLACK, 6));
+		canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
+		canvas.SetPen(wxPen(*wxWHITE, 3));
+		canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
+		canvas.DrawCircle(x, headersize, 5.0);
+	}
 }
 
 void TimelinePanel::nextBeat() {
@@ -172,6 +174,11 @@ void TimelinePanel::movePlayhead(int pos) {
 	fin_evt.SetEventObject(this);
 	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), fin_evt);
 	playhead = pos;
+	
+	if (playhead >= GetVisibleEnd().GetCol() * colsize || playhead < GetVisibleBegin().GetCol() * colsize) {
+		ScrollToColumn((playhead / colsize) - 1);
+	}
+
 	
 	Refresh();
 }
