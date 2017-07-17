@@ -34,8 +34,9 @@ class TimelinePanel: public wxHVScrolledWindow {
 		void render_row(wxDC &canvas, std::string rowname, KeyframeSet *keyframes, wxRect bounding_box);
 		void render_header(wxDC &canvas);
 		void render_playhead(wxDC &canvas);
-		void movePlayhead(int pos);
 		void nextBeat();
+		void nextQuarterBeat();
+		void movePlayhead(int time);
 //		void RefreshDisplay();
 //		void ChangeNoteColor(wxCommandEvent &event);
 	private:

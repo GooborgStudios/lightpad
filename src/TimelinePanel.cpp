@@ -39,7 +39,7 @@ TimelinePanel::TimelinePanel(wxPanel *parent): wxHVScrolledWindow(parent, ID_Pan
 	
 	Update();
 	
-	movePlayhead(labelsize);
+	movePlayhead(0);
 }
 
 TimelinePanel::~TimelinePanel() {
@@ -159,11 +159,16 @@ void TimelinePanel::render_playhead(wxDC &canvas) {
 }
 
 void TimelinePanel::nextBeat() {
-	movePlayhead(playhead+colsize);
+	movePlayhead(playhead+activeProject->ticksPerBeat);
 }
 
-void TimelinePanel::movePlayhead(int pos) {
-	activeProject->seek((pos - labelsize) / colsize * activeProject->ticksPerBeat / 4);
+void TimelinePanel::nextQuarterBeat() {
+	movePlayhead(playhead+(activeProject->ticksPerBeat / 4));
+}
+
+void TimelinePanel::movePlayhead(int time) {
+	int phCol = time / activeProject->ticksPerBeat * 4;
+	activeProject->seek(time);
 	for (auto iter : activeProject->layer->keyframes) {
 		wxColourPickerEvent evt(this, ID_Panel_Timeline, velocitycolors[activeProject->layer->getVelocity(iter.first)]);
 		evt.SetInt(std::stoi(iter.first));
@@ -173,10 +178,10 @@ void TimelinePanel::movePlayhead(int pos) {
 	wxCommandEvent fin_evt(DISPLAY_REFRESH, ID_Panel_Display);
 	fin_evt.SetEventObject(this);
 	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), fin_evt);
-	playhead = pos;
+	playhead = time;
 	
-	if (playhead >= GetVisibleEnd().GetCol() * colsize || playhead < GetVisibleBegin().GetCol() * colsize) {
-		ScrollToColumn((playhead / colsize) - 1);
+	if (phCol >= GetVisibleEnd().GetCol() || phCol < GetVisibleBegin().GetCol()) {
+		ScrollToColumn(phCol == 0 ? 0 : phCol - 1);
 	}
 
 	
