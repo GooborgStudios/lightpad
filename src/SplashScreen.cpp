@@ -167,11 +167,43 @@ void SplashScreen::SetBitmap(wxBitmap &bitmap) {
 	m_bitmap = bitmap;
 }
 
-wxBitmap& SplashScreen::GetBitmap() {
+wxBitmap &SplashScreen::GetBitmap() {
 	return m_bitmap;
 }
 
-int SplashScreen::FilterEvent(wxEvent& event) {
+void SplashScreen::SetCopyright(wxString copyright) {
+	m_copyright = copyright;
+}
+
+wxString SplashScreen::GetCopyright() {
+	return m_copyright;
+}
+
+void SplashScreen::SetCopyrightBox(wxRect copyrightbox) {
+	m_copyrightbox = copyrightbox;
+}
+
+wxRect SplashScreen::GetCopyrightBox() {
+	return m_copyrightbox;
+}
+
+void SplashScreen::SetCopyrightColor(wxColor copyrightcolor) {
+	m_copyrightcolor = copyrightcolor;
+}
+
+wxColor SplashScreen::GetCopyrightColor() {
+	return m_copyrightcolor;
+}
+
+void SplashScreen::SetCopyrightFont(wxFont copyrightfont) {
+	m_copyrightfont = copyrightfont;
+}
+
+wxFont SplashScreen::GetCopyrightFont() {
+	return m_copyrightfont;
+}
+
+int SplashScreen::FilterEvent(wxEvent &event) {
 	const wxEventType t = event.GetEventType();
 	if (t == wxEVT_KEY_DOWN || t == wxEVT_LEFT_DOWN || t == wxEVT_RIGHT_DOWN || t == wxEVT_MIDDLE_DOWN)
 		Close(true);

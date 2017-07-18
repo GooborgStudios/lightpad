@@ -33,10 +33,22 @@ class SplashScreen: public wxFrame, public wxEventFilter {
 		void OnPaint(wxPaintEvent& event);
 		void OnEraseBackground(wxEraseEvent& event);
 		
-		wxBitmap& GetBitmap();
 		void SetBitmap(wxBitmap &bitmap);
+		wxBitmap &GetBitmap();
 
-		virtual int FilterEvent(wxEvent& event);
+		void SetCopyright(wxString copyright);
+		wxString GetCopyright();
+
+		void SetCopyrightBox(wxRect copyrightbox);
+		wxRect GetCopyrightBox();
+
+		void SetCopyrightColor(wxColor copyrightcolor);
+		wxColor GetCopyrightColor();
+
+		void SetCopyrightFont(wxFont copyrightfont);
+		wxFont GetCopyrightFont();
+
+		virtual int FilterEvent(wxEvent &event);
 
 	protected:
 		wxBitmap m_bitmap;
