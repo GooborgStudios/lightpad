@@ -36,20 +36,20 @@ BEGIN_EVENT_TABLE(SplashScreen, wxFrame)
 	EVT_ERASE_BACKGROUND(SplashScreen::OnEraseBackground)
 END_EVENT_TABLE()
 
-static void DrawSplashBitmap(wxDC &dc, const wxBitmap &bitmap, const wxString copyright, const wxRect copyrightbox, const wxFont copyrightfont, const wxColor copyrightcolor) {
+static void DrawSplashBitmap(wxDC &canvas, const wxBitmap &bitmap, const wxString copyright, const wxRect copyrightbox, const wxFont copyrightfont, const wxColor copyrightcolor) {
 	wxMemoryDC dcMem;
 	
 	bool hiColour = (wxDisplayDepth() >= 16);
 	if (bitmap.GetPalette() && !hiColour) dcMem.SetPalette(* bitmap.GetPalette());
 	
 	dcMem.SelectObjectAsSource(bitmap);
-	dc.Blit(0, 0, bitmap.GetWidth(), bitmap.GetHeight(), &dcMem, 0, 0, wxCOPY, true);
+	canvas.Blit(0, 0, bitmap.GetWidth(), bitmap.GetHeight(), &dcMem, 0, 0, wxCOPY, true);
 	dcMem.SelectObject(wxNullBitmap);
 	
 	if (copyright.size() > 0) {
-		dc.SetTextForeground(copyrightcolor);
-		dc.SetFont(copyrightfont);
-        DrawWrappedText(std::string(copyright.c_str()), dc, copyrightbox);
+		canvas.SetTextForeground(copyrightcolor);
+		canvas.SetFont(copyrightfont);
+        DrawWrappedText(std::string(copyright.c_str()), canvas, copyrightbox);
 	}
 	
 	if (bitmap.GetPalette() && !hiColour) dcMem.SetPalette(wxNullPalette);
@@ -59,8 +59,8 @@ SplashScreen::SplashScreen() {
 	Init();
 }
 
-SplashScreen::SplashScreen(wxWindow *parent, wxWindowID id, wxBitmap &bitmap, wxString copyright, wxRect copyrightbox, wxColor copyrightcolor, wxFont copyrightfont) : wxFrame() {
-	Create(parent, id, wxEmptyString, wxPoint(0,0), wxSize(100, 100), wxSIMPLE_BORDER | wxSTAY_ON_TOP | wxFRAME_TOOL_WINDOW | wxFRAME_NO_TASKBAR | wxTRANSPARENT_WINDOW);
+SplashScreen::SplashScreen(wxWindow *parent, wxWindowID window_id, wxBitmap &bitmap, wxString copyright, wxRect copyrightbox, wxColor copyrightcolor, wxFont copyrightfont) : wxFrame() {
+	Create(parent, window_id, wxEmptyString, wxPoint(0,0), wxSize(100, 100), wxSIMPLE_BORDER | wxSTAY_ON_TOP | wxFRAME_TOOL_WINDOW | wxFRAME_NO_TASKBAR | wxTRANSPARENT_WINDOW);
 	
 	SetBackgroundColour(wxTransparentColor);
 	Refresh();
@@ -104,23 +104,23 @@ void SplashScreen::OnNotify(wxTimerEvent &WXUNUSED(event)) {
 }
 
 void SplashScreen::OnPaint(wxPaintEvent &WXUNUSED(event)) {
-	wxPaintDC dc(this);
-	dc.SetBackgroundMode(wxTRANSPARENT);
-	dc.SetBackground(*wxTRANSPARENT_BRUSH);
-	if (m_bitmap.IsOk()) DrawSplashBitmap(dc, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
+	wxPaintDC canvas(this);
+	canvas.SetBackgroundMode(wxTRANSPARENT);
+	canvas.SetBackground(*wxTRANSPARENT_BRUSH);
+	if (m_bitmap.IsOk()) DrawSplashBitmap(canvas, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
 }
 
 void SplashScreen::OnEraseBackground(wxEraseEvent &event) {
 	if (event.GetDC() && m_bitmap.IsOk()) {
-		wxDC *dc = event.GetDC();
-		dc->SetBackgroundMode(wxTRANSPARENT);
-		dc->SetBackground(*wxTRANSPARENT_BRUSH);
-		DrawSplashBitmap(*dc, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
+		wxDC *canvas = event.GetDC();
+		canvas->SetBackgroundMode(wxTRANSPARENT);
+		canvas->SetBackground(*wxTRANSPARENT_BRUSH);
+		DrawSplashBitmap(*canvas, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
 	} else {
-		wxClientDC dc(this);
-		dc.SetBackgroundMode(wxTRANSPARENT);
-		dc.SetBackground(*wxTRANSPARENT_BRUSH);
-		if (m_bitmap.IsOk()) DrawSplashBitmap(dc, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
+		wxClientDC canvas(this);
+		canvas.SetBackgroundMode(wxTRANSPARENT);
+		canvas.SetBackground(*wxTRANSPARENT_BRUSH);
+		if (m_bitmap.IsOk()) DrawSplashBitmap(canvas, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
 	}
 }
 
@@ -165,8 +165,8 @@ wxFont SplashScreen::GetCopyrightFont() {
 }
 
 int SplashScreen::FilterEvent(wxEvent &event) {
-	const wxEventType t = event.GetEventType();
-	if (t == wxEVT_KEY_DOWN || t == wxEVT_LEFT_DOWN || t == wxEVT_RIGHT_DOWN || t == wxEVT_MIDDLE_DOWN)
+	const wxEventType type = event.GetEventType();
+	if (type == wxEVT_KEY_DOWN || type == wxEVT_LEFT_DOWN || type == wxEVT_RIGHT_DOWN || type == wxEVT_MIDDLE_DOWN)
 		Close(true);
 	
 	return -1;

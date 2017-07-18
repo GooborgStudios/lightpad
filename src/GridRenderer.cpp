@@ -14,10 +14,6 @@
 
 #include <wx/grid.h>
 
-LightpadGridRenderer::LightpadGridRenderer() {
-	pen_width = 1;
-}
-
 LightpadGridRenderer::LightpadGridRenderer(int penwidth) {
 	pen_width = penwidth;
 }

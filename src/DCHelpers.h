@@ -11,4 +11,4 @@
     #include <wx/wx.h>
 #endif
 
-void DrawWrappedText(std::string text, wxDC &dc, wxRect box);
+void DrawWrappedText(std::string text, wxDC &canvas, wxRect box);

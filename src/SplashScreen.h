@@ -22,7 +22,7 @@
 class SplashScreen: public wxFrame, public wxEventFilter {
 	public:
 		SplashScreen();
-		SplashScreen(wxWindow *parent, wxWindowID id, wxBitmap &bitmap, wxString copyright = "", wxRect copyrightbox = wxRect(0, 0, 0, 0), wxColor copyrightcolor = *wxBLACK, wxFont copyrightfont = wxFont());
+		SplashScreen(wxWindow *parent, wxWindowID window_id, wxBitmap &bitmap, wxString copyright = "", wxRect copyrightbox = wxRect(0, 0, 0, 0), wxColor copyrightcolor = *wxBLACK, wxFont copyrightfont = wxFont());
 		virtual ~SplashScreen();
 
 		void OnCloseWindow(wxCloseEvent &event);

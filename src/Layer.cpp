@@ -37,6 +37,7 @@ std::string Keyframe::serialize() {
 
 void Keyframe::toBuffer(char *outbuf, int len) {
 //	snprintf(outbuf, len, "keyframe %s %f %s %s %d\n", this->parent->description.c_str(), this->time, this->name.c_str(), this->serialize().c_str(), this->smoother);
+	snprintf(outbuf, len, "");
 }
 
 DoubleKeyframe::DoubleKeyframe(std::string name, long time, double value) : Keyframe(name, time) {

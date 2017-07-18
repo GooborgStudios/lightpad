@@ -15,7 +15,7 @@
 #include <queue>
 #include <vector>
 
-void DrawWrappedText(std::string text, wxDC &dc, wxRect box) {
+void DrawWrappedText(std::string text, wxDC &canvas, wxRect box) {
     std::queue<std::string> words;
     std::vector<std::string> *lines = new std::vector<std::string>();
     
@@ -29,13 +29,13 @@ void DrawWrappedText(std::string text, wxDC &dc, wxRect box) {
     std::string currentLine = words.front();
     words.pop();
     while (!words.empty()) {
-        std::string c = currentLine + " " + words.front();
-        wxSize size = dc.GetTextExtent(c);
+        std::string newline = currentLine + " " + words.front();
+        wxSize size = canvas.GetTextExtent(newline);
         if (size.GetWidth() > box.GetWidth()) {
             lines->push_back(currentLine);
             currentLine = words.front();
         } else {
-            currentLine = c;
+            currentLine = newline;
         }
         
         words.pop();
@@ -44,8 +44,8 @@ void DrawWrappedText(std::string text, wxDC &dc, wxRect box) {
     lines->push_back(currentLine);
     
     for (std::string line : *lines) {
-        dc.DrawLabel(line, box, wxALIGN_CENTER|wxALIGN_TOP);
-        box.SetTop(box.GetTop() + dc.GetTextExtent(line).GetHeight() + 4);
+        canvas.DrawLabel(line, box, wxALIGN_CENTER|wxALIGN_TOP);
+        box.SetTop(box.GetTop() + canvas.GetTextExtent(line).GetHeight() + 4);
     }
     
     delete lines;

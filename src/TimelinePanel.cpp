@@ -46,7 +46,7 @@ TimelinePanel::~TimelinePanel() {
 	
 }
 
-void TimelinePanel::paintEvent(wxPaintEvent &event) {
+void TimelinePanel::paintEvent(wxPaintEvent &WXUNUSED(event)) {
 	// depending on your system you may need to look at double-buffered dcs
 	wxPaintDC canvas(this);
 	render(canvas);
@@ -61,7 +61,6 @@ void TimelinePanel::paintNow() {
 void TimelinePanel::onLeftDown(wxMouseEvent &event) {
 	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
 	wxPoint btn = mousepos_to_buttons(mousepos);
-	
 	movePlayhead(btn.x * activeProject->ticksPerBeat / 4);
 	
 	/*if (!event.ControlDown()) {
@@ -89,7 +88,7 @@ void TimelinePanel::onMouseMove(wxMouseEvent &event) {
 	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
 	wxPoint btn = mousepos_to_buttons(mousepos);
 	movePlayhead(btn.x * activeProject->ticksPerBeat / 4);
-	
+
 	/*wxRealPoint btn = buttonAtCoords(mousepos);
 	wxRealPoint first_btn = buttonAtCoords(clickpos);
 	
@@ -104,7 +103,7 @@ void TimelinePanel::onMouseMove(wxMouseEvent &event) {
 	refreshNow();*/
 }
 
-void TimelinePanel::onLeftUp(wxMouseEvent &event) {
+void TimelinePanel::onLeftUp(wxMouseEvent &WXUNUSED(event)) {
 	
 }
 
@@ -184,14 +183,14 @@ void TimelinePanel::render_header(wxDC &canvas) {
 }
 
 void TimelinePanel::render_playhead(wxDC &canvas) {
-	int x = playhead_in_pixels() - offset_in_pixels().x + labelsize;
+	int xpos = playhead_in_pixels() - offset_in_pixels().x + labelsize;
 	
-	if (x >= labelsize) {
+	if (xpos >= labelsize) {
 		canvas.SetPen(wxPen(*wxBLACK, 6));
-		canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
+		canvas.DrawLine(xpos, headersize, xpos, canvas.GetSize().GetHeight());
 		canvas.SetPen(wxPen(*wxWHITE, 3));
-		canvas.DrawLine(x, headersize, x, canvas.GetSize().GetHeight());
-		canvas.DrawCircle(x, headersize, 5.0);
+		canvas.DrawLine(xpos, headersize, xpos, canvas.GetSize().GetHeight());
+		canvas.DrawCircle(xpos, headersize, 5.0);
 	}
 }
 

@@ -38,13 +38,13 @@ class MainApp: public wxApp {
 // Main frame
 class MainFrame: public wxFrame {
 	public:
-		MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+		MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size);
 		wxPanel *m_parent;
 		TimelinePanel *m_tlp;
 		wxToolBar *toolbar;
 	
 	private:
-		void OnExit(wxCommandEvent& event);
+		void OnExit(wxCommandEvent &event);
 		wxDECLARE_EVENT_TABLE();
 };
 
@@ -58,7 +58,7 @@ bool MainApp::OnInit() {
 	return true;
 }
 
-MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
+MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size)
 : wxFrame(NULL, wxID_ANY, title, pos, size) {
  
 	SetIcon(wxIcon(getResourcePath(APP_ICON)));
@@ -101,7 +101,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	m_parent->SetSizer(sizer);
 }
 
-void MainFrame::OnExit(wxCommandEvent& event) {
+void MainFrame::OnExit(wxCommandEvent &WXUNUSED(event)) {
 	if (Close()) {
 		delete m_tlp;
 		delete m_parent;

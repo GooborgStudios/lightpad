@@ -87,7 +87,7 @@ DisplayPanel::~DisplayPanel() {
 	for (int i = 0; i < 6; i++) delete fullres_button_images[i];
 }
 
-void DisplayPanel::paintEvent(wxPaintEvent &event) {
+void DisplayPanel::paintEvent(wxPaintEvent &WXUNUSED(event)) {
 	// depending on your system you may need to look at double-buffered dcs
 	wxPaintDC canvas(this);
 	render(canvas);
@@ -146,7 +146,7 @@ void DisplayPanel::onMouseMove(wxMouseEvent &event) {
 	refreshNow();
 }
 
-void DisplayPanel::onLeftUp(wxMouseEvent &event) {
+void DisplayPanel::onLeftUp(wxMouseEvent &WXUNUSED(event)) {
 //	wxRealPoint btn = buttonAtCoords(mousepos);
 	
 	for (int i = 0; i < 100; i++) {
@@ -164,7 +164,7 @@ void DisplayPanel::refreshNow() {
 	Update();
 }
 
-void DisplayPanel::refreshNow(wxCommandEvent &event) {
+void DisplayPanel::refreshNow(wxCommandEvent &WXUNUSED(event)) {
 	refreshNow();
 }
 
@@ -174,12 +174,12 @@ void DisplayPanel::onSize(wxSizeEvent &event) {
 	event.Skip();
 }
 
-void DisplayPanel::startstop(wxCommandEvent &event) {
+void DisplayPanel::startstop(wxCommandEvent &WXUNUSED(event)) {
 	if (m_timer->IsRunning()) m_timer->Stop();
 	else m_timer->Start(1000 / 4);
 }
 
-void DisplayPanel::play_next_frame(wxTimerEvent &event) {
+void DisplayPanel::play_next_frame(wxTimerEvent &WXUNUSED(event)) {
 	frame += 1;
 	std::cout << frame << std::endl;
 	Refresh();
@@ -232,7 +232,6 @@ void DisplayPanel::render_buttons() {
 		int btn_x = i % 10;
 		int btn_y = 9 - (i / 10);
 		int button_style = get_button_style(btn_x, btn_y);
-		wxColor bcolor = velocitycolors[button_colors[i]];
 		
 		if (selected_buttons[i] || selected_buttons_box[i])
 			lp_img->composite(*scaled_button_halo_images[button_style], buttonIndexToPos(btn_x),

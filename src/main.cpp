@@ -172,7 +172,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	Bind(FILE_SELECT, &MainFrame::OnSelectFile, this, ID_Frame_Main);
 }
 
-void MainFrame::OnExit(wxCommandEvent &event) {
+void MainFrame::OnExit(wxCommandEvent &WXUNUSED(event)) {
 	if (Close()) {
 		delete m_fp;
 		delete m_pp;
@@ -191,7 +191,7 @@ void MainFrame::ShowSplash() {
 	wxYield();
 }
 
-void MainFrame::OnAbout(wxCommandEvent &event) {
+void MainFrame::OnAbout(wxCommandEvent &WXUNUSED(event)) {
 	ShowSplash();
 }
 
@@ -206,28 +206,28 @@ void MainFrame::SaveAs() {
 	activeProject->save(saveFileDialog.GetPath().ToStdString());
 }
 
-void MainFrame::OnSaveRequest(wxCommandEvent &event) {
+void MainFrame::OnSaveRequest(wxCommandEvent &WXUNUSED(event)) {
 	if (activeProject->save() == -1) SaveAs();
 }
 
-void MainFrame::OnSaveAsRequest(wxCommandEvent &event) {
+void MainFrame::OnSaveAsRequest(wxCommandEvent &WXUNUSED(event)) {
 	SaveAs();
 }
 
-void MainFrame::OnHello(wxCommandEvent &event) {
+void MainFrame::OnHello(wxCommandEvent &WXUNUSED(event)) {
 	wxLogMessage("Testing the menu bars! -Vadu");
 	m_tlp->Update();
 }
 
-void MainFrame::OnStartStop(wxCommandEvent &event) {
+void MainFrame::OnStartStop(wxCommandEvent &WXUNUSED(event)) {
 	m_tlp->nextQuarterBeat();
 }
 
-void MainFrame::OnNextBeat(wxCommandEvent &event) {
+void MainFrame::OnNextBeat(wxCommandEvent &WXUNUSED(event)) {
 	m_tlp->nextBeat();
 }
 
-void MainFrame::OnRestart(wxCommandEvent &event) {
+void MainFrame::OnRestart(wxCommandEvent &WXUNUSED(event)) {
 	m_tlp->movePlayhead(0);
 }
 
