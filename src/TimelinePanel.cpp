@@ -87,6 +87,9 @@ void TimelinePanel::onMouseMove(wxMouseEvent &event) {
 	if (!event.LeftIsDown()) return;
 	
 	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
+	wxPoint btn = mousepos_to_buttons(mousepos);
+	movePlayhead(btn.x * activeProject->ticksPerBeat / 4);
+	
 	/*wxRealPoint btn = buttonAtCoords(mousepos);
 	wxRealPoint first_btn = buttonAtCoords(clickpos);
 	
