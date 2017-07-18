@@ -20,11 +20,6 @@
 
 // Timeline panel
 class TimelinePanel: public wxHVScrolledWindow {
-	protected:
-		wxCoord OnGetRowHeight(size_t row) const;
-		wxCoord OnGetColumnWidth(size_t column) const;
-		int playhead;
-	
 	public:
 		TimelinePanel(wxPanel *parent);
 		~TimelinePanel();
@@ -39,6 +34,12 @@ class TimelinePanel: public wxHVScrolledWindow {
 		void movePlayhead(int time);
 //		void RefreshDisplay();
 //		void ChangeNoteColor(wxCommandEvent &event);
+	
+	protected:
+		wxCoord OnGetRowHeight(size_t row) const;
+		wxCoord OnGetColumnWidth(size_t column) const;
+		int playhead;
+	
 	private:
 		wxPanel *m_parent;
 		wxBoxSizer *sizer;
@@ -47,6 +48,10 @@ class TimelinePanel: public wxHVScrolledWindow {
 		int colsize;
 		int headersize;
 		int labelsize;
+	
+		int playhead_in_pixels();
+		wxPoint offset_in_pixels();
+		wxPoint mousepos_to_buttons(wxPoint mousepos);
 	
 		wxDECLARE_EVENT_TABLE();
 };

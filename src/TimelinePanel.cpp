@@ -46,15 +46,6 @@ TimelinePanel::~TimelinePanel() {
 	
 }
 
-wxCoord TimelinePanel::OnGetRowHeight(size_t row) const {
-	return rowsize;
-}
-
-wxCoord TimelinePanel::OnGetColumnWidth(size_t column) const {
-	return colsize;
-//	return wxClientDC(this).GetSize().GetX();
-}
-
 void TimelinePanel::paintEvent(wxPaintEvent &event) {
 	// depending on your system you may need to look at double-buffered dcs
 	wxPaintDC canvas(this);
@@ -147,7 +138,7 @@ void TimelinePanel::render_header(wxDC &canvas) {
 }
 
 void TimelinePanel::render_playhead(wxDC &canvas) {
-	int x = (colsize * activeProject->currentTime / activeProject->ticksPerBeat * 4) - (colsize * GetVisibleBegin().GetCol()) + labelsize;
+	int x = playhead_in_pixels() - offset_in_pixels().x + labelsize;
 	
 	if (x >= labelsize) {
 		canvas.SetPen(wxPen(*wxBLACK, 6));
@@ -184,16 +175,37 @@ void TimelinePanel::movePlayhead(int time) {
 		ScrollToColumn(phCol == 0 ? 0 : phCol - 1);
 	}
 
-	
 	Refresh();
+}
+
+wxCoord TimelinePanel::OnGetRowHeight(size_t row) const {
+	return rowsize;
+}
+
+wxCoord TimelinePanel::OnGetColumnWidth(size_t column) const {
+	return colsize;
+	//	return wxClientDC(this).GetSize().GetX();
+}
+
+int TimelinePanel::playhead_in_pixels() {
+	return colsize * activeProject->currentTime / activeProject->ticksPerBeat * 4;
+}
+
+wxPoint TimelinePanel::offset_in_pixels() {
+	return wxPoint(colsize * GetVisibleBegin().GetCol(), rowsize * GetVisibleBegin().GetRow());
+}
+
+wxPoint TimelinePanel::mousepos_to_buttons(wxPoint mousepos) {
+	return wxPoint(
+		(mousepos.x + offset_in_pixels().x - labelsize)  / colsize,
+		(mousepos.y + offset_in_pixels().y - headersize) / rowsize
+	);
 }
 
 wxBEGIN_EVENT_TABLE(TimelinePanel, wxPanel)
 	EVT_PAINT(TimelinePanel::paintEvent)
 wxEND_EVENT_TABLE()
 
-//draw the background rows
-//button, beat labels
 //click to create/move/recolor notes
 //snap to grid
 //zooming

@@ -20,9 +20,7 @@ class Project {
 		std::string filePath;
 	
 	public:
-		Project();
-		Project(int BPM);
-		Project(int BPM, int ticksPerBeat);
+		Project(int BPM = 120, int ticksPerBeat = 32);
 		Project(std::string filePath);
 	
 		int BPM;

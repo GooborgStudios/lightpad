@@ -16,14 +16,6 @@
 #include "MidiLayer.h"
 #include "NoteHelpers.h"
 
-Project::Project() : Project::Project(120) {
-
-}
-
-Project::Project(int BPM) : Project::Project(BPM, 32) {
-	
-}
-
 Project::Project(int BPM, int ticksPerBeat) {
 	currentTime = 0;
 	this->BPM = BPM;
@@ -54,6 +46,7 @@ Project::Project(std::string filePath) : Project::Project() {
 	MidiEvent mev;
 	int color;
 	
+	midifile->sortTracks();
 	midifile->joinTracks();
 	this->ticksPerBeat = midifile->getTicksPerQuarterNote();
 	
