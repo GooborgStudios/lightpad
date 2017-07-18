@@ -25,6 +25,9 @@ class TimelinePanel: public wxHVScrolledWindow {
 		~TimelinePanel();
 		void paintEvent(wxPaintEvent &event);
 		void paintNow();
+		void onLeftDown(wxMouseEvent &event);
+		void onMouseMove(wxMouseEvent &event);
+		void onLeftUp(wxMouseEvent &event);
 		void render(wxDC &canvas);
 		void render_row(wxDC &canvas, std::string rowname, KeyframeSet *keyframes, wxRect bounding_box);
 		void render_header(wxDC &canvas);
@@ -43,7 +46,6 @@ class TimelinePanel: public wxHVScrolledWindow {
 	private:
 		wxPanel *m_parent;
 		wxBoxSizer *sizer;
-	
 		int rowsize;
 		int colsize;
 		int headersize;

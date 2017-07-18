@@ -58,6 +58,53 @@ void TimelinePanel::paintNow() {
 	render(canvas);
 }
 
+void TimelinePanel::onLeftDown(wxMouseEvent &event) {
+	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
+	wxPoint btn = mousepos_to_buttons(mousepos);
+	
+	movePlayhead(btn.x * activeProject->ticksPerBeat / 4);
+	
+	/*if (!event.ControlDown()) {
+		for (int i = 0; i < 100; i++) selected_buttons[i] = false;
+	}
+	
+	if (event.ShiftDown()) {
+		wxRealPoint first_btn = buttonAtCoords(clickpos);
+		for (int x = ceil(std::min(btn.x, first_btn.x)); x <= floor(std::max(btn.x, first_btn.x)); x++) {
+			for (int y = ceil(std::min(btn.y, first_btn.y)); y <= floor(std::max(btn.y, first_btn.y)); y++) {
+				selected_buttons[x + (y * 10)] = true;
+			}
+		}
+	} else {
+		if (btn.x == floor(btn.x) && btn.y == floor(btn.y)) selected_buttons[(int)(btn.x + (btn.y * 10))] = !selected_buttons[(int)(btn.x + (btn.y * 10))] ;
+		clickpos = mousepos;
+	}
+	
+	refreshNow();*/
+}
+
+void TimelinePanel::onMouseMove(wxMouseEvent &event) {
+	if (!event.LeftIsDown()) return;
+	
+	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
+	/*wxRealPoint btn = buttonAtCoords(mousepos);
+	wxRealPoint first_btn = buttonAtCoords(clickpos);
+	
+	if (btn.x == first_btn.x && btn.y == first_btn.y) return;
+	
+	for (int x = ceil(std::min(btn.x, first_btn.x)); x <= floor(std::max(btn.x, first_btn.x)); x++) {
+		for (int y = ceil(std::min(btn.y, first_btn.y)); y <= floor(std::max(btn.y, first_btn.y)); y++) {
+			selected_buttons_box[x + (y * 10)] = true;
+		}
+	}
+	
+	refreshNow();*/
+}
+
+void TimelinePanel::onLeftUp(wxMouseEvent &event) {
+	
+}
+
 void TimelinePanel::render(wxDC &canvas) {
 	int width = canvas.GetSize().GetX();
 	int ypos = headersize-(GetVisibleBegin().GetRow()*rowsize);
@@ -160,6 +207,7 @@ void TimelinePanel::nextQuarterBeat() {
 void TimelinePanel::movePlayhead(int time) {
 	int phCol = time / activeProject->ticksPerBeat * 4;
 	activeProject->seek(time);
+	
 	for (auto iter : activeProject->layer->keyframes) {
 		wxColourPickerEvent evt(this, ID_Panel_Timeline, velocitycolors[activeProject->layer->getVelocity(iter.first)]);
 		evt.SetInt(std::stoi(iter.first));
@@ -204,6 +252,9 @@ wxPoint TimelinePanel::mousepos_to_buttons(wxPoint mousepos) {
 
 wxBEGIN_EVENT_TABLE(TimelinePanel, wxPanel)
 	EVT_PAINT(TimelinePanel::paintEvent)
+	EVT_LEFT_DOWN(TimelinePanel::onLeftDown)
+	EVT_MOTION(TimelinePanel::onMouseMove)
+	EVT_LEFT_UP(TimelinePanel::onLeftUp)
 wxEND_EVENT_TABLE()
 
 //click to create/move/recolor notes
