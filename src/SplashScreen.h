@@ -23,7 +23,7 @@
 class SplashScreen: public wxFrame, public wxEventFilter {
 	public:
 		SplashScreen();
-		SplashScreen(wxWindow* parent, wxWindowID id, const wxBitmap& bitmap, wxString text = "", wxRect textbox = wxRect(0, 0, 0, 0), wxColor textcolor = *wxBLACK, wxFont textfont = wxFont());
+		SplashScreen(wxWindow *parent, wxWindowID id, wxBitmap &bitmap, wxString copyright = "", wxRect copyrightbox = wxRect(0, 0, 0, 0), wxColor copyrightcolor = *wxBLACK, wxFont copyrightfont = wxFont());
 		virtual ~SplashScreen();
 
 		void OnCloseWindow(wxCloseEvent& event);
@@ -31,17 +31,17 @@ class SplashScreen: public wxFrame, public wxEventFilter {
 		void OnPaint(wxPaintEvent& event);
 		void OnEraseBackground(wxEraseEvent& event);
 		
-		void SetBitmap(const wxBitmap& bitmap);
 		wxBitmap& GetBitmap();
+		void SetBitmap(wxBitmap &bitmap);
 
 		virtual int FilterEvent(wxEvent& event);
 
 	protected:
 		wxBitmap m_bitmap;
-		wxString m_text;
-		wxRect m_textbox;
-		wxFont m_textfont;
-		wxColor m_textcolor;
+		wxString m_copyright;
+		wxRect m_copyrightbox;
+		wxFont m_copyrightfont;
+		wxColor m_copyrightcolor;
 
 		DECLARE_EVENT_TABLE()
 		wxDECLARE_NO_COPY_CLASS(SplashScreen);

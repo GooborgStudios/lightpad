@@ -102,7 +102,7 @@ SplashScreen::SplashScreen() {
 	Init();
 }
 
-SplashScreen::SplashScreen(wxWindow* parent, wxWindowID id, const wxBitmap& bitmap, wxString text, wxRect textbox, wxColor textcolor, wxFont textfont) : wxFrame() {
+SplashScreen::SplashScreen(wxWindow *parent, wxWindowID id, wxBitmap &bitmap, wxString copyright, wxRect copyrightbox, wxColor copyrightcolor, wxFont copyrightfont) : wxFrame() {
 	Create(parent, id, wxEmptyString, wxPoint(0,0), wxSize(100, 100), wxSIMPLE_BORDER | wxSTAY_ON_TOP | wxFRAME_TOOL_WINDOW | wxFRAME_NO_TASKBAR | wxTRANSPARENT_WINDOW);
 	
 	SetBackgroundColour(wxTransparentColor);
@@ -118,10 +118,10 @@ SplashScreen::SplashScreen(wxWindow* parent, wxWindowID id, const wxBitmap& bitm
 	#endif
 
 	m_bitmap = bitmap;
-	m_text = text;
-	m_textbox = textbox;
-	m_textfont = textfont;
-	m_textcolor = textcolor;
+	m_copyright = copyright;
+	m_copyrightbox = copyrightbox;
+	m_copyrightfont = copyrightfont;
+	m_copyrightcolor = copyrightcolor;
 	
 	#if !defined(__WXGTK__) && wxUSE_PALETTE
 		bool hiColour = (wxDisplayDepth() >= 16);
@@ -150,7 +150,7 @@ void SplashScreen::OnPaint(wxPaintEvent& WXUNUSED(event)) {
 	wxPaintDC dc(this);
 	dc.SetBackgroundMode(wxTRANSPARENT);
 	dc.SetBackground(*wxTRANSPARENT_BRUSH);
-	if (m_bitmap.IsOk()) DrawSplashBitmap(dc, m_bitmap, m_text, m_textbox, m_textfont, m_textcolor);
+	if (m_bitmap.IsOk()) DrawSplashBitmap(dc, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
 }
 
 void SplashScreen::OnEraseBackground(wxEraseEvent& event) {
@@ -158,16 +158,16 @@ void SplashScreen::OnEraseBackground(wxEraseEvent& event) {
 		wxDC *dc = event.GetDC();
 		dc->SetBackgroundMode(wxTRANSPARENT);
 		dc->SetBackground(*wxTRANSPARENT_BRUSH);
-		DrawSplashBitmap(*dc, m_bitmap, m_text, m_textbox, m_textfont, m_textcolor);
+		DrawSplashBitmap(*dc, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
 	} else {
 		wxClientDC dc(this);
 		dc.SetBackgroundMode(wxTRANSPARENT);
 		dc.SetBackground(*wxTRANSPARENT_BRUSH);
-		if (m_bitmap.IsOk()) DrawSplashBitmap(dc, m_bitmap, m_text, m_textbox, m_textfont, m_textcolor);
+		if (m_bitmap.IsOk()) DrawSplashBitmap(dc, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
 	}
 }
 
-void SplashScreen::SetBitmap(const wxBitmap& bitmap) {
+void SplashScreen::SetBitmap(wxBitmap &bitmap) {
 	m_bitmap = bitmap;
 }
 
