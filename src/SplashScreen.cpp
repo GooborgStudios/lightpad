@@ -39,7 +39,7 @@ BEGIN_EVENT_TABLE(SplashScreen, wxFrame)
 END_EVENT_TABLE()
 
 
-std::vector<std::string> *wrap(std::string text, wxDC &dc, const int width) {
+void DrawWrappedText(std::string text, wxDC &dc, wxRect box) {
 	std::queue<std::string> words;
 	std::vector<std::string> *lines = new std::vector<std::string>();
 	
@@ -55,7 +55,7 @@ std::vector<std::string> *wrap(std::string text, wxDC &dc, const int width) {
 	while (!words.empty()) {
 		std::string c = currentLine + " " + words.front();
 		wxSize size = dc.GetTextExtent(c);
-		if (size.GetWidth() > width) {
+		if (size.GetWidth() > box.GetWidth()) {
 			lines->push_back(currentLine);
 			currentLine = words.front();
 		} else {
@@ -66,11 +66,16 @@ std::vector<std::string> *wrap(std::string text, wxDC &dc, const int width) {
 	}
 	
 	lines->push_back(currentLine);
-	
-	return lines;
+    
+    for (std::string line : *lines) {
+        dc.DrawLabel(line, box, wxALIGN_CENTER|wxALIGN_TOP);
+        box.SetTop(box.GetTop() + dc.GetTextExtent(line).GetHeight() + 4);
+    }
+    
+    delete lines;
 }
 
-static void DrawSplashBitmap(wxDC& dc, const wxBitmap& bitmap, const wxString text, const wxRect textbox, const wxFont textfont, const wxColor textcolor) {
+static void DrawSplashBitmap(wxDC &dc, const wxBitmap &bitmap, const wxString copyright, const wxRect copyrightbox, const wxFont copyrightfont, const wxColor copyrightcolor) {
 	wxMemoryDC dcMem;
 	
 	bool hiColour = (wxDisplayDepth() >= 16);
@@ -80,19 +85,10 @@ static void DrawSplashBitmap(wxDC& dc, const wxBitmap& bitmap, const wxString te
 	dc.Blit(0, 0, bitmap.GetWidth(), bitmap.GetHeight(), &dcMem, 0, 0, wxCOPY, true);
 	dcMem.SelectObject(wxNullBitmap);
 	
-	if (text.size() > 0) {
-		dc.SetTextForeground(textcolor);
-		dc.SetFont(textfont);
-		
-		std::vector<std::string> *lines = wrap(std::string(text.c_str()), dc, textbox.GetWidth());
-		
-		wxRect box(textbox);
-		for (std::string line : *lines) {
-			dc.DrawLabel(line, box, wxALIGN_CENTER|wxALIGN_TOP);
-			box.SetTop(box.GetTop() + dc.GetTextExtent(line).GetHeight() + 4);
-		}
-		
-		delete lines;
+	if (copyright.size() > 0) {
+		dc.SetTextForeground(copyrightcolor);
+		dc.SetFont(copyrightfont);
+        DrawWrappedText(std::string(copyright.c_str()), dc, copyrightbox);
 	}
 	
 	if (bitmap.GetPalette() && !hiColour) dcMem.SetPalette(wxNullPalette);
