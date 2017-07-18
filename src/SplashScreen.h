@@ -18,9 +18,6 @@
 #include "wx/bitmap.h"
 #include "wx/eventfilter.h"
 #include "wx/frame.h"
-#include "wx/timer.h"
-
-void DrawWrappedText(std::string text, wxDC &dc, wxRect box);
 
 class SplashScreen: public wxFrame, public wxEventFilter {
 	public:

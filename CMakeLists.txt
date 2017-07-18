@@ -57,6 +57,7 @@ add_executable(lightpad
 	${SRC}/TestProject.cpp ${SRC}/TestProject.h
 	${SRC}/TimelinePanel.cpp ${SRC}/TimelinePanel.h
 	${SRC}/SplashScreen.cpp ${SRC}/SplashScreen.h
+	${SRC}/DCHelpers.cpp ${SRC}/DCHelpers.h
 )
 
 add_executable(timeline
