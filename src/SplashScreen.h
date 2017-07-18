@@ -28,10 +28,10 @@ class SplashScreen: public wxFrame, public wxEventFilter {
 		SplashScreen(wxWindow *parent, wxWindowID id, wxBitmap &bitmap, wxString copyright = "", wxRect copyrightbox = wxRect(0, 0, 0, 0), wxColor copyrightcolor = *wxBLACK, wxFont copyrightfont = wxFont());
 		virtual ~SplashScreen();
 
-		void OnCloseWindow(wxCloseEvent& event);
-		void OnNotify(wxTimerEvent& event);
-		void OnPaint(wxPaintEvent& event);
-		void OnEraseBackground(wxEraseEvent& event);
+		void OnCloseWindow(wxCloseEvent &event);
+		void OnNotify(wxTimerEvent &event);
+		void OnPaint(wxPaintEvent &event);
+		void OnEraseBackground(wxEraseEvent &event);
 		
 		void SetBitmap(wxBitmap &bitmap);
 		wxBitmap &GetBitmap();

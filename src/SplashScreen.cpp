@@ -134,22 +134,22 @@ SplashScreen::~SplashScreen() {
 	wxEvtHandler::RemoveFilter(this);
 }
 
-void SplashScreen::OnCloseWindow(wxCloseEvent& WXUNUSED(event)) {
+void SplashScreen::OnCloseWindow(wxCloseEvent &WXUNUSED(event)) {
 	this->Destroy();
 }
 
-void SplashScreen::OnNotify(wxTimerEvent& WXUNUSED(event)) {
+void SplashScreen::OnNotify(wxTimerEvent &WXUNUSED(event)) {
 	Close(true);
 }
 
-void SplashScreen::OnPaint(wxPaintEvent& WXUNUSED(event)) {
+void SplashScreen::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 	wxPaintDC dc(this);
 	dc.SetBackgroundMode(wxTRANSPARENT);
 	dc.SetBackground(*wxTRANSPARENT_BRUSH);
 	if (m_bitmap.IsOk()) DrawSplashBitmap(dc, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
 }
 
-void SplashScreen::OnEraseBackground(wxEraseEvent& event) {
+void SplashScreen::OnEraseBackground(wxEraseEvent &event) {
 	if (event.GetDC() && m_bitmap.IsOk()) {
 		wxDC *dc = event.GetDC();
 		dc->SetBackgroundMode(wxTRANSPARENT);
