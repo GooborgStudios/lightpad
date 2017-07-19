@@ -55,6 +55,8 @@ class DisplayPanel: public wxPanel {
 		float buttonPosToIndex(float pos);
 		void colorButton(int button, wxColor color);
 		void colorButton(wxColourPickerEvent &event);
+		void selectButton(int button, bool state);
+		void selectButton(int x, int y, bool state);
 
 		wxDECLARE_EVENT_TABLE();
 	private:
@@ -73,11 +75,13 @@ class DisplayPanel: public wxPanel {
 		std::string button_image_path;
 		std::string button_halo_image_path;
 		int image_size = MAXIMUM_LAUNCHPAD_IMAGE_SIZE;
+		double scale;
 		int panel_width = -1;
 		int panel_height = -1;
 		int image_xpos = 0;
 		int image_ypos = 0;
 		int button_colors[100] = {0};
+		bool changed_buttons[100] = {true};
 		bool selected_buttons[100] = {false};
 		bool selected_buttons_box[100] = {false};
 		int frame = 0;

@@ -54,6 +54,8 @@ DisplayPanel::DisplayPanel(wxPanel *parent): wxPanel(parent, ID_Panel_Display, w
 	scaled_base_image = NULL;
 	lp_img = NULL;
 	
+	scale = 1.0;
+	
 	for (int j = 0; j < 6; j++) {
 		Magick::Image *fullres_button_image = new Magick::Image(button_image);
 		fullres_button_image->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * j, 0));
@@ -108,18 +110,22 @@ void DisplayPanel::onLeftDown(wxMouseEvent &event) {
 	wxRealPoint btn = buttonAtCoords(mousepos);
 	
 	if (!event.ControlDown()) {
-		for (int i = 0; i < 100; i++) selected_buttons[i] = false;
+		for (int i = 0; i < 100; i++) {
+			selectButton(i, false);
+		}
 	}
 	
 	if (event.ShiftDown()) {
 		wxRealPoint first_btn = buttonAtCoords(clickpos);
 		for (int x = ceil(std::min(btn.x, first_btn.x)); x <= floor(std::max(btn.x, first_btn.x)); x++) {
 			for (int y = ceil(std::min(btn.y, first_btn.y)); y <= floor(std::max(btn.y, first_btn.y)); y++) {
-				selected_buttons[x + (y * 10)] = true;
+				selectButton(x, y, true);
 			}
 		}
 	} else {
-		if (btn.x == floor(btn.x) && btn.y == floor(btn.y)) selected_buttons[(int)(btn.x + (btn.y * 10))] = !selected_buttons[(int)(btn.x + (btn.y * 10))] ;
+		if (btn.x == floor(btn.x) && btn.y == floor(btn.y)) {
+			selectButton(btn.x, btn.y, !selected_buttons[(int)(btn.x + (btn.y * 10))]);
+		}
 		clickpos = mousepos;
 	}
 	
@@ -129,7 +135,10 @@ void DisplayPanel::onLeftDown(wxMouseEvent &event) {
 void DisplayPanel::onMouseMove(wxMouseEvent &event) {
 	if (!event.LeftIsDown()) return;
 	
-	for (int i = 0; i < 100; i++) selected_buttons_box[i] = false;
+	for (int i = 0; i < 100; i++) {
+		if (selected_buttons_box[i]) changed_buttons[i] = true;
+		selected_buttons_box[i] = false;
+	}
 	
 	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
 	wxRealPoint btn = buttonAtCoords(mousepos);
@@ -140,6 +149,7 @@ void DisplayPanel::onMouseMove(wxMouseEvent &event) {
 	for (int x = ceil(std::min(btn.x, first_btn.x)); x <= floor(std::max(btn.x, first_btn.x)); x++) {
 		for (int y = ceil(std::min(btn.y, first_btn.y)); y <= floor(std::max(btn.y, first_btn.y)); y++) {
 			selected_buttons_box[x + (y * 10)] = true;
+			changed_buttons[x + (y * 10)] = true;
 		}
 	}
 	
@@ -151,7 +161,7 @@ void DisplayPanel::onLeftUp(wxMouseEvent &WXUNUSED(event)) {
 	
 	for (int i = 0; i < 100; i++) {
 		if (selected_buttons_box[i]) {
-			selected_buttons[i] = true;
+			selectButton(i, true);
 			selected_buttons_box[i] = false;
 		}
 	}
@@ -186,7 +196,7 @@ void DisplayPanel::play_next_frame(wxTimerEvent &WXUNUSED(event)) {
 }
 
 void DisplayPanel::resize_images(int new_size) {
-	double ratio = new_size / (MAXIMUM_LAUNCHPAD_IMAGE_SIZE * 1.0);
+	scale = new_size / (MAXIMUM_LAUNCHPAD_IMAGE_SIZE * 1.0);
 
 	// Load the other resolutions of the image as needed
 	if (new_size != image_size) {
@@ -196,7 +206,7 @@ void DisplayPanel::resize_images(int new_size) {
 		// launchpad_button_image->LoadFile(button_image_path, wxBITMAP_TYPE_PNG);
 
 		image_size = new_size;
-		Magick::Geometry size(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * ratio, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * ratio);
+		Magick::Geometry size(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale);
 
 		for (int i = 0; i < 768; i++) {
 			delete scaled_button_images[i];
@@ -216,14 +226,16 @@ void DisplayPanel::resize_images(int new_size) {
 
 		delete lp_img;
 		lp_img = new Magick::Image(*scaled_base_image);
+		
+		for (int i = 0; i < 100; i++) changed_buttons[i] = true;
 	}
 }
 
 void DisplayPanel::render_buttons() {
 	// Draw the buttons on the screen (and set Launchpad colors)
 	
-	delete lp_img;
-	lp_img = new Magick::Image(*scaled_base_image);
+	//delete lp_img;
+	//lp_img = new Magick::Image(*scaled_base_image);
 
 	launchpad->beginColorUpdate();
 
@@ -233,15 +245,24 @@ void DisplayPanel::render_buttons() {
 		int btn_y = 9 - (i / 10);
 		int button_style = get_button_style(btn_x, btn_y);
 		
-		if (selected_buttons[i] || selected_buttons_box[i])
-			lp_img->composite(*scaled_button_halo_images[button_style], buttonIndexToPos(btn_x),
-							  buttonIndexToPos(btn_y),  Magick::OverCompositeOp);
-
-		Magick::Image current_button(*scaled_button_images[button_colors[i] + (128 * button_style)]);
-		lp_img->composite(current_button, buttonIndexToPos(btn_x),
-						  buttonIndexToPos(btn_y),  Magick::OverCompositeOp);
-
-		launchpad->setColor(i, button_colors[i]);
+		//fullres_button_halo_images[i] = new Magick::Image(button_halo_image);
+		//fullres_button_halo_images[i]->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * i, 0));
+		
+		if (changed_buttons[i]) {
+			Magick::Image base_crop(*scaled_base_image);
+			base_crop.crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y)));
+			lp_img->composite(base_crop, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y), Magick::OverCompositeOp);
+			
+			if (selected_buttons[i] || selected_buttons_box[i])
+				lp_img->composite(*scaled_button_halo_images[button_style], buttonIndexToPos(btn_x), buttonIndexToPos(btn_y), Magick::OverCompositeOp);
+		
+			Magick::Image current_button(*scaled_button_images[button_colors[i] + (128 * button_style)]);
+			lp_img->composite(current_button, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y), Magick::OverCompositeOp);
+			
+			changed_buttons[i] = false;
+			
+			launchpad->setColor(i, button_colors[i]);
+		}
 	}
 
 	launchpad->endColorUpdate();
@@ -315,11 +336,23 @@ float DisplayPanel::buttonPosToIndex(float pos) {
 
 void DisplayPanel::colorButton(int button, wxColor color) {
 	if (button < 1 || button > 98 || button == 9 || button == 90) return;
-	button_colors[button] = get_closest_velocity (color);
+	button_colors[button] = get_closest_velocity(color);
+	changed_buttons[button] = true;
 }
 
 void DisplayPanel::colorButton(wxColourPickerEvent &event) {
 	colorButton(event.GetInt(), event.GetColour());
+}
+
+void DisplayPanel::selectButton(int button, bool state) {
+	if (selected_buttons[button] != state) {
+		changed_buttons[button] = true;
+		selected_buttons[button] = state;
+	}
+}
+
+void DisplayPanel::selectButton(int x, int y, bool state) {
+	selectButton(x + (y * 10), state);
 }
 
 wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
