@@ -61,7 +61,10 @@ void TimelinePanel::paintNow() {
 void TimelinePanel::onLeftDown(wxMouseEvent &event) {
 	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
 	wxPoint btn = mousepos_to_buttons(mousepos);
-	movePlayhead(btn.x * activeProject->ticksPerBeat / 4);
+	if (mousepos.y < headersize) {
+		headerclicked = true;
+		movePlayhead(btn.x * activeProject->ticksPerBeat / 4);
+	}
 	
 	/*if (!event.ControlDown()) {
 		for (int i = 0; i < 100; i++) selected_buttons[i] = false;
@@ -87,7 +90,7 @@ void TimelinePanel::onMouseMove(wxMouseEvent &event) {
 	
 	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
 	wxPoint btn = mousepos_to_buttons(mousepos);
-	movePlayhead(btn.x * activeProject->ticksPerBeat / 4);
+	if (headerclicked) movePlayhead(btn.x * activeProject->ticksPerBeat / 4);
 
 	/*wxRealPoint btn = buttonAtCoords(mousepos);
 	wxRealPoint first_btn = buttonAtCoords(clickpos);
@@ -104,7 +107,7 @@ void TimelinePanel::onMouseMove(wxMouseEvent &event) {
 }
 
 void TimelinePanel::onLeftUp(wxMouseEvent &WXUNUSED(event)) {
-	
+	headerclicked = false;
 }
 
 void TimelinePanel::render(wxDC &canvas) {
