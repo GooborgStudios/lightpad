@@ -104,7 +104,7 @@ void SplashScreen::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 void SplashScreen::render(wxDC &canvas) {
 	canvas.SetBackgroundMode(wxTRANSPARENT);
 	canvas.SetBackground(*wxTRANSPARENT_BRUSH);
-	if (m_bitmap.IsOk()) {//DrawSplashBitmap(canvas, m_bitmap, m_copyright, m_copyrightbox, m_textfont, m_textcolor, m_loadingtextbox, m_loadingbarbox, m_progress);
+	if (m_bitmap.IsOk()) {
 		wxMemoryDC dcMem;
 		
 		bool hiColour = (wxDisplayDepth() >= 16);
@@ -132,8 +132,14 @@ void SplashScreen::render(wxDC &canvas) {
 			canvas.DrawRectangle(m_loadingbarbox);
 			
 			canvas.SetPen(*wxTRANSPARENT_PEN);
+			wxColor halfopaque = wxColour(m_textcolor.Red(), m_textcolor.Green(), m_textcolor.Blue(), 127);
+			canvas.SetBrush(wxBrush(halfopaque));
+			int right = m_loadingbarbox.GetWidth() * m_progress / 100.0;
+			if (right < 5) right = 5;
+			canvas.DrawRectangle(m_loadingbarbox.GetX() + 1, m_loadingbarbox.GetY() + 1, right - (m_progress == 100.0 ? 2 : 5), m_loadingbarbox.GetHeight() - 2);
 			canvas.SetBrush(wxBrush(m_textcolor));
-			canvas.DrawRectangle(m_loadingbarbox.GetX(), m_loadingbarbox.GetY() + 1, m_loadingbarbox.GetWidth()*m_progress/100.0, m_loadingbarbox.GetHeight() - 1);
+			if (right < 9) right = 9;
+			canvas.DrawRectangle(m_loadingbarbox.GetX() + 4, m_loadingbarbox.GetY() + 4, right - 9, m_loadingbarbox.GetHeight() - 9);
 		}
 		
 		if (m_bitmap.GetPalette() && !hiColour) dcMem.SetPalette(wxNullPalette);
