@@ -118,7 +118,7 @@ void MainApp::OnFatalException() {
 
 MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size): wxFrame(NULL, ID_Frame_Main, title, pos, size) {
 	ShowSplash(true);
-    splash->SetProgress(50);
+	splash->SetProgress(50);
 
 	wxBitmap lightpad_icon(getResourcePath("icons/icon_24.png"), wxBITMAP_TYPE_PNG);
 	SetIcon(wxIcon(getResourcePath(APP_ICON)));
@@ -170,8 +170,8 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	sizer->Add(m_tlp, 1, wxEXPAND | wxALL, PADDING);
 
 	m_parent->SetSizer(sizer);
-    
-    splash->Close();
+	
+	splash->Close();
 
 	Bind(FILE_SELECT, &MainFrame::OnSelectFile, this, ID_Frame_Main);
 }
@@ -192,9 +192,9 @@ void MainFrame::ShowSplash(bool loading) {
 	wxBitmap splash_image(getResourcePath("splash.png"), wxBITMAP_TYPE_PNG);
 	splash_image.UseAlpha();
 	wxRect loadingbox = loading ? wxRect(760, 860, 1088, 0) : wxRect(0, 0, 0, 0);
-    wxRect loadingbar = loading ? wxRect(810, 900, 988, 40) : wxRect(0, 0, 0, 0);
+	wxRect loadingbar = loading ? wxRect(810, 900, 988, 40) : wxRect(0, 0, 0, 0);
 	splash = new SplashScreen(this, ID_Frame_Splash, splash_image, copyright, wxRect(760, 540, 1088, 0), *wxWHITE, wxFont(wxFontInfo(32).Family(wxFONTFAMILY_SWISS).FaceName("Helvetica Neue")), loadingbox, loadingbar);
-    wxYield();
+	wxYield();
 }
 
 void MainFrame::OnAbout(wxCommandEvent &WXUNUSED(event)) {

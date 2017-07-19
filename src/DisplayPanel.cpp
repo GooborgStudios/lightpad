@@ -239,7 +239,7 @@ void DisplayPanel::render_buttons() {
 
 		Magick::Image current_button(*scaled_button_images[button_colors[i] + (128 * button_style)]);
 		lp_img->composite(current_button, buttonIndexToPos(btn_x),
-		                  buttonIndexToPos(btn_y),  Magick::OverCompositeOp);
+						  buttonIndexToPos(btn_y),  Magick::OverCompositeOp);
 
 		launchpad->setColor(i, button_colors[i]);
 	}
@@ -283,7 +283,7 @@ void DisplayPanel::render(wxDC &canvas) {
 		for (int y = 0; y < height; y++) {
 			color_sample = pixels[width * y + x];
 			out.SetRGB(x, y, color_sample.red() * 255, color_sample.green() * 255,
-			            color_sample.blue() * 255);
+						color_sample.blue() * 255);
 			out.SetAlpha(x, y, (1 - color_sample.alpha()) * 255);
 		}
 	}

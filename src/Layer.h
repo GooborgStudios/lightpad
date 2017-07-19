@@ -32,7 +32,7 @@ class Keyframe {
 		Keyframe();
 		Keyframe(std::string name, long time);
 	
-        virtual std::string serialize();
+		virtual std::string serialize();
 		void toBuffer(char *outbuf, int len);
 };
 

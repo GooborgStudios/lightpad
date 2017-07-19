@@ -23,19 +23,19 @@
 #include "Colors.h"
 
 #ifdef WINDOWS
-    #include <windows.h>
-    void usleep(__int64 usec) {
-        HANDLE timer;
-        LARGE_INTEGER ft;
+	#include <windows.h>
+	void usleep(__int64 usec) {
+		HANDLE timer;
+		LARGE_INTEGER ft;
 
-        // Convert to 100 nanosecond interval, negative value indicates relative time
-        ft.QuadPart = -(10 * usec);
+		// Convert to 100 nanosecond interval, negative value indicates relative time
+		ft.QuadPart = -(10 * usec);
 
-        timer = CreateWaitableTimer(NULL, TRUE, NULL);
-        SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
-        WaitForSingleObject(timer, INFINITE);
-        CloseHandle(timer);
-    }
+		timer = CreateWaitableTimer(NULL, TRUE, NULL);
+		SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
+		WaitForSingleObject(timer, INFINITE);
+		CloseHandle(timer);
+	}
 #endif
 
 Message::Message() {
@@ -179,7 +179,7 @@ void LaunchpadBase::beginColorUpdate() {
 
 void LaunchpadBase::endColorUpdate() {
 	if (!isConnected()) return;
-    color_update->append(2471, END_MSG);
+	color_update->append(2471, END_MSG);
 	sendMessage(*color_update);
 	delete color_update;
 }
@@ -239,7 +239,7 @@ void LaunchpadPro::setColor(unsigned char light, unsigned char color) {
 }
 
 void LaunchpadPro::setColor(unsigned char light,
-                            unsigned char red, unsigned char green, unsigned char blue) {
+							unsigned char red, unsigned char green, unsigned char blue) {
 	if (!isConnected()) return;
 	SysExMessage msg(11, light, red, green, blue, END_MSG);
 	sendMessage(msg);
@@ -283,7 +283,7 @@ void LaunchpadPro::displayText(unsigned int color, std::string text) {
 }
 
 void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
-                               std::string text) {
+							   std::string text) {
 	displayText(color, "/" + std::to_string(speed) + text);
 }
 
