@@ -57,6 +57,7 @@ class DisplayPanel: public wxPanel {
 		void colorButton(wxColourPickerEvent &event);
 		void selectButton(int button, bool state);
 		void selectButton(int x, int y, bool state);
+		void MagickToWx(wxImage *out, Magick::Image *image, const int offset_x = 0, const int offset_y = 0);
 
 		wxDECLARE_EVENT_TABLE();
 	private:

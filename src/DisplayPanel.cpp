@@ -233,9 +233,6 @@ void DisplayPanel::resize_images(int new_size) {
 
 void DisplayPanel::render_buttons() {
 	// Draw the buttons on the screen (and set Launchpad colors)
-	
-	//delete lp_img;
-	//lp_img = new Magick::Image(*scaled_base_image);
 
 	launchpad->beginColorUpdate();
 
@@ -244,9 +241,6 @@ void DisplayPanel::render_buttons() {
 		int btn_x = i % 10;
 		int btn_y = 9 - (i / 10);
 		int button_style = get_button_style(btn_x, btn_y);
-		
-		//fullres_button_halo_images[i] = new Magick::Image(button_halo_image);
-		//fullres_button_halo_images[i]->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * i, 0));
 		
 		if (changed_buttons[i]) {
 			Magick::Image base_crop(*scaled_base_image);
@@ -292,22 +286,8 @@ void DisplayPanel::render(wxDC &canvas) {
 
 	render_buttons();
 
-	// Derived from http://stackoverflow.com/questions/28151240/get-rgb-color-with-magick-using-c
-	int width = lp_img->columns();
-	int height = lp_img->rows();
-	Magick::PixelPacket *pixels = lp_img->getPixels(0, 0, width, height);
-	Magick::ColorRGB color_sample;
-	wxImage out(width, height);
-	out.SetAlpha();
-
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
-			color_sample = pixels[width * y + x];
-			out.SetRGB(x, y, color_sample.red() * 255, color_sample.green() * 255,
-						color_sample.blue() * 255);
-			out.SetAlpha(x, y, (1 - color_sample.alpha()) * 255);
-		}
-	}
+	wxImage out(lp_img->columns(), lp_img->rows());
+	MagickToWx(&out, lp_img);
 
 	canvas.DrawBitmap(wxBitmap(out), image_xpos, image_ypos);
 }
@@ -353,6 +333,24 @@ void DisplayPanel::selectButton(int button, bool state) {
 
 void DisplayPanel::selectButton(int x, int y, bool state) {
 	selectButton(x + (y * 10), state);
+}
+
+void DisplayPanel::MagickToWx(wxImage *out, Magick::Image *image, const int offset_x, const int offset_y) {
+	// Derived from http://stackoverflow.com/questions/28151240/get-rgb-color-with-magick-using-c
+	int width = image->columns();
+	int height = image->rows();
+	Magick::PixelPacket *pixels = image->getPixels(0, 0, width, height);
+	Magick::ColorRGB color_sample;
+	out->SetAlpha();
+	
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+			color_sample = pixels[width * y + x];
+			out->SetRGB(x+offset_x, y+offset_y, color_sample.red() * 255, color_sample.green() * 255,
+					   color_sample.blue() * 255);
+			out->SetAlpha(x+offset_x, y+offset_y, (1 - color_sample.alpha()) * 255);
+		}
+	}
 }
 
 wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
