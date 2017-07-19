@@ -123,7 +123,7 @@ void SplashScreen::render(wxDC &canvas) {
 		if (m_loadingtextbox.GetSize() != wxSize(0, 0)) {
 			canvas.SetTextForeground(m_textcolor);
 			canvas.SetFont(m_textfont);
-			canvas.DrawLabel("Loading...", m_loadingtextbox, wxALIGN_CENTER|wxALIGN_TOP);
+			canvas.DrawLabel(m_progresstext, m_loadingtextbox, wxALIGN_CENTER|wxALIGN_TOP);
 		}
 		
 		if (m_loadingbarbox.GetSize() != wxSize(0, 0)) {
