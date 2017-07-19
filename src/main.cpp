@@ -118,11 +118,12 @@ void MainApp::OnFatalException() {
 
 MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size): wxFrame(NULL, ID_Frame_Main, title, pos, size) {
 	ShowSplash(true);
-	splash->SetProgress(50);
-
+	
+	splash->SetProgress(0, "Initializing icon...");
 	wxBitmap lightpad_icon(getResourcePath("icons/icon_24.png"), wxBITMAP_TYPE_PNG);
 	SetIcon(wxIcon(getResourcePath(APP_ICON)));
 
+	splash->SetProgress(1, "Initializing menu...");
 	// Initialize the menubar and attach keyboard shortcuts
 	// wxWidgets automatically maps Ctrl to Cmd for us to enable cross-platform compatibility
 	menuBar = new wxMenuBar;
@@ -142,10 +143,12 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	menuBar->Append(menuHelp, "&Help");
 	SetMenuBar(menuBar);
 
+	splash->SetProgress(8, "Initializing status bar...");
 	// Bottom status bar
 	CreateStatusBar();
 	SetStatusText("Lightpad - Nightwave Studios");
 
+	splash->SetProgress(9, "Initializing toolbar...");
 	// Toolbar
 	toolbar = CreateToolBar(wxTB_FLAT);
 	toolbar->AddTool(ID_Menu_About, wxT("About"), lightpad_icon);
@@ -153,11 +156,16 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 
 	Centre(); // Center the window
 
+	splash->SetProgress(10, "Initializing panels...");
 	// Main window elements
 	m_parent = new wxPanel(this, ID_Panel_Main);
+	splash->SetProgress(20, "Loading File Panel...");
 	m_fp = new FilePanel(m_parent);
+	splash->SetProgress(30, "Loading Properties Panel...");
 	m_pp = new PropertiesPanel(m_parent);
+	splash->SetProgress(40, "Loading Display Panel...");
 	m_dp = new DisplayPanel(m_parent);
+	splash->SetProgress(90, "Loading Timeline Panel...");
 	m_tlp = new TimelinePanel(m_parent);
 
 	sizer = new wxBoxSizer(wxVERTICAL);
