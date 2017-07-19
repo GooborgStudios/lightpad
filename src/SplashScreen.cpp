@@ -30,13 +30,11 @@
 
 BEGIN_EVENT_TABLE(SplashScreen, wxFrame)
 	EVT_CLOSE(SplashScreen::OnCloseWindow)
-	#ifdef __WXGTK__
-		EVT_PAINT(SplashScreen::OnPaint)
-	#endif
+    EVT_PAINT(SplashScreen::OnPaint)
 	EVT_ERASE_BACKGROUND(SplashScreen::OnEraseBackground)
 END_EVENT_TABLE()
 
-static void DrawSplashBitmap(wxDC &canvas, const wxBitmap &bitmap, const wxString copyright, const wxRect copyrightbox, const wxFont copyrightfont, const wxColor copyrightcolor) {
+static void DrawSplashBitmap(wxDC &canvas, const wxBitmap &bitmap, const wxString copyright, const wxRect copyrightbox, const wxFont textfont, const wxColor textcolor, const wxRect loadingtextbox, const wxRect loadingbarbox, int progress) {
 	wxMemoryDC dcMem;
 	
 	bool hiColour = (wxDisplayDepth() >= 16);
@@ -47,10 +45,26 @@ static void DrawSplashBitmap(wxDC &canvas, const wxBitmap &bitmap, const wxStrin
 	dcMem.SelectObject(wxNullBitmap);
 	
 	if (copyright.size() > 0) {
-		canvas.SetTextForeground(copyrightcolor);
-		canvas.SetFont(copyrightfont);
+		canvas.SetTextForeground(textcolor);
+		canvas.SetFont(textfont);
         DrawWrappedText(std::string(copyright.c_str()), canvas, copyrightbox);
 	}
+	
+	if (loadingtextbox.GetSize() != wxSize(0, 0)) {
+		canvas.SetTextForeground(textcolor);
+		canvas.SetFont(textfont);
+		canvas.DrawLabel("Loading...", loadingtextbox, wxALIGN_CENTER|wxALIGN_TOP);
+	}
+    
+    if (loadingbarbox.GetSize() != wxSize(0, 0)) {
+        canvas.SetPen(wxPen(textcolor, 2));
+        canvas.SetBrush(*wxTRANSPARENT_BRUSH);
+        canvas.DrawRectangle(loadingbarbox);
+        
+        canvas.SetPen(*wxTRANSPARENT_PEN);
+        canvas.SetBrush(wxBrush(textcolor));
+        canvas.DrawRectangle(loadingbarbox.GetX(), loadingbarbox.GetY(), loadingbarbox.GetWidth()*progress/100, loadingbarbox.GetHeight());
+    }
 	
 	if (bitmap.GetPalette() && !hiColour) dcMem.SetPalette(wxNullPalette);
 }
@@ -59,7 +73,7 @@ SplashScreen::SplashScreen() {
 	Init();
 }
 
-SplashScreen::SplashScreen(wxWindow *parent, wxWindowID window_id, wxBitmap &bitmap, wxString copyright, wxRect copyrightbox, wxColor copyrightcolor, wxFont copyrightfont) : wxFrame() {
+SplashScreen::SplashScreen(wxWindow *parent, wxWindowID window_id, wxBitmap &bitmap, wxString copyright, wxRect copyrightbox, wxColor textcolor, wxFont textfont, wxRect loadingtextbox, wxRect loadingbarbox) : wxFrame() {
 	Create(parent, window_id, wxEmptyString, wxPoint(0,0), wxSize(100, 100), wxSIMPLE_BORDER | wxSTAY_ON_TOP | wxFRAME_TOOL_WINDOW | wxFRAME_NO_TASKBAR | wxTRANSPARENT_WINDOW);
 	
 	SetBackgroundColour(wxTransparentColor);
@@ -77,8 +91,12 @@ SplashScreen::SplashScreen(wxWindow *parent, wxWindowID window_id, wxBitmap &bit
 	m_bitmap = bitmap;
 	m_copyright = copyright;
 	m_copyrightbox = copyrightbox;
-	m_copyrightfont = copyrightfont;
-	m_copyrightcolor = copyrightcolor;
+	m_textfont = textfont;
+	m_textcolor = textcolor;
+	m_loadingtextbox = loadingtextbox;
+	m_loadingbarbox = loadingbarbox;
+    m_progress = 0;
+    m_progresstext = "Loading...";
 	
 	#if !defined(__WXGTK__) && wxUSE_PALETTE
 		bool hiColour = (wxDisplayDepth() >= 16);
@@ -103,25 +121,30 @@ void SplashScreen::OnNotify(wxTimerEvent &WXUNUSED(event)) {
 	Close(true);
 }
 
-void SplashScreen::OnPaint(wxPaintEvent &WXUNUSED(event)) {
-	wxPaintDC canvas(this);
-	canvas.SetBackgroundMode(wxTRANSPARENT);
-	canvas.SetBackground(*wxTRANSPARENT_BRUSH);
-	if (m_bitmap.IsOk()) DrawSplashBitmap(canvas, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
+void SplashScreen::OnEraseBackground(wxEraseEvent &event) {
+    if (event.GetDC() && m_bitmap.IsOk()) {
+        wxDC *canvas = event.GetDC();
+        render(*canvas);
+    } else {
+        wxClientDC canvas(this);
+        render(canvas);
+    }
 }
 
-void SplashScreen::OnEraseBackground(wxEraseEvent &event) {
-	if (event.GetDC() && m_bitmap.IsOk()) {
-		wxDC *canvas = event.GetDC();
-		canvas->SetBackgroundMode(wxTRANSPARENT);
-		canvas->SetBackground(*wxTRANSPARENT_BRUSH);
-		DrawSplashBitmap(*canvas, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
-	} else {
-		wxClientDC canvas(this);
-		canvas.SetBackgroundMode(wxTRANSPARENT);
-		canvas.SetBackground(*wxTRANSPARENT_BRUSH);
-		if (m_bitmap.IsOk()) DrawSplashBitmap(canvas, m_bitmap, m_copyright, m_copyrightbox, m_copyrightfont, m_copyrightcolor);
-	}
+void SplashScreen::OnPaint(wxPaintEvent &WXUNUSED(event)) {
+	wxPaintDC canvas(this);
+    render(canvas);
+}
+
+void SplashScreen::paintNow() {
+    wxClientDC canvas(this);
+    render(canvas);
+}
+
+void SplashScreen::render(wxDC &canvas) {
+    canvas.SetBackgroundMode(wxTRANSPARENT);
+    canvas.SetBackground(*wxTRANSPARENT_BRUSH);
+    if (m_bitmap.IsOk()) DrawSplashBitmap(canvas, m_bitmap, m_copyright, m_copyrightbox, m_textfont, m_textcolor, m_loadingtextbox, m_loadingbarbox, m_progress);
 }
 
 void SplashScreen::SetBitmap(wxBitmap &bitmap) {
@@ -148,20 +171,35 @@ wxRect SplashScreen::GetCopyrightBox() {
 	return m_copyrightbox;
 }
 
-void SplashScreen::SetCopyrightColor(wxColor copyrightcolor) {
-	m_copyrightcolor = copyrightcolor;
+void SplashScreen::SetTextColor(wxColor textcolor) {
+	m_textcolor = textcolor;
 }
 
-wxColor SplashScreen::GetCopyrightColor() {
-	return m_copyrightcolor;
+wxColor SplashScreen::GetTextColor() {
+	return m_textcolor;
 }
 
-void SplashScreen::SetCopyrightFont(wxFont copyrightfont) {
-	m_copyrightfont = copyrightfont;
+void SplashScreen::SetTextFont(wxFont textfont) {
+	m_textfont = textfont;
 }
 
-wxFont SplashScreen::GetCopyrightFont() {
-	return m_copyrightfont;
+wxFont SplashScreen::GetTextFont() {
+	return m_textfont;
+}
+
+void SplashScreen::SetProgress(int progress) {
+    m_progress = progress;
+    paintNow();
+}
+
+void SplashScreen::SetProgress(int progress, std::string progresstext) {
+    m_progress = progress;
+    m_progresstext = progresstext;
+    paintNow();
+}
+
+int SplashScreen::GetProgress() {
+    return m_progress;
 }
 
 int SplashScreen::FilterEvent(wxEvent &event) {

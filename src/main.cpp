@@ -50,7 +50,8 @@ class MainApp: public wxApp {
 class MainFrame: public wxFrame {
 	public:
 		MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size);
-		void ShowSplash();
+		void ShowSplash(bool loading = false);
+		SplashScreen *splash;
 		wxMenuBar *menuBar;
 		wxMenu *menuFile;
 		wxMenu *menuHelp;
@@ -116,7 +117,8 @@ void MainApp::OnFatalException() {
 }
 
 MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size): wxFrame(NULL, ID_Frame_Main, title, pos, size) {
-	ShowSplash();
+	ShowSplash(true);
+    splash->SetProgress(50);
 
 	wxBitmap lightpad_icon(getResourcePath("icons/icon_24.png"), wxBITMAP_TYPE_PNG);
 	SetIcon(wxIcon(getResourcePath(APP_ICON)));
@@ -168,6 +170,8 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	sizer->Add(m_tlp, 1, wxEXPAND | wxALL, PADDING);
 
 	m_parent->SetSizer(sizer);
+    
+    splash->Close();
 
 	Bind(FILE_SELECT, &MainFrame::OnSelectFile, this, ID_Frame_Main);
 }
@@ -183,12 +187,14 @@ void MainFrame::OnExit(wxCommandEvent &WXUNUSED(event)) {
 	}
 }
 
-void MainFrame::ShowSplash() {
+void MainFrame::ShowSplash(bool loading) {
 	std::string copyright = "© 2017 Nightwave Studios, GNU General Public License v3.0.  Programming by Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3.  App icon and display panel graphic by Vinyl Darkscratch.  Splash screen by Vinyl Darkscratch, drawing by Yogfan14, with brushes by Alberto Seveso.  Big thanks to the Launchpad community for making this program possible.";
 	wxBitmap splash_image(getResourcePath("splash.png"), wxBITMAP_TYPE_PNG);
 	splash_image.UseAlpha();
-	SplashScreen *splash = new SplashScreen(this, ID_Frame_Splash, splash_image, copyright, wxRect(760, 340, 1088, 478), *wxWHITE, wxFont(wxFontInfo(32).Family(wxFONTFAMILY_SWISS).FaceName("Helvetica Neue")));
-	wxYield();
+	wxRect loadingbox = loading ? wxRect(760, 860, 1088, 0) : wxRect(0, 0, 0, 0);
+    wxRect loadingbar = loading ? wxRect(810, 900, 988, 40) : wxRect(0, 0, 0, 0);
+	splash = new SplashScreen(this, ID_Frame_Splash, splash_image, copyright, wxRect(760, 540, 1088, 0), *wxWHITE, wxFont(wxFontInfo(32).Family(wxFONTFAMILY_SWISS).FaceName("Helvetica Neue")), loadingbox, loadingbar);
+    wxYield();
 }
 
 void MainFrame::OnAbout(wxCommandEvent &WXUNUSED(event)) {

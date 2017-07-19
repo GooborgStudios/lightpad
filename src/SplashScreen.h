@@ -22,13 +22,16 @@
 class SplashScreen: public wxFrame, public wxEventFilter {
 	public:
 		SplashScreen();
-		SplashScreen(wxWindow *parent, wxWindowID window_id, wxBitmap &bitmap, wxString copyright = "", wxRect copyrightbox = wxRect(0, 0, 0, 0), wxColor copyrightcolor = *wxBLACK, wxFont copyrightfont = wxFont());
+		SplashScreen(wxWindow *parent, wxWindowID window_id, wxBitmap &bitmap, wxString copyright = "", wxRect copyrightbox = wxRect(0, 0, 0, 0), wxColor copyrightcolor = *wxBLACK, wxFont copyrightfont = wxFont(), wxRect loadingtextbox = wxRect(0, 0, 0, 0), wxRect loadingbarbox = wxRect(0, 0, 0, 0));
 		virtual ~SplashScreen();
 
 		void OnCloseWindow(wxCloseEvent &event);
-		void OnNotify(wxTimerEvent &event);
+        void OnNotify(wxTimerEvent &event);
+        void OnEraseBackground(wxEraseEvent &event);
 		void OnPaint(wxPaintEvent &event);
-		void OnEraseBackground(wxEraseEvent &event);
+        void paintNow();
+    
+        void render(wxDC &canvas);
 		
 		void SetBitmap(wxBitmap &bitmap);
 		wxBitmap &GetBitmap();
@@ -39,11 +42,15 @@ class SplashScreen: public wxFrame, public wxEventFilter {
 		void SetCopyrightBox(wxRect copyrightbox);
 		wxRect GetCopyrightBox();
 
-		void SetCopyrightColor(wxColor copyrightcolor);
-		wxColor GetCopyrightColor();
+		void SetTextColor(wxColor textcolor);
+		wxColor GetTextColor();
 
-		void SetCopyrightFont(wxFont copyrightfont);
-		wxFont GetCopyrightFont();
+		void SetTextFont(wxFont textfont);
+		wxFont GetTextFont();
+    
+        void SetProgress(int progress);
+        void SetProgress(int progress, std::string progresstext);
+        int GetProgress();
 
 		virtual int FilterEvent(wxEvent &event);
 
@@ -51,8 +58,12 @@ class SplashScreen: public wxFrame, public wxEventFilter {
 		wxBitmap m_bitmap;
 		wxString m_copyright;
 		wxRect m_copyrightbox;
-		wxFont m_copyrightfont;
-		wxColor m_copyrightcolor;
+		wxFont m_textfont;
+		wxColor m_textcolor;
+		wxRect m_loadingtextbox;
+		wxRect m_loadingbarbox;
+        int m_progress;
+        std::string m_progresstext;
 
 		DECLARE_EVENT_TABLE()
 		wxDECLARE_NO_COPY_CLASS(SplashScreen);
