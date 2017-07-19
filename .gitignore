@@ -3,3 +3,4 @@
 *.plist
 build
 *.psd
+profiling_runs/
