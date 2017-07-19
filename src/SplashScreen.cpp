@@ -191,9 +191,8 @@ void SplashScreen::SetProgress(int progress) {
 }
 
 void SplashScreen::SetProgress(int progress, std::string progresstext) {
-    m_progress = progress;
     m_progresstext = progresstext;
-    paintNow();
+    SetProgress(progress);
 }
 
 int SplashScreen::GetProgress() {
