@@ -101,11 +101,6 @@ void SplashScreen::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 	render(canvas);
 }
 
-void SplashScreen::paintNow() {
-	wxClientDC canvas(this);
-	render(canvas);
-}
-
 void SplashScreen::render(wxDC &canvas) {
 	canvas.SetBackgroundMode(wxTRANSPARENT);
 	canvas.SetBackground(*wxTRANSPARENT_BRUSH);

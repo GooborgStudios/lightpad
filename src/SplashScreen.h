@@ -29,7 +29,6 @@ class SplashScreen: public wxFrame, public wxEventFilter {
 		void OnNotify(wxTimerEvent &event);
 		void OnEraseBackground(wxEraseEvent &event);
 		void OnPaint(wxPaintEvent &event);
-		void paintNow();
 	
 		void render(wxDC &canvas);
 		
