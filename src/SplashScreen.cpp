@@ -203,8 +203,9 @@ int SplashScreen::GetProgress() {
 
 int SplashScreen::FilterEvent(wxEvent &event) {
 	const wxEventType type = event.GetEventType();
-	if (type == wxEVT_KEY_DOWN || type == wxEVT_LEFT_DOWN || type == wxEVT_RIGHT_DOWN || type == wxEVT_MIDDLE_DOWN)
-		Close(true);
+	if (type == wxEVT_KEY_DOWN || type == wxEVT_LEFT_DOWN || type == wxEVT_RIGHT_DOWN || type == wxEVT_MIDDLE_DOWN) {
+		if (m_progress == 100.0 || m_loadingbarbox.GetSize() == wxSize(0, 0)) Close(true);
+	}
 	
 	return -1;
 }
