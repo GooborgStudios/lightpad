@@ -34,41 +34,6 @@ BEGIN_EVENT_TABLE(SplashScreen, wxFrame)
 	EVT_ERASE_BACKGROUND(SplashScreen::OnEraseBackground)
 END_EVENT_TABLE()
 
-static void DrawSplashBitmap(wxDC &canvas, const wxBitmap &bitmap, const wxString copyright, const wxRect copyrightbox, const wxFont textfont, const wxColor textcolor, const wxRect loadingtextbox, const wxRect loadingbarbox, int progress) {
-	wxMemoryDC dcMem;
-	
-	bool hiColour = (wxDisplayDepth() >= 16);
-	if (bitmap.GetPalette() && !hiColour) dcMem.SetPalette(* bitmap.GetPalette());
-	
-	dcMem.SelectObjectAsSource(bitmap);
-	canvas.Blit(0, 0, bitmap.GetWidth(), bitmap.GetHeight(), &dcMem, 0, 0, wxCOPY, true);
-	dcMem.SelectObject(wxNullBitmap);
-	
-	if (copyright.size() > 0) {
-		canvas.SetTextForeground(textcolor);
-		canvas.SetFont(textfont);
-        DrawWrappedText(std::string(copyright.c_str()), canvas, copyrightbox);
-	}
-	
-	if (loadingtextbox.GetSize() != wxSize(0, 0)) {
-		canvas.SetTextForeground(textcolor);
-		canvas.SetFont(textfont);
-		canvas.DrawLabel("Loading...", loadingtextbox, wxALIGN_CENTER|wxALIGN_TOP);
-	}
-    
-    if (loadingbarbox.GetSize() != wxSize(0, 0)) {
-        canvas.SetPen(wxPen(textcolor, 2));
-        canvas.SetBrush(*wxTRANSPARENT_BRUSH);
-        canvas.DrawRectangle(loadingbarbox);
-        
-        canvas.SetPen(*wxTRANSPARENT_PEN);
-        canvas.SetBrush(wxBrush(textcolor));
-        canvas.DrawRectangle(loadingbarbox.GetX(), loadingbarbox.GetY(), loadingbarbox.GetWidth()*progress/100, loadingbarbox.GetHeight());
-    }
-	
-	if (bitmap.GetPalette() && !hiColour) dcMem.SetPalette(wxNullPalette);
-}
-
 SplashScreen::SplashScreen() {
 	Init();
 }
@@ -144,7 +109,40 @@ void SplashScreen::paintNow() {
 void SplashScreen::render(wxDC &canvas) {
     canvas.SetBackgroundMode(wxTRANSPARENT);
     canvas.SetBackground(*wxTRANSPARENT_BRUSH);
-    if (m_bitmap.IsOk()) DrawSplashBitmap(canvas, m_bitmap, m_copyright, m_copyrightbox, m_textfont, m_textcolor, m_loadingtextbox, m_loadingbarbox, m_progress);
+    if (m_bitmap.IsOk()) {//DrawSplashBitmap(canvas, m_bitmap, m_copyright, m_copyrightbox, m_textfont, m_textcolor, m_loadingtextbox, m_loadingbarbox, m_progress);
+        wxMemoryDC dcMem;
+        
+        bool hiColour = (wxDisplayDepth() >= 16);
+        if (m_bitmap.GetPalette() && !hiColour) dcMem.SetPalette(* m_bitmap.GetPalette());
+        
+        dcMem.SelectObjectAsSource(m_bitmap);
+        canvas.Blit(0, 0, m_bitmap.GetWidth(), m_bitmap.GetHeight(), &dcMem, 0, 0, wxCOPY, true);
+        dcMem.SelectObject(wxNullBitmap);
+        
+        if (m_copyright.size() > 0) {
+            canvas.SetTextForeground(m_textcolor);
+            canvas.SetFont(m_textfont);
+            DrawWrappedText(std::string(m_copyright.c_str()), canvas, m_copyrightbox);
+        }
+        
+        if (m_loadingtextbox.GetSize() != wxSize(0, 0)) {
+            canvas.SetTextForeground(m_textcolor);
+            canvas.SetFont(m_textfont);
+            canvas.DrawLabel("Loading...", m_loadingtextbox, wxALIGN_CENTER|wxALIGN_TOP);
+        }
+        
+        if (m_loadingbarbox.GetSize() != wxSize(0, 0)) {
+            canvas.SetPen(wxPen(m_textcolor, 2));
+            canvas.SetBrush(*wxTRANSPARENT_BRUSH);
+            canvas.DrawRectangle(m_loadingbarbox);
+            
+            canvas.SetPen(*wxTRANSPARENT_PEN);
+            canvas.SetBrush(wxBrush(m_textcolor));
+            canvas.DrawRectangle(m_loadingbarbox.GetX(), m_loadingbarbox.GetY() + 1, m_loadingbarbox.GetWidth()*m_progress/100.0, m_loadingbarbox.GetHeight() - 1);
+        }
+        
+        if (m_bitmap.GetPalette() && !hiColour) dcMem.SetPalette(wxNullPalette);
+    }
 }
 
 void SplashScreen::SetBitmap(wxBitmap &bitmap) {
