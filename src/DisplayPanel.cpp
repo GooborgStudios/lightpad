@@ -249,7 +249,6 @@ void DisplayPanel::render_buttons() {
 		if (changed_buttons[i]) {
 			Magick::Image base_crop(*scaled_base_image);
 			base_crop.crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y)));
-			//lp_img->composite(base_crop, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y), Magick::OverCompositeOp);
 			
 			if (selected_buttons[i] || selected_buttons_box[i])
 				base_crop.composite(*scaled_button_halo_images[button_style], 0, 0, Magick::OverCompositeOp);
