@@ -38,6 +38,8 @@ def HSL2RGB(hue, saturation, luminosity):
 		blue = round(max(0, Hue2RGB(cc_p, cc_q, hue - 1 / 3.0) * 255))
 	return [int(red), int(green), int(blue)]
 
+
+
 # RGB<>HSV color conversion
 def RGB2HSV(red, green, blue):
 	max_val = max(red, green, blue)
@@ -55,6 +57,7 @@ def RGB2HSV(red, green, blue):
 		elif max_val == green: hue = (blue - red) / diff + 2.0
 		elif max_val == blue: hue = (red - green) / diff + 4.0
 		hue = hue / 6.0
+	return [hue, saturation, velocity]
 
 def HSV2RGB(hue, saturation, velocity):
 	cc_i = hue * 6.0
@@ -80,70 +83,74 @@ def HSV2RGB(hue, saturation, velocity):
 	elif i == 5:
 		green = velocity * (1.0 - saturation)
 		blue = velocity * (1.0 - cc_is)
+	return [red, green, blue]
 
-# # RGB<>CMYK color conversion
-# void ColorConverter::RGB2CMYK(double red, double green, double blue, double *cyan, double *magenta, double *yellow, double *black) {
-# 	*black = 1.0 - threeway_max(red, green, blue);
-# 	*cyan = (1.0 - red - *black) / (1.0 - *black);
-# 	*magenta = (1.0 - green - *black) / (1.0 - *black);
-# 	*yellow = (1.0 - blue - *black) / (1.0 - *black);
-# }
+# RGB<>CMYK color conversion
+def RGB2CMYK(red, green, blue):
+	black = 1.0 - _max(red, green, blue)
+	cyan = (1.0 - red - black) / (1.0 - black)
+	magenta = (1.0 - green - black) / (1.0 - black)
+	yellow = (1.0 - blue - black) / (1.0 - black)
+	return [cyan, magenta, yellow, black]
 
-# void ColorConverter::CMYK2RGB(double cyan, double magenta, double yellow, double black, double *red, double *green, double *blue) {
-# 	*red = (1.0 - cyan) / (1.0 - black);
-# 	*green = (1.0 - magenta) / (1.0 - black);
-# 	*blue = (1.0 - yellow) / (1.0 - black);
-# }
+def CMYK2RGB(cyan, magenta, yellow, black):
+	red = (1.0 - cyan) / (1.0 - black)
+	green = (1.0 - magenta) / (1.0 - black)
+	blue = (1.0 - yellow) / (1.0 - black)
+	return [red, green, blue]
 
-# # RGB<>YIQ color conversion
-# void ColorConverter::RGB2YIQ(double red, double green, double blue, double *yluma, double *inphase, double *quadrature) {
-# 	*yluma = 0.299 * red + 0.587 * green + 0.114 * blue;
-# 	*inphase = 0.569 * red - 0.275 * green - 0.322 * blue;
-# 	*quadrature = 0.211 * red - 0.523 * green + 0.312 * blue;
-# }
+# RGB<>YIQ color conversion
+def RGB2YIQ(red, green, blue):
+	yluma = 0.299 * red + 0.587 * green + 0.114 * blue
+	inphase = 0.569 * red - 0.275 * green - 0.322 * blue
+	quadrature = 0.211 * red - 0.523 * green + 0.312 * blue
+	return [yluma, inphase, quadrature]
 
-# void ColorConverter::YIQ2RGB(double yluma, double inphase, double quadrature, double *red, double *green, double *blue) {
-# 	*red = yluma + 0.956 * inphase + 0.621 * quadrature;
-# 	*green = yluma - 0.272 * inphase - 0.647 * quadrature;
-# 	*blue = yluma - 1.106 * inphase + 1.703 * quadrature;
-# }
+def YIQ2RGB(yluma, inphase, quadrature):
+	red = yluma + 0.956 * inphase + 0.621 * quadrature
+	green = yluma - 0.272 * inphase - 0.647 * quadrature
+	blue = yluma - 1.106 * inphase + 1.703 * quadrature
+	return [red, green, blue]
 
-# double ColorConverter::XYZ2H(double cc_q) {
-# 	if (cc_q > 0.008856) return pow(cc_q, 0.333333);
-# 	return 7.787 * cc_q + 0.137931;
-# }
+def XYZ2H(cc_q):
+	if cc_q > 0.008856: return cc_q**0.333333
+	return 7.787 * cc_q + 0.137931
 
-# # RGB<>XYZ color conversion
-# void ColorConverter::RGB2XYZ(int red, int green, int blue, double *xresponse, double *yluminance, double *zblue) {
-# 	double adapt = 0.003922;
-# 	*xresponse = (0.412424 * red + 0.357579 * green + 0.180464 * blue) * adapt;
-# 	*yluminance = (0.212656 * red + 0.715158 * green + 0.072186 * blue) * adapt;
-# 	*zblue = (0.019332 * red + 0.119193 * green + 0.950444 * blue) * adapt;
-# }
+# RGB<>XYZ color conversion
+def RGB2XYZ(red, green, blue):
+	adapt = 0.003922
+	xresponse = (0.412424 * red + 0.357579 * green + 0.180464 * blue) * adapt
+	yluminance = (0.212656 * red + 0.715158 * green + 0.072186 * blue) * adapt
+	zblue = (0.019332 * red + 0.119193 * green + 0.950444 * blue) * adapt
+	return [xresponse, yluminance, zblue]
 
-# void ColorConverter::XYZ2RGB(double xresponse, double yluminance, double zblue, int *red, int *green, int *blue) {
-# 	*red = xresponse * 3.080342  - yluminance * 1.537399 - zblue * 0.542943;
-# 	*green = xresponse * -0.921178 + yluminance * 1.87593  + zblue * 0.045248;
-# 	*blue = xresponse * 0.052881  - yluminance * 0.204011 + zblue * 1.15113;
-# }
+def XYZ2RGB(xresponse, yluminance, zblue):
+	red = xresponse * 3.080342 - yluminance * 1.537399 - zblue * 0.542943
+	green = xresponse * -0.921178 + yluminance * 1.87593 + zblue * 0.045248
+	blue = xresponse * 0.052881 - yluminance * 0.204011 + zblue * 1.15113
+	return [red, green, blue]
 
-# # XYZ<>LAB color conversion
-# void ColorConverter::XYZ2LAB(double xresponse, double yluminance, double zblue, double *luminosity, double *apoint, double *bpoint) {
-# 	*luminosity = 116 * ColorConverter::XYZ2H(yluminance) - 16;
-# 	*apoint = 500 * (ColorConverter::XYZ2H(xresponse / 0.950467) - ColorConverter::XYZ2H(yluminance));
-# 	*bpoint = 200 * (ColorConverter::XYZ2H(yluminance) - ColorConverter::XYZ2H(zblue / 1.088969));
-# }
+# XYZ<>LAB color conversion
+def XYZ2LAB(xresponse, yluminance, zblue):
+	luminosity = 116 * XYZ2H(yluminance) - 16
+	apoint = 500 * (XYZ2H(xresponse / 0.950467) - XYZ2H(yluminance))
+	bpoint = 200 * (XYZ2H(yluminance) - XYZ2H(zblue / 1.088969))
+	return [luminosity, apoint, bpoint]
 
-# void ColorConverter::LAB2XYZ(double luminosity, double apoint, double bpoint, double *xresponse, double *yluminance, double *zblue) {
-# 	double XRESPONSE, YLUMINANCE, ZBLUE;
-# 	YLUMINANCE = luminosity * (0.00862) + 0.137931;
-# 	XRESPONSE = apoint * (0.002) + YLUMINANCE;
-# 	ZBLUE = bpoint * (-0.005) + YLUMINANCE;
+def LAB2XYZ(luminosity, apoint, bpoint):
+	YLUMINANCE = luminosity * (0.00862) + 0.137931
+	XRESPONSE = apoint * (0.002) + YLUMINANCE
+	ZBLUE = bpoint * (-0.005) + YLUMINANCE
 
-# 	*xresponse = XRESPONSE > 0.206897 ? pow(XRESPONSE, 3) : XRESPONSE * (0.128419) - 0.017713;
-# 	*yluminance = luminosity > 8 ? pow(YLUMINANCE, 3) : luminosity * (0.00110705646);
-# 	*zblue = ZBLUE > 0.206897 ? pow(ZBLUE, 3) : ZBLUE * (0.128419) - 0.017713;
-# }
+	if XRESPONSE > 0.206897: xresponse = pow(XRESPONSE, 3)
+	else: xresponse = XRESPONSE * (0.128419) - 0.017713
+	if luminosity > 8: yluminance = pow(YLUMINANCE, 3)
+	else: yluminance = luminosity * (0.00110705646)
+	if ZBLUE > 0.206897: zblue = pow(ZBLUE, 3)
+	else: zblue = ZBLUE * (0.128419) - 0.017713
+	return [xresponse, yluminance, zblue]
+
+
 
 # # RGB<>XYZ<>LAB color conversion
 # void ColorConverter::RGB2LAB(int red, int green, int blue, double *luminosity, double *apoint, double *bpoint) {
