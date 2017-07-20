@@ -196,41 +196,34 @@ void DisplayPanel::play_next_frame(wxTimerEvent &WXUNUSED(event)) {
 }
 
 void DisplayPanel::resize_images(int new_size) {
+	if (new_size == image_size) return;
+
+	image_size = new_size;
 	scale = new_size / (MAXIMUM_LAUNCHPAD_IMAGE_SIZE * 1.0);
+	Magick::Geometry size(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale);
 
-	// Load the other resolutions of the image as needed
-	if (new_size != image_size) {
-		// int img_res = closest_two_power(new_size, MINIMUM_LAUNCHPAD_IMAGE_SIZE,
-		// 										MAXIMUM_LAUNCHPAD_IMAGE_SIZE);
-		// fullres_base_image->LoadFile(base_image_path, wxBITMAP_TYPE_PNG);
-		// launchpad_button_image->LoadFile(button_image_path, wxBITMAP_TYPE_PNG);
-
-		image_size = new_size;
-		Magick::Geometry size(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale);
-
-		for (int i = 0; i < 768; i++) {
-			delete scaled_button_images[i];
-			scaled_button_images[i] = new Magick::Image(*fullres_button_images[i]);
-			scaled_button_images[i]->scale(size);
-		}
-		
-		for (int i = 0; i < 6; i++) {
-			delete scaled_button_halo_images[i];
-			scaled_button_halo_images[i] = new Magick::Image(*fullres_button_halo_images[i]);
-			scaled_button_halo_images[i]->scale(size);
-		}
-		
-		delete scaled_base_image;
-		scaled_base_image = new Magick::Image(*fullres_base_image);
-		scaled_base_image->scale(Magick::Geometry(new_size, new_size));
-
-		delete lp_img;
-		lp_img = new wxImage(new_size, new_size);
-		lp_img->SetAlpha();
-		MagickToWx(lp_img, scaled_base_image);
-		
-		for (int i = 0; i < 100; i++) changed_buttons[i] = true;
+	for (int i = 0; i < 768; i++) {
+		delete scaled_button_images[i];
+		scaled_button_images[i] = new Magick::Image(*fullres_button_images[i]);
+		scaled_button_images[i]->scale(size);
 	}
+	
+	for (int i = 0; i < 6; i++) {
+		delete scaled_button_halo_images[i];
+		scaled_button_halo_images[i] = new Magick::Image(*fullres_button_halo_images[i]);
+		scaled_button_halo_images[i]->scale(size);
+	}
+	
+	delete scaled_base_image;
+	scaled_base_image = new Magick::Image(*fullres_base_image);
+	scaled_base_image->scale(Magick::Geometry(new_size, new_size));
+
+	delete lp_img;
+	lp_img = new wxImage(new_size, new_size);
+	lp_img->SetAlpha();
+	MagickToWx(lp_img, scaled_base_image);
+	
+	for (int i = 0; i < 100; i++) changed_buttons[i] = true;
 }
 
 void DisplayPanel::render_buttons() {
