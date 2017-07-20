@@ -75,7 +75,7 @@ class DisplayPanel: public wxPanel {
 		std::string base_image_path;
 		std::string button_image_path;
 		std::string button_halo_image_path;
-		int image_size = MAXIMUM_LAUNCHPAD_IMAGE_SIZE;
+		int image_size = 0;
 		double scale;
 		int panel_width = -1;
 		int panel_height = -1;
