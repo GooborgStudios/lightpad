@@ -225,7 +225,9 @@ void DisplayPanel::resize_images(int new_size) {
 		scaled_base_image->scale(Magick::Geometry(new_size, new_size));
 
 		delete lp_img;
-		lp_img = new Magick::Image(*scaled_base_image);
+		lp_img = new wxImage(new_size, new_size);
+		lp_img->SetAlpha();
+		MagickToWx(lp_img, scaled_base_image);
 		
 		for (int i = 0; i < 100; i++) changed_buttons[i] = true;
 	}
@@ -245,17 +247,18 @@ void DisplayPanel::render_buttons() {
 		if (changed_buttons[i]) {
 			Magick::Image base_crop(*scaled_base_image);
 			base_crop.crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y)));
-			lp_img->composite(base_crop, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y), Magick::OverCompositeOp);
+			//lp_img->composite(base_crop, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y), Magick::OverCompositeOp);
 			
 			if (selected_buttons[i] || selected_buttons_box[i])
-				lp_img->composite(*scaled_button_halo_images[button_style], buttonIndexToPos(btn_x), buttonIndexToPos(btn_y), Magick::OverCompositeOp);
+				base_crop.composite(*scaled_button_halo_images[button_style], 0, 0, Magick::OverCompositeOp);
 		
 			Magick::Image current_button(*scaled_button_images[button_colors[i] + (128 * button_style)]);
-			lp_img->composite(current_button, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y), Magick::OverCompositeOp);
-			
-			changed_buttons[i] = false;
+			base_crop.composite(current_button, 0, 0, Magick::OverCompositeOp);
 			
 			launchpad->setColor(i, button_colors[i]);
+			MagickToWx(lp_img, &base_crop, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y));
+			
+			changed_buttons[i] = false;
 		}
 	}
 
@@ -286,10 +289,7 @@ void DisplayPanel::render(wxDC &canvas) {
 
 	render_buttons();
 
-	wxImage out(lp_img->columns(), lp_img->rows());
-	MagickToWx(&out, lp_img);
-
-	canvas.DrawBitmap(wxBitmap(out), image_xpos, image_ypos);
+	canvas.DrawBitmap(wxBitmap(*lp_img), image_xpos, image_ypos);
 }
 
 int DisplayPanel::get_button_style(int btn_x, int btn_y) {
@@ -341,7 +341,6 @@ void DisplayPanel::MagickToWx(wxImage *out, Magick::Image *image, const int offs
 	int height = image->rows();
 	Magick::PixelPacket *pixels = image->getPixels(0, 0, width, height);
 	Magick::ColorRGB color_sample;
-	out->SetAlpha();
 	
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < height; y++) {

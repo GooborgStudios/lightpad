@@ -71,7 +71,7 @@ class DisplayPanel: public wxPanel {
 		Magick::Image *scaled_base_image;
 		Magick::Image *scaled_button_images[768];
 		Magick::Image *scaled_button_halo_images[6];
-		Magick::Image *lp_img;
+		wxImage *lp_img;
 		std::string base_image_path;
 		std::string button_image_path;
 		std::string button_halo_image_path;
