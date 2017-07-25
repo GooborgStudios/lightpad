@@ -42,6 +42,7 @@ class TimelinePanel: public wxHVScrolledWindow {
 		wxCoord OnGetRowHeight(size_t row) const;
 		wxCoord OnGetColumnWidth(size_t column) const;
 		int playhead;
+		wxPoint active_button;
 	
 	private:
 		wxPanel *m_parent;

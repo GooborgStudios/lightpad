@@ -35,6 +35,7 @@ TimelinePanel::TimelinePanel(wxPanel *parent): wxHVScrolledWindow(parent, ID_Pan
 	headersize = 30;
 	labelsize = 40;
 	ticksPerCol = activeProject->ticksPerBeat / 4;
+	active_button = wxPoint(0, 0);
 	
 	SetRowColumnCount(97, 1);
 	
@@ -65,6 +66,8 @@ void TimelinePanel::onLeftDown(wxMouseEvent &event) {
 	if (mousepos.y < headersize) {
 		headerclicked = true;
 		movePlayhead(btn.x * ticksPerCol);
+	} else {
+		active_button = btn;
 	}
 	
 	/*if (!event.ControlDown()) {
@@ -124,6 +127,12 @@ void TimelinePanel::render(wxDC &canvas) {
 	
 	render_header(canvas);
 	render_playhead(canvas);
+	
+	canvas.SetPen(wxPen(*wxBLACK, 2));
+	canvas.SetBrush(*wxWHITE_BRUSH);
+	int left = active_button.x * colsize + xpos;
+	int top = active_button.y * rowsize + ypos;
+	if (left >= labelsize && top >= headersize) canvas.DrawRectangle(left, top, colsize, rowsize);
 }
 
 void TimelinePanel::render_row(wxDC &canvas, std::string rowname, KeyframeSet *keyframes, wxRect bounding_box) {
