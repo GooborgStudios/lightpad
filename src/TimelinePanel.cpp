@@ -34,6 +34,7 @@ TimelinePanel::TimelinePanel(wxPanel *parent): wxHVScrolledWindow(parent, ID_Pan
 	colsize = 80;
 	headersize = 30;
 	labelsize = 40;
+	ticksPerCol = activeProject->ticksPerBeat / 4;
 	
 	SetRowColumnCount(97, 1);
 	
@@ -63,7 +64,7 @@ void TimelinePanel::onLeftDown(wxMouseEvent &event) {
 	wxPoint btn = mousepos_to_buttons(mousepos);
 	if (mousepos.y < headersize) {
 		headerclicked = true;
-		movePlayhead(btn.x * activeProject->ticksPerBeat / 4);
+		movePlayhead(btn.x * ticksPerCol);
 	}
 	
 	/*if (!event.ControlDown()) {
@@ -80,9 +81,9 @@ void TimelinePanel::onLeftDown(wxMouseEvent &event) {
 	} else {
 		if (btn.x == floor(btn.x) && btn.y == floor(btn.y)) selected_buttons[(int)(btn.x + (btn.y * 10))] = !selected_buttons[(int)(btn.x + (btn.y * 10))] ;
 		clickpos = mousepos;
-	}
+	}*/
 	
-	refreshNow();*/
+	paintNow();
 }
 
 void TimelinePanel::onMouseMove(wxMouseEvent &event) {
@@ -90,7 +91,7 @@ void TimelinePanel::onMouseMove(wxMouseEvent &event) {
 	
 	wxPoint mousepos = event.GetLogicalPosition(wxClientDC(this));
 	wxPoint btn = mousepos_to_buttons(mousepos);
-	if (headerclicked) movePlayhead(btn.x * activeProject->ticksPerBeat / 4);
+	if (headerclicked) movePlayhead(btn.x * ticksPerCol);
 
 	/*wxRealPoint btn = buttonAtCoords(mousepos);
 	wxRealPoint first_btn = buttonAtCoords(clickpos);
@@ -101,9 +102,9 @@ void TimelinePanel::onMouseMove(wxMouseEvent &event) {
 		for (int y = ceil(std::min(btn.y, first_btn.y)); y <= floor(std::max(btn.y, first_btn.y)); y++) {
 			selected_buttons_box[x + (y * 10)] = true;
 		}
-	}
+	}*/
 	
-	refreshNow();*/
+	//paintNow();
 }
 
 void TimelinePanel::onLeftUp(wxMouseEvent &WXUNUSED(event)) {
@@ -112,11 +113,13 @@ void TimelinePanel::onLeftUp(wxMouseEvent &WXUNUSED(event)) {
 
 void TimelinePanel::render(wxDC &canvas) {
 	int width = canvas.GetSize().GetX();
+	int xpos = labelsize-(GetVisibleBegin().GetCol()*colsize);
 	int ypos = headersize-(GetVisibleBegin().GetRow()*rowsize);
+	int cypos = ypos;
 	for (auto iter : activeProject->layer->keyframes) {
-		if (ypos >= headersize-rowsize) render_row(canvas, iter.first, iter.second, wxRect(0, ypos, width, rowsize));
-		ypos += rowsize;
-		if (ypos >= canvas.GetSize().GetY()) break;
+		if (cypos >= headersize-rowsize) render_row(canvas, iter.first, iter.second, wxRect(0, cypos, width, rowsize));
+		cypos += rowsize;
+		if (cypos >= canvas.GetSize().GetY()) break;
 	}
 	
 	render_header(canvas);
@@ -124,8 +127,6 @@ void TimelinePanel::render(wxDC &canvas) {
 }
 
 void TimelinePanel::render_row(wxDC &canvas, std::string rowname, KeyframeSet *keyframes, wxRect bounding_box) {
-	int colsPerBeat = 4;
-	int ticksPerCol = activeProject->ticksPerBeat / colsPerBeat;
 	int col1time = GetVisibleBegin().GetCol() * ticksPerCol;
 	int colNtime = GetVisibleEnd().GetCol() * ticksPerCol;
 	int lastCol = 0;
@@ -142,7 +143,7 @@ void TimelinePanel::render_row(wxDC &canvas, std::string rowname, KeyframeSet *k
 			// continue;
 		// }
 		// draw the box from 0 to iter->time with starting_velocity if it exists
-		double col = (time - col1time) / ticksPerCol;
+		double col = (time - col1time) / (ticksPerCol * 1.0);
 		if (col < 0.0) col = 0.0;
 		if (col > lastCol) lastCol = (int)(col);
 		int left = bounding_box.GetLeft()+labelsize+(col*colsize);
@@ -174,8 +175,14 @@ void TimelinePanel::render_header(wxDC &canvas) {
 	canvas.SetPen(*wxBLACK_PEN);
 	canvas.SetBrush(*wxTRANSPARENT_BRUSH);
 	
+    int beatsPerMeasure = 4;
+    // XXX Fix me to use ticksPerCol!
+    int colsPerBeat = activeProject->ticksPerBeat / ticksPerCol;
 	for (int x = labelsize; x < width; x += colsize) {
-		snprintf(buf, 7, "%d.%d.%d", col / 16 + 1, col / 4 % 4 + 1, col % 4 + 1);
+        int measure = col / (colsPerBeat * beatsPerMeasure) + 1;
+        int beat = col / colsPerBeat % beatsPerMeasure + 1;
+        int fb = col % colsPerBeat + 1;
+		snprintf(buf, 7, "%d.%d.%d", measure, beat, fb);
 		canvas.DrawLine(x, 0, x, headersize-2);
 		canvas.DrawText(buf, x+4, 0);
 		col++;
@@ -202,11 +209,11 @@ void TimelinePanel::nextBeat() {
 }
 
 void TimelinePanel::nextQuarterBeat() {
-	movePlayhead(playhead+(activeProject->ticksPerBeat / 4));
+	movePlayhead(playhead+ticksPerCol);
 }
 
 void TimelinePanel::movePlayhead(int time) {
-	int phCol = time / activeProject->ticksPerBeat * 4;
+	int phCol = time / ticksPerCol;
 	activeProject->seek(time);
 	
 	for (auto iter : activeProject->layer->keyframes) {

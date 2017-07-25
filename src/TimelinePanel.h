@@ -50,6 +50,7 @@ class TimelinePanel: public wxHVScrolledWindow {
 		int colsize;
 		int headersize;
 		int labelsize;
+		int ticksPerCol;
 		bool headerclicked = false;
 	
 		int playhead_in_pixels();
