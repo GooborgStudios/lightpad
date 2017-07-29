@@ -12,7 +12,6 @@
 
 #include "MidiFile.h"
 
-#include "Project.h"
 #include "MidiLayer.h"
 #include "NoteHelpers.h"
 
