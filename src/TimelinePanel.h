@@ -30,6 +30,7 @@ class TimelinePanel: public wxHVScrolledWindow {
 		void onLeftUp(wxMouseEvent &event);
 		void render(wxDC &canvas);
 		void render_row(wxDC &canvas, std::string rowname, KeyframeSet *keyframes, wxRect bounding_box);
+		std::string get_header_string(int col);
 		void render_header(wxDC &canvas);
 		void render_playhead(wxDC &canvas);
 		void nextBeat();

@@ -172,10 +172,23 @@ void TimelinePanel::render_row(wxDC &canvas, std::string rowname, KeyframeSet *k
 	canvas.DrawLine(bounding_box.GetBottomLeft(), bounding_box.GetBottomRight());
 }
 
+std::string TimelinePanel::get_header_string(int col) {
+	char buf[16];
+	int colsPerBeat = activeProject->ticksPerBeat / ticksPerCol;
+	
+	int measure = col / (colsPerBeat * activeProject->beatsPerMeasure) + 1;
+	int beat = col / colsPerBeat % activeProject->beatsPerMeasure + 1;
+	int fb = col % colsPerBeat + 1;
+	if (beat == 1 && fb == 1) snprintf(buf, sizeof(buf), "%d", measure);
+	else if (fb == 1) snprintf(buf, sizeof(buf), "%d.%d", measure, beat);
+	else snprintf(buf, sizeof(buf), "%d.%d.%d", measure, beat, fb);
+	
+	return std::string(buf);
+}
+
 void TimelinePanel::render_header(wxDC &canvas) {
 	int width = canvas.GetSize().GetX();
 	int col = GetVisibleBegin().GetCol();
-	char buf[16];
 	
 	canvas.SetPen(*wxTRANSPARENT_PEN);
 	canvas.SetBrush(*wxWHITE_BRUSH);
@@ -184,16 +197,9 @@ void TimelinePanel::render_header(wxDC &canvas) {
 	canvas.SetPen(*wxBLACK_PEN);
 	canvas.SetBrush(*wxTRANSPARENT_BRUSH);
 	
-    int beatsPerMeasure = 4;
-    // XXX Fix me to use ticksPerCol!
-    int colsPerBeat = activeProject->ticksPerBeat / ticksPerCol;
 	for (int x = labelsize; x < width; x += colsize) {
-        int measure = col / (colsPerBeat * beatsPerMeasure) + 1;
-        int beat = col / colsPerBeat % beatsPerMeasure + 1;
-        int fb = col % colsPerBeat + 1;
-		snprintf(buf, 7, "%d.%d.%d", measure, beat, fb);
 		canvas.DrawLine(x, 0, x, headersize-2);
-		canvas.DrawText(buf, x+4, 0);
+		canvas.DrawText(get_header_string(col), x+4, 0);
 		col++;
 	}
 	
