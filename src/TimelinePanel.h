@@ -15,7 +15,7 @@
 #include <wx/dcbuffer.h>
 #include <wx/vscroll.h>
 
-#include "Project.h"
+#include "LightpadProject.h"
 #include "MidiLayer.h"
 
 // Timeline panel

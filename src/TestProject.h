@@ -12,11 +12,11 @@
 	#include <wx/wx.h>
 #endif
 
-#include "Project.h"
+#include "LightpadProject.h"
 #include "Layer.h"
 
 
-class TestProject : public Project {
+class TestProject : public LightpadProject {
 	public:
 		TestProject();
 };

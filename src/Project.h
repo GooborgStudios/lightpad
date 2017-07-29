@@ -10,29 +10,22 @@
 #include <vector>
 #include <string>
 
-#include "MidiFile.h"
-
-#include "MidiLayer.h"
+#include "Layer.h"
 
 class Project {
-	private:
-		MidiFile *midifile;
-		std::string filePath;
+	protected:
+		std::string filePath = "";
 	
 	public:
-		Project(int BPM = 120, int ticksPerBeat = 32);
-		Project(std::string filePath);
+		int BPM = 120;
+		int ticksPerBeat = 32;
+		int beatsPerMeasure = 4;
+		long currentTime = 0;
 	
-		int BPM;
-		int ticksPerBeat;
-		MidiLayer *layer;
-		long currentTime;
+		std::vector<Layer *> layers;
 	
-		void pushButton(int tick, std::string button, unsigned char velocity);
-		int save();
-		int save(std::string filePath);
+		virtual int save()=0;
+		virtual int save(std::string filePath)=0;
 		void seek(long newTime);
 		void advanceFrame(long increment);
 };
-
-extern Project *activeProject;

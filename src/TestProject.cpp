@@ -15,12 +15,12 @@
 #include "Colors.h"
 #include "Helpers.h"
 #include "Launchpad.h"
-#include "Project.h"
+#include "LightpadProject.h"
 
 const int COLS = 32;
 const int ROWS = 96;
 
-TestProject::TestProject() : Project(120, 32) {
+TestProject::TestProject() : LightpadProject(120, 32) {
 	Color rainbow[18];
 	for (int j = 0; j < 18; j++) {
 		int red = 0, grn = 0, blu = 0;
@@ -36,7 +36,6 @@ TestProject::TestProject() : Project(120, 32) {
 	int btn_x = 0;
 	int btn_y = 9;
 	
-	layer = new MidiLayer();
 	for (int row = 0; row < ROWS; row++) {
 		btn_x++;
 		if (row == 8 || row == 88) btn_x++;
@@ -49,5 +48,4 @@ TestProject::TestProject() : Project(120, 32) {
 			layer->AddKeyframe(new NoteKeyframe(btn_x + (btn_y * 10), col*ticksPerBeat, get_closest_velocity(rainbow[(btn_x + btn_y + col) % 18])));
 		}
 	}
-//	layer->seek(0.0);
 }

@@ -29,7 +29,7 @@
 #include "Helpers.h"
 #include "Launchpad.h"
 #include "Colors.h"
-#include "Project.h"
+#include "LightpadProject.h"
 #include "TimelinePanel.h"
 
 const float button_pos[10] = {0.113525390625, 0.199462890625, 0.277587890625, 0.355712890625, 0.433837890625, 0.511962890625, 0.590087890625, 0.668212890625, 0.746337890625, 0.832275390625};

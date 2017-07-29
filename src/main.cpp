@@ -21,7 +21,7 @@
 
 #include "ElementIDs.h"
 #include "Helpers.h"
-#include "Project.h"
+#include "LightpadProject.h"
 #include "TestProject.h"
 #include "FilePanel.h"
 #include "DisplayPanel.h"
@@ -33,7 +33,7 @@
 #define wxUSE_ON_FATAL_EXCEPTION 1
 #define PADDING 0
 
-Project *activeProject = new TestProject();
+LightpadProject *activeProject = new TestProject();
 
 class MainFrame;
 
@@ -210,7 +210,7 @@ void MainFrame::OnAbout(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void MainFrame::OnSelectFile(wxCommandEvent &event) {
-	activeProject = new Project(event.GetString().ToStdString());
+	activeProject = new LightpadProject(event.GetString().ToStdString());
 	m_tlp->movePlayhead(0);
 }
 

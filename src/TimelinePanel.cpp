@@ -17,7 +17,7 @@
 #include <wx/clrpicker.h>
 
 #include "ElementIDs.h"
-#include "Project.h"
+#include "LightpadProject.h"
 #include "Layer.h"
 #include "MidiLayer.h"
 #include "Launchpad.h"

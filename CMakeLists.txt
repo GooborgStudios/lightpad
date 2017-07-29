@@ -53,6 +53,7 @@ add_executable(lightpad
 	${SRC}/MidiLayer.cpp ${SRC}/MidiLayer.h
 	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
 	${SRC}/Project.cpp ${SRC}/Project.h
+	${SRC}/LightpadProject.cpp ${SRC}/LightpadProject.h
 	${SRC}/PropertiesPanel.cpp ${SRC}/PropertiesPanel.h
 	${SRC}/TestProject.cpp ${SRC}/TestProject.h
 	${SRC}/TimelinePanel.cpp ${SRC}/TimelinePanel.h
@@ -69,6 +70,7 @@ add_executable(timeline
 	${SRC}/Layer.cpp ${SRC}/Layer.h
 	${SRC}/MidiLayer.cpp ${SRC}/MidiLayer.h
 	${SRC}/Project.cpp ${SRC}/Project.h
+	${SRC}/LightpadProject.cpp ${SRC}/LightpadProject.h
 	${SRC}/TestProject.cpp ${SRC}/TestProject.h
 	${SRC}/TimelinePanel.cpp ${SRC}/TimelinePanel.h
 )
