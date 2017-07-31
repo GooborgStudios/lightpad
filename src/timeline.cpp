@@ -20,14 +20,14 @@
 
 #include "ElementIDs.h"
 #include "Helpers.h"
-#include "Project.h"
+#include "LightpadProject.h"
 #include "TestProject.h"
 #include "TimelinePanel.h"
 
 #define wxUSE_ON_FATAL_EXCEPTION 1
 #define PADDING 0
 
-Project *activeProject = new TestProject();
+LightpadProject *activeProject = new TestProject();
 
 // Main app
 class MainApp: public wxApp {
