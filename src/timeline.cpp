@@ -51,16 +51,14 @@ class MainFrame: public wxFrame {
 wxIMPLEMENT_APP(MainApp);
 
 bool MainApp::OnInit() {
-	MainFrame *frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800,600));
-	frame->SetMinSize(wxSize(800,600));
+	MainFrame *frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(800, 600));
+	frame->SetMinSize(wxSize(800, 600));
 	frame->Show(true);
  
 	return true;
 }
 
-MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size)
-: wxFrame(NULL, wxID_ANY, title, pos, size) {
- 
+MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size) : wxFrame(NULL, wxID_ANY, title, pos, size) {
 	SetIcon(wxIcon(getResourcePath(APP_ICON)));
  
 	// Menubar
@@ -88,8 +86,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	toolbar->AddTool(wxID_EXIT, wxT("Exit Application"), exit);
 	toolbar->Realize();
  
-	Connect(wxID_EXIT, wxEVT_COMMAND_TOOL_CLICKED,
-			wxCommandEventHandler(MainFrame::OnExit));
+	Connect(wxID_EXIT, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(MainFrame::OnExit));
  
 	Centre();
  
