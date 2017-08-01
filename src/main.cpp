@@ -116,7 +116,7 @@ void MainApp::OnFatalException() {
 	if (preview.Show(report)) report.Process();
 }
 
-MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size): wxFrame(NULL, ID_Frame_Main, title, pos, size) {
+MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size) : wxFrame(NULL, ID_Frame_Main, title, pos, size) {
 	ShowSplash(true);
 	
 	splash->SetProgress(0, "Initializing icon...");
@@ -164,7 +164,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	splash->SetProgress(30, "Loading Properties Panel...");
 	m_pp = new PropertiesPanel(m_parent);
 	splash->SetProgress(40, "Loading Display Panel...");
-	m_dp = new DisplayPanel(m_parent);
+	m_dp = new DisplayPanel(m_parent, splash);
 	splash->SetProgress(90, "Loading Timeline Panel...");
 	m_tlp = new TimelinePanel(m_parent);
 

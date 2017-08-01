@@ -21,21 +21,18 @@
 #include "Helpers.h"
 #include "Colors.h"
 #include "Project.h"
+#include "SplashScreen.h"
 
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
 #define MINIMUM_LAUNCHPAD_IMAGE_SIZE 128
 #define MAXIMUM_LAUNCHPAD_BUTTON_SIZE 286
 #define DISPLAY_LEFT_MARGIN 0.113525390625
 #define DISPLAY_BUTTON_PADDING 0.078125
-// #define BUTTON_RATIO 0.06982421875
-
-// #define ANIMATED_BUTTON_COLOR
-// #define RAINBOW_BUTTON_COLOR
 
 // Graphical interface panel
 class DisplayPanel: public wxPanel {
 	public:
-		DisplayPanel(wxPanel *parent);
+		DisplayPanel(wxPanel *parent, SplashScreen *splash);
 		~DisplayPanel();
 		void paintEvent(wxPaintEvent &event);
 		void paintNow();

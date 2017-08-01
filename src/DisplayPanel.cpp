@@ -31,12 +31,13 @@
 #include "Colors.h"
 #include "LightpadProject.h"
 #include "TimelinePanel.h"
+#include "SplashScreen.h"
 
 const float button_pos[10] = {0.113525390625, 0.199462890625, 0.277587890625, 0.355712890625, 0.433837890625, 0.511962890625, 0.590087890625, 0.668212890625, 0.746337890625, 0.832275390625};
 const float button_size = 0.06982421875;
 
 // Initialize the file panel and it's elements
-DisplayPanel::DisplayPanel(wxPanel *parent): wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+DisplayPanel::DisplayPanel(wxPanel *parent, SplashScreen *splash): wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 	m_timer = new wxTimer(this, ID_DisplayPanel_Timer);
 
@@ -56,6 +57,8 @@ DisplayPanel::DisplayPanel(wxPanel *parent): wxPanel(parent, ID_Panel_Display, w
 	
 	scale = 1.0;
 	
+	splash->SetProgress(45, "Loading buttons...");
+	
 	for (int j = 0; j < 6; j++) {
 		Magick::Image *fullres_button_image = new Magick::Image(button_image);
 		fullres_button_image->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * j, 0));
@@ -72,6 +75,8 @@ DisplayPanel::DisplayPanel(wxPanel *parent): wxPanel(parent, ID_Panel_Display, w
 		
 		delete fullres_button_image;
 	}
+	
+	splash->SetProgress(80, "Loading button halos...");
 		
 	for (int i = 0; i < 6; i++) {
 		fullres_button_halo_images[i] = new Magick::Image(button_halo_image);
