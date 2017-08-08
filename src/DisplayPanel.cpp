@@ -320,15 +320,15 @@ float DisplayPanel::buttonPosToIndex(float pos) {
 	return idx + 0.5;
 }
 
-void DisplayPanel::colorButton(int button, wxColor color) {
+void DisplayPanel::colorButton(int button, int color) {
 	if (button < 1 || button > 98 || button == 9 || button == 90) return;
-	button_colors[button] = get_closest_velocity(color);
+	button_colors[button] = color;
 	changed_buttons[button] = true;
 }
 
 void DisplayPanel::colorButtons(wxCommandEvent &event) {
 	for (auto iter : activeProject->layer->keyframes) {
-		colorButton(std::stoi(iter.first), velocitycolors[activeProject->layer->getVelocity(iter.first)]);
+		colorButton(std::stoi(iter.first), activeProject->layer->getVelocity(iter.first));
 	}
 	
 	refreshNow();

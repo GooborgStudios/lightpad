@@ -50,7 +50,7 @@ class DisplayPanel: public wxPanel {
 		int get_button_style(int btn_x, int btn_y);
 		float buttonIndexToPos(int index);
 		float buttonPosToIndex(float pos);
-		void colorButton(int button, wxColor color);
+		void colorButton(int button, int color);
 		void colorButtons(wxCommandEvent &event);
 		void selectButton(int button, bool state);
 		void selectButton(int x, int y, bool state);
