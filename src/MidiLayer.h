@@ -16,7 +16,7 @@
 
 #include "Layer.h"
 
-class NoteKeyframe: public Keyframe {
+class NoteKeyframe: public HOWL::Keyframe {
 	public:
 		unsigned char velocity;
 		NoteKeyframe(int name, long time, unsigned char velocity);
@@ -24,7 +24,7 @@ class NoteKeyframe: public Keyframe {
 		void render(wxDC &canvas, wxRect bounding_box);
 };
 
-class MidiLayer: public Layer {
+class MidiLayer: public HOWL::Layer {
 	public:
 		unsigned char getVelocity(int position);
 		unsigned char getVelocity(std::string position);

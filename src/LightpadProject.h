@@ -19,7 +19,7 @@
 #include "Project.h"
 #include "MidiLayer.h"
 
-class LightpadProject: public Project {
+class LightpadProject: public HOWL::Project {
 	private:
 		MidiFile *midifile;
 		void pushButton(int tick, std::string button, unsigned char velocity);

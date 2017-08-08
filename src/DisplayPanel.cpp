@@ -85,7 +85,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent, SplashScreen *splash): wxPanel(paren
 
 	paintNow();
 
-	Bind(DISPLAY_REFRESH, &DisplayPanel::refreshNow, this, ID_TimelinePanel_CellSelect);
+	Bind(HOWL::DISPLAY_REFRESH, &DisplayPanel::refreshNow, this, ID_TimelinePanel_CellSelect);
 }
 
 DisplayPanel::~DisplayPanel() {
@@ -370,6 +370,6 @@ wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
 	EVT_SIZE(DisplayPanel::onSize)
 	EVT_MENU(ID_Menu_PlayPause, DisplayPanel::startstop)
 	EVT_TIMER(ID_DisplayPanel_Timer, DisplayPanel::play_next_frame)
-	EVT_COMMAND(ID_Panel_Display, PLAYHEAD_MOVED, DisplayPanel::colorButtons)
-	EVT_COMMAND(ID_Panel_Display, DISPLAY_REFRESH, DisplayPanel::refreshNow)
+	EVT_COMMAND(ID_Panel_Display, HOWL::PLAYHEAD_MOVED, DisplayPanel::colorButtons)
+	EVT_COMMAND(ID_Panel_Display, HOWL::DISPLAY_REFRESH, DisplayPanel::refreshNow)
 wxEND_EVENT_TABLE()

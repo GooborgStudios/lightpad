@@ -1,8 +1,8 @@
 //
-// Lightpad - TimelinePanel.cpp
+// HOWL - Music-synced animation library
+// File: TimelinePanel.cpp
 // ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
-// Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// https://www.nightwave.co
 //
 
 #include "TimelinePanel.h"
@@ -23,8 +23,10 @@
 #include "Launchpad.h"
 #include "DisplayPanel.h"
 
-wxDEFINE_EVENT(DISPLAY_REFRESH, wxCommandEvent);
-wxDEFINE_EVENT(PLAYHEAD_MOVED, wxCommandEvent);
+using namespace HOWL;
+
+wxDEFINE_EVENT(HOWL::DISPLAY_REFRESH, wxCommandEvent);
+wxDEFINE_EVENT(HOWL::PLAYHEAD_MOVED, wxCommandEvent);
 
 TimelinePanel::TimelinePanel(wxPanel *parent): wxHVScrolledWindow(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, 250), wxBORDER_SUNKEN) {
 	m_parent = parent;

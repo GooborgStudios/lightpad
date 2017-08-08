@@ -60,7 +60,7 @@ class MainFrame: public wxFrame {
 		FilePanel *m_fp;
 		PropertiesPanel *m_pp;
 		DisplayPanel *m_dp;
-		TimelinePanel *m_tlp;
+		HOWL::TimelinePanel *m_tlp;
 		wxBoxSizer *top_half;
 		wxBoxSizer *sizer;
 	private:
@@ -166,7 +166,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	splash->SetProgress(40, "Loading Display Panel...");
 	m_dp = new DisplayPanel(m_parent, splash);
 	splash->SetProgress(90, "Loading Timeline Panel...");
-	m_tlp = new TimelinePanel(m_parent);
+	m_tlp = new HOWL::TimelinePanel(m_parent);
 
 	sizer = new wxBoxSizer(wxVERTICAL);
 	top_half = new wxBoxSizer(wxHORIZONTAL);

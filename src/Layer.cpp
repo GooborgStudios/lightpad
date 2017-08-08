@@ -1,8 +1,8 @@
 //
-// Lightpad - Layer.cpp
+// HOWL - Music-synced animation library
+// File: Layer.cpp
 // ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
-// Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// https://www.nightwave.co
 //
 
 #include "Layer.h"
@@ -25,6 +25,8 @@
 
 #include "Helpers.h"
 #include "Project.h"
+
+using namespace HOWL;
 
 Keyframe::Keyframe() {
 
