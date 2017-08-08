@@ -40,7 +40,7 @@ class MainFrame: public wxFrame {
 	public:
 		MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size);
 		wxPanel *m_parent;
-		TimelinePanel *m_tlp;
+		HOWL::TimelinePanel *m_tlp;
 		wxToolBar *toolbar;
 	
 	private:
@@ -93,7 +93,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	// Main window elements
 	m_parent = new wxPanel(this, wxID_ANY);
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-	m_tlp = new TimelinePanel(m_parent);
+	m_tlp = new HOWL::TimelinePanel(m_parent);
 	sizer->Add(m_tlp, 1, wxEXPAND | wxALL, PADDING);
 	m_parent->SetSizer(sizer);
 }
