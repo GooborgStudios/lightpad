@@ -1,6 +1,6 @@
 //
 // Nightwave Global - Helpers.h
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
 // https://www.nightwave.co/
 //
 
@@ -41,4 +41,3 @@ double threeway_min(double val_a, double val_b, double val_c);
 int threeway_min(int val_a, int val_b, int val_c);
 double clamp(double val, double min, double max);
 int clamp(int val, int min, int max);
-int closest_two_power(int current_size, int min_range, int max_range);

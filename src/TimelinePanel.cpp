@@ -1,6 +1,6 @@
 //
 // Lightpad - TimelinePanel.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //

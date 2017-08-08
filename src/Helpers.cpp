@@ -1,6 +1,6 @@
 //
 // Nightwave Global - Helpers.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105.
+// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
 // https://www.nightwave.co/
 //
 
@@ -72,19 +72,4 @@ double clamp(double val, double min, double max) {
 
 int clamp(int val, int min, int max) {
 	return std::max(min, std::min(val, max));
-}
-
-// closest_two_power() written by Eric Busch (Origami1105) on 1/19/2017
-int closest_two_power(int current_size, int min_range, int max_range) {
-	int pow_two = 1, power = 1;
-
-	while (true) {
-		// increment the power of 2 if the value is still smaller
-		// than current_size, if it is no longer smaller than
-		// current_size, set success to true so that the loop ends
-		if ((pow_two < min_range) || (pow_two < max_range && pow_two < current_size))
-			pow_two = pow(2, power++);
-		else
-			return pow_two;
-	}
 }
