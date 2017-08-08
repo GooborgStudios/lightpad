@@ -101,3 +101,5 @@ class Layer {
 };
 
 typedef std::vector<Layer *>::iterator LayerIterator;
+
+bool is_sooner(Keyframe *a, Keyframe *b);

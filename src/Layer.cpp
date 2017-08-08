@@ -183,3 +183,7 @@ std::string *Layer::getString(std::string type) {
 	if (keyframes[type]->getFirst() == NULL) return new std::string("");
 	return ((StringKeyframe *)(keyframes[type]->getFirst()))->value;
 }
+
+bool is_sooner(Keyframe *a, Keyframe *b) {
+	return a->time < b->time;
+}
