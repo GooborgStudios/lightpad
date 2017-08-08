@@ -7,9 +7,15 @@
 
 #include "MidiLayer.h"
 
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+	#include <wx/wx.h>
+#endif
+
 #include <string>
 
 #include "Helpers.h"
+#include "Launchpad.h"
 #include "Layer.h"
 
 NoteKeyframe::NoteKeyframe(int name, long time, unsigned char velocity) : Keyframe(to_padded_string(name, 2), time) {
@@ -18,6 +24,14 @@ NoteKeyframe::NoteKeyframe(int name, long time, unsigned char velocity) : Keyfra
 
 std::string NoteKeyframe::serialize() {
 	return std::string("");
+}
+
+void NoteKeyframe::render(wxDC &canvas, wxRect bounding_box) {
+	canvas.SetPen(*wxBLACK_PEN);
+	canvas.DrawLine(bounding_box.GetLeft(), bounding_box.GetTop(), bounding_box.GetLeft(), bounding_box.GetHeight());
+	canvas.SetPen(*wxTRANSPARENT_PEN);
+	canvas.SetBrush(wxBrush(velocitycolors[this->velocity]));
+	canvas.DrawRectangle(bounding_box.GetLeft(), bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
 }
 
 unsigned char MidiLayer::getVelocity(int position) {

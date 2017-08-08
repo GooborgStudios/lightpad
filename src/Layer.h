@@ -7,6 +7,11 @@
 
 #pragma once
 
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+	#include <wx/wx.h>
+#endif
+
 #include <string>
 #include <algorithm>
 #include <vector>
@@ -34,6 +39,8 @@ class Keyframe {
 	
 		virtual std::string serialize();
 		void toBuffer(char *outbuf, int len);
+	
+		virtual void render(wxDC &canvas, wxRect bounding_box);
 };
 
 typedef std::vector<Keyframe *>::iterator KeyframeIterator;

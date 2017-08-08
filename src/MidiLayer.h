@@ -7,6 +7,11 @@
 
 #pragma once
 
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+	#include <wx/wx.h>
+#endif
+
 #include <string>
 
 #include "Layer.h"
@@ -16,6 +21,7 @@ class NoteKeyframe: public Keyframe {
 		unsigned char velocity;
 		NoteKeyframe(int name, long time, unsigned char velocity);
 		std::string serialize();
+		void render(wxDC &canvas, wxRect bounding_box);
 };
 
 class MidiLayer: public Layer {

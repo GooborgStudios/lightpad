@@ -119,10 +119,14 @@ void TimelinePanel::render(wxDC &canvas) {
 	int xpos = labelsize-(GetVisibleBegin().GetCol()*colsize);
 	int ypos = headersize-(GetVisibleBegin().GetRow()*rowsize);
 	int cypos = ypos;
-	for (auto iter : activeProject->layer->keyframes) {
-		if (cypos >= headersize-rowsize) render_row(canvas, iter.first, iter.second, wxRect(0, cypos, width, rowsize));
-		cypos += rowsize;
-		if (cypos >= canvas.GetSize().GetY()) break;
+	for ( auto l: activeProject->layers) {
+		if ( true /* l->isExpanded */ ) {
+			for (auto kf : l->keyframes) {
+				if (cypos >= headersize-rowsize) render_row(canvas, kf.first, kf.second, wxRect(0, cypos, width, rowsize));
+				cypos += rowsize;
+				if (cypos >= canvas.GetSize().GetY()) break;
+			}
+		}
 	}
 	
 	render_header(canvas);
@@ -145,7 +149,6 @@ void TimelinePanel::render_row(wxDC &canvas, std::string rowname, KeyframeSet *k
 	
 	for (auto iter: keyframes->keyframes) {
 		auto time = iter->time;
-		int velocity = ((NoteKeyframe *)(iter))->velocity;
 		// XXX Need to check currently active keyframes, not just keyframes starting before first column time
 		//if (time < (col1time - activeProject->ticksPerBeat)) {
 			// starting_velocity = velocity;
@@ -156,11 +159,10 @@ void TimelinePanel::render_row(wxDC &canvas, std::string rowname, KeyframeSet *k
 		if (col < 0.0) col = 0.0;
 		if (col > lastCol) lastCol = (int)(col);
 		int left = bounding_box.GetLeft()+labelsize+(col*colsize);
-		canvas.SetPen(*wxBLACK_PEN);
-		canvas.DrawLine(left, bounding_box.GetTop(), left, bounding_box.GetHeight());
-		canvas.SetPen(*wxTRANSPARENT_PEN);
-		canvas.SetBrush(wxBrush(velocitycolors[velocity]));
-		canvas.DrawRectangle(left, bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
+
+		wxRect kfbox(bounding_box);
+		kfbox.SetLeft(left);
+		iter->render(canvas, kfbox);
 	}
 	
 	if (lastCol > GetColumnCount()) SetColumnCount(lastCol);

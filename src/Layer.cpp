@@ -7,6 +7,11 @@
 
 #include "Layer.h"
 
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+	#include <wx/wx.h>
+#endif
+
 #include <sys/time.h>
 #include <string>
 #include <sstream>
@@ -38,6 +43,10 @@ std::string Keyframe::serialize() {
 void Keyframe::toBuffer(char *outbuf, int len) {
 //	snprintf(outbuf, len, "keyframe %s %f %s %s %d\n", this->parent->description.c_str(), this->time, this->name.c_str(), this->serialize().c_str(), this->smoother);
 	snprintf(outbuf, len, "");
+}
+
+void Keyframe::render(wxDC &canvas, wxRect bounding_box) {
+	
 }
 
 DoubleKeyframe::DoubleKeyframe(std::string name, long time, double value) : Keyframe(name, time) {
