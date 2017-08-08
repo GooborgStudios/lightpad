@@ -46,17 +46,17 @@ def RGB2HSV(red, green, blue):
 	min_val = min(red, green, blue)
 	diff = max_val - min_val
 	velocity = max_val
-	if max_val == 0.0: saturation = 0.0
+	if max_val == 0: saturation = 0
 	else: saturation = diff / max_val
 
-	if max_val == min_val: hue = 0.0
+	if max_val == min_val:
+		hue = 0
 	else:
 		if max_val == red:
-			hue = (green - blue) / diff
-			if green < blue: hue += 6.0
-		elif max_val == green: hue = (blue - red) / diff + 2.0
-		elif max_val == blue: hue = (red - green) / diff + 4.0
-		hue = hue / 6.0
+			hue = (green - blue) * 60 / diff
+			if green < blue: hue += 6
+		elif max_val == green: hue = (blue - red) * 60 / diff + 120
+		elif max_val == blue: hue = (red - green) * 60 / diff + 240
 	return [hue, saturation, velocity]
 
 def HSV2RGB(hue, saturation, velocity):
