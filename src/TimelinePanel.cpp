@@ -19,8 +19,6 @@
 #include "ElementIDs.h"
 #include "LightpadProject.h"
 #include "Layer.h"
-#include "MidiLayer.h"
-#include "Launchpad.h"
 #include "DisplayPanel.h"
 
 using namespace HOWL;
