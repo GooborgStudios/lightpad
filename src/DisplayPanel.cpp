@@ -326,8 +326,12 @@ void DisplayPanel::colorButton(int button, wxColor color) {
 	changed_buttons[button] = true;
 }
 
-void DisplayPanel::colorButton(wxColourPickerEvent &event) {
-	colorButton(event.GetInt(), event.GetColour());
+void DisplayPanel::colorButtons(wxCommandEvent &event) {
+	for (auto iter : activeProject->layer->keyframes) {
+		colorButton(std::stoi(iter.first), velocitycolors[activeProject->layer->getVelocity(iter.first)]);
+	}
+	
+	refreshNow();
 }
 
 void DisplayPanel::selectButton(int button, bool state) {
@@ -366,6 +370,6 @@ wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
 	EVT_SIZE(DisplayPanel::onSize)
 	EVT_MENU(ID_Menu_PlayPause, DisplayPanel::startstop)
 	EVT_TIMER(ID_DisplayPanel_Timer, DisplayPanel::play_next_frame)
-	EVT_COLOURPICKER_CHANGED(ID_Panel_Timeline, DisplayPanel::colorButton)
+	EVT_COMMAND(ID_Panel_Display, PLAYHEAD_MOVED, DisplayPanel::colorButtons)
 	EVT_COMMAND(ID_Panel_Display, DISPLAY_REFRESH, DisplayPanel::refreshNow)
 wxEND_EVENT_TABLE()

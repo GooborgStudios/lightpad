@@ -233,13 +233,7 @@ void TimelinePanel::movePlayhead(int time) {
 	int phCol = time / ticksPerCol;
 	activeProject->seek(time);
 	
-	for (auto iter : activeProject->layer->keyframes) {
-		wxColourPickerEvent evt(this, ID_Panel_Timeline, velocitycolors[activeProject->layer->getVelocity(iter.first)]);
-		evt.SetInt(std::stoi(iter.first));
-		wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), evt);
-	}
-	
-	wxCommandEvent fin_evt(DISPLAY_REFRESH, ID_Panel_Display);
+	wxCommandEvent fin_evt(PLAYHEAD_MOVED, ID_Panel_Display);
 	fin_evt.SetEventObject(this);
 	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), fin_evt);
 	playhead = time;

@@ -51,7 +51,7 @@ class DisplayPanel: public wxPanel {
 		float buttonIndexToPos(int index);
 		float buttonPosToIndex(float pos);
 		void colorButton(int button, wxColor color);
-		void colorButton(wxColourPickerEvent &event);
+		void colorButtons(wxCommandEvent &event);
 		void selectButton(int button, bool state);
 		void selectButton(int x, int y, bool state);
 		void MagickToWx(wxImage *out, Magick::Image *image, const int offset_x = 0, const int offset_y = 0);
