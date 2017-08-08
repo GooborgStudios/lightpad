@@ -37,7 +37,10 @@ TimelinePanel::TimelinePanel(wxPanel *parent): wxHVScrolledWindow(parent, ID_Pan
 	ticksPerCol = activeProject->ticksPerBeat / 4;
 	active_button = wxPoint(0, 0);
 	
-	SetRowColumnCount(97, 1);
+	int rows = 0;
+	for (auto l: activeProject->layers) rows += l->keyframes.size();
+	
+	SetRowColumnCount(rows, 1);
 	
 	Update();
 	
@@ -119,8 +122,8 @@ void TimelinePanel::render(wxDC &canvas) {
 	int xpos = labelsize-(GetVisibleBegin().GetCol()*colsize);
 	int ypos = headersize-(GetVisibleBegin().GetRow()*rowsize);
 	int cypos = ypos;
-	for ( auto l: activeProject->layers) {
-		if ( true /* l->isExpanded */ ) {
+	for (auto l: activeProject->layers) {
+		if (true /* l->isExpanded */) {
 			for (auto kf : l->keyframes) {
 				if (cypos >= headersize-rowsize) render_row(canvas, kf.first, kf.second, wxRect(0, cypos, width, rowsize));
 				cypos += rowsize;
