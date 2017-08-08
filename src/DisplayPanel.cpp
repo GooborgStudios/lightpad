@@ -7,12 +7,6 @@
 
 #include "DisplayPanel.h"
 
-#include <sstream>
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-#include <iomanip>
-
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
@@ -22,6 +16,12 @@
 #include <wx/bitmap.h>
 #include <wx/dcbuffer.h>
 #include <wx/clrpicker.h>
+
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <iomanip>
 
 #include "Magick++.h"
 

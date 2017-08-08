@@ -7,10 +7,10 @@
 
 #include "TestProject.h"
 
-//#include <wx/wxprec.h>
-//#ifndef WX_PRECOMP
-//	#include <wx/wx.h>
-//#endif
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+	#include <wx/wx.h>
+#endif
 
 #include "Colors.h"
 #include "Helpers.h"
