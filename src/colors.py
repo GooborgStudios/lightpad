@@ -1,3 +1,5 @@
+import math
+
 # RGB<>HSL color conversion
 def RGB2HSL(red, green, blue):
 	max_val = max(red, green, blue)
@@ -59,31 +61,37 @@ def RGB2HSV(red, green, blue):
 		elif max_val == blue: hue = (red - green) * 60 / diff + 240
 	return [hue, saturation, velocity]
 
+# XXX Broken!
 def HSV2RGB(hue, saturation, velocity):
-	cc_i = hue * 6.0
-	cc_is = (cc_i - floor(cc_i)) * saturation
+	cc_i = hue / 6.0
+	cc_is = int((cc_i - math.floor(cc_i)) * saturation)
 	red = green = blue = velocity
 
-	i = int(floor(cc_i)) % 6
+	i = int(math.floor(cc_i)) % 6
 	if i == 0:
 		green = velocity * cc_is
-		blue = velocity * (1.0 - saturation)
+		blue = velocity * (255 - saturation) / 255
 	elif i == 1:
-		red = velocity * (1.0 - cc_is)
-		blue = velocity * (1.0 - saturation)
+		red = velocity * (255 - cc_is) / 255
+		blue = velocity * (255 - saturation) / 255
 	elif i == 2:
-		red = velocity * (1.0 - saturation)
+		red = velocity * (255 - saturation) / 255
 		blue = velocity * cc_is
 	elif i == 3:
-		red = velocity * (1.0 - saturation)
-		green = velocity * (1.0 - cc_is)
+		red = velocity * (255 - saturation) / 255
+		green = velocity * (255 - cc_is) / 255
 	elif i == 4:
 		red = velocity * cc_is
-		green = velocity * (1.0 - saturation)
+		green = velocity * (255 - saturation) / 255
 	elif i == 5:
-		green = velocity * (1.0 - saturation)
-		blue = velocity * (1.0 - cc_is)
+		green = velocity * (255 - saturation) / 255
+		blue = velocity * (255 - cc_is) / 255
 	return [red, green, blue]
+
+print(RGB2HSV(255, 255, 255))
+print(HSV2RGB(0, 0, 255))
+
+
 
 # RGB<>CMYK color conversion
 def RGB2CMYK(red, green, blue):
