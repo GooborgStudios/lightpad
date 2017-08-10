@@ -61,48 +61,34 @@ def RGB2HSV(red, green, blue):
 		elif max_val == blue: hue = (red - green) * 60 / diff + 240
 	return [hue, saturation, velocity]
 
-# V: XXX Broken!
-# J: not anymore~ ;)
-#    this accepts (0-360(deg), 0-1, 0-255)
-def HSV2RGB(h, s, v):
-	red = 0
-	green = 0
-	blue = 0
 
-	h = (h % 360) / 360
-
-	i = math.floor(h * 6)
-	f = h * 6 - i
-	p = v * (1 - s)
-	q = v * (1 - f * s)
-	t = v * (1 - (1 - f) * s)
-	rem = i % 6
+def HSV2RGB(hue, saturation, velocity):
+	cc_i = hue / 6.0
+	cc_ir = int((cc_i - math.floor(cc_i)))
+	p = int(velocity * (255 - saturation) / 255)
+	q = int(velocity * (255 - cc_ir * saturation) / 255)
+	t = int(velocity * (255 - (1.0 - cc_ir) * saturation) / 255)
+	red = green = blue = velocity
+	
+	rem = int(math.floor(cc_i)) % 6
 	if rem == 0:
-		red = v
 		green = t
 		blue = p
 	elif rem == 1:
 		red = q
-		green = v
 		blue = p
 	elif rem == 2:
 		red = p
-		green = v
 		blue = t
 	elif rem == 3:
 		red = p
 		green = q
-		blue = v
 	elif rem == 4:
 		red = t
 		green = p
-		blue = v
 	elif rem == 5:
-		red = v
 		green = p
 		blue = q
-	else:
-		raise Exception
 	return [red, green, blue]
 
 # TEST SECTION START
