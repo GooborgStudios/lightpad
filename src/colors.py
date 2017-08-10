@@ -91,25 +91,14 @@ def HSV2RGB(hue, saturation, velocity):
 		blue = q
 	return [red, green, blue]
 
-# TEST SECTION START
-def test(a,b,c, backwards=False):
-	if not backwards:
-		res = RGB2HSV(a,b,c)
-		res2 = HSV2RGB(*res)
-		return a == res2[0] and b == res2[1] and c == res2[2], res, res2
-	else:
-		res = HSV2RGB(a, b, c)
-		res2 = RGB2HSV(*res)
-		return a == res2[0] and b == res2[1] and c == res2[2], res, res2
+def test_converter(converter1, converter2, tests):
+	for t in tests:
+		result1 = converter1(*t)
+		result2 = converter2(*result1)
+		print "Pass:" if t[0] == result2[0] and t[1] == result2[1] and t[2] == result2[2] else "FAIL:", t, "->", result1, "->", result2
 
-tests = [[0, 0, 0], [0, 1, 0], [255, 255, 255],
-		 [0, 0, 0, True], [0, 1, 1, True], [300, 1, 255, True]]
-for t in tests:
-	print(test(*t))
-
-# TODO: RGB2HSV(255, 0, 255) ==> (-54.0, 1.0, 255)!!!
-# Suggestion: add 360 degree resolver (for negative & over 360)
-# TEST SECTION END
+test_converter(RGB2HSV, HSV2RGB, [[0, 0, 0], [0, 255, 0], [255, 255, 255]])
+test_converter(HSV2RGB, RGB2HSV, [[0, 0, 0], [0, 1, 1], [300, 1, 255]])
 
 
 # RGB<>CMYK color conversion
