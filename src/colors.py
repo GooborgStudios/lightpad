@@ -92,13 +92,16 @@ def HSV2RGB(hue, saturation, velocity):
 	return [red, green, blue]
 
 def test_converter(converter1, converter2, tests):
+	print "Testing {0} -> {1} -> {0}...".format(converter1.__name__, converter2.__name__)
 	for t in tests:
-		result1 = converter1(*t)
+		comment = "(%s)" %t[3] if len(t) >= 4 else ""
+		result1 = converter1(*t[0:3])
 		result2 = converter2(*result1)
-		print "Pass:" if t[0] == result2[0] and t[1] == result2[1] and t[2] == result2[2] else "FAIL:", t, "->", result1, "->", result2
+		print "Pass:" if t[0] == result2[0] and t[1] == result2[1] and t[2] == result2[2] else "FAIL:", t[0:3], "->", result1, "->", result2, comment
+	print ""
 
-test_converter(RGB2HSV, HSV2RGB, [[0, 0, 0], [0, 255, 0], [255, 255, 255]])
-test_converter(HSV2RGB, RGB2HSV, [[0, 0, 0], [0, 1, 1], [300, 1, 255]])
+test_converter(RGB2HSV, HSV2RGB, [[0, 0, 0], [255, 0, 0], [0, 255, 0], [0, 0, 255], [255, 255, 255]])
+test_converter(HSV2RGB, RGB2HSV, [[0, 0, 0], [0, 255, 255], [60, 255, 255], [300, 255, 255], [40, 0, 255, "Expected to fail"]])
 
 
 # RGB<>CMYK color conversion
