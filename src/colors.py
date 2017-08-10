@@ -61,36 +61,69 @@ def RGB2HSV(red, green, blue):
 		elif max_val == blue: hue = (red - green) * 60 / diff + 240
 	return [hue, saturation, velocity]
 
-# XXX Broken!
-def HSV2RGB(hue, saturation, velocity):
-	cc_i = hue / 6.0
-	cc_is = int((cc_i - math.floor(cc_i)) * saturation)
-	red = green = blue = velocity
+# V: XXX Broken!
+# J: not anymore~ ;)
+#    this accepts (0-360(deg), 0-1, 0-255)
+def HSV2RGB(h, s, v):
+	red = 0
+	green = 0
+	blue = 0
 
-	i = int(math.floor(cc_i)) % 6
-	if i == 0:
-		green = velocity * cc_is
-		blue = velocity * (255 - saturation) / 255
-	elif i == 1:
-		red = velocity * (255 - cc_is) / 255
-		blue = velocity * (255 - saturation) / 255
-	elif i == 2:
-		red = velocity * (255 - saturation) / 255
-		blue = velocity * cc_is
-	elif i == 3:
-		red = velocity * (255 - saturation) / 255
-		green = velocity * (255 - cc_is) / 255
-	elif i == 4:
-		red = velocity * cc_is
-		green = velocity * (255 - saturation) / 255
-	elif i == 5:
-		green = velocity * (255 - saturation) / 255
-		blue = velocity * (255 - cc_is) / 255
+	h = (h % 360) / 360
+
+	i = math.floor(h * 6)
+	f = h * 6 - i
+	p = v * (1 - s)
+	q = v * (1 - f * s)
+	t = v * (1 - (1 - f) * s)
+	rem = i % 6
+	if rem == 0:
+		red = v
+		green = t
+		blue = p
+	elif rem == 1:
+		red = q
+		green = v
+		blue = p
+	elif rem == 2:
+		red = p
+		green = v
+		blue = t
+	elif rem == 3:
+		red = p
+		green = q
+		blue = v
+	elif rem == 4:
+		red = t
+		green = p
+		blue = v
+	elif rem == 5:
+		red = v
+		green = p
+		blue = q
+	else:
+		raise Exception
 	return [red, green, blue]
 
-print(RGB2HSV(255, 255, 255))
-print(HSV2RGB(0, 0, 255))
+# TEST SECTION START
+def test(a,b,c, backwards=False):
+	if not backwards:
+		res = RGB2HSV(a,b,c)
+		res2 = HSV2RGB(*res)
+		return a == res2[0] and b == res2[1] and c == res2[2], res, res2
+	else:
+		res = HSV2RGB(a, b, c)
+		res2 = RGB2HSV(*res)
+		return a == res2[0] and b == res2[1] and c == res2[2], res, res2
 
+tests = [[0, 0, 0], [0, 1, 0], [255, 255, 255],
+		 [0, 0, 0, True], [0, 1, 1, True], [300, 1, 255, True]]
+for t in tests:
+	print(test(*t))
+
+# TODO: RGB2HSV(255, 0, 255) ==> (-54.0, 1.0, 255)!!!
+# Suggestion: add 360 degree resolver (for negative & over 360)
+# TEST SECTION END
 
 
 # RGB<>CMYK color conversion
