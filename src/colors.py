@@ -4,18 +4,18 @@ import math
 def RGB2HSL(red, green, blue):
 	max_val = max(red, green, blue)
 	min_val = min(red, green, blue)
-	luminosity = (max_val + min_val) / 2.0
+	luminosity = (max_val + min_val) / 2
 
 	if max_val == min_val:
 		hue = 0
 		saturation = 0
 	else:
 		diff = max_val - min_val
-		if luminosity > 127: saturation = diff * 255 / (510 - max_val - min_val)
-		else: saturation = diff * 255 / (max_val + min_val)
+		if luminosity > 127: saturation = diff * 255 / (510 - max_val - min_val) # Weird line...
+		else: saturation = diff * 255 / (max_val + min_val) # Weird line...
 		if max_val == red:
 			hue = (green - blue) * 60 / diff
-			if green < blue: hue += 6
+			if green < blue: hue += 360
 		elif max_val == green: hue = (blue - red) * 60 / diff + 120
 		elif max_val == blue: hue = (red - green) * 60 / diff + 240
 	return [hue, saturation, luminosity]
