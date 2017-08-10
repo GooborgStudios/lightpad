@@ -100,6 +100,8 @@ def test_converter(converter1, converter2, tests):
 		print "Pass:" if t[0] == result2[0] and t[1] == result2[1] and t[2] == result2[2] else "FAIL:", t[0:3], "-> %s() ->" %converter1.__name__, result1, "-> %s() ->" %converter2.__name__, result2, comment
 	print ""
 
+test_converter(RGB2HSL, HSL2RGB, [[0, 0, 0], [255, 0, 0], [255, 255, 0], [0, 255, 0], [0, 255, 255], [0, 0, 255], [255, 0, 255], [255, 255, 255]])
+test_converter(HSL2RGB, RGB2HSL, [[0, 0, 0], [0, 255, 255], [60, 255, 255], [300, 255, 255], [40, 0, 255]])
 test_converter(RGB2HSV, HSV2RGB, [[0, 0, 0], [255, 0, 0], [255, 255, 0], [0, 255, 0], [0, 255, 255], [0, 0, 255], [255, 0, 255], [255, 255, 255]])
 test_converter(HSV2RGB, RGB2HSV, [[0, 0, 0], [0, 255, 255], [60, 255, 255], [300, 255, 255], [40, 0, 255, "Expected to fail"]])
 
