@@ -88,21 +88,6 @@ def HSV2RGB(hue, saturation, velocity):
 		blue = q
 	return [red, green, blue]
 
-def test_converter(converter1, converter2, tests):
-	print "Testing {0} -> {1} -> {0}...".format(converter1.__name__, converter2.__name__)
-	for t in tests:
-		comment = "(%s)" %t[3] if len(t) >= 4 else ""
-		result1 = converter1(*t[0:3])
-		result2 = converter2(*result1)
-		print "Pass:" if t[0] == result2[0] and t[1] == result2[1] and t[2] == result2[2] else "FAIL:", t[0:3], "-> %s() ->" %converter1.__name__, result1, "-> %s() ->" %converter2.__name__, result2, comment
-	print ""
-
-test_converter(RGB2HSL, HSL2RGB, [[255, 255, 255], [0, 0, 0], [255, 0, 0], [255, 255, 0], [0, 255, 0], [0, 255, 255], [0, 0, 255], [255, 0, 255]])
-test_converter(HSL2RGB, RGB2HSL, [[0, 255, 255, "Expected to fail"], [0, 0, 0], [60, 255, 127], [300, 255, 127], [40, 255, 127]])
-test_converter(RGB2HSV, HSV2RGB, [[255, 255, 255], [0, 0, 0], [255, 0, 0], [255, 255, 0], [0, 255, 0], [0, 255, 255], [0, 0, 255], [255, 0, 255]])
-test_converter(HSV2RGB, RGB2HSV, [[0, 255, 255], [0, 0, 0], [60, 255, 255], [300, 255, 255], [40, 0, 255, "Expected to fail"]])
-
-# Reasons behind failure expectations: there's not enough data retained in RGB to know the original hue if saturation is 0 and either velocity is 0 or luminosity is 0 or 255.  These are actually passing checks.
 
 
 # RGB<>CMYK color conversion
@@ -262,3 +247,21 @@ def LAB2XYZ(luminosity, apoint, bpoint):
 # 	YIQ2RGB(yluma, inphase, quadrature, &red, &green, &blue);
 # 	RGB2CMYK(red, green, blue, cyan, magenta, yellow, black);
 # }
+
+
+
+def test_converter(converter1, converter2, tests):
+	print "Testing {0} -> {1} -> {0}...".format(converter1.__name__, converter2.__name__)
+	for t in tests:
+		comment = "(%s)" %t[3] if len(t) >= 4 else ""
+		result1 = converter1(*t[0:3])
+		result2 = converter2(*result1)
+		print "Pass:" if t[0] == result2[0] and t[1] == result2[1] and t[2] == result2[2] else "FAIL:", t[0:3], "-> %s() ->" %converter1.__name__, result1, "-> %s() ->" %converter2.__name__, result2, comment
+	print ""
+
+test_converter(RGB2HSL, HSL2RGB, [[255, 255, 255], [0, 0, 0], [255, 0, 0], [255, 255, 0], [0, 255, 0], [0, 255, 255], [0, 0, 255], [255, 0, 255]])
+test_converter(HSL2RGB, RGB2HSL, [[0, 255, 255, "Expected to fail"], [0, 0, 0], [60, 255, 127], [300, 255, 127], [40, 255, 127]])
+test_converter(RGB2HSV, HSV2RGB, [[255, 255, 255], [0, 0, 0], [255, 0, 0], [255, 255, 0], [0, 255, 0], [0, 255, 255], [0, 0, 255], [255, 0, 255]])
+test_converter(HSV2RGB, RGB2HSV, [[0, 255, 255], [0, 0, 0], [60, 255, 255], [300, 255, 255], [40, 0, 255, "Expected to fail"]])
+
+# Reasons behind failure expectations: there's not enough data retained in RGB to know the original hue if saturation is 0 and either velocity is 0 or luminosity is 0 or 255.  These are actually passing checks.
