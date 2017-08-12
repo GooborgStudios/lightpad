@@ -1,14 +1,14 @@
 # Lightpad - Nightwave Studios
 
 # Minimum version required for CMake
-cmake_minimum_required(VERSION 3.6) # XXX Validate
+cmake_minimum_required(VERSION 3.6)
 
 # Project properties
 project(lightpad)
 set(TARGET_VERSION_MAJOR 0)
 set(TARGET_VERSION_MINOR 0)
 set(TARGET_VERSION_PATCH 1)
-set(TARGET_COPYRIGHT "©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3.")
+set(TARGET_COPYRIGHT "©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.")
 
 set(CMAKE_BINARY_DIR ${PROJECT_BINARY_DIR}/bin)
 set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
