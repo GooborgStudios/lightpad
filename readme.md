@@ -1,5 +1,5 @@
 # Lightpad
-Software Designed, Developed, and Published by [Nightwave Studios](https://www.nightwave.co) (Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3), © 2017 under a GNU General Public License.
+Software Designed, Developed, and Published by [Nightwave Studios](https://www.nightwave.co) (Vinyl Darkscratch, Light Apacha), © 2017 under a GNU General Public License.
 Additional support from [LaunchpadFun](http://www.launchpadfun.com/en/).
 
 # This software is almost ready for use.  Please check back later!
@@ -30,7 +30,7 @@ cmake .. && make -j4
 - *More to come!*
 
 ## Compatibility
-The software is mainly developed on a mid-2014 MacBook Pro, 2.5GHz Intel i7 with Integrated Graphics and a NVIDIA GeForce GT 750M.
+The software is mainly developed on a mid-2016 MacBook Pro, 2.7GHz Intel i7 with Integrated Graphics and a Radeon Pro 460 (4GB VRAM).
 
 Supported Operating Systems:
 
