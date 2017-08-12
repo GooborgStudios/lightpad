@@ -19,9 +19,9 @@
 	#pragma hdrstop
 #endif
 
-#ifdef __WXGTK20__
-	#include <gtk/gtk.h>
-#endif
+// #ifdef __WXGTK20__
+// 	#include <gtk/gtk.h>
+// #endif
 
 #include "wx/dcmemory.h"
 #include "wx/dcclient.h"
@@ -35,7 +35,7 @@ BEGIN_EVENT_TABLE(SplashScreen, wxFrame)
 END_EVENT_TABLE()
 
 SplashScreen::SplashScreen() {
-	Init();
+	// Init();
 }
 
 SplashScreen::SplashScreen(wxWindow *parent, wxWindowID window_id, wxBitmap &bitmap, wxString copyright, wxRect copyrightbox, wxColor textcolor, wxFont textfont, wxRect loadingtextbox, wxRect loadingbarbox) : wxFrame() {
@@ -49,9 +49,9 @@ SplashScreen::SplashScreen(wxWindow *parent, wxWindowID window_id, wxBitmap &bit
 	// is going to disappear soon, indicate it by giving it this special style
 	SetExtraStyle(GetExtraStyle() | wxWS_EX_TRANSIENT);
 
-	#if defined(__WXGTK20__)
-		gtk_window_set_type_hint(GTK_WINDOW(m_widget), GDK_WINDOW_TYPE_HINT_SPLASHSCREEN);
-	#endif
+	// #if defined(__WXGTK20__)
+	// 	gtk_window_set_type_hint(GTK_WINDOW(m_widget), GDK_WINDOW_TYPE_HINT_SPLASHSCREEN);
+	// #endif
 
 	m_bitmap = bitmap;
 	m_copyright = copyright;
