@@ -24,6 +24,9 @@
 #elif __APPLE__ // macOS
 	#define MACOS 1
 	#define APP_ICON "icons/icon.icns"
+#elif __linux__
+	#define LINUX 1
+	#define APP_ICON "icons/icon_64.png"
 #else // Linux, Unix, POSIX, iOS, Android...
 	#warning "Unknown/unsupported compiler/operating system"
 	#define APP_ICON "icons/icon_64.png"

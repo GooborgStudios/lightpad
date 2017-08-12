@@ -47,7 +47,6 @@ class SysExMessage: public Message {
 	public:
 		SysExMessage(unsigned int msg_type);
 		SysExMessage(unsigned int msg_type, unsigned int first_byte, ...);
-		~SysExMessage();
 		std::vector<unsigned char> *serialize();
 };
 
@@ -81,7 +80,6 @@ class LaunchpadPro: public LaunchpadBase {
 		LaunchpadPro();
 		int connect();
 		void disconnect();
-		bool isConnected();
 		void setColor(unsigned char light, unsigned char color);
 		void setColor(unsigned char light, unsigned char red, unsigned char green, unsigned char blue);
 		void setFlash(unsigned char light, unsigned char color);
@@ -96,7 +94,6 @@ class LaunchpadS: public LaunchpadBase {
 		LaunchpadS();
 		int connect();
 		void disconnect();
-		bool isConnected();
 		void setColor(unsigned char light, unsigned char color);
 		void setPulse(unsigned char light, unsigned char color);
 		unsigned char pro_to_s_note(unsigned char pro_note, unsigned char msg_type);

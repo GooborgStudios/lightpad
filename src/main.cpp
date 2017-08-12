@@ -198,7 +198,9 @@ void MainFrame::OnExit(wxCommandEvent &WXUNUSED(event)) {
 void MainFrame::ShowSplash(bool loading) {
 	std::string copyright = "© 2017 Nightwave Studios, GNU General Public License v3.0.  Programming by Vinyl Darkscratch and Light Apacha.  App icon and display panel graphic by Vinyl Darkscratch.  Splash screen by Vinyl Darkscratch, drawing by Yogfan14, with brushes by Alberto Seveso.  Big thanks to the Launchpad community for making this program possible.";
 	wxBitmap splash_image(getResourcePath("splash.png"), wxBITMAP_TYPE_PNG);
-	splash_image.UseAlpha();
+	#ifndef LINUX
+		splash_image.UseAlpha();
+	#endif
 	wxRect loadingbox = loading ? wxRect(760, 860, 1088, 0) : wxRect(0, 0, 0, 0);
 	wxRect loadingbar = loading ? wxRect(810, 900, 988, 40) : wxRect(0, 0, 0, 0);
 	splash = new SplashScreen(this, ID_Frame_Splash, splash_image, copyright, wxRect(760, 540, 1088, 0), *wxWHITE, wxFont(wxFontInfo(32).Family(wxFONTFAMILY_SWISS).FaceName("Helvetica Neue")), loadingbox, loadingbar);

@@ -73,23 +73,17 @@ std::vector<unsigned char> *Message::serialize() {
 	return data;
 }
 
-SysExMessage::SysExMessage(unsigned int msg_type) {
-	Message::Message();
+SysExMessage::SysExMessage(unsigned int msg_type) : Message() {
 	append(240, 0, 32, 41, 2, 16, msg_type, END_MSG);
 }
 
-SysExMessage::SysExMessage(unsigned int msg_type, unsigned int first_byte, ...) {
-	Message::Message();
+SysExMessage::SysExMessage(unsigned int msg_type, unsigned int first_byte, ...) : Message() {
 	append(240, 0, 32, 41, 2, 16, msg_type, END_MSG);
 
 	va_list varlist;
 	va_start(varlist, first_byte);
 	append(first_byte, varlist);
 	va_end(varlist);
-}
-
-SysExMessage::~SysExMessage() {
-	Message::~Message();
 }
 
 std::vector<unsigned char> *SysExMessage::serialize() {
@@ -223,10 +217,6 @@ void LaunchpadPro::disconnect() {
 	}
 }
 
-bool LaunchpadPro::isConnected() {
-	return LaunchpadBase::isConnected();
-}
-
 void LaunchpadPro::setColor(unsigned char light, unsigned char color) {
 	if (!isConnected()) return;
 
@@ -314,10 +304,6 @@ void LaunchpadS::disconnect() {
 		sendMessage(msg); // Reset
 		LaunchpadBase::disconnect();
 	}
-}
-
-bool LaunchpadS::isConnected() {
-	return LaunchpadBase::isConnected();
 }
 
 unsigned char LaunchpadS::pro_to_s_note(unsigned char pro_note, unsigned char msg_type) {

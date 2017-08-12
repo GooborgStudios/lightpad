@@ -1,7 +1,15 @@
 # Lightpad - Nightwave Studios
 
 # Minimum version required for CMake
-cmake_minimum_required(VERSION 3.6)
+IF(APPLE)
+	cmake_minimum_required(VERSION 3.6)
+ELSE()
+	cmake_minimum_required(VERSION 3.1) # XXX Validate
+ENDIF()
+
+if(UNIX AND NOT APPLE)
+	set(LINUX TRUE)
+endif()
 
 # Project properties
 project(lightpad)
@@ -19,7 +27,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(SOURCE_FILES "")
 aux_source_directory(src source_file_list)
 file(GLOB RESOURCE_FILES "${CMAKE_SOURCE_DIR}/graphics/icons" "${CMAKE_SOURCE_DIR}/graphics/launchpad_display" "${CMAKE_SOURCE_DIR}/graphics/splash.png")
-list(FILTER RESOURCE_FILES EXCLUDE REGEX ".*\.DS_Store")
+IF(APPLE)
+	list(FILTER RESOURCE_FILES EXCLUDE REGEX ".*\.DS_Store")
+ENDIF()
 
 set(ROOT  ${CMAKE_SOURCE_DIR})
 set(SRC   ${PROJECT_SOURCE_DIR})
@@ -40,6 +50,14 @@ include_directories(${MAGICK_INCLUDE_DIR})
 include_directories(${MAGICK++_INCLUDE_DIR})
 link_directories(${MAGICK_LIBRARY_DIR})
 link_directories(${MAGICK++_LIBRARY_DIR})
+
+IF(LINUX)
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+	include_directories(${GTK3_INCLUDE_DIRS})
+	link_directories(${GTK3_LIBRARY_DIRS})
+	add_definitions(${GTK3_CFLAGS_OTHER})
+ENDIF()
 
 add_executable(lightpad
 	${SRC}/main.cpp ${SRC}/ElementIDs.h
@@ -125,6 +143,11 @@ target_link_libraries(lightpad "-L${LIB}")
 target_link_libraries(timeline "-L${LIB}")
 target_link_libraries(midiprobe "-L${LIB}")
 target_link_libraries(midiout "-L${LIB}")
+
+IF(LINUX)
+	target_link_libraries(lightpad ${GTK3_LIBRARIES})
+	target_link_libraries(timeline ${GTK3_LIBRARIES})
+ENDIF()
 
 include(${wxWidgets_USE_FILE})
 target_link_libraries(lightpad ${wxWidgets_LIBRARIES})
