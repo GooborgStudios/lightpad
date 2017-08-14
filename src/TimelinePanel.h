@@ -22,7 +22,7 @@ namespace HOWL {
 	// Timeline panel
 	class TimelinePanel: public wxHVScrolledWindow {
 		public:
-			TimelinePanel(wxPanel *parent);
+			TimelinePanel(wxPanel *parent, wxWindowID window_id);
 			~TimelinePanel();
 			void paintEvent(wxPaintEvent &event);
 			void paintNow();

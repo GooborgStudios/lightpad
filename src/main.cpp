@@ -166,7 +166,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	splash->SetProgress(40, "Loading Display Panel...");
 	m_dp = new DisplayPanel(m_parent, splash);
 	splash->SetProgress(90, "Loading Timeline Panel...");
-	m_tlp = new HOWL::TimelinePanel(m_parent);
+	m_tlp = new HOWL::TimelinePanel(m_parent, ID_Panel_Timeline);
 
 	sizer = new wxBoxSizer(wxVERTICAL);
 	top_half = new wxBoxSizer(wxHORIZONTAL);

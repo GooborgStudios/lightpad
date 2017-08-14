@@ -26,7 +26,7 @@ using namespace HOWL;
 wxDEFINE_EVENT(HOWL::DISPLAY_REFRESH, wxCommandEvent);
 wxDEFINE_EVENT(HOWL::PLAYHEAD_MOVED, wxCommandEvent);
 
-TimelinePanel::TimelinePanel(wxPanel *parent): wxHVScrolledWindow(parent, ID_Panel_Timeline, wxPoint(-1, -1), wxSize(-1, 250), wxBORDER_SUNKEN) {
+TimelinePanel::TimelinePanel(wxPanel *parent, wxWindowID window_id): wxHVScrolledWindow(parent, window_id, wxPoint(-1, -1), wxSize(-1, 250), wxBORDER_SUNKEN) {
 	m_parent = parent;
 	sizer = new wxBoxSizer(wxHORIZONTAL);
 	
