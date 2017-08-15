@@ -10,7 +10,7 @@ compiler:
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; sudo apt-add-repository 'deb http://repos.codelite.org/wx3.1.0/ubuntu/ zesty universe' -qq; sudo apt-get update -qq; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-add-repository 'deb http://repos.codelite.org/wx3.1.0/ubuntu/ zesty universe' -qq; sudo apt-get update -qq; fi
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install graphicsmagick libmagic; travis_wait 30 brew install wxwidgets; fi
