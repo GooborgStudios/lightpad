@@ -93,7 +93,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	// Main window elements
 	m_parent = new wxPanel(this, wxID_ANY);
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-	m_tlp = new HOWL::TimelinePanel(m_parent, ID_Panel_Timeline, activeProject);
+	m_tlp = new HOWL::TimelinePanel(m_parent, ID_Panel_Timeline, activeProject, ID_Panel_Timeline);
 	sizer->Add(m_tlp, 1, wxEXPAND | wxALL, PADDING);
 	m_parent->SetSizer(sizer);
 }
