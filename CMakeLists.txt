@@ -166,7 +166,6 @@ IF(DOXYGEN_FOUND)
 	add_custom_command(OUTPUT ${BUILD}/doxygen/ COMMAND ${DOXYGEN_EXECUTABLE} ${BUILD}/doxygen.conf DEPENDS ${SRC}/* ${ROOT}/readme.md ${ROOT}/doxygen.conf.in VERBATIM) # COMMENT "Generating API documentation with Doxygen"
 ENDIF(DOXYGEN_FOUND)
 
-include_directories(${INCL}/rtmidi)
 target_link_libraries(lightpad "rtmidi")
 target_link_libraries(timeline "rtmidi")
 target_link_libraries(midiprobe "rtmidi")
