@@ -1,0 +1,6 @@
+[submodule "submodules/NightwaveCore"]
+	path = submodules/NightwaveCore
+	url = https://github.com/VaduNightwave/NightwaveCore
+[submodule "submodules/HOWL"]
+	path = submodules/HOWL
+	url = https://github.com/VaduNightwave/HOWL
