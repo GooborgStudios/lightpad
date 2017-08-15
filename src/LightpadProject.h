@@ -16,7 +16,7 @@
 
 #include "MidiFile.h"
 
-#include "Project.h"
+#include "HOWL/Project.h"
 #include "MidiLayer.h"
 
 class LightpadProject: public HOWL::Project {

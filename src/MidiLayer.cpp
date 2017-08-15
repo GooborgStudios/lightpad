@@ -14,9 +14,9 @@
 
 #include <string>
 
-#include "Helpers.h"
+#include "NightwaveCore/Helpers.h"
 #include "Launchpad.h"
-#include "Layer.h"
+#include "HOWL/Layer.h"
 
 NoteKeyframe::NoteKeyframe(int name, long time, unsigned char velocity) : Keyframe(to_padded_string(name, 2), time) {
 	this->velocity = velocity;

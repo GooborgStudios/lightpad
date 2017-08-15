@@ -20,7 +20,7 @@
 
 #include "RtMidi.h"
 
-#include "Colors.h"
+#include "NightwaveCore/Colors.h"
 
 #ifdef WINDOWS
 	#include <windows.h>

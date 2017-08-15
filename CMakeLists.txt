@@ -46,6 +46,9 @@ add_definitions(-DRESOURCE_DIR="${IMGS}")
 include_directories(${ROOT})
 include_directories(${INCL})
 
+include_directories(~/local/include)
+list(APPEND CMAKE_LIBRARY_PATH ~/local/lib)
+
 include_directories(${MAGICK_INCLUDE_DIR})
 include_directories(${MAGICK++_INCLUDE_DIR})
 link_directories(${MAGICK_LIBRARY_DIR})
@@ -61,50 +64,34 @@ link_directories(${MAGICK++_LIBRARY_DIR})
 
 add_executable(lightpad
 	${SRC}/main.cpp ${SRC}/ElementIDs.h
-	${SRC}/Colors.cpp ${SRC}/Colors.h
 	${SRC}/DisplayPanel.cpp ${SRC}/DisplayPanel.h
 	${SRC}/FilePanel.cpp ${SRC}/FilePanel.h
 	${SRC}/GridRenderer.cpp ${SRC}/GridRenderer.h
-	${SRC}/Helpers.cpp ${SRC}/Helpers.h
 	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
-	${SRC}/Layer.cpp ${SRC}/Layer.h
 	${SRC}/MidiLayer.cpp ${SRC}/MidiLayer.h
 	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
-	${SRC}/Project.cpp ${SRC}/Project.h
 	${SRC}/LightpadProject.cpp ${SRC}/LightpadProject.h
 	${SRC}/PropertiesPanel.cpp ${SRC}/PropertiesPanel.h
 	${SRC}/TestProject.cpp ${SRC}/TestProject.h
-	${SRC}/TimelinePanel.cpp ${SRC}/TimelinePanel.h
-	${SRC}/SplashScreen.cpp ${SRC}/SplashScreen.h
-	${SRC}/DCHelpers.cpp ${SRC}/DCHelpers.h
 )
 
 add_executable(timeline
 	${SRC}/timeline.cpp ${SRC}/ElementIDs.h
-	${SRC}/Colors.cpp ${SRC}/Colors.h
-	${SRC}/Helpers.cpp ${SRC}/Helpers.h
 	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
 	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
-	${SRC}/Layer.cpp ${SRC}/Layer.h
 	${SRC}/MidiLayer.cpp ${SRC}/MidiLayer.h
-	${SRC}/Project.cpp ${SRC}/Project.h
 	${SRC}/LightpadProject.cpp ${SRC}/LightpadProject.h
 	${SRC}/TestProject.cpp ${SRC}/TestProject.h
-	${SRC}/TimelinePanel.cpp ${SRC}/TimelinePanel.h
 )
 
 add_executable(midiprobe
 	${SRC}/midiprobe.cpp
-	${SRC}/Colors.cpp ${SRC}/Colors.h
-	${SRC}/Helpers.cpp ${SRC}/Helpers.h
 	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
 	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
 )
 
 add_executable(midiout
 	${SRC}/midiout.cpp
-	${SRC}/Colors.cpp ${SRC}/Colors.h
-	${SRC}/Helpers.cpp ${SRC}/Helpers.h
 	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
 	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
 )
@@ -143,6 +130,19 @@ target_link_libraries(lightpad "-L${LIB}")
 target_link_libraries(timeline "-L${LIB}")
 target_link_libraries(midiprobe "-L${LIB}")
 target_link_libraries(midiout "-L${LIB}")
+
+target_link_libraries(lightpad "-L$ENV{HOME}/local/lib")
+target_link_libraries(timeline "-L$ENV{HOME}/local/lib")
+target_link_libraries(midiprobe "-L$ENV{HOME}/local/lib")
+target_link_libraries(midiout "-L$ENV{HOME}/local/lib")
+
+target_link_libraries(lightpad nightwave_core)
+target_link_libraries(timeline nightwave_core)
+target_link_libraries(midiprobe nightwave_core)
+target_link_libraries(midiout nightwave_core)
+
+target_link_libraries(lightpad HOWL)
+target_link_libraries(timeline HOWL)
 
 # IF(LINUX)
 # 	target_link_libraries(lightpad ${GTK3_LIBRARIES})

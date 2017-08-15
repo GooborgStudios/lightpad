@@ -44,6 +44,8 @@ LightpadProject::LightpadProject(int BPM, int ticksPerBeat, int beatsPerMeasure)
 	}
 	
 	layers.push_back(layer);
+	
+	seek(0);
 }
 
 LightpadProject::LightpadProject(std::string filePath) : LightpadProject::LightpadProject() {
@@ -72,6 +74,8 @@ LightpadProject::LightpadProject(std::string filePath) : LightpadProject::Lightp
 		
 		layer->AddKeyframe(new NoteKeyframe(note_to_button((int)mev[1]), mev.tick, color));
 	}
+	
+	seek(0);
 	
 	delete midifile;
 }

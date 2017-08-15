@@ -19,10 +19,10 @@
 #include <map>
 
 #include "ElementIDs.h"
-#include "Helpers.h"
+#include "NightwaveCore/Helpers.h"
 #include "LightpadProject.h"
 #include "TestProject.h"
-#include "TimelinePanel.h"
+#include "HOWL/TimelinePanel.h"
 
 #define wxUSE_ON_FATAL_EXCEPTION 1
 #define PADDING 0
@@ -93,7 +93,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	// Main window elements
 	m_parent = new wxPanel(this, wxID_ANY);
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-	m_tlp = new HOWL::TimelinePanel(m_parent);
+	m_tlp = new HOWL::TimelinePanel(m_parent, ID_Panel_Timeline, activeProject);
 	sizer->Add(m_tlp, 1, wxEXPAND | wxALL, PADDING);
 	m_parent->SetSizer(sizer);
 }

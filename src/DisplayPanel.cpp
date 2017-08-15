@@ -26,12 +26,12 @@
 #include "Magick++.h"
 
 #include "ElementIDs.h"
-#include "Helpers.h"
+#include "NightwaveCore/Helpers.h"
 #include "Launchpad.h"
-#include "Colors.h"
+#include "NightwaveCore/Colors.h"
 #include "LightpadProject.h"
-#include "TimelinePanel.h"
-#include "SplashScreen.h"
+#include "HOWL/TimelinePanel.h"
+#include "NightwaveCore/SplashScreen.h"
 
 const float button_pos[10] = {0.113525390625, 0.199462890625, 0.277587890625, 0.355712890625, 0.433837890625, 0.511962890625, 0.590087890625, 0.668212890625, 0.746337890625, 0.832275390625};
 const float button_size = 0.06982421875;

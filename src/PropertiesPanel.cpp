@@ -19,8 +19,8 @@
 #include <wx/clrpicker.h>
 
 #include "ElementIDs.h"
-#include "Colors.h"
-#include "Helpers.h"
+#include "NightwaveCore/Colors.h"
+#include "NightwaveCore/Helpers.h"
 #include "GridRenderer.h"
 #include "Launchpad.h"
 

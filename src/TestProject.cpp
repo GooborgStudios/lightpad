@@ -12,8 +12,8 @@
 	#include <wx/wx.h>
 #endif
 
-#include "Colors.h"
-#include "Helpers.h"
+#include "NightwaveCore/Colors.h"
+#include "NightwaveCore/Helpers.h"
 #include "Launchpad.h"
 #include "LightpadProject.h"
 
@@ -48,4 +48,6 @@ TestProject::TestProject() : LightpadProject(120, 32) {
 			layer->AddKeyframe(new NoteKeyframe(btn_x + (btn_y * 10), col*ticksPerBeat, get_closest_velocity(rainbow[(btn_x + btn_y + col) % 18])));
 		}
 	}
+	
+	seek(0);
 }

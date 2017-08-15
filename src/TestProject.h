@@ -13,7 +13,7 @@
 #endif
 
 #include "LightpadProject.h"
-#include "Layer.h"
+#include "HOWL/Layer.h"
 
 
 class TestProject : public LightpadProject {

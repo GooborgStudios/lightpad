@@ -18,10 +18,10 @@
 #include "Magick++.h"
 
 #include "ElementIDs.h"
-#include "Helpers.h"
-#include "Colors.h"
-#include "Project.h"
-#include "SplashScreen.h"
+#include "NightwaveCore/Helpers.h"
+#include "NightwaveCore/Colors.h"
+#include "HOWL/Project.h"
+#include "NightwaveCore/SplashScreen.h"
 
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
 #define MINIMUM_LAUNCHPAD_IMAGE_SIZE 128

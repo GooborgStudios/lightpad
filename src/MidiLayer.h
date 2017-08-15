@@ -14,7 +14,7 @@
 
 #include <string>
 
-#include "Layer.h"
+#include "HOWL/Layer.h"
 
 class NoteKeyframe: public HOWL::Keyframe {
 	public:

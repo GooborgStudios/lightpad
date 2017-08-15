@@ -20,15 +20,15 @@
 #include "RtMidi.h"
 
 #include "ElementIDs.h"
-#include "Helpers.h"
+#include "NightwaveCore/Helpers.h"
 #include "LightpadProject.h"
 #include "TestProject.h"
 #include "FilePanel.h"
 #include "DisplayPanel.h"
-#include "TimelinePanel.h"
+#include "HOWL/TimelinePanel.h"
 #include "PropertiesPanel.h"
 #include "Launchpad.h"
-#include "SplashScreen.h"
+#include "NightwaveCore/SplashScreen.h"
 
 #define wxUSE_ON_FATAL_EXCEPTION 1
 #define PADDING 0
@@ -84,6 +84,10 @@ wxIMPLEMENT_APP(MainApp); // Tell wxWidgets to commence our app
 // Construct and display main window frame
 bool MainApp::OnInit() {
 	wxHandleFatalExceptions(true); // Enable error handler
+	
+#ifndef XCODE_BUNDLE
+	setResourceBase(RESOURCE_DIR);
+#endif
 
 	Magick::InitializeMagick(NULL);
 	wxImage::AddHandler(new wxPNGHandler); // Enable PNG support(?)
@@ -166,7 +170,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	splash->SetProgress(40, "Loading Display Panel...");
 	m_dp = new DisplayPanel(m_parent, splash);
 	splash->SetProgress(90, "Loading Timeline Panel...");
-	m_tlp = new HOWL::TimelinePanel(m_parent, ID_Panel_Timeline);
+	m_tlp = new HOWL::TimelinePanel(m_parent, ID_Panel_Timeline, activeProject, ID_Panel_Display);
 
 	sizer = new wxBoxSizer(wxVERTICAL);
 	top_half = new wxBoxSizer(wxHORIZONTAL);
@@ -213,7 +217,7 @@ void MainFrame::OnAbout(wxCommandEvent &WXUNUSED(event)) {
 
 void MainFrame::OnSelectFile(wxCommandEvent &event) {
 	activeProject = new LightpadProject(event.GetString().ToStdString());
-	m_tlp->movePlayhead(0);
+	m_tlp->setProject(activeProject);
 }
 
 void MainFrame::SaveAs() {
