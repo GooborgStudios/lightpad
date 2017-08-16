@@ -18,7 +18,7 @@ set(TARGET_VERSION_MINOR 0)
 set(TARGET_VERSION_PATCH 1)
 set(TARGET_COPYRIGHT "©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.")
 
-set(CMAKE_BINARY_DIR ${PROJECT_BINARY_DIR}/bin)
+set(CMAKE_BINARY_DIR ${PROJECT_BINARY_DIR})
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
@@ -60,7 +60,7 @@ link_directories(${MAGICK++_LIBRARY_DIR})
 # 	add_definitions(${GTK3_CFLAGS_OTHER})
 # ENDIF()
 
-add_executable(lightpad
+add_executable(lightpad MACOSX_BUNDLE
 	${SRC}/main.cpp ${SRC}/ElementIDs.h
 	${SRC}/DisplayPanel.cpp ${SRC}/DisplayPanel.h
 	${SRC}/FilePanel.cpp ${SRC}/FilePanel.h
@@ -73,7 +73,7 @@ add_executable(lightpad
 	${SRC}/TestProject.cpp ${SRC}/TestProject.h
 )
 
-add_executable(timeline
+add_executable(timeline MACOSX_BUNDLE
 	${SRC}/timeline.cpp ${SRC}/ElementIDs.h
 	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
 	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
@@ -103,27 +103,22 @@ find_package(wxWidgets COMPONENTS html qa adv core xml net base REQUIRED)
 execute_process(COMMAND "wx-config --cxxflags" OUTPUT_VARIABLE wxConfig_CXX_FLAGS)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${wxConfig_CXX_FLAGS}")
 
-set(APP_BUNDLE_NAME lightpad)
-
 IF(APPLE)
-	set(APP_BUNDLE_NAME lightpad.app)
+	set_target_properties(lightpad PROPERTIES MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
+	target_sources(lightpad PUBLIC ${RESOURCE_FILES})
+	set_target_properties(timeline PROPERTIES MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad.timeline RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
+	target_sources(timeline PUBLIC ${RESOURCE_FILES})
 	IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.12")
 	ENDIF()
 	IF(${CMAKE_GENERATOR} MATCHES "Xcode")
 		set(OSX_ICON_FILES ${IMGS}/icon.icns)
-		set(APP_BUNDLE_NAME Debug/lightpad.app)
 		target_compile_definitions(lightpad PUBLIC -DXCODE_BUNDLE)
-		target_sources(lightpad PUBLIC ${RESOURCE_FILES})
 		target_link_libraries(lightpad "-framework CoreFoundation")
-		set_target_properties(lightpad PROPERTIES MACOSX_BUNDLE TRUE MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
 		target_compile_definitions(timeline PUBLIC -DXCODE_BUNDLE)
-		target_sources(timeline PUBLIC ${RESOURCE_FILES})
 		target_link_libraries(timeline "-framework CoreFoundation")
-		set_target_properties(timeline PROPERTIES MACOSX_BUNDLE TRUE MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad.timeline RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
 	ENDIF()
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-	set(APP_BUNDLE_NAME lightpad.exe)
 	add_definitions(-D__NO_INLINE__)
 	set_target_properties(lightpad PROPERTIES WIN32_EXECUTABLE TRUE)
 	set_target_properties(timeline PROPERTIES WIN32_EXECUTABLE TRUE)
@@ -193,11 +188,21 @@ IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
 	add_custom_target(oclint oclint -p ${BUILD} ${SOURCE_FILES} DEPENDS ${SRC}/* ${BUILD}/compile_commands.json WORKING_DIRECTORY ${BUILD}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."
 ENDIF()
 
-install(CODE "
-	include(BundleUtilities)
-	set(BU_CHMOD_BUNDLE_ITEMS 1)
-	fixup_bundle(\"${APPS}\" \"\" \"${LIBS}\")"
-	COMPONENT Runtime)
+IF(APPLE)
+  # -------- Function to build OS X Stand Alone Bundles -----------------
+  function(MakeOSXBundleApp target binary_dir)
 
-set(CPACK_BINARY_DRAGNDROP ON)
-include(CPack)
+    SET (OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.cmake")
+    SET (OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.sh")
+
+    CONFIGURE_FILE("${ROOT}/scripts/CompleteBundle.cmake.in"
+      "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}" @ONLY IMMEDIATE)
+    CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in"
+      "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
+ 
+   install(SCRIPT "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}")
+                    
+  endfunction(MakeOSXBundleApp)
+
+  MakeOSXBundleApp("lightpad${EXE_DEBUG_EXTENSION}" ${PROJECT_BINARY_DIR})
+ENDIF()

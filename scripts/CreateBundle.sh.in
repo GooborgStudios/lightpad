@@ -1,0 +1,23 @@
+#!/bin/sh
+
+InstallPrefix="@CMAKE_INSTALL_PREFIX@"
+ProjectBinaryDir="@binary_dir@"
+OSX_App_Name="@target@"
+OSX_App="@EXECUTABLE_OUTPUT_PATH@/$OSX_App_Name.app"
+
+ContentsDir="$OSX_App/Contents"
+SupportDir="$OSX_App/Contents/Support"
+LibrariesDir="$OSX_App/Contents/Libraries"
+FrameworksDir="$OSX_App/Contents/Frameworks"
+PythonDir="$OSX_App/Contents/Python"
+PluginsDir="$OSX_App/Contents/Plugins"
+
+# create directories in the @target@.app bundle
+mkdir -p "$SupportDir"
+mkdir -p "$SupportDir"
+if [ ! -e $LibrariesDir ]
+  then
+  mkdir -p "$LibrariesDir"
+fi
+
+
