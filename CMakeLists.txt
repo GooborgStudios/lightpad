@@ -19,6 +19,7 @@ set(TARGET_VERSION_PATCH 1)
 set(TARGET_COPYRIGHT "©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.")
 
 set(CMAKE_BINARY_DIR ${PROJECT_BINARY_DIR}/bin)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
@@ -102,12 +103,16 @@ find_package(wxWidgets COMPONENTS html qa adv core xml net base REQUIRED)
 execute_process(COMMAND "wx-config --cxxflags" OUTPUT_VARIABLE wxConfig_CXX_FLAGS)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${wxConfig_CXX_FLAGS}")
 
+set(APP_BUNDLE_NAME lightpad)
+
 IF(APPLE)
+	set(APP_BUNDLE_NAME lightpad.app)
 	IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.12")
 	ENDIF()
 	IF(${CMAKE_GENERATOR} MATCHES "Xcode")
 		set(OSX_ICON_FILES ${IMGS}/icon.icns)
+		set(APP_BUNDLE_NAME Debug/lightpad.app)
 		target_compile_definitions(lightpad PUBLIC -DXCODE_BUNDLE)
 		target_sources(lightpad PUBLIC ${RESOURCE_FILES})
 		target_link_libraries(lightpad "-framework CoreFoundation")
@@ -118,10 +123,14 @@ IF(APPLE)
 		set_target_properties(timeline PROPERTIES MACOSX_BUNDLE TRUE MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad.timeline RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
 	ENDIF()
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	set(APP_BUNDLE_NAME lightpad.exe)
 	add_definitions(-D__NO_INLINE__)
 	set_target_properties(lightpad PROPERTIES WIN32_EXECUTABLE TRUE)
 	set_target_properties(timeline PROPERTIES WIN32_EXECUTABLE TRUE)
 ENDIF()
+
+set(BUNDLE_INSTALL_TARGET "${BIN}/${APP_BUNDLE_NAME}")
+set(APPS ${BUNDLE_INSTALL_TARGET})
 
 link_directories(lightpad ${LIB})
 link_directories(timeline ${LIB})
@@ -183,3 +192,12 @@ IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
 	file(MAKE_DIRECTORY ${BUILD}/oclint)
 	add_custom_target(oclint oclint -p ${BUILD} ${SOURCE_FILES} DEPENDS ${SRC}/* ${BUILD}/compile_commands.json WORKING_DIRECTORY ${BUILD}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."
 ENDIF()
+
+install(CODE "
+	include(BundleUtilities)
+	set(BU_CHMOD_BUNDLE_ITEMS 1)
+	fixup_bundle(\"${APPS}\" \"\" \"${LIBS}\")"
+	COMPONENT Runtime)
+
+set(CPACK_BINARY_DRAGNDROP ON)
+include(CPack)

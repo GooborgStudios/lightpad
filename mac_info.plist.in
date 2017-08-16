@@ -20,6 +20,8 @@
 	<string>Lightpad</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleExecutable</key>
+	<string>lightpad</string>
 	<key>CFBundleShortVersionString</key>
 	<string>@TARGET_VERSION_MAJOR@.@TARGET_VERSION_MINOR@.@TARGET_VERSION_PATCH@</string>
 	<key>CFBundleVersion</key>
