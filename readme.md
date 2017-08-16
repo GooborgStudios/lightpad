@@ -5,13 +5,14 @@ Additional support from [LaunchpadFun](http://www.launchpadfun.com/en/).
 # This software is almost ready for use.  Please check back later!
 
 ## Build and Installation
-Lightpad has three executables: _main_, _midiprobe_, and _midiout_.  _Main_ is just what it sounds like, it's the main application, bringing together all of it's features.  _Midiprobe_ and _midiout_ focus specifically on MIDI connectivity, with the first providing a list of available MIDI I/O ports, and the second playing a test file to the Launchpad, while also telling a pressed button to pulse a random color.
+Lightpad has four executables: _main_, _timeline_, _midiprobe_, and _midiout_.  _Main_ is just what it sounds like, it's the main application, bringing together all of it's features.  _Timeline_ is a teast program to demo the timeline on it's own.  _Midiprobe_ and _midiout_ focus specifically on MIDI connectivity, with the first providing a list of available MIDI I/O ports, and the second playing a test file to the Launchpad, while also telling a pressed button to pulse a random color.
 
 ```bash
 mkdir build
 cd build
-cmake .. && make -j4
+cmake .. && make -j8 && make install
 ../bin/lightpad[.exe]
+../bin/timeline[.exe]
 ../bin/midiprobe[.exe]
 ../bin/midiout[.exe]
 ```
