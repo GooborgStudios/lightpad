@@ -19,21 +19,32 @@ install:
   - cd submodules/NightwaveCore/C++
   - mkdir build
   - cd build
-  - cmake ..
-  - make
-  - make install
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .. -G "Xcode"; xcodebuild -target NightwaveCore -project NightwaveCore.xcodeproj; xcodebuild -target install -project NightwaveCore.xcodeproj; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake ..; make; make install; fi
   - cd ../../../..
   - cd submodules/HOWL
   - mkdir build
   - cd build
-  - cmake ..
-  - make
-  - make install
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .. -G "Xcode"; xcodebuild -target HOWL -project HOWL.xcodeproj; xcodebuild -target install -project HOWL.xcodeproj; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake ..; make; make install; fi
   - cd ../../..
 
 before_script:
   - mkdir build
   - cd build
-  - cmake ..
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .. -G "Xcode"; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake ..; fi
 
-script: make
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild -target lightpad -project lightpad.xcodeproj; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make; fi
+
+deploy:
+  provider: releases
+  api_key:
+    secure: UVCtecHuapK7L/pIlh6bbeAhNVzs1UU6ITRS+tkr4QObk+/yRwxKATln7IEDnH9mJUDLKD7LSjZ5c9PlUohtaZ8yW+aqNtwNbk6LSsSZSr+TNI1VqqB4YoaoDOOMbKPpf55zFp+F/WwiFXZ/vT6DqDsnFrYl5v1kDgTV8NL8eWSszsmXcH1y1jI+0/mSWDyUaK04PYqNmPfY4gnStJD462tyOYZ1l0VIMhrxq1EHYGGRNR1v0z1ucL05faDy/g1JyJ/9AZ0auT2cWKyAFGeTAuTcvtnsVWckAVAnUFQfVfj9nqxUSJpUlc/Ic8SqYe1pssoZ6iWdN/xa0FgEzoqbooiCSQi1ruazcUHMR+cARaFP2cwD6wUfo0hMwaqFJY2Tfp8Hc/BK7eiToC7SGm7gQBoV3wKg7+g1+/vfiaJyvdJfJ5MIgjYJSVv07aMiAq7Y5vhH0FmQx575AIFYGDeC00tKAEYHCRh9wdLMfdsy3rVDLNsWO7ovgD2vP0Qo1guTkz2FjSQI4pWxqiMw+KuOilA2LYYrqpvdygZGAU7eo9vm5/sfn7cQqCUg2yphzGynARcKRJc+uRdqW/DCYL0UfhH3Ix5pYBLpZ5EiMV5LutqQWvf5fk94wXGZqdzG+EmNVdwaiWKtaPfH+TPaH3E+LQ346NBxW75ozPvapMg9mmk=
+  skip_cleanup: true
+  file: ''
+  on:
+    repo: VaduNightwave/lightpad
+    tags: true
