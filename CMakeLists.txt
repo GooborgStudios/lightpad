@@ -24,6 +24,8 @@ set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
+
+set(BU_CHMOD_BUNDLE_ITEMS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(SOURCE_FILES "")
 aux_source_directory(src source_file_list)
@@ -111,13 +113,13 @@ IF(APPLE)
 	IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.12")
 	ENDIF()
-	IF(${CMAKE_GENERATOR} MATCHES "Xcode")
+	# IF(${CMAKE_GENERATOR} MATCHES "Xcode")
 		set(OSX_ICON_FILES ${IMGS}/icon.icns)
 		target_compile_definitions(lightpad PUBLIC -DXCODE_BUNDLE)
 		target_link_libraries(lightpad "-framework CoreFoundation")
 		target_compile_definitions(timeline PUBLIC -DXCODE_BUNDLE)
 		target_link_libraries(timeline "-framework CoreFoundation")
-	ENDIF()
+	# ENDIF()
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	add_definitions(-D__NO_INLINE__)
 	set_target_properties(lightpad PROPERTIES WIN32_EXECUTABLE TRUE)
@@ -189,20 +191,24 @@ IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
 ENDIF()
 
 IF(APPLE)
-  # -------- Function to build OS X Stand Alone Bundles -----------------
-  function(MakeOSXBundleApp target binary_dir)
 
-    SET (OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.cmake")
-    SET (OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.sh")
+	# -------- Function to build OS X Stand Alone Bundles -----------------
+	function(MakeOSXBundleApp target binary_dir)
+		IF(${CMAKE_GENERATOR} MATCHES "Xcode")
+			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/Debug/${target}.app")
+		ELSE()
+			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/${target}.app")
+		ENDIF()
 
-    CONFIGURE_FILE("${ROOT}/scripts/CompleteBundle.cmake.in"
-      "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}" @ONLY IMMEDIATE)
-    CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in"
-      "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
- 
-   install(SCRIPT "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}")
-                    
-  endfunction(MakeOSXBundleApp)
+		SET(OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.cmake")
+		SET(OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.sh")
 
-  MakeOSXBundleApp("lightpad${EXE_DEBUG_EXTENSION}" ${PROJECT_BINARY_DIR})
+		CONFIGURE_FILE("${ROOT}/scripts/CompleteBundle.cmake.in" "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}" @ONLY IMMEDIATE)
+		CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in" "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
+
+		add_custom_command(TARGET ${target} POST_BUILD COMMAND cmake -P ${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT} VERBATIM)
+		# XXX This shouldn't be an install step, but rather a post-build step
+	endfunction(MakeOSXBundleApp)
+
+	MakeOSXBundleApp("lightpad" ${PROJECT_BINARY_DIR})
 ENDIF()
