@@ -55,6 +55,8 @@ class MainFrame: public wxFrame {
 		SplashScreen *splash;
 		wxMenuBar *menuBar;
 		wxMenu *menuFile;
+		wxMenu *menuPlayback;
+		wxMenu *menuView;
 		wxMenu *menuHelp;
 		wxToolBar *toolbar;
 		wxPanel *m_parent;
@@ -133,18 +135,22 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	// wxWidgets automatically maps Ctrl to Cmd for us to enable cross-platform compatibility
 	menuBar = new wxMenuBar;
 	menuFile = new wxMenu;
+	menuPlayback = new wxMenu;
+	menuView = new wxMenu;
 	menuHelp = new wxMenu;
 	menuFile->Append(ID_Menu_Hello, "&Hello...\tCtrl-H", "Help string shown in status bar for this menu item");
 	menuFile->Append(ID_Menu_Save, "&Save\tCtrl-S", "Saves the file");
 	menuFile->Append(ID_Menu_SaveAs, "&Save As...\tCtrl-Shift-S", "Saves the file to a specified location");
-	//menuFile->Append(ID_Menu_PlayPause, "&Play/Pause\tSpace", "Plays/pauses the animation");
-	menuFile->Append(ID_Menu_PlayPause, "&Next Quarter Beat\tSpace", "Moves the playhead a quarter beat ahead");
-	menuFile->Append(ID_Menu_ShiftPlayPause, "&Next Full Beat\tShift-Space", "Moves the playhead a full beat ahead");
-	menuFile->Append(ID_Menu_Restart, "&Return to Start\tEnter", "Returns the playhead to the beginning of the timeline");
 	menuFile->AppendSeparator();
 	menuFile->Append(wxID_EXIT);
+	//menuPlayback->Append(ID_Menu_PlayPause, "&Play/Pause\tSpace", "Plays/pauses the animation");
+	menuPlayback->Append(ID_Menu_PlayPause, "&Next Quarter Beat\tSpace", "Moves the playhead a quarter beat ahead");
+	menuPlayback->Append(ID_Menu_ShiftPlayPause, "&Next Full Beat\tShift-Space", "Moves the playhead a full beat ahead");
+	menuPlayback->Append(ID_Menu_Restart, "&Return to Start\tEnter", "Returns the playhead to the beginning of the timeline");
 	menuHelp->Append(wxID_ABOUT);
 	menuBar->Append(menuFile, "&File");
+	menuBar->Append(menuPlayback, "&Playback");
+	menuBar->Append(menuView, "&View");
 	menuBar->Append(menuHelp, "&Help");
 	SetMenuBar(menuBar);
 
