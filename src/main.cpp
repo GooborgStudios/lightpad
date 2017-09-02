@@ -78,6 +78,8 @@ class MainFrame: public wxFrame {
 		void OnStartStop(wxCommandEvent &event);
 		void OnNextBeat(wxCommandEvent &event);
 		void OnRestart(wxCommandEvent &event);
+		void OnZoomIn(wxCommandEvent &event);
+		void OnZoomOut(wxCommandEvent &event);
 
 		wxDECLARE_EVENT_TABLE(); // Initialize event listener
 };
@@ -147,6 +149,8 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	menuPlayback->Append(ID_Menu_PlayPause, "&Next Quarter Beat\tSpace", "Moves the playhead a quarter beat ahead");
 	menuPlayback->Append(ID_Menu_ShiftPlayPause, "&Next Full Beat\tShift-Space", "Moves the playhead a full beat ahead");
 	menuPlayback->Append(ID_Menu_Restart, "&Return to Start\tEnter", "Returns the playhead to the beginning of the timeline");
+	menuView->Append(ID_Menu_ZoomIn, "&Zoom In\t=", "Zooms the timeline in");
+	menuView->Append(ID_Menu_ZoomOut, "&Zoom Out\t-", "Zooms the timeline out");
 	menuHelp->Append(wxID_ABOUT);
 	menuBar->Append(menuFile, "&File");
 	menuBar->Append(menuPlayback, "&Playback");
@@ -258,6 +262,14 @@ void MainFrame::OnRestart(wxCommandEvent &WXUNUSED(event)) {
 	m_tlp->movePlayhead(0);
 }
 
+void MainFrame::OnZoomIn(wxCommandEvent &WXUNUSED(event)) {
+	m_tlp->zoom(200);
+	
+}
+void MainFrame::OnZoomOut(wxCommandEvent &WXUNUSED(event)) {
+	m_tlp->zoom(50);
+}
+
 // Initialize event listeners
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_Menu_Hello, MainFrame::OnHello)
@@ -267,6 +279,8 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_Menu_PlayPause, MainFrame::OnStartStop)
 	EVT_MENU(ID_Menu_ShiftPlayPause, MainFrame::OnNextBeat)
 	EVT_MENU(ID_Menu_Restart, MainFrame::OnRestart)
+	EVT_MENU(ID_Menu_ZoomIn, MainFrame::OnZoomIn)
+	EVT_MENU(ID_Menu_ZoomOut, MainFrame::OnZoomOut)
 	EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 	EVT_MENU(wxID_EXIT, MainFrame::OnExit)
 	EVT_COMMAND(ID_Frame_Main, FILE_SELECT, MainFrame::OnSelectFile)

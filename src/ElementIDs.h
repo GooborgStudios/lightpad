@@ -22,6 +22,8 @@ enum {
 	ID_Menu_PlayPause,
 	ID_Menu_ShiftPlayPause,
 	ID_Menu_Restart,
+	ID_Menu_ZoomIn,
+	ID_Menu_ZoomOut,
 	ID_FilePanel_Tree,
 	ID_PropertiesPanel_ColorSelector,
 	ID_PropertiesPanel_ColorSelect,
