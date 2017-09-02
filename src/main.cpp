@@ -15,6 +15,7 @@
 #include <wx/debugrpt.h>
 #include <wx/splash.h>
 #include <wx/app.h>
+#include <wx/stdpaths.h>
 
 #include "Magick++.h"
 #include "RtMidi.h"
@@ -89,7 +90,7 @@ bool MainApp::OnInit() {
 	setResourceBase(RESOURCE_DIR);
 #endif
 
-	Magick::InitializeMagick(NULL);
+	Magick::InitializeMagick(wxStandardPaths::Get().GetExecutablePath());
 	wxImage::AddHandler(new wxPNGHandler); // Enable PNG support(?)
 
 	if (launchpad->connect() < 0) launchpad->disconnect();
