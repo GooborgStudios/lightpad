@@ -77,6 +77,8 @@ class MainFrame: public wxFrame {
 		void OnSelectFile(wxCommandEvent &event);
 		void OnStartStop(wxCommandEvent &event);
 		void OnNextBeat(wxCommandEvent &event);
+		void OnNextCol(wxCommandEvent &event);
+		void OnPrevCol(wxCommandEvent &event);
 		void OnRestart(wxCommandEvent &event);
 		void OnZoomIn(wxCommandEvent &event);
 		void OnZoomOut(wxCommandEvent &event);
@@ -148,6 +150,8 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	//menuPlayback->Append(ID_Menu_PlayPause, "&Play/Pause\tSpace", "Plays/pauses the animation");
 	menuPlayback->Append(ID_Menu_PlayPause, "&Next Quarter Beat\tSpace", "Moves the playhead a quarter beat ahead");
 	menuPlayback->Append(ID_Menu_ShiftPlayPause, "&Next Full Beat\tShift-Space", "Moves the playhead a full beat ahead");
+	menuPlayback->Append(ID_Menu_NextCol, "&Next Column\tRight", "Advances to the next column");
+	menuPlayback->Append(ID_Menu_PrevCol, "&Previous Column\tLeft", "Advances to the previous column");
 	menuPlayback->Append(ID_Menu_Restart, "&Return to Start\tEnter", "Returns the playhead to the beginning of the timeline");
 	menuView->Append(ID_Menu_ZoomIn, "&Zoom In\t=", "Zooms the timeline in");
 	menuView->Append(ID_Menu_ZoomOut, "&Zoom Out\t-", "Zooms the timeline out");
@@ -258,6 +262,14 @@ void MainFrame::OnNextBeat(wxCommandEvent &WXUNUSED(event)) {
 	m_tlp->nextBeat();
 }
 
+void MainFrame::OnNextCol(wxCommandEvent &WXUNUSED(event)) {
+	m_tlp->advanceCol(1);
+}
+
+void MainFrame::OnPrevCol(wxCommandEvent &WXUNUSED(event)) {
+	m_tlp->advanceCol(-1);
+}
+
 void MainFrame::OnRestart(wxCommandEvent &WXUNUSED(event)) {
 	m_tlp->movePlayhead(0);
 }
@@ -278,6 +290,8 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_Menu_About, MainFrame::OnAbout)
 	EVT_MENU(ID_Menu_PlayPause, MainFrame::OnStartStop)
 	EVT_MENU(ID_Menu_ShiftPlayPause, MainFrame::OnNextBeat)
+	EVT_MENU(ID_Menu_NextCol, MainFrame::OnNextCol)
+	EVT_MENU(ID_Menu_PrevCol, MainFrame::OnPrevCol)
 	EVT_MENU(ID_Menu_Restart, MainFrame::OnRestart)
 	EVT_MENU(ID_Menu_ZoomIn, MainFrame::OnZoomIn)
 	EVT_MENU(ID_Menu_ZoomOut, MainFrame::OnZoomOut)
