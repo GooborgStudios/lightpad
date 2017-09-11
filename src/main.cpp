@@ -92,7 +92,7 @@ wxIMPLEMENT_APP(MainApp); // Tell wxWidgets to commence our app
 bool MainApp::OnInit() {
 	wxHandleFatalExceptions(true); // Enable error handler
 	
-#ifndef XCODE_BUNDLE
+#ifndef OSX_BUNDLE
 	setResourceBase(RESOURCE_DIR);
 #endif
 

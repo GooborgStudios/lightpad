@@ -106,20 +106,21 @@ execute_process(COMMAND "wx-config --cxxflags" OUTPUT_VARIABLE wxConfig_CXX_FLAG
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${wxConfig_CXX_FLAGS}")
 
 IF(APPLE)
+	set(OSX_ICON_FILES ${IMGS}/icon.icns)
+
+	target_compile_definitions(lightpad PUBLIC -DOSX_BUNDLE)
+	target_link_libraries(lightpad "-framework CoreFoundation")
 	set_target_properties(lightpad PROPERTIES MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
 	target_sources(lightpad PUBLIC ${RESOURCE_FILES})
+
+	target_compile_definitions(timeline PUBLIC -DOSX_BUNDLE)
+	target_link_libraries(timeline "-framework CoreFoundation")
 	set_target_properties(timeline PROPERTIES MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad.timeline RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
 	target_sources(timeline PUBLIC ${RESOURCE_FILES})
+	
 	IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.12")
 	ENDIF()
-	# IF(${CMAKE_GENERATOR} MATCHES "Xcode")
-		set(OSX_ICON_FILES ${IMGS}/icon.icns)
-		target_compile_definitions(lightpad PUBLIC -DXCODE_BUNDLE)
-		target_link_libraries(lightpad "-framework CoreFoundation")
-		target_compile_definitions(timeline PUBLIC -DXCODE_BUNDLE)
-		target_link_libraries(timeline "-framework CoreFoundation")
-	# ENDIF()
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	add_definitions(-D__NO_INLINE__)
 	set_target_properties(lightpad PROPERTIES WIN32_EXECUTABLE TRUE)
@@ -191,7 +192,6 @@ IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
 ENDIF()
 
 IF(APPLE)
-
 	# -------- Function to build OS X Stand Alone Bundles -----------------
 	function(MakeOSXBundleApp target binary_dir)
 		IF(${CMAKE_GENERATOR} MATCHES "Xcode")
@@ -207,7 +207,6 @@ IF(APPLE)
 		CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in" "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
 
 		add_custom_command(TARGET ${target} POST_BUILD COMMAND cmake -P ${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT} VERBATIM)
-		# XXX This shouldn't be an install step, but rather a post-build step
 	endfunction(MakeOSXBundleApp)
 
 	MakeOSXBundleApp("lightpad" ${PROJECT_BINARY_DIR})
