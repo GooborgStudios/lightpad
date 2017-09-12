@@ -17,5 +17,3 @@ if [ ! -e $LibrariesDir ]
 	then
 	mkdir -p "$LibrariesDir"
 fi
-
-
