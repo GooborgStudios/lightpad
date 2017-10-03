@@ -28,6 +28,7 @@
 #define MAXIMUM_LAUNCHPAD_BUTTON_SIZE 286
 #define DISPLAY_LEFT_MARGIN 0.113525390625
 #define DISPLAY_BUTTON_PADDING 0.078125
+#define frame_rate 60
 
 // Graphical interface panel
 class DisplayPanel: public wxPanel {
@@ -43,7 +44,6 @@ class DisplayPanel: public wxPanel {
 		void refreshNow();
 		void refreshNow(wxCommandEvent &event);
 		void onSize(wxSizeEvent &event);
-		void startstop(wxCommandEvent &event);
 		void resize_images(int min_fit_size);
 		void render_buttons();
 		void render(wxDC &canvas);
@@ -58,10 +58,7 @@ class DisplayPanel: public wxPanel {
 
 		wxDECLARE_EVENT_TABLE();
 	private:
-		void play_next_frame(wxTimerEvent &event);
-
 		wxPanel *m_parent;
-		wxTimer *m_timer;
 		Magick::Image *fullres_base_image;
 		Magick::Image *fullres_button_images[768];
 		Magick::Image *fullres_button_halo_images[6];

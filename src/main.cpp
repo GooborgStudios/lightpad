@@ -66,7 +66,12 @@ class MainFrame: public wxFrame {
 		HOWL::TimelinePanel *m_tlp;
 		wxBoxSizer *top_half;
 		wxBoxSizer *sizer;
+		wxTimer *m_timer;
 	private:
+		wxLongLong last_frame_time;
+		wxLongLong playback_start_time;
+		wxLongLong playback_offset = 0;
+	
 		void SaveAs();
 	
 		void OnHello(wxCommandEvent &event);
@@ -82,6 +87,7 @@ class MainFrame: public wxFrame {
 		void OnRestart(wxCommandEvent &event);
 		void OnZoomIn(wxCommandEvent &event);
 		void OnZoomOut(wxCommandEvent &event);
+		void playNextFrame(wxTimerEvent &event);
 
 		wxDECLARE_EVENT_TABLE(); // Initialize event listener
 };
@@ -201,6 +207,8 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	splash->Close();
 
 	Bind(FILE_SELECT, &MainFrame::OnSelectFile, this, ID_Frame_Main);
+	
+	m_timer = new wxTimer(this, ID_DisplayPanel_Timer);
 }
 
 void MainFrame::OnExit(wxCommandEvent &WXUNUSED(event)) {
@@ -255,7 +263,10 @@ void MainFrame::OnHello(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void MainFrame::OnStartStop(wxCommandEvent &WXUNUSED(event)) {
-	m_tlp->nextQuarterBeat();
+	if (m_timer->IsRunning()) m_timer->Stop();
+	else m_timer->Start(1000 / frame_rate);
+	last_frame_time = wxGetUTCTimeUSec();
+	playback_start_time = wxGetUTCTimeUSec();
 }
 
 void MainFrame::OnNextBeat(wxCommandEvent &WXUNUSED(event)) {
@@ -282,6 +293,18 @@ void MainFrame::OnZoomOut(wxCommandEvent &WXUNUSED(event)) {
 	m_tlp->zoom(50);
 }
 
+void MainFrame::playNextFrame(wxTimerEvent &WXUNUSED(event)) {
+	wxLongLong now = wxGetUTCTimeUSec();
+	int frame_time = (now - playback_start_time).ToLong() * activeProject->BPM * activeProject->ticksPerBeat / (60 * 1000 * 1000);
+	std::cout << frame_time << std::endl;
+	m_tlp->movePlayhead(frame_time + playback_offset.ToLong());
+	
+	if (activeProject->eof()) {
+		m_tlp->movePlayhead(0);
+		playback_start_time = now;
+	}
+}
+
 // Initialize event listeners
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_Menu_Hello, MainFrame::OnHello)
@@ -298,4 +321,5 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 	EVT_MENU(wxID_EXIT, MainFrame::OnExit)
 	EVT_COMMAND(ID_Frame_Main, FILE_SELECT, MainFrame::OnSelectFile)
+	EVT_TIMER(ID_DisplayPanel_Timer, MainFrame::playNextFrame)
 wxEND_EVENT_TABLE()

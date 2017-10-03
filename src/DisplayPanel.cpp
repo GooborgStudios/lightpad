@@ -39,7 +39,6 @@ const float button_size = 0.06982421875;
 // Initialize the file panel and it's elements
 DisplayPanel::DisplayPanel(wxPanel *parent, SplashScreen *splash): wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
-	m_timer = new wxTimer(this, ID_DisplayPanel_Timer);
 
 	// Initialize variables
 	base_image_path = getResourcePath("launchpad_display/base/base_4096.png");
@@ -89,7 +88,6 @@ DisplayPanel::DisplayPanel(wxPanel *parent, SplashScreen *splash): wxPanel(paren
 }
 
 DisplayPanel::~DisplayPanel() {
-	delete m_timer;
 	delete fullres_base_image;
 	for (int i = 0; i < 6; i++) delete fullres_button_images[i];
 }
@@ -187,17 +185,6 @@ void DisplayPanel::onSize(wxSizeEvent &event) {
 	// Re-render when resizing
 	Refresh();
 	event.Skip();
-}
-
-void DisplayPanel::startstop(wxCommandEvent &WXUNUSED(event)) {
-	if (m_timer->IsRunning()) m_timer->Stop();
-	else m_timer->Start(1000 / 4);
-}
-
-void DisplayPanel::play_next_frame(wxTimerEvent &WXUNUSED(event)) {
-	frame += 1;
-	std::cout << frame << std::endl;
-	Refresh();
 }
 
 void DisplayPanel::resize_images(int new_size) {
@@ -367,8 +354,6 @@ wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
 	EVT_LEFT_UP(DisplayPanel::onLeftUp)
 	EVT_PAINT(DisplayPanel::paintEvent)
 	EVT_SIZE(DisplayPanel::onSize)
-	EVT_MENU(ID_Menu_PlayPause, DisplayPanel::startstop)
-	EVT_TIMER(ID_DisplayPanel_Timer, DisplayPanel::play_next_frame)
 	EVT_COMMAND(ID_Panel_Display, HOWL::PLAYHEAD_MOVED, DisplayPanel::colorButtons)
 	EVT_COMMAND(ID_Panel_Display, HOWL::DISPLAY_REFRESH, DisplayPanel::refreshNow)
 wxEND_EVENT_TABLE()
