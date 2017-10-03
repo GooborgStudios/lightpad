@@ -346,19 +346,18 @@ void DisplayPanel::selectButton(int x, int y, bool state) {
 }
 
 void DisplayPanel::MagickToWx(wxImage *out, Magick::Image *image, const int offset_x, const int offset_y) {
-	// Derived from http://stackoverflow.com/questions/28151240/get-rgb-color-with-magick-using-c
 	int width = image->columns();
 	int height = image->rows();
 	Magick::PixelPacket *pixels = image->getPixels(0, 0, width, height);
-	Magick::ColorRGB color_sample;
+	Magick::PixelPacket p;
 	
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
-			color_sample = pixels[width * y + x];
-			out->SetRGB(x+offset_x, y+offset_y, color_sample.red() * 255, color_sample.green() * 255,
-					   color_sample.blue() * 255);
-			out->SetAlpha(x+offset_x, y+offset_y, (1 - color_sample.alpha()) * 255);
-		}
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			p = *pixels;
+            out->SetRGB(x+offset_x, y+offset_y, p.red / 256, p.green / 256, p.blue / 256);
+            out->SetAlpha(x+offset_x, y+offset_y, 255 - (p.opacity / 256));
+            pixels++;
+        }
 	}
 }
 
