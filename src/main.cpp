@@ -33,6 +33,7 @@
 
 #define wxUSE_ON_FATAL_EXCEPTION 1
 #define PADDING 0
+#define INITIAL_FRAMERATE 60
 
 LightpadProject *activeProject = new TestProject();
 
@@ -71,6 +72,7 @@ class MainFrame: public wxFrame {
 		wxLongLong last_frame_time;
 		wxLongLong playback_start_time;
 		wxLongLong playback_offset = 0;
+		int frame_rate = INITIAL_FRAMERATE;
 	
 		void SaveAs();
 	
@@ -239,6 +241,7 @@ void MainFrame::OnAbout(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void MainFrame::OnSelectFile(wxCommandEvent &event) {
+	frame_rate = INITIAL_FRAMERATE;
 	activeProject = new LightpadProject(event.GetString().ToStdString());
 	m_tlp->setProject(activeProject);
 }
@@ -264,9 +267,12 @@ void MainFrame::OnHello(wxCommandEvent &WXUNUSED(event)) {
 
 void MainFrame::OnStartStop(wxCommandEvent &WXUNUSED(event)) {
 	if (m_timer->IsRunning()) m_timer->Stop();
-	else m_timer->Start(1000 / frame_rate);
-	last_frame_time = wxGetUTCTimeUSec();
-	playback_start_time = wxGetUTCTimeUSec();
+	else {
+		playback_start_time = wxGetUTCTimeUSec();
+		playback_offset = m_tlp->getPlayhead();
+		m_timer->Start(1000 / frame_rate);
+	}
+	last_frame_time = playback_start_time = wxGetUTCTimeUSec();
 }
 
 void MainFrame::OnNextBeat(wxCommandEvent &WXUNUSED(event)) {

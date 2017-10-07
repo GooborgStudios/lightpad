@@ -28,7 +28,6 @@
 #define MAXIMUM_LAUNCHPAD_BUTTON_SIZE 286
 #define DISPLAY_LEFT_MARGIN 0.113525390625
 #define DISPLAY_BUTTON_PADDING 0.078125
-#define frame_rate 60
 
 // Graphical interface panel
 class DisplayPanel: public wxPanel {
