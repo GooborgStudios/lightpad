@@ -28,6 +28,7 @@
 #include "DisplayPanel.h"
 #include "HOWL/TimelinePanel.h"
 #include "PropertiesPanel.h"
+#include "FileMetadata.h"
 #include "Launchpad.h"
 #include "NightwaveCore/SplashScreen.h"
 
@@ -79,6 +80,7 @@ class MainFrame: public wxFrame {
 		void OnHello(wxCommandEvent &event);
 		void OnExit(wxCommandEvent &event);
 		void OnAbout(wxCommandEvent &event);
+		void OnFileMetadata(wxCommandEvent &event);
 		void OnSaveRequest(wxCommandEvent &event);
 		void OnSaveAsRequest(wxCommandEvent &event);
 		void OnSelectFile(wxCommandEvent &event);
@@ -154,6 +156,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	menuFile->Append(ID_Menu_Hello, "&Hello...\tCtrl-H", "Help string shown in status bar for this menu item");
 	menuFile->Append(ID_Menu_Save, "&Save\tCtrl-S", "Saves the file");
 	menuFile->Append(ID_Menu_SaveAs, "&Save As...\tCtrl-Shift-S", "Saves the file to a specified location");
+	menuFile->Append(ID_Menu_FileMetadata, "&File Metadata\tCtrl-I", "Opens file metadata editor");
 	menuFile->AppendSeparator();
 	menuFile->Append(wxID_EXIT);
 	//menuPlayback->Append(ID_Menu_PlayPause, "&Play/Pause\tSpace", "Plays/pauses the animation");
@@ -241,6 +244,10 @@ void MainFrame::OnAbout(wxCommandEvent &WXUNUSED(event)) {
 	ShowSplash();
 }
 
+void MainFrame::OnFileMetadata(wxCommandEvent &WXUNUSED(event)) {
+	FileMetadata *meta = new FileMetadata(wxT("FileMetadata"), activeProject);
+}
+
 void MainFrame::OnSelectFile(wxCommandEvent &event) {
 	frame_rate = INITIAL_FRAMERATE;
 	activeProject = new LightpadProject(event.GetString().ToStdString());
@@ -320,6 +327,7 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_Menu_Save, MainFrame::OnSaveRequest)
 	EVT_MENU(ID_Menu_SaveAs, MainFrame::OnSaveAsRequest)
 	EVT_MENU(ID_Menu_About, MainFrame::OnAbout)
+	EVT_MENU(ID_Menu_FileMetadata, MainFrame::OnFileMetadata)
 	EVT_MENU(ID_Menu_PlayPause, MainFrame::OnStartStop)
 	EVT_MENU(ID_Menu_ShiftPlayPause, MainFrame::OnNextBeat)
 	EVT_MENU(ID_Menu_NextCol, MainFrame::OnNextCol)
