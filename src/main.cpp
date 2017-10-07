@@ -86,6 +86,7 @@ class MainFrame: public wxFrame {
 		void OnNextBeat(wxCommandEvent &event);
 		void OnNextCol(wxCommandEvent &event);
 		void OnPrevCol(wxCommandEvent &event);
+		void restart();
 		void OnRestart(wxCommandEvent &event);
 		void OnZoomIn(wxCommandEvent &event);
 		void OnZoomOut(wxCommandEvent &event);
@@ -287,8 +288,14 @@ void MainFrame::OnPrevCol(wxCommandEvent &WXUNUSED(event)) {
 	m_tlp->advanceCol(-1);
 }
 
-void MainFrame::OnRestart(wxCommandEvent &WXUNUSED(event)) {
+void MainFrame::restart() {
 	m_tlp->movePlayhead(0);
+	playback_start_time = wxGetUTCTimeUSec();
+	playback_offset = 0;
+}
+
+void MainFrame::OnRestart(wxCommandEvent &WXUNUSED(event)) {
+	restart();
 }
 
 void MainFrame::OnZoomIn(wxCommandEvent &WXUNUSED(event)) {
@@ -302,13 +309,9 @@ void MainFrame::OnZoomOut(wxCommandEvent &WXUNUSED(event)) {
 void MainFrame::playNextFrame(wxTimerEvent &WXUNUSED(event)) {
 	wxLongLong now = wxGetUTCTimeUSec();
 	int frame_time = (now - playback_start_time).ToLong() * activeProject->BPM * activeProject->ticksPerBeat / (60 * 1000 * 1000);
-	std::cout << frame_time << std::endl;
 	m_tlp->movePlayhead(frame_time + playback_offset.ToLong());
 	
-	if (activeProject->eof()) {
-		m_tlp->movePlayhead(0);
-		playback_start_time = now;
-	}
+	if (activeProject->eof()) restart();
 }
 
 // Initialize event listeners
