@@ -27,7 +27,7 @@ Software Used:
 - Homebrew
 
 Hardware (Vinyl Darkscratch’s Main Computer, Laptop):
-- Operating System               | macOS Sierra, 10.12.6 Beta
+- Operating System               | macOS High Sierra, 10.13 Beta
 - Model                          | MacBook Pro (15-inch, 2016)
 - Processor                      | 2.9GHz Intel Core i7 Quad-Core Hyperthreaded
 - Memory                         | 16GB DDR3
@@ -39,12 +39,16 @@ Hardware (Vinyl Darkscratch’s Main Computer, Laptop):
 
 Hardware (Vinyl Darkscratch’s Secondary Computer, Desktop):
 - Operating System               | Windows 10 Professional 64-bit
-- Processor                      | 3.3GHz (4.0GHz) Intel Core i5 Quad-Core
-- Memory                         | 16GB DDR3
+- Processor                      | 4.0 GHz Intel Core i7-6700K Quad-Core Hyperthreaded
+- Memory                         | 16GB DDR4
 - Graphics Card                  | EVGA GeForce GTX 980 4GB VRAM
 - Storage                        | 256 GB SSD and 1 TB HDD
 - Display 1                      | 24.0-inch (1920 x 1080)
 - Display 2                      | 17.1-inch (1280 x 1024)
+
+Fonts:
+- Lightpad Text Font             | Front Page Supplement | https://www.dafont.com/front-page-supplement.font
+- Nightwave Studios Text Font    | Helvetica Neue        | N/A
 
 Additional References:
 - Exige’s MIDI Extension         | http://forum.launchpad-pro.com/viewtopic.php?id=4968
