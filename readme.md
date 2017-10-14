@@ -10,7 +10,7 @@ Lightpad has four executables: _main_, _timeline_, _midiprobe_, and _midiout_.  
 ```bash
 mkdir build
 cd build
-cmake .. && make -j8 && make install
+cmake .. && make -j8
 ../bin/lightpad[.exe]
 ../bin/timeline[.exe]
 ../bin/midiprobe[.exe]
@@ -35,6 +35,6 @@ The software is mainly developed on a mid-2016 MacBook Pro, 2.7GHz Intel i7 with
 
 Supported Operating Systems:
 
-* Mac OS [![Build Status](https://travis-ci.org/vinyldarkscratch/lightpad.svg?branch=master)](https://travis-ci.org/vinyldarkscratch/lightpad)
-* Windows (broken at the moment)
+* Mac OS [![Build Status](https://travis-ci.org/VaduNightwave/lightpad.svg?branch=master)](https://travis-ci.org/VaduNightwave/lightpad)
+* Windows (implementing)
 * Linux/Unix (implementing)
