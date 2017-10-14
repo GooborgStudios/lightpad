@@ -17,8 +17,6 @@
 #include <wx/clrpicker.h>
 
 #include "ElementIDs.h"
-#include "NightwaveCore/Helpers.h"
-#include "NightwaveCore/Colors.h"
 #include "GridRenderer.h"
 
 // Properties panel
