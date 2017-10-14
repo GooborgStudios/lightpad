@@ -22,7 +22,7 @@
 #include "NightwaveCore/Colors.h"
 #include "NightwaveCore/Helpers.h"
 #include "GridRenderer.h"
-#include "Launchpad.h"
+#include "MidiLayer.h"
 
 wxDEFINE_EVENT(COLOR_SELECT, wxCommandEvent);
 

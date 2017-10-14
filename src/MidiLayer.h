@@ -14,6 +14,7 @@
 
 #include <string>
 
+#include "NightwaveCore/Colors.h"
 #include "HOWL/Layer.h"
 
 class NoteKeyframe: public HOWL::Keyframe {
@@ -30,3 +31,9 @@ class MidiLayer: public HOWL::Layer {
 		unsigned char getVelocity(std::string position);
 		void setVelocity(int position, unsigned char velocity);
 };
+
+const int COLORCOUNT = 128;
+extern Color velocitycolors[COLORCOUNT];
+
+unsigned char get_closest_velocity(Color c);
+char get_color_velocity(Color c);

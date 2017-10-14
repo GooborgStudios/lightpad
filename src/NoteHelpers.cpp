@@ -7,8 +7,7 @@
 
 #include "NoteHelpers.h"
 
-#include <algorithm>
-#include <cmath>
+#include "NightwaveCore/Colors.h"
 
 // Generated with GenerateNoteButtonMap.cpp
 const int note_button_map[] = {

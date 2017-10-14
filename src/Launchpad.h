@@ -7,18 +7,11 @@
 
 #pragma once
 
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-	#include <wx/wx.h>
-#endif
-
 #include <cstdarg>
 #include <ctime>
 #include <regex>
 
 #include "RtMidi.h"
-
-#include "NightwaveCore/Colors.h"
 
 #define ABLETON_LIVE_MODE 4
 #define MIDI_MESSAGE_SYSEX_BEGIN 240
@@ -54,16 +47,16 @@ class LaunchpadBase {
 	public:
 		LaunchpadBase();
 		~LaunchpadBase();
-		int connect();
-		virtual void disconnect();
+		virtual int connect() = 0;
+		virtual void disconnect() = 0;
 		bool isConnected();
 		void inquiryDevice();
 		int getMidiPort(RtMidi *ports);
 		double getMessage(std::vector<unsigned char> *message_in);
 		void beginColorUpdate();
 		void endColorUpdate();
-		virtual void setColor(unsigned char light, unsigned char color);
-		virtual void setPulse(unsigned char light, unsigned char color);
+		virtual void setColor(unsigned char light, unsigned char color) = 0;
+		virtual void setPulse(unsigned char light, unsigned char color) = 0;
 		std::regex PORT_REGEX;
 	protected:
 		RtMidiIn *midiin;
@@ -73,6 +66,10 @@ class LaunchpadBase {
 		void sendMessage(Message message);
 		bool connected;
 		SysExMessage *color_update;
+	protected:
+		int preconnect();
+	private:
+		virtual int buttonToNote(int button);
 };
 
 class LaunchpadPro: public LaunchpadBase {
@@ -96,14 +93,8 @@ class LaunchpadS: public LaunchpadBase {
 		void disconnect();
 		void setColor(unsigned char light, unsigned char color);
 		void setPulse(unsigned char light, unsigned char color);
-		unsigned char pro_to_s_note(unsigned char pro_note, unsigned char msg_type);
-		unsigned char pro_to_s_color(unsigned char pro_color);
+	private:
+		int buttonToNote(int button);
 };
 
-const int COLORCOUNT = 128;
-extern Color velocitycolors[COLORCOUNT];
-
-unsigned char get_closest_velocity(Color c);
-char get_color_velocity(Color c);
-
-extern LaunchpadPro *launchpad;
+extern LaunchpadBase *launchpad;
