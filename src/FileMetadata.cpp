@@ -17,7 +17,6 @@
 #include "HOWL/Project.h"
 
 FileMetadata::FileMetadata(const wxString & title, HOWL::Project *project) : wxDialog(NULL, -1, title, wxDefaultPosition, wxSize(250, 230)) {
-	
 	wxPanel *panel = new wxPanel(this, -1);
 
 	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);

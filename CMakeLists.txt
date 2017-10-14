@@ -73,6 +73,7 @@ add_executable(lightpad MACOSX_BUNDLE
 	${SRC}/LightpadProject.cpp ${SRC}/LightpadProject.h
 	${SRC}/PropertiesPanel.cpp ${SRC}/PropertiesPanel.h
 	${SRC}/TestProject.cpp ${SRC}/TestProject.h
+	${SRC}/FileMetadata.cpp ${SRC}/FileMetadata.h
 )
 
 add_executable(timeline MACOSX_BUNDLE
