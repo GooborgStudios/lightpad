@@ -124,7 +124,7 @@ int LightpadProject::save(std::string filePath) {
 	unsigned char velocity = 0;
 	for (auto button: layer->keyframes) {
 		unsigned char last_command = 128;
-		for (auto keyframe: button.second->keyframes) {
+		for (auto keyframe: button->keyframes) {
 			velocity = ((NoteKeyframe *)(keyframe))->velocity;
 			
 			if (velocity > 0 && last_command != 128) pushButton(keyframe->time, keyframe->name, 0);
