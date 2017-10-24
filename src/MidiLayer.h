@@ -22,7 +22,7 @@ class NoteKeyframe: public HOWL::Keyframe {
 		unsigned char velocity;
 		NoteKeyframe(int name, long time, unsigned char velocity);
 		std::string serialize();
-		void render(wxDC &canvas, wxRect bounding_box, bool selected = true);
+		void render(wxDC &canvas, wxRect bounding_box);
 };
 
 class MidiLayer: public HOWL::Layer {
