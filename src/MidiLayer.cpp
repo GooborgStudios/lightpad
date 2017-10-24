@@ -27,11 +27,10 @@ std::string NoteKeyframe::serialize() {
 	return std::string("");
 }
 
-void NoteKeyframe::render(wxDC &canvas, wxRect bounding_box, bool selected) {
+void NoteKeyframe::render(wxDC &canvas, wxRect bounding_box) {
 	canvas.SetPen(*wxBLACK_PEN);
 	canvas.DrawLine(bounding_box.GetLeft(), bounding_box.GetTop(), bounding_box.GetLeft(), bounding_box.GetHeight());
-	if (selected) canvas.SetPen(wxPen(*wxWHITE, 2));
-	else canvas.SetPen(*wxTRANSPARENT_PEN);
+	canvas.SetPen(*wxTRANSPARENT_PEN);
 	canvas.SetBrush(wxBrush(velocitycolors[this->velocity]));
 	canvas.DrawRectangle(bounding_box.GetLeft(), bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
 }
