@@ -40,15 +40,22 @@ unsigned char MidiLayer::getVelocity(int position) {
 }
 
 unsigned char MidiLayer::getVelocity(std::string position) {
-	if (keyframes[position]->getFirst() == NULL) return '\0';
-	return ((NoteKeyframe *)(keyframes[position]->getFirst()))->velocity;
+	HOWL::KeyframeSet *set = findSet(position);
+	if (set == NULL || set->getFirst() == NULL) return '\0';
+	return ((NoteKeyframe *)(set->getFirst()))->velocity;
 }
 
 void MidiLayer::setVelocity(int position, unsigned char velocity) {
 	std::string type = to_padded_string(position, 2);
-	NoteKeyframe *keyframe = (NoteKeyframe *)(keyframes[type]->getFirst());
-	if (keyframe == NULL) AddKeyframe(new NoteKeyframe(position, keyframes[type]->currentTime, velocity));
-	else keyframe->velocity = velocity;
+	HOWL::KeyframeSet *set = findSet(type);
+	if (set != NULL) {
+		NoteKeyframe *keyframe = (NoteKeyframe *)(set->getFirst());
+		if (keyframe != NULL) {
+			keyframe->velocity = velocity;
+			return;
+		}
+	}
+	AddKeyframe(new NoteKeyframe(position, set->currentTime, velocity));
 }
 
 Color velocitycolors[] = {
