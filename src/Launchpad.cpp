@@ -9,13 +9,11 @@
 
 #include "Launchpad.h"
 
-
 #include <cstdarg>
 #include <ctime>
 #include <regex>
 
 #include "RtMidi.h"
-
 
 #ifdef WINDOWS
 	#include <windows.h>
