@@ -78,6 +78,5 @@ class DisplayPanel: public wxPanel {
 		bool changed_buttons[100] = {true};
 		bool selected_buttons[100] = {false};
 		bool selected_buttons_box[100] = {false};
-		int frame = 0;
 		wxPoint clickpos = wxPoint(-1, -1);
 };
