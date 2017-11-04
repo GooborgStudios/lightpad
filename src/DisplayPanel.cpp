@@ -238,11 +238,21 @@ void DisplayPanel::render_buttons() {
 		int btn_y = 9 - (i / 10);
 		int button_style = get_button_style(btn_x, btn_y);
 		
+		bool selected = false;
+		for (HOWL::SingleSelection *s : activeProject->selection.sel) {
+			if (s->set->name == to_padded_string(i, 2)
+				&& s->start <= activeProject->currentTime
+				&& s->end > activeProject->currentTime) {
+				selected = true;
+			}
+		}
+		
 		if (changed_buttons[i]) {
 			Magick::Image base_crop(*scaled_base_image);
 			base_crop.crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y)));
 			
-			if (selected_buttons[i] || selected_buttons_box[i])
+//			if (selected_buttons[i] || selected_buttons_box[i])
+			if (selected)
 				base_crop.composite(*scaled_button_halo_images[button_style], 0, 0, Magick::OverCompositeOp);
 		
 			Magick::Image current_button(*scaled_button_images[button_colors[i] + (128 * button_style)]);
@@ -356,4 +366,5 @@ wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
 	EVT_SIZE(DisplayPanel::onSize)
 	EVT_COMMAND(ID_Panel_Display, HOWL::PLAYHEAD_MOVED, DisplayPanel::colorButtons)
 	EVT_COMMAND(ID_Panel_Display, HOWL::DISPLAY_REFRESH, DisplayPanel::refreshNow)
+	EVT_COMMAND(ID_Panel_Display, HOWL::SELECTION_CHANGED, DisplayPanel::refreshNow)
 wxEND_EVENT_TABLE()
