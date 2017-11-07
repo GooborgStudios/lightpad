@@ -13,7 +13,7 @@
 #endif
 
 #include "NightwaveCore/Colors.h"
-#include "NightwaveCore/Helpers.h"
+#include "NightwaveCore/NightwaveCore.h"
 #include "Launchpad.h"
 #include "LightpadProject.h"
 

@@ -13,7 +13,7 @@
 #endif
 
 #include "ElementIDs.h"
-#include "NightwaveCore/Helpers.h"
+#include "NightwaveCore/NightwaveCore.h"
 #include "HOWL/Project.h"
 
 FileMetadata::FileMetadata(const wxString & title, HOWL::Project *project) : wxDialog(NULL, -1, title, wxDefaultPosition, wxSize(250, 230)) {

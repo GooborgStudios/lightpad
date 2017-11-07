@@ -21,7 +21,7 @@
 #include "RtMidi.h"
 
 #include "ElementIDs.h"
-#include "NightwaveCore/Helpers.h"
+#include "NightwaveCore/NightwaveCore.h"
 #include "LightpadProject.h"
 #include "TestProject.h"
 #include "FilePanel.h"

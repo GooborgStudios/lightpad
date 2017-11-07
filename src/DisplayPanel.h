@@ -18,7 +18,7 @@
 #include "Magick++.h"
 
 #include "ElementIDs.h"
-#include "NightwaveCore/Helpers.h"
+#include "NightwaveCore/NightwaveCore.h"
 #include "NightwaveCore/Colors.h"
 #include "HOWL/Project.h"
 #include "NightwaveCore/SplashScreen.h"

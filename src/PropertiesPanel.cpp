@@ -20,7 +20,7 @@
 
 #include "ElementIDs.h"
 #include "NightwaveCore/Colors.h"
-#include "NightwaveCore/Helpers.h"
+#include "NightwaveCore/NightwaveCore.h"
 #include "GridRenderer.h"
 #include "MidiLayer.h"
 

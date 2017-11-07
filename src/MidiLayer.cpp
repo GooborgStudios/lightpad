@@ -14,7 +14,7 @@
 
 #include <string>
 
-#include "NightwaveCore/Helpers.h"
+#include "NightwaveCore/NightwaveCore.h"
 #include "NightwaveCore/Colors.h"
 #include "Launchpad.h"
 #include "HOWL/Layer.h"

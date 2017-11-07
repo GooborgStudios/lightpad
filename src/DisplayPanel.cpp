@@ -26,7 +26,7 @@
 #include "Magick++.h"
 
 #include "ElementIDs.h"
-#include "NightwaveCore/Helpers.h"
+#include "NightwaveCore/NightwaveCore.h"
 #include "Launchpad.h"
 #include "NightwaveCore/Colors.h"
 #include "LightpadProject.h"

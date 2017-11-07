@@ -26,7 +26,7 @@
 #endif
 
 #include "ElementIDs.h"
-#include "NightwaveCore/Helpers.h"
+#include "NightwaveCore/NightwaveCore.h"
 
 wxDEFINE_EVENT(FILE_SELECT, wxCommandEvent);
 

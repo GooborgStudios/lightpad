@@ -13,7 +13,7 @@
 #endif
 
 #include "ElementIDs.h"
-#include "NightwaveCore/Helpers.h"
+#include "NightwaveCore/NightwaveCore.h"
 #include "HOWL/Project.h"
 
 class FileMetadata : public wxDialog {
