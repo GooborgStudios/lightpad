@@ -21,6 +21,7 @@
 #include "NightwaveCore/NightwaveCore.h"
 #include "NightwaveCore/Colors.h"
 #include "HOWL/Project.h"
+#include "HOWL/Selection.h"
 #include "NightwaveCore/SplashScreen.h"
 
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
@@ -53,6 +54,7 @@ class DisplayPanel: public wxPanel {
 		void colorButtons(wxCommandEvent &event);
 		void selectButton(int button, bool state);
 		void selectButton(int x, int y, bool state);
+		void selectButton(HOWL::SelectionEvent &event);
 		void MagickToWx(wxImage *out, Magick::Image *image, const int offset_x = 0, const int offset_y = 0);
 
 		wxDECLARE_EVENT_TABLE();

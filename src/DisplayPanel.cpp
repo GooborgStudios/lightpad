@@ -31,6 +31,7 @@
 #include "NightwaveCore/Colors.h"
 #include "LightpadProject.h"
 #include "HOWL/TimelinePanel.h"
+#include "HOWL/Selection.h"
 #include "NightwaveCore/SplashScreen.h"
 
 const float button_pos[10] = {0.113525390625, 0.199462890625, 0.277587890625, 0.355712890625, 0.433837890625, 0.511962890625, 0.590087890625, 0.668212890625, 0.746337890625, 0.832275390625};
@@ -332,14 +333,20 @@ void DisplayPanel::colorButtons(wxCommandEvent &event) {
 }
 
 void DisplayPanel::selectButton(int button, bool state) {
-	if (selected_buttons[button] != state) {
-		changed_buttons[button] = true;
-		selected_buttons[button] = state;
-	}
+	changed_buttons[button] = true;
 }
 
 void DisplayPanel::selectButton(int x, int y, bool state) {
 	selectButton(x + (y * 10), state);
+}
+
+void DisplayPanel::selectButton(HOWL::SelectionEvent &event) {
+	HOWL::SingleSelection sel = event.GetSelection();
+	if (sel.start > activeProject->currentTime) return;
+	if ( sel.end < activeProject->currentTime) return;
+	bool state = (event.GetEventType() == HOWL::SELECTION_ON);
+	selectButton(std::atoi(sel.set->name.c_str()), state);
+	refreshNow();
 }
 
 void DisplayPanel::MagickToWx(wxImage *out, Magick::Image *image, const int offset_x, const int offset_y) {
@@ -366,5 +373,6 @@ wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
 	EVT_SIZE(DisplayPanel::onSize)
 	EVT_COMMAND(ID_Panel_Display, HOWL::PLAYHEAD_MOVED, DisplayPanel::colorButtons)
 	EVT_COMMAND(ID_Panel_Display, HOWL::DISPLAY_REFRESH, DisplayPanel::refreshNow)
-	EVT_COMMAND(ID_Panel_Display, HOWL::SELECTION_CHANGED, DisplayPanel::refreshNow)
+	EVT_HOWL_SELECTION_ON(ID_Panel_Display, DisplayPanel::selectButton)
+	EVT_HOWL_SELECTION_OFF(ID_Panel_Display, DisplayPanel::selectButton)
 wxEND_EVENT_TABLE()
