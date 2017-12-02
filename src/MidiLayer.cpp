@@ -42,16 +42,19 @@ unsigned char MidiLayer::getVelocity(int position) {
 }
 
 unsigned char MidiLayer::getVelocity(std::string position) {
-	HOWL::KeyframeSet *set = findSet(position);
-	if (set == NULL || set->getFirst() == NULL) return '\0';
-	return ((NoteKeyframe *)(set->getFirst()))->velocity;
+	HOWL::KeyframePair value = getSurroundingKeyframes(position);
+
+	if (!value.first) return '\0';
+	return ((NoteKeyframe *)(value.first))->velocity;
 }
 
 void MidiLayer::setVelocity(int position, unsigned char velocity) {
 	std::string type = to_padded_string(position, 2);
 	HOWL::KeyframeSet *set = findSet(type);
+	HOWL::KeyframePair value = getSurroundingKeyframes(type);
+
 	if (set != NULL) {
-		NoteKeyframe *keyframe = (NoteKeyframe *)(set->getFirst());
+		NoteKeyframe *keyframe = (NoteKeyframe *)(value.first);
 		if (keyframe != NULL) {
 			keyframe->velocity = velocity;
 			return;
