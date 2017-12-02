@@ -122,7 +122,8 @@ int LightpadProject::save(std::string filePath) {
 	midifile->setTicksPerQuarterNote(this->ticksPerBeat);
 	
 	unsigned char velocity = 0;
-	for (auto button: layer->keyframes) {
+	for (std::string button_name: layer->getSetNames()) {
+		HOWL::KeyframeSet *button = layer->findSet(button_name);
 		unsigned char last_command = 128;
 		for (auto keyframe: button->keyframes) {
 			velocity = ((NoteKeyframe *)(keyframe))->velocity;

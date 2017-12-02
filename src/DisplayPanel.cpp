@@ -325,8 +325,8 @@ void DisplayPanel::colorButton(int button, int color) {
 }
 
 void DisplayPanel::colorButtons(wxCommandEvent &event) {
-	for (auto iter : activeProject->layer->keyframes) {
-		colorButton(std::stoi(iter->name), activeProject->layer->getVelocity(iter->name));
+	for (auto button_name : activeProject->layer->getSetNames()) {
+		colorButton(std::stoi(button_name), activeProject->layer->getVelocity(button_name));
 	}
 	
 	refreshNow();
