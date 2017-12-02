@@ -82,9 +82,13 @@ void PropertiesPanel::OnSelectCell(wxGridEvent &event) {
 
 	HOWL::Selection sel = activeProject->selection;
 	unsigned char velocity = event.GetRow() * 8 + event.GetCol();
-	for ( auto s: sel.sel ) {
+	unsigned char old_velocity;
+	for (auto s: sel.sel) {
+		HOWL::KeyframePair pair = activeProject->layer->getSurroundingKeyframes(s->set->name, s->end);
+		old_velocity = pair.first == NULL ? 0 : ((NoteKeyframe *)(pair.first))->velocity;
+		
 		s->set->AddKeyframe(new NoteKeyframe(std::atoi(s->set->name.c_str()), s->start, velocity));
-		//s->set->AddKeyframe(new NoteKeyframe(std::atoi(s->set->name.c_str()), s->end, 0));
+		s->set->AddKeyframe(new NoteKeyframe(std::atoi(s->set->name.c_str()), s->end, old_velocity), false);
 	}
 
 	wxCommandEvent evt(HOWL::DISPLAY_REFRESH, ID_PropertiesPanel_ColorSelect);
