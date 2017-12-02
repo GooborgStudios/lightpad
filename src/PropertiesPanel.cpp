@@ -23,6 +23,8 @@
 #include "NightwaveCore/NightwaveCore.h"
 #include "GridRenderer.h"
 #include "MidiLayer.h"
+#include "LightpadProject.h"
+#include "HOWL/TimelinePanel.h"
 
 wxDEFINE_EVENT(COLOR_SELECT, wxCommandEvent);
 
@@ -71,13 +73,29 @@ void PropertiesPanel::Update() {
 
 }
 
+void setKeyframeVelocity(NoteKeyframe *kf, int velocity) {
+	kf->velocity = velocity;
+}
+
 void PropertiesPanel::OnSelectCell(wxGridEvent &event) {
 	grid->SelectBlock(event.GetRow(), event.GetCol(), event.GetRow(), event.GetCol());
 
-	wxCommandEvent evt(COLOR_SELECT, ID_PropertiesPanel_ColorSelect);
+	HOWL::Selection sel = activeProject->selection;
+	unsigned char velocity = event.GetRow() * 8 + event.GetCol();
+	for ( auto s: sel.sel ) {
+		s->set->AddKeyframe(new NoteKeyframe(std::atoi(s->set->name.c_str()), s->start, velocity));
+		//s->set->AddKeyframe(new NoteKeyframe(std::atoi(s->set->name.c_str()), s->end, 0));
+	}
+
+	wxCommandEvent evt(HOWL::DISPLAY_REFRESH, ID_PropertiesPanel_ColorSelect);
 	evt.SetEventObject(this);
-	evt.SetInt(event.GetRow() * 8 + event.GetCol());
 	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Timeline), evt);
+	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), evt);
+
+//	wxCommandEvent evt(COLOR_SELECT, ID_PropertiesPanel_ColorSelect);
+//	evt.SetEventObject(this);
+//	evt.SetInt(event.GetRow() * 8 + event.GetCol());
+//	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Timeline), evt);
 }
 
 void PropertiesPanel::SelectColor(wxColourPickerEvent &event) {
