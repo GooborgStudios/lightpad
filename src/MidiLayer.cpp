@@ -30,11 +30,11 @@ std::string NoteKeyframe::serialize() {
 }
 
 void NoteKeyframe::render(wxDC &canvas, wxRect bounding_box) {
-	canvas.SetPen(*wxBLACK_PEN);
-	canvas.DrawLine(bounding_box.GetLeft(), bounding_box.GetTop(), bounding_box.GetLeft(), bounding_box.GetHeight());
 	canvas.SetPen(*wxTRANSPARENT_PEN);
 	canvas.SetBrush(wxBrush(velocitycolors[this->velocity]));
 	canvas.DrawRectangle(bounding_box.GetLeft(), bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
+	canvas.SetPen(*wxBLACK_PEN);
+	canvas.DrawLine(bounding_box.GetTopLeft(), bounding_box.GetBottomLeft());
 }
 
 unsigned char MidiLayer::getVelocity(int position) {
@@ -59,6 +59,8 @@ void MidiLayer::setVelocity(int position, unsigned char velocity) {
 	}
 	AddKeyframe(new NoteKeyframe(position, set->currentTime, velocity));
 }
+
+
 
 Color velocitycolors[] = {
 	Color(0, 0, 0),       Color(28, 28, 28),    Color(124, 124, 124), Color(252, 252, 252),
