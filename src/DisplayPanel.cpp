@@ -85,7 +85,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent, SplashScreen *splash): wxPanel(paren
 
 	paintNow();
 
-	Bind(HOWL::DISPLAY_REFRESH, &DisplayPanel::refreshNow, this, ID_TimelinePanel_CellSelect);
+	Bind(HOWL::DISPLAY_REFRESH, &DisplayPanel::refreshNow, this);
 }
 
 DisplayPanel::~DisplayPanel() {
