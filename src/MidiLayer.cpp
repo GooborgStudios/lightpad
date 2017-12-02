@@ -24,7 +24,9 @@ NoteKeyframe::NoteKeyframe(int name, long time, unsigned char velocity) : Keyfra
 }
 
 std::string NoteKeyframe::serialize() {
-	return std::string("");
+	std::stringstream stream;
+	stream << (int) (velocity);
+	return stream.str();
 }
 
 void NoteKeyframe::render(wxDC &canvas, wxRect bounding_box) {
