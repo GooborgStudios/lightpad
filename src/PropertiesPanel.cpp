@@ -73,10 +73,6 @@ void PropertiesPanel::Update() {
 
 }
 
-void setKeyframeVelocity(NoteKeyframe *kf, int velocity) {
-	kf->velocity = velocity;
-}
-
 void PropertiesPanel::OnSelectCell(wxGridEvent &event) {
 	grid->SelectBlock(event.GetRow(), event.GetCol(), event.GetRow(), event.GetCol());
 

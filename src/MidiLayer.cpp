@@ -63,8 +63,6 @@ void MidiLayer::setVelocity(int position, unsigned char velocity) {
 	AddKeyframe(new NoteKeyframe(position, set->currentTime, velocity));
 }
 
-
-
 Color velocitycolors[] = {
 	Color(0, 0, 0),       Color(28, 28, 28),    Color(124, 124, 124), Color(252, 252, 252),
 	Color(255, 128, 128), Color(255, 0, 0),     Color(178, 0, 0),     Color(89, 0, 0),

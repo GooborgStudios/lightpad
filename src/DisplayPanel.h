@@ -57,7 +57,6 @@ class DisplayPanel: public wxPanel {
 		void selectButton(HOWL::SelectionEvent &event);
 		void MagickToWx(wxImage *out, Magick::Image *image, const int offset_x = 0, const int offset_y = 0);
 
-		wxDECLARE_EVENT_TABLE();
 	private:
 		wxPanel *m_parent;
 		Magick::Image *fullres_base_image;
@@ -81,4 +80,6 @@ class DisplayPanel: public wxPanel {
 		bool selected_buttons[100] = {false};
 		bool selected_buttons_box[100] = {false};
 		wxPoint clickpos = wxPoint(-1, -1);
+
+	wxDECLARE_EVENT_TABLE();
 };

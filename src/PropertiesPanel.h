@@ -1,3 +1,4 @@
+
 //
 // Lightpad - PropertiesPanel.h
 // ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
@@ -27,13 +28,14 @@ class PropertiesPanel: public wxPanel {
 		void Update();
 		void OnSelectCell(wxGridEvent &event);
 		void SelectColor(wxColourPickerEvent &event);
+		
 	private:
 		wxPanel *m_parent;
 		wxBoxSizer *sizer;
 		wxGrid *grid;
 		LightpadGridRenderer *renderer;
 
-		wxDECLARE_EVENT_TABLE();
+	wxDECLARE_EVENT_TABLE();
 };
 
 wxDECLARE_EVENT(COLOR_SELECT, wxCommandEvent);

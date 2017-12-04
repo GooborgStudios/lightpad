@@ -88,29 +88,6 @@ LightpadProject::LightpadProject(std::string filePath) : LightpadProject::Lightp
 	delete midifile;
 }
 
-int LightpadProject::noteToButton(int note) {
-	if (note < note_button_offset || note > (note_button_size + note_button_offset)) return 0;
-	return note_button_map[note - note_button_offset];
-}
-
-int LightpadProject::buttonToNote(int button) {
-	for (int i = 0; i < note_button_size + note_button_offset; i++)
-		if (note_button_map[i] == button) return i + note_button_offset;
-	return 0;
-}
-
-
-
-void LightpadProject::pushButton(int tick, std::string button, unsigned char velocity) {
-	vector<unsigned char> data;
-	
-	data.push_back(velocity == 0 ? 128 : 144);
-	data.push_back(buttonToNote(stoi(button)));
-	data.push_back(velocity);
-	assert(midifile != NULL);
-	midifile->addEvent(0, tick, data);
-}
-
 int LightpadProject::save() {
 	return save(this->filePath);
 }
@@ -138,5 +115,26 @@ int LightpadProject::save(std::string filePath) {
 	midifile->sortTracks();
 	midifile->write(this->filePath);
 	
+	return 0;
+}
+
+void LightpadProject::pushButton(int tick, std::string button, unsigned char velocity) {
+	vector<unsigned char> data;
+	
+	data.push_back(velocity == 0 ? 128 : 144);
+	data.push_back(buttonToNote(stoi(button)));
+	data.push_back(velocity);
+	assert(midifile != NULL);
+	midifile->addEvent(0, tick, data);
+}
+
+int LightpadProject::noteToButton(int note) {
+	if (note < note_button_offset || note > (note_button_size + note_button_offset)) return 0;
+	return note_button_map[note - note_button_offset];
+}
+
+int LightpadProject::buttonToNote(int button) {
+	for (int i = 0; i < note_button_size + note_button_offset; i++)
+		if (note_button_map[i] == button) return i + note_button_offset;
 	return 0;
 }

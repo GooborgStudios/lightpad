@@ -74,6 +74,42 @@ void FilePanel::RefreshFileList() {
 	// XXX Should also obtain user search paths.
 }
 
+void FilePanel::Update() {
+	this->SetSizer(sizer);
+	sizer->Layout();
+}
+
+wxString FilePanel::GetFilePath(wxDataViewItem item) {
+	wxDataViewTreeStore *store = filelistbox->GetStore();
+	wxString path;
+
+	for (int i = 0; i <= 1; i++) { // XXX Improve me!
+		if (i == 0) path = max_user_library_path + "/";
+		else path = max_shared_library_path + "/";
+
+		if (!store->IsContainer(item))
+			path += filelistbox->GetItemText(store->GetParent(item)) + "/";
+		path += filelistbox->GetItemText(item);
+		if (wxFile::Exists(path))
+			break;
+	}
+	return path;
+}
+
+void FilePanel::ChangeSelectedFile(wxDataViewEvent &event) {
+	if (!filelistbox->GetStore()->IsContainer(event.GetItem())) {
+		wxCommandEvent evt(FILE_SELECT);
+		evt.SetEventObject(this);
+		evt.SetString(GetFilePath(event.GetItem()));
+		ProcessEvent(evt);
+	}
+}
+
+// void FilePanel::RenameFile(wxDataViewEvent &event) {
+// 	std::cout << filelistbox->GetItemText(event.GetItem());
+//  std::cout << " > " << event.GetValue().GetType() << std::endl;
+// }
+
 // Obtain all of the contents of a directory and add it to a specified file list
 void FilePanel::ListDirectory(wxString path, wxDataViewItem *files) {
 	wxDataViewItem *current_file;
@@ -115,42 +151,6 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem *files) {
 		delete current_file;
 	}
 }
-
-void FilePanel::Update() {
-	this->SetSizer(sizer);
-	sizer->Layout();
-}
-
-wxString FilePanel::GetFilePath(wxDataViewItem item) {
-	wxDataViewTreeStore *store = filelistbox->GetStore();
-	wxString path;
-
-	for (int i = 0; i <= 1; i++) { // XXX Improve me!
-		if (i == 0) path = max_user_library_path + "/";
-		else path = max_shared_library_path + "/";
-
-		if (!store->IsContainer(item))
-			path += filelistbox->GetItemText(store->GetParent(item)) + "/";
-		path += filelistbox->GetItemText(item);
-		if (wxFile::Exists(path))
-			break;
-	}
-	return path;
-}
-
-void FilePanel::ChangeSelectedFile(wxDataViewEvent &event) {
-	if (!filelistbox->GetStore()->IsContainer(event.GetItem())) {
-		wxCommandEvent evt(FILE_SELECT);
-		evt.SetEventObject(this);
-		evt.SetString(GetFilePath(event.GetItem()));
-		ProcessEvent(evt);
-	}
-}
-
-// void FilePanel::RenameFile(wxDataViewEvent &event) {
-// 	std::cout << filelistbox->GetItemText(event.GetItem());
-//  std::cout << " > " << event.GetValue().GetType() << std::endl;
-// }
 
 wxBEGIN_EVENT_TABLE(FilePanel, wxPanel)
 	EVT_DATAVIEW_SELECTION_CHANGED(ID_FilePanel_Tree, FilePanel::ChangeSelectedFile)

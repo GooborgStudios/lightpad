@@ -69,8 +69,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent, SplashScreen *splash): wxPanel(paren
 			
 			fullres_button_images[arraypos] = new Magick::Image(*fullres_button_image);
 			fullres_button_images[arraypos]->modulate(180.0, 0.0, 100.0);
-			fullres_button_images[arraypos]->colorize(50, 50, 50, Magick::ColorRGB(bcolor.Red() / 255.0,
-														bcolor.Green() / 255.0, bcolor.Blue() / 255.0));
+			fullres_button_images[arraypos]->colorize(50, 50, 50, Magick::ColorRGB(bcolor.Red() / 255.0, bcolor.Green() / 255.0, bcolor.Blue() / 255.0));
 		}
 		
 		delete fullres_button_image;

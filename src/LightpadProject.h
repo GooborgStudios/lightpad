@@ -20,12 +20,6 @@
 #include "MidiLayer.h"
 
 class LightpadProject: public HOWL::Project {
-	private:
-		MidiFile *midifile;
-		void pushButton(int tick, std::string button, unsigned char velocity);
-		int noteToButton(int note);
-		int buttonToNote(int button);
-		
 	public:
 		LightpadProject(int BPM = 120, int ticksPerBeat = 32, int beatsPerMeasure = 4);
 		LightpadProject(std::string filePath);
@@ -33,6 +27,13 @@ class LightpadProject: public HOWL::Project {
 		int save(std::string filePath);
 	
 		MidiLayer *layer;
+	
+	private:
+		void pushButton(int tick, std::string button, unsigned char velocity);
+		int noteToButton(int note);
+		int buttonToNote(int button);
+		
+		MidiFile *midifile;
 };
 
 extern LightpadProject *activeProject;

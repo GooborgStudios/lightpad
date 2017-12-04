@@ -54,6 +54,7 @@ class MainFrame: public wxFrame {
 	public:
 		MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size);
 		void ShowSplash(bool loading = false);
+
 		SplashScreen *splash;
 		wxMenuBar *menuBar;
 		wxMenu *menuFile;
@@ -69,6 +70,7 @@ class MainFrame: public wxFrame {
 		wxBoxSizer *top_half;
 		wxBoxSizer *sizer;
 		wxTimer *m_timer;
+
 	private:
 		wxLongLong last_frame_time;
 		wxLongLong playback_start_time;
@@ -76,6 +78,7 @@ class MainFrame: public wxFrame {
 		int frame_rate = INITIAL_FRAMERATE;
 	
 		void SaveAs();
+		void restart();
 	
 		void OnHello(wxCommandEvent &event);
 		void OnExit(wxCommandEvent &event);
@@ -88,7 +91,6 @@ class MainFrame: public wxFrame {
 		void OnNextBeat(wxCommandEvent &event);
 		void OnNextCol(wxCommandEvent &event);
 		void OnPrevCol(wxCommandEvent &event);
-		void restart();
 		void OnRestart(wxCommandEvent &event);
 		void OnZoomIn(wxCommandEvent &event);
 		void OnZoomOut(wxCommandEvent &event);
@@ -103,12 +105,12 @@ wxIMPLEMENT_APP(MainApp); // Tell wxWidgets to commence our app
 bool MainApp::OnInit() {
 	wxHandleFatalExceptions(true); // Enable error handler
 	
-#ifndef OSX_BUNDLE
-	setResourceBase(RESOURCE_DIR);
-#endif
+	#ifndef OSX_BUNDLE
+		setResourceBase(RESOURCE_DIR);
+	#endif
 
 	Magick::InitializeMagick(wxStandardPaths::Get().GetExecutablePath());
-	wxImage::AddHandler(new wxPNGHandler); // Enable PNG support(?)
+	wxImage::AddHandler(new wxPNGHandler); // Enable proper PNG support
 
 	if (launchpad->connect() < 0) launchpad->disconnect();
 	else launchpad->setPulse(LAUNCHPAD_PRO_SIDE_LED_ID, 53);
@@ -217,17 +219,6 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	m_timer = new wxTimer(this, ID_DisplayPanel_Timer);
 }
 
-void MainFrame::OnExit(wxCommandEvent &WXUNUSED(event)) {
-	if (Close()) {
-		delete m_fp;
-		delete m_pp;
-		delete m_dp;
-		delete m_tlp;
-		delete m_parent;
-		delete toolbar;
-	}
-}
-
 void MainFrame::ShowSplash(bool loading) {
 	std::string copyright = "© 2017 Nightwave Studios, GNU General Public License v3.0.  Programming by Vinyl Darkscratch and Light Apacha.  App icon and display panel graphic by Vinyl Darkscratch.  Splash screen by Vinyl Darkscratch, drawing by Yogfan14, with brushes by Alberto Seveso.  Big thanks to the Launchpad community for making this program possible.";
 	wxBitmap splash_image(getResourcePath("splash.png"), wxBITMAP_TYPE_PNG);
@@ -238,6 +229,29 @@ void MainFrame::ShowSplash(bool loading) {
 	wxRect loadingbar = loading ? wxRect(810, 900, 988, 40) : wxRect(0, 0, 0, 0);
 	splash = new SplashScreen(this, ID_Frame_Splash, splash_image, copyright, wxRect(760, 540, 1088, 0), *wxWHITE, wxFont(wxFontInfo(32).Family(wxFONTFAMILY_SWISS).FaceName("Helvetica Neue")), loadingbox, loadingbar);
 	wxYield();
+}
+
+void MainFrame::SaveAs() {
+	wxFileDialog saveFileDialog(this, "Save file", "", "", "MIDI file (*.mid)|*.mid", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+	if (saveFileDialog.ShowModal() == wxID_CANCEL) return;
+	activeProject->save(saveFileDialog.GetPath().ToStdString());
+}
+
+void MainFrame::restart() {
+	m_tlp->movePlayhead(0);
+	playback_start_time = wxGetUTCTimeUSec();
+	playback_offset = 0;
+}
+
+void MainFrame::OnExit(wxCommandEvent &WXUNUSED(event)) {
+	if (Close()) {
+		delete m_fp;
+		delete m_pp;
+		delete m_dp;
+		delete m_tlp;
+		delete m_parent;
+		delete toolbar;
+	}
 }
 
 void MainFrame::OnAbout(wxCommandEvent &WXUNUSED(event)) {
@@ -252,12 +266,6 @@ void MainFrame::OnSelectFile(wxCommandEvent &event) {
 	frame_rate = INITIAL_FRAMERATE;
 	activeProject = new LightpadProject(event.GetString().ToStdString());
 	m_tlp->setProject(activeProject);
-}
-
-void MainFrame::SaveAs() {
-	wxFileDialog saveFileDialog(this, "Save file", "", "", "MIDI file (*.mid)|*.mid", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
-	if (saveFileDialog.ShowModal() == wxID_CANCEL) return;
-	activeProject->save(saveFileDialog.GetPath().ToStdString());
 }
 
 void MainFrame::OnSaveRequest(wxCommandEvent &WXUNUSED(event)) {
@@ -293,12 +301,6 @@ void MainFrame::OnNextCol(wxCommandEvent &WXUNUSED(event)) {
 
 void MainFrame::OnPrevCol(wxCommandEvent &WXUNUSED(event)) {
 	m_tlp->advanceCol(-1);
-}
-
-void MainFrame::restart() {
-	m_tlp->movePlayhead(0);
-	playback_start_time = wxGetUTCTimeUSec();
-	playback_offset = 0;
 }
 
 void MainFrame::OnRestart(wxCommandEvent &WXUNUSED(event)) {

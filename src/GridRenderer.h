@@ -19,8 +19,7 @@ class LightpadGridRenderer: public wxGridCellRenderer {
 		LightpadGridRenderer(int penwidth = 1);
 		wxGridCellRenderer *Clone() const;
 		wxSize GetBestSize(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc, int row, int col);
-		void Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc, const wxRect &rect, int row, int col,
-		          bool isSelected);
+		void Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc, const wxRect &rect, int row, int col, bool isSelected);
 
 	private:
 		int pen_width;

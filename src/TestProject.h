@@ -15,7 +15,6 @@
 #include "LightpadProject.h"
 #include "HOWL/Layer.h"
 
-
 class TestProject : public LightpadProject {
 	public:
 		TestProject();

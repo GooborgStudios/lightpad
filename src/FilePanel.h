@@ -47,18 +47,20 @@ class FilePanel: public wxPanel {
 		wxString GetFilePath(wxDataViewItem item);
 		void ChangeSelectedFile(wxDataViewEvent &event);
 		//void RenameFile(wxDataViewEvent &event);
+		
 	private:
 		void ListDirectory(wxString path, wxDataViewItem *files);
+		
 		wxPanel *m_parent;
 		wxBoxSizer *sizer;
 		wxDataViewTreeCtrl *filelistbox;
 		wxDataViewItem *parent_dvi;
 		wxImageList *icon_list;
 		#ifdef LIB_MAGIC
-		magic_t myt;
+			magic_t myt;
 		#endif
 
-		wxDECLARE_EVENT_TABLE();
+	wxDECLARE_EVENT_TABLE();
 };
 
 wxDECLARE_EVENT(FILE_SELECT, wxCommandEvent);

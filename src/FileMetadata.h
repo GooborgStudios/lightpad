@@ -18,5 +18,5 @@
 
 class FileMetadata : public wxDialog {
 	public:
-	FileMetadata(const wxString& title, HOWL::Project *project);
+		FileMetadata(const wxString& title, HOWL::Project *project);
 };

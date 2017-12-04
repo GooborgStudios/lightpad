@@ -36,7 +36,6 @@ Message::Message() {
 }
 
 Message::Message(unsigned int first_byte, ...): Message::Message() {
-
 	va_list varlist;
 	va_start(varlist, first_byte);
 	append(first_byte, varlist);
@@ -100,20 +99,6 @@ LaunchpadBase::~LaunchpadBase() {
 	delete midiout;
 }
 
-int LaunchpadBase::preconnect() {
-	connected = true;
-
-	inport = getMidiPort(midiin);
-	outport = getMidiPort(midiout);
-
-	if ((inport == -1) || (outport == -1)) return -1;
-
-	midiin->openPort(inport);
-	midiout->openPort(outport);
-	midiin->ignoreTypes(false, false, false); // Don't ignore sysex, timing, or active sensing messages.
-	return 0;
-}
-
 bool LaunchpadBase::isConnected() {
 	return connected;
 }
@@ -145,18 +130,9 @@ int LaunchpadBase::getMidiPort(RtMidi *ports) {
 	return -1;
 }
 
-int LaunchpadBase::buttonToNote(int button) {
-	return button;
-}
-
 double LaunchpadBase::getMessage(std::vector<unsigned char> *message_in) {
 	if (!isConnected()) return -1;
 	return midiin->getMessage(message_in);
-}
-
-void LaunchpadBase::sendMessage(Message message) {
-	if (!isConnected()) return;
-	midiout->sendMessage(message.serialize());
 }
 
 void LaunchpadBase::beginColorUpdate() {
@@ -169,6 +145,29 @@ void LaunchpadBase::endColorUpdate() {
 	color_update->append(2471, END_MSG);
 	sendMessage(*color_update);
 	delete color_update;
+}
+
+void LaunchpadBase::sendMessage(Message message) {
+	if (!isConnected()) return;
+	midiout->sendMessage(message.serialize());
+}
+
+int LaunchpadBase::preconnect() {
+	connected = true;
+
+	inport = getMidiPort(midiin);
+	outport = getMidiPort(midiout);
+
+	if ((inport == -1) || (outport == -1)) return -1;
+
+	midiin->openPort(inport);
+	midiout->openPort(outport);
+	midiin->ignoreTypes(false, false, false); // Don't ignore sysex, timing, or active sensing messages.
+	return 0;
+}
+
+int LaunchpadBase::buttonToNote(int button) {
+	return button;
 }
 
 
@@ -213,8 +212,7 @@ void LaunchpadPro::setColor(unsigned char light, unsigned char color) {
 	}
 }
 
-void LaunchpadPro::setColor(unsigned char light,
-							unsigned char red, unsigned char green, unsigned char blue) {
+void LaunchpadPro::setColor(unsigned char light, unsigned char red, unsigned char green, unsigned char blue) {
 	if (!isConnected()) return;
 	SysExMessage msg(11, light, red, green, blue, END_MSG);
 	sendMessage(msg);
@@ -257,8 +255,7 @@ void LaunchpadPro::displayText(unsigned int color, std::string text) {
 	sendMessage(msg);
 }
 
-void LaunchpadPro::displayText(unsigned int color, unsigned int speed,
-							   std::string text) {
+void LaunchpadPro::displayText(unsigned int color, unsigned int speed, std::string text) {
 	displayText(color, "/" + std::to_string(speed) + text);
 }
 
@@ -290,10 +287,6 @@ void LaunchpadS::disconnect() {
 	}
 }
 
-int LaunchpadS::buttonToNote(int button) {
-	return button; //XXX FIXME
-}
-
 void LaunchpadS::setColor(unsigned char light, unsigned char color) {
 	if (!isConnected()) return;
 	Message msg(144, buttonToNote(light), color, END_MSG);
@@ -303,6 +296,10 @@ void LaunchpadS::setColor(unsigned char light, unsigned char color) {
 void LaunchpadS::setPulse(unsigned char light, unsigned char color) {
 	if (!isConnected()) return;
 	// XXX Implement me!
+}
+
+int LaunchpadS::buttonToNote(int button) {
+	return button; //XXX FIXME
 }
 
 LaunchpadBase *launchpad = new LaunchpadPro();
