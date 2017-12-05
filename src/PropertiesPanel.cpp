@@ -79,10 +79,13 @@ void PropertiesPanel::OnSelectCell(wxGridEvent &event) {
 	HOWL::Selection sel = activeProject->selection;
 	unsigned char velocity = event.GetRow() * 8 + event.GetCol();
 	unsigned char old_velocity;
+
 	for (auto s: sel.sel) {
-		HOWL::KeyframePair pair = activeProject->layer->getSurroundingKeyframes(s->set->name, s->end);
-		old_velocity = pair.first == NULL ? 0 : ((NoteKeyframe *)(pair.first))->velocity;
-		
+		HOWL::KeyframePair pair1 = activeProject->layer->getSurroundingKeyframes(s->set->name, s->start);
+		HOWL::KeyframePair pair2 = activeProject->layer->getSurroundingKeyframes(s->set->name, s->end);
+		old_velocity = pair2.first == NULL ? 0 : ((NoteKeyframe *)(pair2.first))->velocity;
+		s->set->removeKeyframes(pair1.second, pair2.first);
+
 		s->set->AddKeyframe(new NoteKeyframe(std::atoi(s->set->name.c_str()), s->start, velocity));
 		s->set->AddKeyframe(new NoteKeyframe(std::atoi(s->set->name.c_str()), s->end, old_velocity), false);
 	}
