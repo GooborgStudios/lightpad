@@ -65,7 +65,7 @@ link_directories(${MAGICK++_LIBRARY_DIR})
 add_executable(lightpad MACOSX_BUNDLE
 	${SRC}/main.cpp ${SRC}/ElementIDs.h
 	${SRC}/DisplayPanel.cpp ${SRC}/DisplayPanel.h
-	${SRC}/FilePanel.cpp ${SRC}/FilePanel.h
+	${SRC}/QuickFilePanel.cpp ${SRC}/QuickFilePanel.h
 	${SRC}/GridRenderer.cpp ${SRC}/GridRenderer.h
 	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
 	${SRC}/MidiLayer.cpp ${SRC}/MidiLayer.h

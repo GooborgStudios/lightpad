@@ -27,7 +27,7 @@ enum {
 	ID_Menu_PrevCol,
 	ID_Menu_ZoomIn,
 	ID_Menu_ZoomOut,
-	ID_FilePanel_Tree,
+	ID_QuickFilePanel_Tree,
 	ID_PropertiesPanel_ColorSelector,
 	ID_PropertiesPanel_ColorSelect,
 	ID_TimelinePanel_TimelineGrid,

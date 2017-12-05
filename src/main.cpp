@@ -24,7 +24,7 @@
 #include "NightwaveCore/NightwaveCore.h"
 #include "LightpadProject.h"
 #include "TestProject.h"
-#include "FilePanel.h"
+#include "QuickFilePanel.h"
 #include "DisplayPanel.h"
 #include "HOWL/TimelinePanel.h"
 #include "PropertiesPanel.h"
@@ -63,7 +63,7 @@ class MainFrame: public wxFrame {
 		wxMenu *menuHelp;
 		wxToolBar *toolbar;
 		wxPanel *m_parent;
-		FilePanel *m_fp;
+		QuickFilePanel *m_fp;
 		PropertiesPanel *m_pp;
 		DisplayPanel *m_dp;
 		HOWL::TimelinePanel *m_tlp;
@@ -193,7 +193,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	// Main window elements
 	m_parent = new wxPanel(this, ID_Panel_Main);
 	splash->SetProgress(20, "Loading File Panel...");
-	m_fp = new FilePanel(m_parent);
+	m_fp = new QuickFilePanel(m_parent);
 	splash->SetProgress(30, "Loading Properties Panel...");
 	m_pp = new PropertiesPanel(m_parent);
 	splash->SetProgress(40, "Loading Display Panel...");

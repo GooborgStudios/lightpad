@@ -38,10 +38,10 @@
 #endif
 
 // Graphical interface panel
-class FilePanel: public wxPanel {
+class QuickFilePanel: public wxPanel {
 	public:
-		FilePanel(wxPanel *parent);
-		~FilePanel();
+		QuickFilePanel(wxPanel *parent);
+		~QuickFilePanel();
 		void RefreshFileList();
 		void Update();
 		wxString GetFilePath(wxDataViewItem item);

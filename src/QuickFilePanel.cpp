@@ -1,11 +1,11 @@
 //
-// Lightpad - FilePanel.cpp
+// Lightpad - QuickFilePanel.cpp
 // ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
 
-#include "FilePanel.h"
+#include "QuickFilePanel.h"
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -31,7 +31,7 @@
 wxDEFINE_EVENT(FILE_SELECT, wxCommandEvent);
 
 // Initialize the file panel and it's elements
-FilePanel::FilePanel(wxPanel *parent)
+QuickFilePanel::QuickFilePanel(wxPanel *parent)
 	: wxPanel(parent, ID_Panel_File, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 
@@ -50,7 +50,7 @@ FilePanel::FilePanel(wxPanel *parent)
 	sizer = new wxBoxSizer(wxHORIZONTAL);
 
 	// Set up the file list
-	filelistbox = new wxDataViewTreeCtrl(this, ID_FilePanel_Tree, wxPoint(-1, -1),
+	filelistbox = new wxDataViewTreeCtrl(this, ID_QuickFilePanel_Tree, wxPoint(-1, -1),
 	                                     wxSize(-1, -1), wxDV_SINGLE | wxDV_NO_HEADER);
 	filelistbox->SetImageList(icon_list);
 	parent_dvi = new wxDataViewItem();
@@ -61,25 +61,25 @@ FilePanel::FilePanel(wxPanel *parent)
 	Update();
 }
 
-FilePanel::~FilePanel() {
+QuickFilePanel::~QuickFilePanel() {
 	delete filelistbox;
 	delete parent_dvi;
 	delete icon_list;
 }
 
 // List all project directories
-void FilePanel::RefreshFileList() {
+void QuickFilePanel::RefreshFileList() {
 	ListDirectory(max_user_library_path, parent_dvi);
 	ListDirectory(max_shared_library_path, parent_dvi);
 	// XXX Should also obtain user search paths.
 }
 
-void FilePanel::Update() {
+void QuickFilePanel::Update() {
 	this->SetSizer(sizer);
 	sizer->Layout();
 }
 
-wxString FilePanel::GetFilePath(wxDataViewItem item) {
+wxString QuickFilePanel::GetFilePath(wxDataViewItem item) {
 	wxDataViewTreeStore *store = filelistbox->GetStore();
 	wxString path;
 
@@ -96,7 +96,7 @@ wxString FilePanel::GetFilePath(wxDataViewItem item) {
 	return path;
 }
 
-void FilePanel::ChangeSelectedFile(wxDataViewEvent &event) {
+void QuickFilePanel::ChangeSelectedFile(wxDataViewEvent &event) {
 	if (!filelistbox->GetStore()->IsContainer(event.GetItem())) {
 		wxCommandEvent evt(FILE_SELECT);
 		evt.SetEventObject(this);
@@ -105,13 +105,13 @@ void FilePanel::ChangeSelectedFile(wxDataViewEvent &event) {
 	}
 }
 
-// void FilePanel::RenameFile(wxDataViewEvent &event) {
+// void QuickFilePanel::RenameFile(wxDataViewEvent &event) {
 // 	std::cout << filelistbox->GetItemText(event.GetItem());
 //  std::cout << " > " << event.GetValue().GetType() << std::endl;
 // }
 
 // Obtain all of the contents of a directory and add it to a specified file list
-void FilePanel::ListDirectory(wxString path, wxDataViewItem *files) {
+void QuickFilePanel::ListDirectory(wxString path, wxDataViewItem *files) {
 	wxDataViewItem *current_file;
 	wxDir dir(path);
 	wxString filename;
@@ -152,7 +152,7 @@ void FilePanel::ListDirectory(wxString path, wxDataViewItem *files) {
 	}
 }
 
-wxBEGIN_EVENT_TABLE(FilePanel, wxPanel)
-	EVT_DATAVIEW_SELECTION_CHANGED(ID_FilePanel_Tree, FilePanel::ChangeSelectedFile)
-	//EVT_DATAVIEW_ITEM_VALUE_CHANGED(ID_FilePanel_Tree, FilePanel::RenameFile)
+wxBEGIN_EVENT_TABLE(QuickFilePanel, wxPanel)
+	EVT_DATAVIEW_SELECTION_CHANGED(ID_QuickFilePanel_Tree, QuickFilePanel::ChangeSelectedFile)
+	//EVT_DATAVIEW_ITEM_VALUE_CHANGED(ID_QuickFilePanel_Tree, QuickFilePanel::RenameFile)
 wxEND_EVENT_TABLE()
