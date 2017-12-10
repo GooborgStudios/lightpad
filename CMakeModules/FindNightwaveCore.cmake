@@ -16,7 +16,7 @@
 SET(NIGHTWAVE_CORE_FOUND "NO")
  
 FIND_PATH(NIGHTWAVE_CORE_INCLUDE_DIR
-	NAMES "NightwaveCore/Helpers.h"
+	NAMES "NightwaveCore/NightwaveCore.h"
 	PATHS
 	"[HKEY_LOCAL_MACHINE\\SOFTWARE\\NightwaveCore\\Current;BinPath]"
 	"$ENV{NIGHTWAVE_CORE_LOCATION}"
