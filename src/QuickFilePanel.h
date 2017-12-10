@@ -1,5 +1,5 @@
 //
-// Lightpad - FilePanel.h
+// Lightpad - QuickFilePanel.h
 // ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
@@ -19,31 +19,30 @@
 	#include <magic.h>
 #endif
 
+#include <vector>
+#include <map>
+
 #include "ElementIDs.h"
 
-#ifdef WINDOWS
-	#include <windows.h>
-	#include <shlobj.h>
-	#pragma comment(lib, "shell32.lib")
+/*
+ * String vector of search paths
+	 * Add and remove files/folders (to search paths)
+	 * Drag-and-drop files/folders (add to search paths)
+ * Dynamic refresh
+ * Sticky search paths (retained after program quits)
+ */
 
-	//extern char documents_path[MAX_PATH];
-	//SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
-
-	const wxString max_user_library_path = /*wxString(documents_path) +*/ wxString("\\MIDIext");
-	const wxString max_shared_library_path = /*wxString(documents_path) +*/
-	wxString("\\MIDIext"); // XXX Inaccurate
-#else
-	const wxString max_user_library_path = wxString(getenv("HOME")) + wxString("/Documents/Max 7/Library/MIDIext");
-	const wxString max_shared_library_path = wxString("/Users/Shared/Max 7/Library/MIDIext");
-#endif
-
-// Graphical interface panel
+// Quick file access panel
 class QuickFilePanel: public wxPanel {
 	public:
 		QuickFilePanel(wxPanel *parent);
 		~QuickFilePanel();
 		void RefreshFileList();
 		void Update();
+		void AddPath(std::string path);
+		void BlacklistFileType(std::string type);
+		void SetFileTypeIcon(std::string type, wxIcon icon);
+		void SetFileTypeIcon(std::string type, std::string icon_path);
 		wxString GetFilePath(wxDataViewItem item);
 		void ChangeSelectedFile(wxDataViewEvent &event);
 		//void RenameFile(wxDataViewEvent &event);
@@ -54,8 +53,9 @@ class QuickFilePanel: public wxPanel {
 		wxPanel *m_parent;
 		wxBoxSizer *sizer;
 		wxDataViewTreeCtrl *filelistbox;
-		wxDataViewItem *parent_dvi;
+		std::vector<std::string> search_paths;
 		wxImageList *icon_list;
+		std::map<std::string, int> file_types;
 		#ifdef LIB_MAGIC
 			magic_t myt;
 		#endif

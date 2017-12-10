@@ -36,6 +36,21 @@
 #define PADDING 0
 #define INITIAL_FRAMERATE 60
 
+#ifdef WINDOWS
+	//	#include <windows.h>
+	//	#include <shlobj.h>
+	//	#pragma comment(lib, "shell32.lib")
+
+	//extern char documents_path[MAX_PATH];
+	//SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
+
+	const std::string max_user_library_path = /*documents_path +*/ "\\MIDIext";
+	const std::string max_shared_library_path = /*documents_path +*/ "\\MIDIext"; // XXX Inaccurate
+#else
+	const std::string max_user_library_path = std::string(getenv("HOME")) + "/Documents/Max 7/Library/MIDIext";
+	const std::string max_shared_library_path = "/Users/Shared/Max 7/Library/MIDIext";
+#endif
+
 LightpadProject *activeProject = new TestProject();
 
 class MainFrame;
@@ -192,6 +207,9 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	m_parent = new wxPanel(this, ID_Panel_Main);
 	splash->SetProgress(20, "Loading File Panel...");
 	m_fp = new QuickFilePanel(m_parent);
+	m_fp->AddPath(max_user_library_path);
+	m_fp->AddPath(max_shared_library_path);
+	m_fp->RefreshFileList();
 	splash->SetProgress(30, "Loading Properties Panel...");
 	m_pp = new PropertiesPanel(m_parent);
 	splash->SetProgress(40, "Loading Display Panel...");

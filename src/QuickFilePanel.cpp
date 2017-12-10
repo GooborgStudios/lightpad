@@ -31,30 +31,27 @@
 wxDEFINE_EVENT(FILE_SELECT, wxCommandEvent);
 
 // Initialize the file panel and it's elements
-QuickFilePanel::QuickFilePanel(wxPanel *parent)
-	: wxPanel(parent, ID_Panel_File, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+QuickFilePanel::QuickFilePanel(wxPanel *parent) : wxPanel(parent, ID_Panel_File, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
 
 	#ifdef LIB_MAGIC
-	myt = magic_open(MAGIC_ERROR | MAGIC_MIME_TYPE);
-	magic_load(myt, NULL);
+		myt = magic_open(MAGIC_ERROR | MAGIC_MIME_TYPE);
+		magic_load(myt, NULL);
 	#endif
 
 	// Initialize icons
 	icon_list = new wxImageList();
 	icon_list->Add(wxArtProvider::GetIcon(wxART_FOLDER, wxART_MENU));
 	icon_list->Add(wxArtProvider::GetIcon(wxART_FOLDER_OPEN, wxART_MENU));
-	icon_list->Add(wxArtProvider::GetIcon(wxART_NORMAL_FILE, wxART_MENU));
-	icon_list->Add(wxArtProvider::GetIcon(wxART_NORMAL_FILE, wxART_MENU));
-
-	sizer = new wxBoxSizer(wxHORIZONTAL);
+	file_types["*"] = icon_list->Add(wxArtProvider::GetIcon(wxART_NORMAL_FILE, wxART_MENU));
 
 	// Set up the file list
 	filelistbox = new wxDataViewTreeCtrl(this, ID_QuickFilePanel_Tree, wxPoint(-1, -1),
 	                                     wxSize(-1, -1), wxDV_SINGLE | wxDV_NO_HEADER);
 	filelistbox->SetImageList(icon_list);
-	parent_dvi = new wxDataViewItem();
 	RefreshFileList();
+
+	sizer = new wxBoxSizer(wxHORIZONTAL);
 
 	sizer->Add(filelistbox, 1, wxEXPAND | wxALL, 0);
 	this->SetSizer(sizer);
@@ -63,29 +60,56 @@ QuickFilePanel::QuickFilePanel(wxPanel *parent)
 
 QuickFilePanel::~QuickFilePanel() {
 	delete filelistbox;
-	delete parent_dvi;
 	delete icon_list;
 }
 
 // List all project directories
 void QuickFilePanel::RefreshFileList() {
-	ListDirectory(max_user_library_path, parent_dvi);
-	ListDirectory(max_shared_library_path, parent_dvi);
+	wxDataViewItem *root_dvi = new wxDataViewItem();
+	for (std::string path : search_paths) {
+		ListDirectory(wxString(path), root_dvi);
+	}
+//	ListDirectory(max_user_library_path, root_dvi);
+//	ListDirectory(max_shared_library_path, root_dvi);
 	// XXX Should also obtain user search paths.
+	delete root_dvi;
 }
 
 void QuickFilePanel::Update() {
-	this->SetSizer(sizer);
+//	this->SetSizer(sizer);
 	sizer->Layout();
+}
+
+void QuickFilePanel::AddPath(std::string path) {
+	search_paths.push_back(path);
+}
+
+void QuickFilePanel::BlacklistFileType(std::string type) {
+	if (file_types.find(type) != file_types.end() && file_types[type] >= 0) {
+//		icon_list->Remove(file_types[type]);
+		// XXX This may shift the indexes over!
+	}
+	file_types[type] = -1;
+}
+
+void QuickFilePanel::SetFileTypeIcon(std::string type, wxIcon icon) {
+	if (file_types.find(type) != file_types.end() && file_types[type] >= 0) {
+		icon_list->Replace(file_types[type], icon);
+	} else {
+		file_types[type] = icon_list->Add(icon);
+	}
+}
+
+void QuickFilePanel::SetFileTypeIcon(std::string type, std::string icon_path) {
+	wxIcon icon = wxIcon(getResourcePath(icon_path));
 }
 
 wxString QuickFilePanel::GetFilePath(wxDataViewItem item) {
 	wxDataViewTreeStore *store = filelistbox->GetStore();
 	wxString path;
 
-	for (int i = 0; i <= 1; i++) { // XXX Improve me!
-		if (i == 0) path = max_user_library_path + "/";
-		else path = max_shared_library_path + "/";
+	for (wxString base_path : search_paths) { // XXX Improve me!
+		path = base_path + "/";
 
 		if (!store->IsContainer(item))
 			path += filelistbox->GetItemText(store->GetParent(item)) + "/";
@@ -117,7 +141,7 @@ void QuickFilePanel::ListDirectory(wxString path, wxDataViewItem *files) {
 	wxString filename;
 	std::string filetype;
 	bool cont;
-	int icon_type;
+	int icon_index;
 
 	if (!dir.IsOpened()) {
 		// deal with the error here - wxDir would already log an error message
@@ -133,11 +157,14 @@ void QuickFilePanel::ListDirectory(wxString path, wxDataViewItem *files) {
 		#else
 		filetype = "audio/midi"; // XXX Use file extension instead
 		#endif
-		if (filetype == "audio/midi") { // Only add if a MIDI file
-			icon_type = 2;
-			if (filetype == "text/plain") icon_type = 3;
-			filelistbox->AppendItem(*files, filename, icon_type);
+
+		if (file_types.find(filetype) == file_types.end()) {
+			icon_index = file_types["*"];
+		} else {
+			icon_index = file_types[filetype];
 		}
+
+		if (icon_index >= 0) filelistbox->AppendItem(*files, filename, icon_index);
 		cont = dir.GetNext(&filename);
 	}
 
