@@ -4,3 +4,6 @@
 [submodule "submodules/HOWL"]
 	path = submodules/HOWL
 	url = https://github.com/VaduNightwave/HOWL
+[submodule "submodules/midifile"]
+	path = submodules/midifile
+	url = https://github.com/vinyldarkscratch/midifile
