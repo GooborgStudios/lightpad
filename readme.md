@@ -4,6 +4,17 @@ Additional support from [LaunchpadFun](http://www.launchpadfun.com/en/).
 
 # This software is almost ready for use.  Please check back later!
 
+## Dependencies
+- A C++11 compiler
+- CMake
+- wxWidgets
+- GraphicsMagick
+- RtMidi
+- LibMidifile (submodule)
+- NightwaveCore (submodule)
+- HOWL (submodule)
+- LibMagic (optional)
+
 ## Build and Installation
 Lightpad has four executables: _main_, _timeline_, _midiprobe_, and _midiout_.  _Main_ is just what it sounds like, it's the main application, bringing together all of it's features.  _Timeline_ is a teast program to demo the timeline on it's own.  _Midiprobe_ and _midiout_ focus specifically on MIDI connectivity, with the first providing a list of available MIDI I/O ports, and the second playing a test file to the Launchpad, while also telling a pressed button to pulse a random color.
 
@@ -25,13 +36,13 @@ cmake .. && make -j8
 - On-screen Launchpad to emulate animations
 - Connectivity with a physical Launchpad
 - RGB color to closest velocity match
-- Automatic saving
+- Automatic saving (not implemented yet)
 - Integration with [Exige's MIDI Extension](http://forum.launchpad-pro.com/viewtopic.php?pid=35098)
-- Export to a new Ableton Live project
+- Export to a new Ableton Live project (not implemented yet)
 - *More to come!*
 
 ## Compatibility
-The software is mainly developed on a mid-2016 MacBook Pro, 2.7GHz Intel i7 with Integrated Graphics and a Radeon Pro 460 (4GB VRAM).
+The software is mainly developed on a mid-2016 MacBook Pro (touch bar), 2.7GHz Intel i7 with Integrated Graphics and a Radeon Pro 460 (4GB VRAM).
 
 Supported Operating Systems:
 
