@@ -161,9 +161,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	menuFile->Append(ID_Menu_FileMetadata, "&File Metadata\tCtrl-I", "Opens file metadata editor");
 	menuFile->AppendSeparator();
 	menuFile->Append(wxID_EXIT);
-	//menuPlayback->Append(ID_Menu_PlayPause, "&Play/Pause\tSpace", "Plays/pauses the animation");
-	menuPlayback->Append(ID_Menu_PlayPause, "&Next Quarter Beat\tSpace", "Moves the playhead a quarter beat ahead");
-	menuPlayback->Append(ID_Menu_ShiftPlayPause, "&Next Full Beat\tShift-Space", "Moves the playhead a full beat ahead");
+	menuPlayback->Append(ID_Menu_PlayPause, "&Play/Pause\tSpace", "Plays/pauses the animation");
 	menuPlayback->Append(ID_Menu_NextCol, "&Next Column\tRight", "Advances to the next column");
 	menuPlayback->Append(ID_Menu_PrevCol, "&Previous Column\tLeft", "Advances to the previous column");
 	menuPlayback->Append(ID_Menu_Restart, "&Return to Start\tEnter", "Returns the playhead to the beginning of the timeline");
@@ -291,10 +289,6 @@ void MainFrame::OnStartStop(wxCommandEvent &WXUNUSED(event)) {
 	last_frame_time = playback_start_time = wxGetUTCTimeUSec();
 }
 
-void MainFrame::OnNextBeat(wxCommandEvent &WXUNUSED(event)) {
-	m_tlp->nextBeat();
-}
-
 void MainFrame::OnNextCol(wxCommandEvent &WXUNUSED(event)) {
 	m_tlp->advanceCol(1);
 }
@@ -331,7 +325,6 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_Menu_About, MainFrame::OnAbout)
 	EVT_MENU(ID_Menu_FileMetadata, MainFrame::OnFileMetadata)
 	EVT_MENU(ID_Menu_PlayPause, MainFrame::OnStartStop)
-	EVT_MENU(ID_Menu_ShiftPlayPause, MainFrame::OnNextBeat)
 	EVT_MENU(ID_Menu_NextCol, MainFrame::OnNextCol)
 	EVT_MENU(ID_Menu_PrevCol, MainFrame::OnPrevCol)
 	EVT_MENU(ID_Menu_Restart, MainFrame::OnRestart)

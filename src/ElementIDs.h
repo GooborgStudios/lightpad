@@ -21,7 +21,6 @@ enum {
 	ID_Menu_Save,
 	ID_Menu_SaveAs,
 	ID_Menu_PlayPause,
-	ID_Menu_ShiftPlayPause,
 	ID_Menu_Restart,
 	ID_Menu_NextCol,
 	ID_Menu_PrevCol,
