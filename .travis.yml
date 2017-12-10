@@ -18,14 +18,13 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install graphicsmagick libmagic rtmidi midifile; travis_wait 30 brew install wxwidgets; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install libwxbase3.1-0-unofficial libwxbase3.1-dev libwxgtk3.1-0-unofficial libwxgtk3.1-dev wx3.1-headers wx-common libwxgtk-webview3.1-0-unofficial libwxgtk-webview3.1-dev libwxgtk-media3.1-0-unofficial libwxgtk-media3.1-dev libwxbase3.1-0-unofficial-dbg libwxgtk3.1-0-unofficial-dbg libwxgtk-webview3.1-0-unofficial-dbg libwxgtk-media3.1-0-unofficial-dbg wx3.1-i18n wx3.1-examples -qq; sudo apt-get install graphicsmagick libgraphicsmagick-dev lib graphicsmagick++-dev libmagic-dev librtmidi-dev doxygen -qq; fi
   - git submodule update
-  - cd submodules/HOWL
-  - git submodule update
   - cd submodules/NightwaveCore/C++
   - mkdir build
   - cd build
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .. -G "Xcode"; xcodebuild -target NightwaveCore -project NightwaveCore.xcodeproj; xcodebuild -target install -project NightwaveCore.xcodeproj; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake ..; make; make install; fi
   - cd ../../../..
+  - cd submodules/HOWL
   - mkdir build
   - cd build
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .. -G "Xcode"; xcodebuild -target HOWL -project HOWL.xcodeproj; xcodebuild -target install -project HOWL.xcodeproj; fi
