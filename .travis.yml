@@ -37,6 +37,7 @@ install:
   - cd submodules/midifile
   - make library
   - cp -a lib/. ../../lib/
+  - cd ../..
 
 before_script:
   - mkdir build
