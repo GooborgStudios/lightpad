@@ -20,17 +20,18 @@
 #include "Magick++.h"
 #include "RtMidi.h"
 
-#include "ElementIDs.h"
 #include "NightwaveCore/NightwaveCore.h"
+#include "NightwaveCore/SplashScreen.h"
+#include "NightwaveCore/QuickFilePanel.h"
+#include "HOWL/TimelinePanel.h"
+
+#include "ElementIDs.h"
 #include "LightpadProject.h"
 #include "TestProject.h"
-#include "QuickFilePanel.h"
 #include "DisplayPanel.h"
-#include "HOWL/TimelinePanel.h"
 #include "PropertiesPanel.h"
 #include "FileMetadata.h"
 #include "Launchpad.h"
-#include "NightwaveCore/SplashScreen.h"
 
 #define wxUSE_ON_FATAL_EXCEPTION 1
 #define PADDING 0
@@ -206,7 +207,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	// Main window elements
 	m_parent = new wxPanel(this, ID_Panel_Main);
 	splash->SetProgress(20, "Loading File Panel...");
-	m_fp = new QuickFilePanel(m_parent);
+	m_fp = new QuickFilePanel(m_parent, ID_Panel_File);
 	m_fp->AddPath(max_user_library_path);
 	m_fp->AddPath(max_shared_library_path);
 	m_fp->RefreshFileList();
@@ -353,3 +354,5 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_COMMAND(ID_Frame_Main, FILE_SELECT, MainFrame::OnSelectFile)
 	EVT_TIMER(ID_DisplayPanel_Timer, MainFrame::playNextFrame)
 wxEND_EVENT_TABLE()
+
+/// \todo Add game controller support!
