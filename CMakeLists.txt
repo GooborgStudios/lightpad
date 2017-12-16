@@ -43,16 +43,9 @@ set(IMGS  ${ROOT}/graphics)
 set(REFS  ${ROOT}/references)
 set(BUILD ${PROJECT_BINARY_DIR})
 
-find_package(GraphicsMagick REQUIRED)
-
 add_definitions(-DRESOURCE_DIR="${IMGS}")
 include_directories(${ROOT})
 include_directories(${INCL})
-
-include_directories(${MAGICK_INCLUDE_DIR})
-include_directories(${MAGICK++_INCLUDE_DIR})
-link_directories(${MAGICK_LIBRARY_DIR})
-link_directories(${MAGICK++_LIBRARY_DIR})
 
 # IF(LINUX)
 # 	find_package(PkgConfig REQUIRED)
@@ -134,7 +127,12 @@ target_link_libraries(lightpad ${wxWidgets_LIBRARIES})
 target_link_libraries(midiprobe ${wxWidgets_LIBRARIES})
 target_link_libraries(midiout ${wxWidgets_LIBRARIES})
 
+find_package(GraphicsMagick REQUIRED)
 add_definitions(-DLIB_GRAPHICSMAGICK)
+include_directories(${MAGICK_INCLUDE_DIR})
+include_directories(${MAGICK++_INCLUDE_DIR})
+link_directories(${MAGICK_LIBRARY_DIR})
+link_directories(${MAGICK++_LIBRARY_DIR})
 target_link_libraries(lightpad "GraphicsMagick++")
 
 find_package(LibMagic)
