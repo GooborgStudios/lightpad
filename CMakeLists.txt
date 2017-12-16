@@ -43,6 +43,14 @@ set(IMGS  ${ROOT}/graphics)
 set(REFS  ${ROOT}/references)
 set(BUILD ${PROJECT_BINARY_DIR})
 
+find_package(NightwaveCore REQUIRED)
+include_directories(${NIGHTWAVE_CORE_INCLUDE_DIR})
+link_directories(${NIGHTWAVE_CORE_LIBRARY_DIR})
+
+find_package(HOWL REQUIRED)
+include_directories(${HOWL_INCLUDE_DIR})
+link_directories(${HOWL_LIBRARY_DIR})
+
 add_definitions(-DRESOURCE_DIR="${IMGS}")
 include_directories(${ROOT})
 include_directories(${INCL})
@@ -112,11 +120,11 @@ link_directories(lightpad ${LIB})
 link_directories(midiprobe ${LIB})
 link_directories(midiout ${LIB})
 
-target_link_libraries(lightpad NightwaveCore)
-target_link_libraries(midiprobe NightwaveCore)
-target_link_libraries(midiout NightwaveCore)
+target_link_libraries(lightpad ${NIGHTWAVE_CORE_LIBRARIES})
+target_link_libraries(midiprobe ${NIGHTWAVE_CORE_LIBRARIES})
+target_link_libraries(midiout ${NIGHTWAVE_CORE_LIBRARIES})
 
-target_link_libraries(lightpad HOWL)
+target_link_libraries(lightpad ${HOWL_LIBRARIES})
 
 # IF(LINUX)
 # 	target_link_libraries(lightpad ${GTK3_LIBRARIES})
