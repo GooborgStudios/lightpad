@@ -96,7 +96,6 @@ class MainFrame: public wxFrame {
 		void SaveAs();
 		void restart();
 	
-		void OnHello(wxCommandEvent &event);
 		void OnExit(wxCommandEvent &event);
 		void OnAbout(wxCommandEvent &event);
 		void OnFileMetadata(wxCommandEvent &event);
@@ -171,7 +170,6 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	menuPlayback = new wxMenu;
 	menuView = new wxMenu;
 	menuHelp = new wxMenu;
-	menuFile->Append(ID_Menu_Hello, "&Hello...\tCtrl-H", "Help string shown in status bar for this menu item");
 	menuFile->Append(ID_Menu_Save, "&Save\tCtrl-S", "Saves the file");
 	menuFile->Append(ID_Menu_SaveAs, "&Save As...\tCtrl-Shift-S", "Saves the file to a specified location");
 	menuFile->Append(ID_Menu_FileMetadata, "&File Metadata\tCtrl-I", "Opens file metadata editor");
@@ -198,7 +196,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	splash->SetProgress(9, "Initializing toolbar...");
 	// Toolbar
 	toolbar = CreateToolBar(wxTB_FLAT);
-	toolbar->AddTool(ID_Menu_About, wxT("About"), lightpad_icon);
+	toolbar->AddTool(wxID_ABOUT, wxT("About"), lightpad_icon);
 	toolbar->Realize();
 
 	Centre(); // Center the window
@@ -293,11 +291,6 @@ void MainFrame::OnSaveAsRequest(wxCommandEvent &WXUNUSED(event)) {
 	SaveAs();
 }
 
-void MainFrame::OnHello(wxCommandEvent &WXUNUSED(event)) {
-	wxLogMessage("Testing the menu bars! -Vadu");
-	m_tlp->Update();
-}
-
 void MainFrame::OnStartStop(wxCommandEvent &WXUNUSED(event)) {
 	if (m_timer->IsRunning()) m_timer->Stop();
 	else {
@@ -338,10 +331,8 @@ void MainFrame::playNextFrame(wxTimerEvent &WXUNUSED(event)) {
 
 // Initialize event listeners
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
-	EVT_MENU(ID_Menu_Hello, MainFrame::OnHello)
 	EVT_MENU(ID_Menu_Save, MainFrame::OnSaveRequest)
 	EVT_MENU(ID_Menu_SaveAs, MainFrame::OnSaveAsRequest)
-	EVT_MENU(ID_Menu_About, MainFrame::OnAbout)
 	EVT_MENU(ID_Menu_FileMetadata, MainFrame::OnFileMetadata)
 	EVT_MENU(ID_Menu_PlayPause, MainFrame::OnStartStop)
 	EVT_MENU(ID_Menu_NextCol, MainFrame::OnNextCol)
