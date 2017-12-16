@@ -21,7 +21,7 @@
 #include "RtMidi.h"
 #include "MidiFile.h"
 
-#include "NightwaveCore/Helpers.h"
+#include "NightwaveCore/NightwaveCore.h"
 #include "NoteHelpers.h"
 #include "Launchpad.h"
 
