@@ -37,8 +37,6 @@ ENDIF()
 set(ROOT  ${CMAKE_SOURCE_DIR})
 set(SRC   ${PROJECT_SOURCE_DIR})
 set(BIN   ${CMAKE_BINARY_DIR})
-set(INCL  ${ROOT}/include)
-set(LIB   ${ROOT}/lib)
 set(IMGS  ${ROOT}/graphics)
 set(REFS  ${ROOT}/references)
 set(BUILD ${PROJECT_BINARY_DIR})
@@ -53,7 +51,6 @@ link_directories(${HOWL_LIBRARY_DIR})
 
 add_definitions(-DRESOURCE_DIR="${IMGS}")
 include_directories(${ROOT})
-include_directories(${INCL})
 
 # IF(LINUX)
 # 	find_package(PkgConfig REQUIRED)
@@ -116,10 +113,6 @@ ENDIF()
 set(BUNDLE_INSTALL_TARGET "${BIN}/${APP_BUNDLE_NAME}")
 set(APPS ${BUNDLE_INSTALL_TARGET})
 
-link_directories(lightpad ${LIB})
-link_directories(midiprobe ${LIB})
-link_directories(midiout ${LIB})
-
 target_link_libraries(lightpad ${NIGHTWAVE_CORE_LIBRARIES})
 target_link_libraries(midiprobe ${NIGHTWAVE_CORE_LIBRARIES})
 target_link_libraries(midiout ${NIGHTWAVE_CORE_LIBRARIES})
@@ -154,16 +147,50 @@ find_package(Doxygen)
 IF(DOXYGEN_FOUND)
 	configure_file(${ROOT}/doxygen.conf.in ${BUILD}/doxygen.conf @ONLY)
 	add_custom_target(docs ALL DEPENDS ${BUILD}/doxygen/)
-	add_custom_command(OUTPUT ${BUILD}/doxygen/ COMMAND ${DOXYGEN_EXECUTABLE} ${BUILD}/doxygen.conf DEPENDS ${SRC}/* ${INCL}/* ${ROOT}/readme.md ${ROOT}/doxygen.conf.in VERBATIM) # COMMENT "Generating API documentation with Doxygen"
+	add_custom_command(OUTPUT ${BUILD}/doxygen/ COMMAND ${DOXYGEN_EXECUTABLE} ${BUILD}/doxygen.conf DEPENDS ${SRC}/* ${ROOT}/readme.md ${ROOT}/doxygen.conf.in VERBATIM) # COMMENT "Generating API documentation with Doxygen"
 ENDIF(DOXYGEN_FOUND)
 
 target_link_libraries(lightpad "rtmidi")
 target_link_libraries(midiprobe "rtmidi")
 target_link_libraries(midiout "rtmidi")
 
-include_directories(${INCL}/midifile)
-target_link_libraries(lightpad "midifile")
-target_link_libraries(midiout "midifile")
+FIND_PATH(midifile_INCLUDE_DIR
+	NAMES "MidiFile.h"
+	PATHS
+	${ROOT}/submodules/midifile/include
+	"[HKEY_LOCAL_MACHINE\\SOFTWARE\\midifile\\Current;BinPath]"
+	"$ENV{midifile_LOCATION}"
+	"$ENV{midifile_LOCATION}/include"
+	"$ENV{midifile_LOCATION}/include/midifile"
+	"$ENV{midifile_HOME}/include"
+	/usr/include/
+	/usr/include/midifile
+	/usr/local/include
+	/usr/local/include/midifile
+	/opt/local/include/midifile
+)
+
+FIND_LIBRARY(midifile_LIBRARIES
+	NAMES midifile
+	PATHS
+	${ROOT}/submodules/midifile/lib
+	"[HKEY_LOCAL_MACHINE\\SOFTWARE\\midifile\\Current;BinPath]"
+	"$ENV{midifile_LOCATION}/midifile/.libs"
+	"$ENV{midifile_LOCATION}/lib"
+	"$ENV{midifile_HOME}/lib"
+	/usr/lib64
+	/usr/local/lib64
+	/opt/local/lib64
+	/usr/lib
+	/usr/local/lib
+	/opt/local/lib
+)
+GET_FILENAME_COMPONENT(midifile_LIBRARY_DIR ${midifile_LIBRARIES} PATH)
+
+include_directories(${midifile_INCLUDE_DIR})
+link_directories(${midifile_LIBRARY_DIR})
+target_link_libraries(lightpad ${midifile_LIBRARIES})
+target_link_libraries(midiout ${midifile_LIBRARIES})
 
 IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
 	FOREACH(f ${source_file_list})
