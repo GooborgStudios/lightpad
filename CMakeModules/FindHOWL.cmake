@@ -12,9 +12,9 @@
 #   HOWL_LIBRARY_DIR - library directory for HOWL
 #   HOWL_LIBRARIES   - libraries you need to link to
 #
- 
+
 SET(HOWL_FOUND "NO")
- 
+
 FIND_PATH(HOWL_INCLUDE_DIR
 	NAMES "HOWL/Project.h"
 	PATHS
@@ -28,7 +28,7 @@ FIND_PATH(HOWL_INCLUDE_DIR
 	/usr/local/include
 	/usr/local/include/HOWL
 	/opt/local/include/HOWL
-	)
+)
 
 FIND_LIBRARY(HOWL
 	NAMES libHOWL HOWL
@@ -44,18 +44,17 @@ FIND_LIBRARY(HOWL
 	/usr/local/lib
 	/opt/local/lib
 	DOC "HOWL library"
-	)
+)
 
- 
 SET(HOWL_LIBRARIES ${HOWL})
- 
+
 IF (HOWL_INCLUDE_DIR)
 	IF(HOWL_LIBRARIES)
 		SET(HOWL_FOUND "YES")
 		GET_FILENAME_COMPONENT(HOWL_LIBRARY_DIR ${HOWL} PATH)
 	ENDIF(HOWL_LIBRARIES)
 ENDIF(HOWL_INCLUDE_DIR)
- 
+
 IF(NOT HOWL_FOUND)
 	# make FIND_PACKAGE friendly
 	IF(NOT HOWL_FIND_QUIETLY)
@@ -66,5 +65,5 @@ IF(NOT HOWL_FOUND)
 		ENDIF(HOWL_FIND_REQUIRED)
 	ENDIF(NOT HOWL_FIND_QUIETLY)
 ENDIF(NOT HOWL_FOUND)
- 
+
 #####
