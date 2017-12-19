@@ -173,23 +173,23 @@ IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
 	add_custom_target(oclint oclint -p ${BUILD} ${SOURCE_FILES} DEPENDS ${SRC}/* ${BUILD}/compile_commands.json WORKING_DIRECTORY ${BUILD}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."
 ENDIF()
 
-# IF(APPLE)
-# 	# -------- Function to build OS X Stand Alone Bundles -----------------
-# 	function(MakeOSXBundleApp target binary_dir)
-# 		IF(${CMAKE_GENERATOR} MATCHES "Xcode")
-# 			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/Debug/${target}.app")
-# 		ELSE()
-# 			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/${target}.app")
-# 		ENDIF()
+IF(APPLE)
+	# -------- Function to build OS X Stand Alone Bundles -----------------
+	function(MakeOSXBundleApp target binary_dir)
+		IF(${CMAKE_GENERATOR} MATCHES "Xcode")
+			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/Debug/${target}.app")
+		ELSE()
+			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/${target}.app")
+		ENDIF()
 
-# 		SET(OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.cmake")
-# 		SET(OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.sh")
+		SET(OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.cmake")
+		SET(OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.sh")
 
-# 		CONFIGURE_FILE("${ROOT}/scripts/CompleteBundle.cmake.in" "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}" @ONLY IMMEDIATE)
-# 		CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in" "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
+		CONFIGURE_FILE("${ROOT}/scripts/CompleteBundle.cmake.in" "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}" @ONLY IMMEDIATE)
+		CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in" "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
 
-# 		add_custom_command(TARGET ${target} POST_BUILD COMMAND cmake -P ${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT} VERBATIM)
-# 	endfunction(MakeOSXBundleApp)
+		add_custom_command(TARGET ${target} POST_BUILD COMMAND cmake -P ${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT} VERBATIM)
+	endfunction(MakeOSXBundleApp)
 
-# 	MakeOSXBundleApp("lightpad" ${PROJECT_BINARY_DIR})
-# ENDIF()
+	MakeOSXBundleApp("lightpad" ${PROJECT_BINARY_DIR})
+ENDIF()
