@@ -15,7 +15,7 @@
 
 # Find headers
 find_path(HOWL_INCLUDE_DIR
-	NAMES "HOWL/HOWL.h"
+	NAMES "HOWL/Project.h"
 	PATHS
 	"[HKEY_LOCAL_MACHINE\\SOFTWARE\\HOWL\\Current;BinPath]"
 	"$ENV{HOWL_LOCATION}"
