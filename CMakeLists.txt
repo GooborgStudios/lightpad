@@ -42,8 +42,8 @@ set(REFS  ${ROOT}/references)
 set(BUILD ${PROJECT_BINARY_DIR})
 
 find_package(NightwaveCore REQUIRED)
-include_directories(${NIGHTWAVE_CORE_INCLUDE_DIR})
-link_directories(${NIGHTWAVE_CORE_LIBRARY_DIR})
+include_directories(${NightwaveCore_INCLUDE_DIR})
+link_directories(${NightwaveCore_LIBRARY_DIR})
 
 find_package(HOWL REQUIRED)
 include_directories(${HOWL_INCLUDE_DIR})
@@ -113,9 +113,9 @@ ENDIF()
 set(BUNDLE_INSTALL_TARGET "${BIN}/${APP_BUNDLE_NAME}")
 set(APPS ${BUNDLE_INSTALL_TARGET})
 
-target_link_libraries(lightpad ${NIGHTWAVE_CORE_LIBRARIES})
-target_link_libraries(midiprobe ${NIGHTWAVE_CORE_LIBRARIES})
-target_link_libraries(midiout ${NIGHTWAVE_CORE_LIBRARIES})
+target_link_libraries(lightpad ${NightwaveCore_LIBRARIES})
+target_link_libraries(midiprobe ${NightwaveCore_LIBRARIES})
+target_link_libraries(midiout ${NightwaveCore_LIBRARIES})
 
 target_link_libraries(lightpad ${HOWL_LIBRARIES})
 
