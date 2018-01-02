@@ -34,12 +34,11 @@ IF(APPLE)
 	list(FILTER RESOURCE_FILES EXCLUDE REGEX ".*\.DS_Store")
 ENDIF()
 
-set(ROOT  ${CMAKE_SOURCE_DIR})
+set(ROOT  ${CMAKE_CURRENT_SOURCE_DIR})
 set(SRC   ${PROJECT_SOURCE_DIR})
-set(BIN   ${CMAKE_BINARY_DIR})
+set(BUILD ${CMAKE_CURRENT_BINARY_DIR})
 set(IMGS  ${ROOT}/graphics)
 set(REFS  ${ROOT}/references)
-set(BUILD ${PROJECT_BINARY_DIR})
 
 find_package(NightwaveCore REQUIRED)
 include_directories(${NightwaveCore_INCLUDE_DIR})
@@ -110,7 +109,7 @@ ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	set_target_properties(lightpad PROPERTIES WIN32_EXECUTABLE TRUE)
 ENDIF()
 
-set(BUNDLE_INSTALL_TARGET "${BIN}/${APP_BUNDLE_NAME}")
+set(BUNDLE_INSTALL_TARGET "${BUILD}/${APP_BUNDLE_NAME}")
 set(APPS ${BUNDLE_INSTALL_TARGET})
 
 target_link_libraries(lightpad ${NightwaveCore_LIBRARIES})
