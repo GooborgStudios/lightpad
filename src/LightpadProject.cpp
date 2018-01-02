@@ -119,7 +119,7 @@ int LightpadProject::save(std::string filePath) {
 }
 
 void LightpadProject::pushButton(int tick, std::string button, unsigned char velocity) {
-	vector<unsigned char> data;
+	std::vector<unsigned char> data;
 	
 	data.push_back(velocity == 0 ? 128 : 144);
 	data.push_back(buttonToNote(stoi(button)));
