@@ -35,9 +35,11 @@ install:
   - cd ../../..
   # Install LibMidifile
   - cd submodules/midifile
-  - make library
-  - cp -a lib/. ../../lib/
-  - cd ../..
+  - mkdir build
+  - cd build
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .. -G "Xcode"; xcodebuild -target midifile -project midifile.xcodeproj; xcodebuild -target install -project midifile.xcodeproj; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake ..; make; make install; fi
+  - cd ../../..
 
 before_script:
   - mkdir build
