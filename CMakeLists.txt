@@ -134,13 +134,14 @@ include_directories(${MAGICK_INCLUDE_DIR})
 include_directories(${MAGICK++_INCLUDE_DIR})
 link_directories(${MAGICK_LIBRARY_DIR})
 link_directories(${MAGICK++_LIBRARY_DIR})
-target_link_libraries(lightpad "GraphicsMagick++")
+target_link_libraries(lightpad ${MAGICK_LIBRARIES})
+target_link_libraries(lightpad ${MAGICK++_LIBRARIES})
 
 find_package(LibMagic)
 IF(LibMagic_FOUND)
 	add_definitions(-DLIB_MAGIC)
 	include_directories(${LibMagic_INCLUDE_DIR})
-	target_link_libraries(lightpad "magic")
+	target_link_libraries(lightpad ${LibMagic_LIBRARIES})
 ENDIF(LibMagic_FOUND)
 
 find_package(Doxygen)
@@ -171,7 +172,7 @@ FIND_PATH(midifile_INCLUDE_DIR
 )
 
 FIND_LIBRARY(midifile_LIBRARIES
-	NAMES midifile
+	NAMES libmidifile midifile
 	PATHS
 	${ROOT}/submodules/midifile/lib
 	"[HKEY_LOCAL_MACHINE\\SOFTWARE\\midifile\\Current;BinPath]"
