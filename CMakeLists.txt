@@ -147,7 +147,7 @@ find_package(Doxygen)
 IF(DOXYGEN_FOUND)
 	configure_file(${ROOT}/doxygen.conf.in ${BUILD}/doxygen.conf @ONLY)
 	add_custom_target(docs ALL DEPENDS ${BUILD}/doxygen/)
-	add_custom_command(OUTPUT ${BUILD}/doxygen/ COMMAND ${DOXYGEN_EXECUTABLE} ${BUILD}/doxygen.conf DEPENDS ${SRC}/* ${ROOT}/readme.md ${ROOT}/doxygen.conf.in VERBATIM) # COMMENT "Generating API documentation with Doxygen"
+	add_custom_command(OUTPUT ${BUILD}/doxygen/ COMMAND ${DOXYGEN_EXECUTABLE} ${BUILD}/doxygen.conf DEPENDS ${SRC}/* ${ROOT}/README.md ${ROOT}/doxygen.conf.in VERBATIM) # COMMENT "Generating API documentation with Doxygen"
 ENDIF(DOXYGEN_FOUND)
 
 target_link_libraries(lightpad "rtmidi")
@@ -157,7 +157,6 @@ target_link_libraries(midiout "rtmidi")
 FIND_PATH(midifile_INCLUDE_DIR
 	NAMES "MidiFile.h"
 	PATHS
-	${ROOT}/submodules/midifile/include
 	"[HKEY_LOCAL_MACHINE\\SOFTWARE\\midifile\\Current;BinPath]"
 	"$ENV{midifile_LOCATION}"
 	"$ENV{midifile_LOCATION}/include"
@@ -173,7 +172,6 @@ FIND_PATH(midifile_INCLUDE_DIR
 FIND_LIBRARY(midifile_LIBRARIES
 	NAMES libmidifile midifile
 	PATHS
-	${ROOT}/submodules/midifile/lib
 	"[HKEY_LOCAL_MACHINE\\SOFTWARE\\midifile\\Current;BinPath]"
 	"$ENV{midifile_LOCATION}/midifile/.libs"
 	"$ENV{midifile_LOCATION}/lib"
@@ -185,7 +183,12 @@ FIND_LIBRARY(midifile_LIBRARIES
 	/usr/local/lib
 	/opt/local/lib
 )
+
 GET_FILENAME_COMPONENT(midifile_LIBRARY_DIR ${midifile_LIBRARIES} PATH)
+
+MESSAGE(STATUS "midifile_INCLUDE_DIR" ${midifile_INCLUDE_DIR})
+MESSAGE(STATUS "midifile_LIBRARY_DIR" ${midifile_LIBRARY_DIR})
+MESSAGE(STATUS "midifile_LIBRARIES" ${midifile_LIBRARIES})
 
 include_directories(${midifile_INCLUDE_DIR})
 link_directories(${midifile_LIBRARY_DIR})
@@ -200,23 +203,23 @@ IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
 	add_custom_target(oclint oclint -p ${BUILD} ${SOURCE_FILES} DEPENDS ${SRC}/* ${BUILD}/compile_commands.json WORKING_DIRECTORY ${BUILD}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."
 ENDIF()
 
-IF(APPLE)
-	# -------- Function to build OS X Stand Alone Bundles -----------------
-	function(MakeOSXBundleApp target binary_dir)
-		IF(${CMAKE_GENERATOR} MATCHES "Xcode")
-			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/Debug/${target}.app")
-		ELSE()
-			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/${target}.app")
-		ENDIF()
+# IF(APPLE)
+# 	# -------- Function to build OS X Stand Alone Bundles -----------------
+# 	function(MakeOSXBundleApp target binary_dir)
+# 		IF(${CMAKE_GENERATOR} MATCHES "Xcode")
+# 			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/Debug/${target}.app")
+# 		ELSE()
+# 			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/${target}.app")
+# 		ENDIF()
 
-		SET(OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.cmake")
-		SET(OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.sh")
+# 		SET(OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.cmake")
+# 		SET(OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.sh")
 
-		CONFIGURE_FILE("${ROOT}/scripts/CompleteBundle.cmake.in" "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}" @ONLY IMMEDIATE)
-		CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in" "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
+# 		CONFIGURE_FILE("${ROOT}/scripts/CompleteBundle.cmake.in" "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}" @ONLY IMMEDIATE)
+# 		CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in" "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
 
-		add_custom_command(TARGET ${target} POST_BUILD COMMAND cmake -P ${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT} VERBATIM)
-	endfunction(MakeOSXBundleApp)
+# 		add_custom_command(TARGET ${target} POST_BUILD COMMAND cmake -P ${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT} VERBATIM)
+# 	endfunction(MakeOSXBundleApp)
 
-	MakeOSXBundleApp("lightpad" ${PROJECT_BINARY_DIR})
-ENDIF()
+# 	MakeOSXBundleApp("lightpad" ${PROJECT_BINARY_DIR})
+# ENDIF()
