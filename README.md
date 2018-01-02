@@ -18,14 +18,16 @@ Additional support from [LaunchpadFun](http://www.launchpadfun.com/en/).
 ## Build and Installation
 Lightpad has four executables: _main_, _timeline_, _midiprobe_, and _midiout_.  _Main_ is just what it sounds like, it's the main application, bringing together all of it's features.  _Timeline_ is a teast program to demo the timeline on it's own.  _Midiprobe_ and _midiout_ focus specifically on MIDI connectivity, with the first providing a list of available MIDI I/O ports, and the second playing a test file to the Launchpad, while also telling a pressed button to pulse a random color.
 
+Lightpad utilizes CMake as it's buildscript.  To compile and run Lightpad, type the following commands:
+
 ```bash
 mkdir build
 cd build
 cmake .. && make -j8
-../bin/lightpad[.exe]
-../bin/timeline[.exe]
-../bin/midiprobe[.exe]
-../bin/midiout[.exe]
+./bin/lightpad[.exe]
+./bin/timeline[.exe]
+./bin/midiprobe[.exe]
+./bin/midiout[.exe]
 ```
 
 ## Features
@@ -42,7 +44,7 @@ cmake .. && make -j8
 - *More to come!*
 
 ## Compatibility
-The software is mainly developed on a mid-2016 MacBook Pro (touch bar), 2.7GHz Intel i7 with Integrated Graphics and a Radeon Pro 460 (4GB VRAM).
+The software is mainly developed on a 2016 MacBook Pro (touch bar), 2.7GHz Intel i7 with Integrated Graphics and a Radeon Pro 460 (4GB VRAM).  The program is not using the GPU as of yet, which lets us emulate a less powerful machine using CPU rendering.
 
 Supported Operating Systems:
 
