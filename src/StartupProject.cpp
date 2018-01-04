@@ -1,16 +1,18 @@
 //
-// Lightpad - TestProject.h
+// Lightpad - StartupProject.h
 // ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
 //
 
-#include "TestProject.h"
+#include "StartupProject.h"
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
 #endif
+
+#include <iostream>
 
 #include "NightwaveCore/Colors.h"
 #include "NightwaveCore/NightwaveCore.h"
@@ -20,7 +22,9 @@
 const int COLS = 32;
 const int ROWS = 96;
 
-TestProject::TestProject() : LightpadProject(120, 32) {
+StartupProject::StartupProject() : LightpadProject(120, 32) {
+	std::cout << "Hi there!" << std::endl;
+
 	Color rainbow[18];
 	for (int j = 0; j < 18; j++) {
 		int red = 0, grn = 0, blu = 0;
@@ -48,6 +52,10 @@ TestProject::TestProject() : LightpadProject(120, 32) {
 			layer->AddKeyframe(new NoteKeyframe(btn_x + (btn_y * 10), col*ticksPerBeat, get_closest_velocity(rainbow[(btn_x + btn_y + col) % 18])));
 		}
 	}
+
+	std::cout << "Hello?" << std::endl;
 	
 	seek(0);
+
+	std::cout << "Hmph, fine then!" << std::endl;
 }

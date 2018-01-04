@@ -1,5 +1,5 @@
 //
-// Lightpad - TestProject.h
+// Lightpad - StartupProject.h
 // ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
 // https://www.nightwave.co/lightpad
@@ -15,7 +15,7 @@
 #include "LightpadProject.h"
 #include "HOWL/Layer.h"
 
-class TestProject : public LightpadProject {
+class StartupProject : public LightpadProject {
 	public:
-		TestProject();
+		StartupProject();
 };

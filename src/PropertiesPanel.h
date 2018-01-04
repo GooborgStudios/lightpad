@@ -19,11 +19,12 @@
 
 #include "ElementIDs.h"
 #include "GridRenderer.h"
+#include "LightpadProject.h"
 
 // Properties panel
 class PropertiesPanel: public wxPanel {
 	public:
-		PropertiesPanel(wxPanel *parent);
+		PropertiesPanel(wxPanel *parent, LightpadProject *project);
 		~PropertiesPanel();
 		void Update();
 		void OnSelectCell(wxGridEvent &event);
@@ -34,6 +35,7 @@ class PropertiesPanel: public wxPanel {
 		wxBoxSizer *sizer;
 		wxGrid *grid;
 		LightpadGridRenderer *renderer;
+		LightpadProject *activeProject;
 
 	wxDECLARE_EVENT_TABLE();
 };

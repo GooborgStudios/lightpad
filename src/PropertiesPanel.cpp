@@ -29,9 +29,10 @@
 wxDEFINE_EVENT(COLOR_SELECT, wxCommandEvent);
 
 // Initialize the properties panel and it's elements
-PropertiesPanel::PropertiesPanel(wxPanel *parent)
-	: wxPanel(parent, ID_Panel_Properties, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+PropertiesPanel::PropertiesPanel(wxPanel *parent, LightpadProject *project) : wxPanel(parent, ID_Panel_Properties, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
+
+	activeProject = project;
 
 	sizer = new wxBoxSizer(wxVERTICAL);
 	grid = new wxGrid(this, ID_PropertiesPanel_ColorSelector);

@@ -35,5 +35,3 @@ class LightpadProject: public HOWL::Project {
 		
 		MidiFile *midifile;
 };
-
-extern LightpadProject *activeProject;

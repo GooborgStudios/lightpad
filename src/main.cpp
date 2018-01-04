@@ -27,7 +27,7 @@
 
 #include "ElementIDs.h"
 #include "LightpadProject.h"
-#include "TestProject.h"
+#include "StartupProject.h"
 #include "DisplayPanel.h"
 #include "PropertiesPanel.h"
 #include "FileMetadata.h"
@@ -51,8 +51,6 @@
 	const std::string max_user_library_path = std::string(getenv("HOME")) + "/Documents/Max 7/Library/MIDIext";
 	const std::string max_shared_library_path = "/Users/Shared/Max 7/Library/MIDIext";
 #endif
-
-LightpadProject *activeProject = new TestProject();
 
 class MainFrame;
 
@@ -86,6 +84,7 @@ class MainFrame: public wxFrame {
 		wxBoxSizer *top_half;
 		wxBoxSizer *sizer;
 		wxTimer *m_timer;
+		LightpadProject *activeProject;
 
 	private:
 		wxLongLong last_frame_time;
@@ -157,6 +156,8 @@ void MainApp::OnFatalException() {
 
 MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &size) : wxFrame(NULL, ID_Frame_Main, title, pos, size) {
 	ShowSplash(true);
+
+	activeProject = new StartupProject();
 	
 	splash->SetProgress(0, "Initializing icon...");
 	wxBitmap lightpad_icon(getResourcePath("icons/icon_24.png"), wxBITMAP_TYPE_PNG);
@@ -210,9 +211,9 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	m_fp->AddPath(max_shared_library_path);
 	m_fp->RefreshFileList();
 	splash->SetProgress(30, "Loading Properties Panel...");
-	m_pp = new PropertiesPanel(m_parent);
+	m_pp = new PropertiesPanel(m_parent, activeProject);
 	splash->SetProgress(40, "Loading Display Panel...");
-	m_dp = new DisplayPanel(m_parent, splash);
+	m_dp = new DisplayPanel(m_parent, splash, activeProject);
 	splash->SetProgress(90, "Loading Timeline Panel...");
 	m_tlp = new HOWL::TimelinePanel(m_parent, ID_Panel_Timeline, activeProject, ID_Panel_Display);
 

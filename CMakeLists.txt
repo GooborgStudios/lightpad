@@ -68,7 +68,7 @@ add_executable(lightpad MACOSX_BUNDLE
 	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
 	${SRC}/LightpadProject.cpp ${SRC}/LightpadProject.h
 	${SRC}/PropertiesPanel.cpp ${SRC}/PropertiesPanel.h
-	${SRC}/TestProject.cpp ${SRC}/TestProject.h
+	${SRC}/StartupProject.cpp ${SRC}/StartupProject.h
 	${SRC}/FileMetadata.cpp ${SRC}/FileMetadata.h
 )
 

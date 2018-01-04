@@ -23,6 +23,7 @@
 #include "HOWL/Project.h"
 #include "HOWL/Selection.h"
 #include "NightwaveCore/SplashScreen.h"
+#include "LightpadProject.h"
 
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
 #define MINIMUM_LAUNCHPAD_IMAGE_SIZE 128
@@ -33,7 +34,7 @@
 // Graphical interface panel
 class DisplayPanel: public wxPanel {
 	public:
-		DisplayPanel(wxPanel *parent, SplashScreen *splash);
+		DisplayPanel(wxPanel *parent, SplashScreen *splash, LightpadProject *project);
 		~DisplayPanel();
 		void paintEvent(wxPaintEvent &event);
 		void paintNow();
@@ -80,6 +81,7 @@ class DisplayPanel: public wxPanel {
 		bool selected_buttons[100] = {false};
 		bool selected_buttons_box[100] = {false};
 		wxPoint clickpos = wxPoint(-1, -1);
+		LightpadProject *activeProject;
 
 	wxDECLARE_EVENT_TABLE();
 };
