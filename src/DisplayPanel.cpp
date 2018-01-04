@@ -84,8 +84,6 @@ DisplayPanel::DisplayPanel(wxPanel *parent, SplashScreen *splash, LightpadProjec
 		fullres_button_halo_images[i] = new Magick::Image(button_halo_image);
 		fullres_button_halo_images[i]->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * i, 0));
 	}
-
-	paintNow();
 }
 
 DisplayPanel::~DisplayPanel() {
