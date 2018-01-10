@@ -186,16 +186,12 @@ FIND_LIBRARY(midifile_LIBRARIES
 
 GET_FILENAME_COMPONENT(midifile_LIBRARY_DIR ${midifile_LIBRARIES} PATH)
 
-MESSAGE(STATUS "midifile_INCLUDE_DIR" ${midifile_INCLUDE_DIR})
-MESSAGE(STATUS "midifile_LIBRARY_DIR" ${midifile_LIBRARY_DIR})
-MESSAGE(STATUS "midifile_LIBRARIES" ${midifile_LIBRARIES})
-
 include_directories(${midifile_INCLUDE_DIR})
 link_directories(${midifile_LIBRARY_DIR})
 target_link_libraries(lightpad ${midifile_LIBRARIES})
 target_link_libraries(midiout ${midifile_LIBRARIES})
 
-IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
+IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode") # Xcode doesn't generate the required compile_commands.json file that OCLint needs to function with CMake.  (This probably applies to Visual Studio as well.)
 	FOREACH(f ${source_file_list})
 		list(APPEND SOURCE_FILES "${ROOT}/${f}")
 	ENDFOREACH()
