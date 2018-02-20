@@ -11,6 +11,8 @@ if(UNIX AND NOT APPLE)
 	set(LINUX TRUE)
 endif()
 
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10" CACHE STRING "Minimum macOS deployment version")
+
 # Project properties
 project(lightpad)
 set(TARGET_VERSION_MAJOR 0)
@@ -101,9 +103,7 @@ IF(APPLE)
 	set_target_properties(lightpad PROPERTIES MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
 	target_sources(lightpad PUBLIC ${RESOURCE_FILES})
 	
-	IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.12")
-	ENDIF()
+	# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.10")
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	add_definitions(-D__NO_INLINE__)
 	set_target_properties(lightpad PROPERTIES WIN32_EXECUTABLE TRUE)
