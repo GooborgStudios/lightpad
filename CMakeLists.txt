@@ -90,11 +90,6 @@ add_executable(GenerateNoteButtonMap
 	${SRC}/GenerateNoteButtonMap.cpp
 )
 
-set(CMAKE_CXX_COMPILER g++)
-find_package(wxWidgets COMPONENTS html qa adv core xml net base REQUIRED)
-execute_process(COMMAND "wx-config --cxxflags" OUTPUT_VARIABLE wxConfig_CXX_FLAGS)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${wxConfig_CXX_FLAGS}")
-
 IF(APPLE)
 	set(OSX_ICON_FILES ${IMGS}/icon.icns)
 
@@ -122,6 +117,10 @@ target_link_libraries(lightpad ${HOWL_LIBRARIES})
 # 	target_link_libraries(lightpad ${GTK3_LIBRARIES})
 # ENDIF()
 
+find_package(wxWidgets COMPONENTS html qa adv core xml net base REQUIRED)
+add_definitions(-DUSE_WXWIDGETS)
+execute_process(COMMAND "wx-config --cxxflags" OUTPUT_VARIABLE wxConfig_CXX_FLAGS)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${wxConfig_CXX_FLAGS}")
 include(${wxWidgets_USE_FILE})
 target_link_libraries(lightpad ${wxWidgets_LIBRARIES})
 target_link_libraries(midiprobe ${wxWidgets_LIBRARIES})
