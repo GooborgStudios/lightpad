@@ -19,11 +19,11 @@ install:
   # Install packages from Homebrew/Aptitude
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install graphicsmagick libmagic rtmidi; travis_wait 30 brew install wxwidgets; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install libwxbase3.1-0-unofficial libwxbase3.1-dev libwxgtk3.1-0-unofficial libwxgtk3.1-dev wx3.1-headers wx-common libwxgtk-webview3.1-0-unofficial libwxgtk-webview3.1-dev libwxgtk-media3.1-0-unofficial libwxgtk-media3.1-dev libwxbase3.1-0-unofficial-dbg libwxgtk3.1-0-unofficial-dbg libwxgtk-webview3.1-0-unofficial-dbg libwxgtk-media3.1-0-unofficial-dbg wx3.1-i18n wx3.1-examples -qq; sudo apt-get install graphicsmagick libgraphicsmagick-dev libgraphicsmagick++-dev libmagic-dev doxygen librtaudio-dev -qq; sudo apt-get install librtmidi-dev -qq; fi
-  # Install NightwaveCore
-  - cd submodules/NightwaveCore/C++
+  # Install GooCore
+  - cd submodules/GooCore/C++
   - mkdir build
   - cd build
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .. -G "Xcode"; xcodebuild -target NightwaveCore -project NightwaveCore.xcodeproj; xcodebuild -target install -project NightwaveCore.xcodeproj; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .. -G "Xcode"; xcodebuild -target GooCore -project GooCore.xcodeproj; xcodebuild -target install -project GooCore.xcodeproj; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake ..; make; make install; fi
   - cd ../../../..
   # Install HOWL
@@ -58,5 +58,5 @@ deploy:
   skip_cleanup: true
   file: ''
   on:
-    repo: VaduNightwave/lightpad
+    repo: GooborgStudios/lightpad
     tags: true

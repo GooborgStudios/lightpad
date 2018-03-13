@@ -1,5 +1,5 @@
 # Lightpad
-Software Designed, Developed, and Published by [Nightwave Studios](https://www.nightwave.co) (Vinyl Darkscratch, Light Apacha), © 2017 under a GNU General Public License.
+Software Designed, Developed, and Published by [Gooborg Studios](http://www.gooborg.com) (Vinyl Darkscratch, Light Apacha), © 2018 under a GNU General Public License.
 Additional support from [LaunchpadFun](http://www.launchpadfun.com/en/).
 
 # This software is almost ready for use.  Please check back later!
@@ -11,7 +11,7 @@ Additional support from [LaunchpadFun](http://www.launchpadfun.com/en/).
 - GraphicsMagick
 - RtMidi
 - LibMidifile (submodule)
-- NightwaveCore (submodule)
+- GooCore (submodule)
 - HOWL (submodule)
 - LibMagic (optional)
 
@@ -48,6 +48,6 @@ The software is mainly developed on a 2016 MacBook Pro (touch bar), 2.7GHz Intel
 
 Supported Operating Systems:
 
-* Mac OS [![Build Status](https://travis-ci.org/VaduNightwave/lightpad.svg?branch=master)](https://travis-ci.org/VaduNightwave/lightpad)
+* Mac OS [![Build Status](https://travis-ci.org/GooborgStudios/lightpad.svg?branch=master)](https://travis-ci.org/GooborgStudios/lightpad)
 * Windows (implementing)
 * Linux/Unix (implementing)

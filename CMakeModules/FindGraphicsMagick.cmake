@@ -1,7 +1,7 @@
 # -*-cmake-*-
 #
-# Nightwave Studios - FindGraphicsMagick.cmake
-# https://www.nightwave.co
+# Gooborg Studios - FindGraphicsMagick.cmake
+# http://www.gooborg.com
 #
 # Search for GraphicsMagick library files, unlike CMake's FindGraphicsMagick.cmake
 # which tests for GraphicsMagick's binary utilities

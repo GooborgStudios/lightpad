@@ -1,4 +1,4 @@
-# Lightpad - Nightwave Studios
+# Lightpad - Gooborg Studios
 
 # Minimum version required for CMake
 IF(APPLE)
@@ -18,7 +18,7 @@ project(lightpad)
 set(TARGET_VERSION_MAJOR 0)
 set(TARGET_VERSION_MINOR 0)
 set(TARGET_VERSION_PATCH 1)
-set(TARGET_COPYRIGHT "©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.")
+set(TARGET_COPYRIGHT "©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.")
 
 set(CMAKE_BINARY_DIR ${PROJECT_BINARY_DIR})
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
@@ -42,9 +42,9 @@ set(BUILD ${CMAKE_CURRENT_BINARY_DIR})
 set(IMGS  ${ROOT}/graphics)
 set(REFS  ${ROOT}/references)
 
-find_package(NightwaveCore REQUIRED)
-include_directories(${NightwaveCore_INCLUDE_DIR})
-link_directories(${NightwaveCore_LIBRARY_DIR})
+find_package(GooCore REQUIRED)
+include_directories(${GooCore_INCLUDE_DIR})
+link_directories(${GooCore_LIBRARY_DIR})
 
 find_package(HOWL REQUIRED)
 include_directories(${HOWL_INCLUDE_DIR})
@@ -95,7 +95,7 @@ IF(APPLE)
 
 	target_compile_definitions(lightpad PUBLIC -DOSX_BUNDLE)
 	target_link_libraries(lightpad "-framework CoreFoundation")
-	set_target_properties(lightpad PROPERTIES MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
+	set_target_properties(lightpad PROPERTIES MACOSX_FRAMEWORK_IDENTIFIER com.gooborg.lightpad RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
 	target_sources(lightpad PUBLIC ${RESOURCE_FILES})
 	
 	# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.10")
@@ -107,9 +107,9 @@ ENDIF()
 set(BUNDLE_INSTALL_TARGET "${BUILD}/${APP_BUNDLE_NAME}")
 set(APPS ${BUNDLE_INSTALL_TARGET})
 
-target_link_libraries(lightpad ${NightwaveCore_LIBRARIES})
-target_link_libraries(midiprobe ${NightwaveCore_LIBRARIES})
-target_link_libraries(midiout ${NightwaveCore_LIBRARIES})
+target_link_libraries(lightpad ${GooCore_LIBRARIES})
+target_link_libraries(midiprobe ${GooCore_LIBRARIES})
+target_link_libraries(midiout ${GooCore_LIBRARIES})
 
 target_link_libraries(lightpad ${HOWL_LIBRARIES})
 

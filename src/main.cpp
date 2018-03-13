@@ -1,8 +1,8 @@
 //
 // Lightpad - main.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #include <wx/wxprec.h>
@@ -20,9 +20,9 @@
 #include "Magick++.h"
 #include "RtMidi.h"
 
-#include "NightwaveCore/NightwaveCore.h"
-#include "NightwaveCore/SplashScreen.h"
-#include "NightwaveCore/QuickFilePanel.h"
+#include "GooCore/GooCore.h"
+#include "GooCore/SplashScreen.h"
+#include "GooCore/QuickFilePanel.h"
 #include "HOWL/TimelinePanel.h"
 
 #include "ElementIDs.h"
@@ -131,9 +131,9 @@ bool MainApp::OnInit() {
 
 	SetAppName("Lightpad");
 	SetAppDisplayName("Lightpad");
-	SetClassName("co.nightwave.launchpad");
-	SetVendorName("Nightwave Studios");
-	SetVendorDisplayName("Nightwave Studios");
+	SetClassName("com.gooborg.launchpad");
+	SetVendorName("Gooborg Studios");
+	SetVendorDisplayName("Gooborg Studios");
 
 	frame = new MainFrame("Lightpad", wxPoint(50, 50), wxSize(1280, 720));
 	frame->SetMinSize(wxSize(800, 600));
@@ -192,7 +192,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 	splash->SetProgress(8, "Initializing status bar...");
 	// Bottom status bar
 	CreateStatusBar();
-	SetStatusText("Lightpad - Nightwave Studios");
+	SetStatusText("Lightpad - Gooborg Studios");
 
 	splash->SetProgress(9, "Initializing toolbar...");
 	// Toolbar
@@ -236,7 +236,7 @@ MainFrame::MainFrame(const wxString &title, const wxPoint &pos, const wxSize &si
 }
 
 void MainFrame::ShowSplash(bool loading) {
-	std::string copyright = "© 2017 Nightwave Studios, GNU General Public License v3.0.  Programming by Vinyl Darkscratch and Light Apacha.  App icon and display panel graphic by Vinyl Darkscratch.  Splash screen by Vinyl Darkscratch, drawing by Yogfan14, with brushes by Alberto Seveso.  Big thanks to the Launchpad community for making this program possible.";
+	std::string copyright = "© 2018 Gooborg Studios, GNU General Public License v3.0.  Programming by Vinyl Darkscratch and Light Apacha.  App icon and display panel graphic by Vinyl Darkscratch.  Splash screen by Vinyl Darkscratch, drawing by Yogfan14, with brushes by Alberto Seveso.  Big thanks to the Launchpad community for making this program possible.";
 	wxBitmap splash_image(getResourcePath("splash.png"), wxBITMAP_TYPE_PNG);
 	#ifndef LINUX
 		splash_image.UseAlpha();

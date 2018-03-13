@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>icons/icon.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>co.nightwave.lightpad</string>
+	<string>com.gooborg.lightpad</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleInfoDictionaryVersion</key>

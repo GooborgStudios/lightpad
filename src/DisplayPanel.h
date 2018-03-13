@@ -1,8 +1,8 @@
 //
 // Lightpad - DisplayPanel.h
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #pragma once
@@ -18,11 +18,11 @@
 #include "Magick++.h"
 
 #include "ElementIDs.h"
-#include "NightwaveCore/NightwaveCore.h"
-#include "NightwaveCore/Colors.h"
+#include "GooCore/GooCore.h"
+#include "GooCore/Colors.h"
 #include "HOWL/Project.h"
 #include "HOWL/Selection.h"
-#include "NightwaveCore/SplashScreen.h"
+#include "GooCore/SplashScreen.h"
 #include "LightpadProject.h"
 
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096

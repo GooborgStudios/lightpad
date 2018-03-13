@@ -1,8 +1,8 @@
 //
 // Lightpad - MidiLayer.h
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #pragma once
@@ -14,7 +14,7 @@
 
 #include <string>
 
-#include "NightwaveCore/Colors.h"
+#include "GooCore/Colors.h"
 #include "HOWL/Layer.h"
 
 class NoteKeyframe: public HOWL::Keyframe {

@@ -1,8 +1,8 @@
 //
 // Lightpad - StartupProject.h
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #include "StartupProject.h"
@@ -14,8 +14,8 @@
 
 #include <iostream>
 
-#include "NightwaveCore/Colors.h"
-#include "NightwaveCore/NightwaveCore.h"
+#include "GooCore/Colors.h"
+#include "GooCore/GooCore.h"
 #include "Launchpad.h"
 #include "LightpadProject.h"
 

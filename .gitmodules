@@ -1,6 +1,9 @@
 [submodule "submodules/HOWL"]
 	path = submodules/HOWL
-	url = https://github.com/VaduNightwave/HOWL
+	url = https://github.com/GooborgStudios/HOWL
 [submodule "submodules/midifile"]
 	path = submodules/midifile
 	url = https://github.com/vinyldarkscratch/midifile
+[submodule "submodules/GooCore"]
+	path = submodules/GooCore
+	url = https://github.com/GooborgStudios/GooCore

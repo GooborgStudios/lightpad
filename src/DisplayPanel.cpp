@@ -1,8 +1,8 @@
 //
 // Lightpad - DisplayPanel.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #include "DisplayPanel.h"
@@ -26,13 +26,13 @@
 #include "Magick++.h"
 
 #include "ElementIDs.h"
-#include "NightwaveCore/NightwaveCore.h"
+#include "GooCore/GooCore.h"
 #include "Launchpad.h"
-#include "NightwaveCore/Colors.h"
+#include "GooCore/Colors.h"
 #include "LightpadProject.h"
 #include "HOWL/TimelinePanel.h"
 #include "HOWL/Selection.h"
-#include "NightwaveCore/SplashScreen.h"
+#include "GooCore/SplashScreen.h"
 #include "LightpadProject.h"
 
 const float button_pos[10] = {0.113525390625, 0.199462890625, 0.277587890625, 0.355712890625, 0.433837890625, 0.511962890625, 0.590087890625, 0.668212890625, 0.746337890625, 0.832275390625};

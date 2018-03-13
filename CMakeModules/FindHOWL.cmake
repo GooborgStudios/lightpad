@@ -1,7 +1,7 @@
 # -*-cmake-*-
 #
-# Nightwave Studios - FindHOWL.cmake
-# https://www.nightwave.co
+# Gooborg Studios - FindHOWL.cmake
+# http://www.gooborg.com
 #
 # Search for HOWL library files
 #
