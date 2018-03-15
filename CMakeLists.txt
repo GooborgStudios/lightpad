@@ -1,4 +1,4 @@
-# Lightpad - Nightwave Studios
+# Lightpad - Gooborg Studios
 
 # Minimum version required for CMake
 IF(APPLE)
@@ -11,12 +11,14 @@ if(UNIX AND NOT APPLE)
 	set(LINUX TRUE)
 endif()
 
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10" CACHE STRING "Minimum macOS deployment version")
+
 # Project properties
 project(lightpad)
 set(TARGET_VERSION_MAJOR 0)
 set(TARGET_VERSION_MINOR 0)
 set(TARGET_VERSION_PATCH 1)
-set(TARGET_COPYRIGHT "©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.")
+set(TARGET_COPYRIGHT "©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.")
 
 set(CMAKE_BINARY_DIR ${PROJECT_BINARY_DIR})
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
@@ -34,25 +36,22 @@ IF(APPLE)
 	list(FILTER RESOURCE_FILES EXCLUDE REGEX ".*\.DS_Store")
 ENDIF()
 
-set(ROOT  ${CMAKE_SOURCE_DIR})
+set(ROOT  ${CMAKE_CURRENT_SOURCE_DIR})
 set(SRC   ${PROJECT_SOURCE_DIR})
-set(BIN   ${CMAKE_BINARY_DIR})
-set(INCL  ${ROOT}/include)
-set(LIB   ${ROOT}/lib)
+set(BUILD ${CMAKE_CURRENT_BINARY_DIR})
 set(IMGS  ${ROOT}/graphics)
 set(REFS  ${ROOT}/references)
-set(BUILD ${PROJECT_BINARY_DIR})
 
-find_package(GraphicsMagick REQUIRED)
+find_package(GooCore REQUIRED)
+include_directories(${GooCore_INCLUDE_DIR})
+link_directories(${GooCore_LIBRARY_DIR})
+
+find_package(HOWL REQUIRED)
+include_directories(${HOWL_INCLUDE_DIR})
+link_directories(${HOWL_LIBRARY_DIR})
 
 add_definitions(-DRESOURCE_DIR="${IMGS}")
 include_directories(${ROOT})
-include_directories(${INCL})
-
-include_directories(${MAGICK_INCLUDE_DIR})
-include_directories(${MAGICK++_INCLUDE_DIR})
-link_directories(${MAGICK_LIBRARY_DIR})
-link_directories(${MAGICK++_LIBRARY_DIR})
 
 # IF(LINUX)
 # 	find_package(PkgConfig REQUIRED)
@@ -65,24 +64,14 @@ link_directories(${MAGICK++_LIBRARY_DIR})
 add_executable(lightpad MACOSX_BUNDLE
 	${SRC}/main.cpp ${SRC}/ElementIDs.h
 	${SRC}/DisplayPanel.cpp ${SRC}/DisplayPanel.h
-	${SRC}/FilePanel.cpp ${SRC}/FilePanel.h
 	${SRC}/GridRenderer.cpp ${SRC}/GridRenderer.h
 	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
 	${SRC}/MidiLayer.cpp ${SRC}/MidiLayer.h
 	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
 	${SRC}/LightpadProject.cpp ${SRC}/LightpadProject.h
 	${SRC}/PropertiesPanel.cpp ${SRC}/PropertiesPanel.h
-	${SRC}/TestProject.cpp ${SRC}/TestProject.h
+	${SRC}/StartupProject.cpp ${SRC}/StartupProject.h
 	${SRC}/FileMetadata.cpp ${SRC}/FileMetadata.h
-)
-
-add_executable(timeline MACOSX_BUNDLE
-	${SRC}/timeline.cpp ${SRC}/ElementIDs.h
-	${SRC}/NoteHelpers.cpp ${SRC}/NoteHelpers.h
-	${SRC}/Launchpad.cpp ${SRC}/Launchpad.h
-	${SRC}/MidiLayer.cpp ${SRC}/MidiLayer.h
-	${SRC}/LightpadProject.cpp ${SRC}/LightpadProject.h
-	${SRC}/TestProject.cpp ${SRC}/TestProject.h
 )
 
 add_executable(midiprobe
@@ -101,90 +90,107 @@ add_executable(GenerateNoteButtonMap
 	${SRC}/GenerateNoteButtonMap.cpp
 )
 
-set(CMAKE_CXX_COMPILER g++)
-find_package(wxWidgets COMPONENTS html qa adv core xml net base REQUIRED)
-execute_process(COMMAND "wx-config --cxxflags" OUTPUT_VARIABLE wxConfig_CXX_FLAGS)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${wxConfig_CXX_FLAGS}")
-
 IF(APPLE)
 	set(OSX_ICON_FILES ${IMGS}/icon.icns)
 
 	target_compile_definitions(lightpad PUBLIC -DOSX_BUNDLE)
 	target_link_libraries(lightpad "-framework CoreFoundation")
-	set_target_properties(lightpad PROPERTIES MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
+	set_target_properties(lightpad PROPERTIES MACOSX_FRAMEWORK_IDENTIFIER com.gooborg.lightpad RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
 	target_sources(lightpad PUBLIC ${RESOURCE_FILES})
-
-	target_compile_definitions(timeline PUBLIC -DOSX_BUNDLE)
-	target_link_libraries(timeline "-framework CoreFoundation")
-	set_target_properties(timeline PROPERTIES MACOSX_FRAMEWORK_IDENTIFIER co.nightwave.lightpad.timeline RESOURCE "${RESOURCE_FILES}" MACOSX_BUNDLE_INFO_PLIST ${ROOT}/mac_info.plist.in)
-	target_sources(timeline PUBLIC ${RESOURCE_FILES})
 	
-	IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.12")
-	ENDIF()
+	# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.10")
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	add_definitions(-D__NO_INLINE__)
 	set_target_properties(lightpad PROPERTIES WIN32_EXECUTABLE TRUE)
-	set_target_properties(timeline PROPERTIES WIN32_EXECUTABLE TRUE)
 ENDIF()
 
-set(BUNDLE_INSTALL_TARGET "${BIN}/${APP_BUNDLE_NAME}")
+set(BUNDLE_INSTALL_TARGET "${BUILD}/${APP_BUNDLE_NAME}")
 set(APPS ${BUNDLE_INSTALL_TARGET})
 
-link_directories(lightpad ${LIB})
-link_directories(timeline ${LIB})
-link_directories(midiprobe ${LIB})
-link_directories(midiout ${LIB})
+target_link_libraries(lightpad ${GooCore_LIBRARIES})
+target_link_libraries(midiprobe ${GooCore_LIBRARIES})
+target_link_libraries(midiout ${GooCore_LIBRARIES})
 
-target_link_libraries(lightpad NightwaveCore)
-target_link_libraries(timeline NightwaveCore)
-target_link_libraries(midiprobe NightwaveCore)
-target_link_libraries(midiout NightwaveCore)
-
-target_link_libraries(lightpad HOWL)
-target_link_libraries(timeline HOWL)
+target_link_libraries(lightpad ${HOWL_LIBRARIES})
 
 # IF(LINUX)
 # 	target_link_libraries(lightpad ${GTK3_LIBRARIES})
-# 	target_link_libraries(timeline ${GTK3_LIBRARIES})
 # ENDIF()
 
+find_package(wxWidgets COMPONENTS html qa adv core xml net base REQUIRED)
+add_definitions(-DUSE_WXWIDGETS)
+execute_process(COMMAND "wx-config --cxxflags" OUTPUT_VARIABLE wxConfig_CXX_FLAGS)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${wxConfig_CXX_FLAGS}")
 include(${wxWidgets_USE_FILE})
 target_link_libraries(lightpad ${wxWidgets_LIBRARIES})
-target_link_libraries(timeline ${wxWidgets_LIBRARIES})
 target_link_libraries(midiprobe ${wxWidgets_LIBRARIES})
 target_link_libraries(midiout ${wxWidgets_LIBRARIES})
 
+find_package(GraphicsMagick REQUIRED)
 add_definitions(-DLIB_GRAPHICSMAGICK)
-target_link_libraries(lightpad "GraphicsMagick++")
-target_link_libraries(timeline "GraphicsMagick++")
+include_directories(${MAGICK_INCLUDE_DIR})
+include_directories(${MAGICK++_INCLUDE_DIR})
+link_directories(${MAGICK_LIBRARY_DIR})
+link_directories(${MAGICK++_LIBRARY_DIR})
+target_link_libraries(lightpad ${MAGICK_LIBRARIES})
+target_link_libraries(lightpad ${MAGICK++_LIBRARIES})
 
 find_package(LibMagic)
 IF(LibMagic_FOUND)
 	add_definitions(-DLIB_MAGIC)
 	include_directories(${LibMagic_INCLUDE_DIR})
-	target_link_libraries(lightpad "magic")
-	target_link_libraries(timeline "magic")
+	target_link_libraries(lightpad ${LibMagic_LIBRARIES})
 ENDIF(LibMagic_FOUND)
 
 find_package(Doxygen)
 IF(DOXYGEN_FOUND)
 	configure_file(${ROOT}/doxygen.conf.in ${BUILD}/doxygen.conf @ONLY)
 	add_custom_target(docs ALL DEPENDS ${BUILD}/doxygen/)
-	add_custom_command(OUTPUT ${BUILD}/doxygen/ COMMAND ${DOXYGEN_EXECUTABLE} ${BUILD}/doxygen.conf DEPENDS ${SRC}/* ${ROOT}/readme.md ${ROOT}/doxygen.conf.in VERBATIM) # COMMENT "Generating API documentation with Doxygen"
+	add_custom_command(OUTPUT ${BUILD}/doxygen/ COMMAND ${DOXYGEN_EXECUTABLE} ${BUILD}/doxygen.conf DEPENDS ${SRC}/* ${ROOT}/README.md ${ROOT}/doxygen.conf.in VERBATIM) # COMMENT "Generating API documentation with Doxygen"
 ENDIF(DOXYGEN_FOUND)
 
 target_link_libraries(lightpad "rtmidi")
-target_link_libraries(timeline "rtmidi")
 target_link_libraries(midiprobe "rtmidi")
 target_link_libraries(midiout "rtmidi")
 
-include_directories(${INCL}/midifile)
-target_link_libraries(lightpad "midifile")
-target_link_libraries(timeline "midifile")
-target_link_libraries(midiout "midifile")
+FIND_PATH(midifile_INCLUDE_DIR
+	NAMES "MidiFile.h"
+	PATHS
+	"[HKEY_LOCAL_MACHINE\\SOFTWARE\\midifile\\Current;BinPath]"
+	"$ENV{midifile_LOCATION}"
+	"$ENV{midifile_LOCATION}/include"
+	"$ENV{midifile_LOCATION}/include/midifile"
+	"$ENV{midifile_HOME}/include"
+	/usr/include/
+	/usr/include/midifile
+	/usr/local/include
+	/usr/local/include/midifile
+	/opt/local/include/midifile
+)
 
-IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
+FIND_LIBRARY(midifile_LIBRARIES
+	NAMES libmidifile midifile
+	PATHS
+	"[HKEY_LOCAL_MACHINE\\SOFTWARE\\midifile\\Current;BinPath]"
+	"$ENV{midifile_LOCATION}/midifile/.libs"
+	"$ENV{midifile_LOCATION}/lib"
+	"$ENV{midifile_HOME}/lib"
+	/usr/lib64
+	/usr/local/lib64
+	/opt/local/lib64
+	/usr/lib
+	/usr/local/lib
+	/opt/local/lib
+)
+
+GET_FILENAME_COMPONENT(midifile_LIBRARY_DIR ${midifile_LIBRARIES} PATH)
+
+include_directories(${midifile_INCLUDE_DIR})
+link_directories(${midifile_LIBRARY_DIR})
+target_link_libraries(lightpad ${midifile_LIBRARIES})
+target_link_libraries(midiout ${midifile_LIBRARIES})
+
+IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode") # Xcode doesn't generate the required compile_commands.json file that OCLint needs to function with CMake.  (This probably applies to Visual Studio as well.)
 	FOREACH(f ${source_file_list})
 		list(APPEND SOURCE_FILES "${ROOT}/${f}")
 	ENDFOREACH()
@@ -192,23 +198,23 @@ IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode")
 	add_custom_target(oclint oclint -p ${BUILD} ${SOURCE_FILES} DEPENDS ${SRC}/* ${BUILD}/compile_commands.json WORKING_DIRECTORY ${BUILD}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."
 ENDIF()
 
-IF(APPLE)
-	# -------- Function to build OS X Stand Alone Bundles -----------------
-	function(MakeOSXBundleApp target binary_dir)
-		IF(${CMAKE_GENERATOR} MATCHES "Xcode")
-			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/Debug/${target}.app")
-		ELSE()
-			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/${target}.app")
-		ENDIF()
+# IF(APPLE)
+# 	# -------- Function to build OS X Stand Alone Bundles -----------------
+# 	function(MakeOSXBundleApp target binary_dir)
+# 		IF(${CMAKE_GENERATOR} MATCHES "Xcode")
+# 			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/Debug/${target}.app")
+# 		ELSE()
+# 			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/${target}.app")
+# 		ENDIF()
 
-		SET(OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.cmake")
-		SET(OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.sh")
+# 		SET(OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.cmake")
+# 		SET(OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.sh")
 
-		CONFIGURE_FILE("${ROOT}/scripts/CompleteBundle.cmake.in" "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}" @ONLY IMMEDIATE)
-		CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in" "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
+# 		CONFIGURE_FILE("${ROOT}/scripts/CompleteBundle.cmake.in" "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}" @ONLY IMMEDIATE)
+# 		CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in" "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
 
-		add_custom_command(TARGET ${target} POST_BUILD COMMAND cmake -P ${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT} VERBATIM)
-	endfunction(MakeOSXBundleApp)
+# 		add_custom_command(TARGET ${target} POST_BUILD COMMAND cmake -P ${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT} VERBATIM)
+# 	endfunction(MakeOSXBundleApp)
 
-	MakeOSXBundleApp("lightpad" ${PROJECT_BINARY_DIR})
-ENDIF()
+# 	MakeOSXBundleApp("lightpad" ${PROJECT_BINARY_DIR})
+# ENDIF()

@@ -1,8 +1,8 @@
 //
 // Lightpad - ElementIDs.h
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #pragma once
@@ -15,19 +15,16 @@ enum {
 	ID_Panel_Timeline,
 	ID_Panel_Display,
 	ID_Panel_File,
-	ID_Menu_About,
 	ID_Menu_FileMetadata,
-	ID_Menu_Hello,
 	ID_Menu_Save,
 	ID_Menu_SaveAs,
 	ID_Menu_PlayPause,
-	ID_Menu_ShiftPlayPause,
 	ID_Menu_Restart,
 	ID_Menu_NextCol,
 	ID_Menu_PrevCol,
 	ID_Menu_ZoomIn,
 	ID_Menu_ZoomOut,
-	ID_FilePanel_Tree,
+	ID_QuickFilePanel_Tree,
 	ID_PropertiesPanel_ColorSelector,
 	ID_PropertiesPanel_ColorSelect,
 	ID_TimelinePanel_TimelineGrid,

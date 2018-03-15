@@ -1,8 +1,8 @@
 //
 // Lightpad - FileMetadata.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #include "FileMetadata.h"
@@ -13,7 +13,7 @@
 #endif
 
 #include "ElementIDs.h"
-#include "NightwaveCore/Helpers.h"
+#include "GooCore/GooCore.h"
 #include "HOWL/Project.h"
 
 FileMetadata::FileMetadata(const wxString & title, HOWL::Project *project) : wxDialog(NULL, -1, title, wxDefaultPosition, wxSize(250, 230)) {

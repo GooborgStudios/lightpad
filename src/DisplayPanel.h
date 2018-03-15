@@ -1,8 +1,8 @@
 //
 // Lightpad - DisplayPanel.h
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #pragma once
@@ -18,10 +18,12 @@
 #include "Magick++.h"
 
 #include "ElementIDs.h"
-#include "NightwaveCore/Helpers.h"
-#include "NightwaveCore/Colors.h"
+#include "GooCore/GooCore.h"
+#include "GooCore/Colors.h"
 #include "HOWL/Project.h"
-#include "NightwaveCore/SplashScreen.h"
+#include "HOWL/Selection.h"
+#include "GooCore/SplashScreen.h"
+#include "LightpadProject.h"
 
 #define MAXIMUM_LAUNCHPAD_IMAGE_SIZE 4096
 #define MINIMUM_LAUNCHPAD_IMAGE_SIZE 128
@@ -32,7 +34,7 @@
 // Graphical interface panel
 class DisplayPanel: public wxPanel {
 	public:
-		DisplayPanel(wxPanel *parent, SplashScreen *splash);
+		DisplayPanel(wxPanel *parent, SplashScreen *splash, LightpadProject *project);
 		~DisplayPanel();
 		void paintEvent(wxPaintEvent &event);
 		void paintNow();
@@ -53,9 +55,9 @@ class DisplayPanel: public wxPanel {
 		void colorButtons(wxCommandEvent &event);
 		void selectButton(int button, bool state);
 		void selectButton(int x, int y, bool state);
+		void selectButton(HOWL::SelectionEvent &event);
 		void MagickToWx(wxImage *out, Magick::Image *image, const int offset_x = 0, const int offset_y = 0);
 
-		wxDECLARE_EVENT_TABLE();
 	private:
 		wxPanel *m_parent;
 		Magick::Image *fullres_base_image;
@@ -78,6 +80,8 @@ class DisplayPanel: public wxPanel {
 		bool changed_buttons[100] = {true};
 		bool selected_buttons[100] = {false};
 		bool selected_buttons_box[100] = {false};
-		int frame = 0;
 		wxPoint clickpos = wxPoint(-1, -1);
+		LightpadProject *activeProject;
+
+	wxDECLARE_EVENT_TABLE();
 };

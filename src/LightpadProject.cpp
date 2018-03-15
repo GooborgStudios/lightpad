@@ -1,8 +1,8 @@
 //
 // Lightpad - LightpadProject.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #include "LightpadProject.h"
@@ -39,14 +39,14 @@ LightpadProject::LightpadProject(int BPM, int ticksPerBeat, int beatsPerMeasure)
 	layer = new MidiLayer();
 	
 	int btn_x = 0;
-	int btn_y = 9;
+	int btn_y = 0;
 	
 	for (int row = 0; row < 96; row++) {
 		btn_x++;
 		if (row == 8 || row == 88) btn_x++;
 		if (btn_x / 10 > 0) {
 			btn_x = btn_x % 10;
-			btn_y--;
+			btn_y++;
 		}
 		
 		layer->AddKeyframe(new NoteKeyframe(btn_x + (btn_y * 10), 0, 0));
@@ -88,29 +88,6 @@ LightpadProject::LightpadProject(std::string filePath) : LightpadProject::Lightp
 	delete midifile;
 }
 
-int LightpadProject::noteToButton(int note) {
-	if (note < note_button_offset || note > (note_button_size + note_button_offset)) return 0;
-	return note_button_map[note - note_button_offset];
-}
-
-int LightpadProject::buttonToNote(int button) {
-	for (int i = 0; i < note_button_size + note_button_offset; i++)
-		if (note_button_map[i] == button) return i + note_button_offset;
-	return 0;
-}
-
-
-
-void LightpadProject::pushButton(int tick, std::string button, unsigned char velocity) {
-	vector<unsigned char> data;
-	
-	data.push_back(velocity == 0 ? 128 : 144);
-	data.push_back(buttonToNote(stoi(button)));
-	data.push_back(velocity);
-	assert(midifile != NULL);
-	midifile->addEvent(0, tick, data);
-}
-
 int LightpadProject::save() {
 	return save(this->filePath);
 }
@@ -122,9 +99,10 @@ int LightpadProject::save(std::string filePath) {
 	midifile->setTicksPerQuarterNote(this->ticksPerBeat);
 	
 	unsigned char velocity = 0;
-	for (auto button: layer->keyframes) {
+	for (std::string button_name: layer->getSetNames()) {
+		HOWL::KeyframeSet *button = layer->findSet(button_name);
 		unsigned char last_command = 128;
-		for (auto keyframe: button.second->keyframes) {
+		for (auto keyframe: button->keyframes) {
 			velocity = ((NoteKeyframe *)(keyframe))->velocity;
 			
 			if (velocity > 0 && last_command != 128) pushButton(keyframe->time, keyframe->name, 0);
@@ -137,5 +115,26 @@ int LightpadProject::save(std::string filePath) {
 	midifile->sortTracks();
 	midifile->write(this->filePath);
 	
+	return 0;
+}
+
+void LightpadProject::pushButton(int tick, std::string button, unsigned char velocity) {
+	std::vector<unsigned char> data;
+	
+	data.push_back(velocity == 0 ? 128 : 144);
+	data.push_back(buttonToNote(stoi(button)));
+	data.push_back(velocity);
+	assert(midifile != NULL);
+	midifile->addEvent(0, tick, data);
+}
+
+int LightpadProject::noteToButton(int note) {
+	if (note < note_button_offset || note > (note_button_size + note_button_offset)) return 0;
+	return note_button_map[note - note_button_offset];
+}
+
+int LightpadProject::buttonToNote(int button) {
+	for (int i = 0; i < note_button_size + note_button_offset; i++)
+		if (note_button_map[i] == button) return i + note_button_offset;
 	return 0;
 }

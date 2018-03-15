@@ -1,8 +1,8 @@
 //
 // Lightpad - MidiLayer.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #include "MidiLayer.h"
@@ -14,8 +14,8 @@
 
 #include <string>
 
-#include "NightwaveCore/Helpers.h"
-#include "NightwaveCore/Colors.h"
+#include "GooCore/GooCore.h"
+#include "GooCore/Colors.h"
 #include "Launchpad.h"
 #include "HOWL/Layer.h"
 
@@ -24,15 +24,17 @@ NoteKeyframe::NoteKeyframe(int name, long time, unsigned char velocity) : Keyfra
 }
 
 std::string NoteKeyframe::serialize() {
-	return std::string("");
+	std::stringstream stream;
+	stream << (int) (velocity);
+	return stream.str();
 }
 
 void NoteKeyframe::render(wxDC &canvas, wxRect bounding_box) {
-	canvas.SetPen(*wxBLACK_PEN);
-	canvas.DrawLine(bounding_box.GetLeft(), bounding_box.GetTop(), bounding_box.GetLeft(), bounding_box.GetHeight());
 	canvas.SetPen(*wxTRANSPARENT_PEN);
 	canvas.SetBrush(wxBrush(velocitycolors[this->velocity]));
 	canvas.DrawRectangle(bounding_box.GetLeft(), bounding_box.GetTop(), bounding_box.GetWidth(), bounding_box.GetHeight());
+	canvas.SetPen(*wxBLACK_PEN);
+	canvas.DrawLine(bounding_box.GetTopLeft(), bounding_box.GetBottomLeft());
 }
 
 unsigned char MidiLayer::getVelocity(int position) {
@@ -40,15 +42,25 @@ unsigned char MidiLayer::getVelocity(int position) {
 }
 
 unsigned char MidiLayer::getVelocity(std::string position) {
-	if (keyframes[position]->getFirst() == NULL) return '\0';
-	return ((NoteKeyframe *)(keyframes[position]->getFirst()))->velocity;
+	HOWL::KeyframePair value = getSurroundingKeyframes(position);
+
+	if (!value.first) return '\0';
+	return ((NoteKeyframe *)(value.first))->velocity;
 }
 
 void MidiLayer::setVelocity(int position, unsigned char velocity) {
 	std::string type = to_padded_string(position, 2);
-	NoteKeyframe *keyframe = (NoteKeyframe *)(keyframes[type]->getFirst());
-	if (keyframe == NULL) AddKeyframe(new NoteKeyframe(position, keyframes[type]->currentTime, velocity));
-	else keyframe->velocity = velocity;
+	HOWL::KeyframeSet *set = findSet(type);
+	HOWL::KeyframePair value = getSurroundingKeyframes(type);
+
+	if (set != NULL) {
+		NoteKeyframe *keyframe = (NoteKeyframe *)(value.first);
+		if (keyframe != NULL) {
+			keyframe->velocity = velocity;
+			return;
+		}
+	}
+	AddKeyframe(new NoteKeyframe(position, set->currentTime, velocity));
 }
 
 Color velocitycolors[] = {

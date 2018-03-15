@@ -1,8 +1,8 @@
 //
 // Lightpad - DisplayPanel.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #include "DisplayPanel.h"
@@ -26,19 +26,23 @@
 #include "Magick++.h"
 
 #include "ElementIDs.h"
-#include "NightwaveCore/Helpers.h"
+#include "GooCore/GooCore.h"
 #include "Launchpad.h"
-#include "NightwaveCore/Colors.h"
+#include "GooCore/Colors.h"
 #include "LightpadProject.h"
 #include "HOWL/TimelinePanel.h"
-#include "NightwaveCore/SplashScreen.h"
+#include "HOWL/Selection.h"
+#include "GooCore/SplashScreen.h"
+#include "LightpadProject.h"
 
 const float button_pos[10] = {0.113525390625, 0.199462890625, 0.277587890625, 0.355712890625, 0.433837890625, 0.511962890625, 0.590087890625, 0.668212890625, 0.746337890625, 0.832275390625};
 const float button_size = 0.06982421875;
 
 // Initialize the file panel and it's elements
-DisplayPanel::DisplayPanel(wxPanel *parent, SplashScreen *splash): wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+DisplayPanel::DisplayPanel(wxPanel *parent, SplashScreen *splash, LightpadProject *project): wxPanel(parent, ID_Panel_Display, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
+
+	activeProject = project;
 
 	// Initialize variables
 	base_image_path = getResourcePath("launchpad_display/base/base_4096.png");
@@ -68,8 +72,7 @@ DisplayPanel::DisplayPanel(wxPanel *parent, SplashScreen *splash): wxPanel(paren
 			
 			fullres_button_images[arraypos] = new Magick::Image(*fullres_button_image);
 			fullres_button_images[arraypos]->modulate(180.0, 0.0, 100.0);
-			fullres_button_images[arraypos]->colorize(50, 50, 50, Magick::ColorRGB(bcolor.Red() / 255.0,
-														bcolor.Green() / 255.0, bcolor.Blue() / 255.0));
+			fullres_button_images[arraypos]->colorize(50, 50, 50, Magick::ColorRGB(bcolor.Red() / 255.0, bcolor.Green() / 255.0, bcolor.Blue() / 255.0));
 		}
 		
 		delete fullres_button_image;
@@ -81,10 +84,6 @@ DisplayPanel::DisplayPanel(wxPanel *parent, SplashScreen *splash): wxPanel(paren
 		fullres_button_halo_images[i] = new Magick::Image(button_halo_image);
 		fullres_button_halo_images[i]->crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * i, 0));
 	}
-
-	paintNow();
-
-	Bind(HOWL::DISPLAY_REFRESH, &DisplayPanel::refreshNow, this, ID_TimelinePanel_CellSelect);
 }
 
 DisplayPanel::~DisplayPanel() {
@@ -238,11 +237,21 @@ void DisplayPanel::render_buttons() {
 		int btn_y = 9 - (i / 10);
 		int button_style = get_button_style(btn_x, btn_y);
 		
+		bool selected = false;
+		for (HOWL::SingleSelection *s : activeProject->selection.sel) {
+			if (s->set->name == to_padded_string(i, 2)
+				&& s->start <= activeProject->currentTime
+				&& s->end > activeProject->currentTime) {
+				selected = true;
+			}
+		}
+		
 		if (changed_buttons[i]) {
 			Magick::Image base_crop(*scaled_base_image);
 			base_crop.crop(Magick::Geometry(MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, MAXIMUM_LAUNCHPAD_BUTTON_SIZE * scale, buttonIndexToPos(btn_x), buttonIndexToPos(btn_y)));
 			
-			if (selected_buttons[i] || selected_buttons_box[i])
+//			if (selected_buttons[i] || selected_buttons_box[i])
+			if (selected)
 				base_crop.composite(*scaled_button_halo_images[button_style], 0, 0, Magick::OverCompositeOp);
 		
 			Magick::Image current_button(*scaled_button_images[button_colors[i] + (128 * button_style)]);
@@ -314,22 +323,28 @@ void DisplayPanel::colorButton(int button, int color) {
 }
 
 void DisplayPanel::colorButtons(wxCommandEvent &event) {
-	for (auto iter : activeProject->layer->keyframes) {
-		colorButton(std::stoi(iter.first), activeProject->layer->getVelocity(iter.first));
+	for (auto button_name : activeProject->layer->getSetNames()) {
+		colorButton(std::stoi(button_name), activeProject->layer->getVelocity(button_name));
 	}
 	
 	refreshNow();
 }
 
 void DisplayPanel::selectButton(int button, bool state) {
-	if (selected_buttons[button] != state) {
-		changed_buttons[button] = true;
-		selected_buttons[button] = state;
-	}
+	changed_buttons[button] = true;
 }
 
 void DisplayPanel::selectButton(int x, int y, bool state) {
 	selectButton(x + (y * 10), state);
+}
+
+void DisplayPanel::selectButton(HOWL::SelectionEvent &event) {
+	HOWL::SingleSelection sel = event.GetSelection();
+	if (sel.start > activeProject->currentTime) return;
+	if ( sel.end < activeProject->currentTime) return;
+	bool state = (event.GetEventType() == HOWL::SELECTION_ON);
+	selectButton(std::atoi(sel.set->name.c_str()), state);
+	refreshNow();
 }
 
 void DisplayPanel::MagickToWx(wxImage *out, Magick::Image *image, const int offset_x, const int offset_y) {
@@ -356,4 +371,6 @@ wxBEGIN_EVENT_TABLE(DisplayPanel, wxPanel)
 	EVT_SIZE(DisplayPanel::onSize)
 	EVT_COMMAND(ID_Panel_Display, HOWL::PLAYHEAD_MOVED, DisplayPanel::colorButtons)
 	EVT_COMMAND(ID_Panel_Display, HOWL::DISPLAY_REFRESH, DisplayPanel::refreshNow)
+	EVT_HOWL_SELECTION_ON(ID_Panel_Display, DisplayPanel::selectButton)
+	EVT_HOWL_SELECTION_OFF(ID_Panel_Display, DisplayPanel::selectButton)
 wxEND_EVENT_TABLE()

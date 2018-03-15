@@ -1,8 +1,8 @@
 //
 // Lightpad - LightpadProject.h
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #pragma once
@@ -20,12 +20,6 @@
 #include "MidiLayer.h"
 
 class LightpadProject: public HOWL::Project {
-	private:
-		MidiFile *midifile;
-		void pushButton(int tick, std::string button, unsigned char velocity);
-		int noteToButton(int note);
-		int buttonToNote(int button);
-		
 	public:
 		LightpadProject(int BPM = 120, int ticksPerBeat = 32, int beatsPerMeasure = 4);
 		LightpadProject(std::string filePath);
@@ -33,6 +27,11 @@ class LightpadProject: public HOWL::Project {
 		int save(std::string filePath);
 	
 		MidiLayer *layer;
+	
+	private:
+		void pushButton(int tick, std::string button, unsigned char velocity);
+		int noteToButton(int note);
+		int buttonToNote(int button);
+		
+		MidiFile *midifile;
 };
-
-extern LightpadProject *activeProject;

@@ -1,8 +1,8 @@
 //
 // Lightpad - PropertiesPanel.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #include "PropertiesPanel.h"
@@ -19,17 +19,20 @@
 #include <wx/clrpicker.h>
 
 #include "ElementIDs.h"
-#include "NightwaveCore/Colors.h"
-#include "NightwaveCore/Helpers.h"
+#include "GooCore/Colors.h"
+#include "GooCore/GooCore.h"
 #include "GridRenderer.h"
 #include "MidiLayer.h"
+#include "LightpadProject.h"
+#include "HOWL/TimelinePanel.h"
 
 wxDEFINE_EVENT(COLOR_SELECT, wxCommandEvent);
 
 // Initialize the properties panel and it's elements
-PropertiesPanel::PropertiesPanel(wxPanel *parent)
-	: wxPanel(parent, ID_Panel_Properties, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
+PropertiesPanel::PropertiesPanel(wxPanel *parent, LightpadProject *project) : wxPanel(parent, ID_Panel_Properties, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN) {
 	m_parent = parent;
+
+	activeProject = project;
 
 	sizer = new wxBoxSizer(wxVERTICAL);
 	grid = new wxGrid(this, ID_PropertiesPanel_ColorSelector);
@@ -74,10 +77,29 @@ void PropertiesPanel::Update() {
 void PropertiesPanel::OnSelectCell(wxGridEvent &event) {
 	grid->SelectBlock(event.GetRow(), event.GetCol(), event.GetRow(), event.GetCol());
 
-	wxCommandEvent evt(COLOR_SELECT, ID_PropertiesPanel_ColorSelect);
+	HOWL::Selection sel = activeProject->selection;
+	unsigned char velocity = event.GetRow() * 8 + event.GetCol();
+	unsigned char old_velocity;
+
+	for (auto s: sel.sel) {
+		HOWL::KeyframePair pair1 = activeProject->layer->getSurroundingKeyframes(s->set->name, s->start);
+		HOWL::KeyframePair pair2 = activeProject->layer->getSurroundingKeyframes(s->set->name, s->end);
+		old_velocity = pair2.first == NULL ? 0 : ((NoteKeyframe *)(pair2.first))->velocity;
+		s->set->removeKeyframes(pair1.second, pair2.first);
+
+		s->set->AddKeyframe(new NoteKeyframe(std::atoi(s->set->name.c_str()), s->start, velocity));
+		s->set->AddKeyframe(new NoteKeyframe(std::atoi(s->set->name.c_str()), s->end, old_velocity), false);
+	}
+
+	wxCommandEvent evt(HOWL::DISPLAY_REFRESH, ID_PropertiesPanel_ColorSelect);
 	evt.SetEventObject(this);
-	evt.SetInt(event.GetRow() * 8 + event.GetCol());
 	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Timeline), evt);
+	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Display), evt);
+
+//	wxCommandEvent evt(COLOR_SELECT, ID_PropertiesPanel_ColorSelect);
+//	evt.SetEventObject(this);
+//	evt.SetInt(event.GetRow() * 8 + event.GetCol());
+//	wxPostEvent(wxWindow::FindWindowById(ID_Panel_Timeline), evt);
 }
 
 void PropertiesPanel::SelectColor(wxColourPickerEvent &event) {

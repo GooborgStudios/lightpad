@@ -1,8 +1,8 @@
 //
 // Lightpad - midiout.cpp
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha, Origami1105, WhoovesPON3.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #include <iostream>
@@ -21,7 +21,7 @@
 #include "RtMidi.h"
 #include "MidiFile.h"
 
-#include "NightwaveCore/Helpers.h"
+#include "GooCore/GooCore.h"
 #include "NoteHelpers.h"
 #include "Launchpad.h"
 

@@ -1,8 +1,8 @@
 //
 // Lightpad - Launchpad.h
-// ©2017 Nightwave Studios: Vinyl Darkscratch, Light Apacha.
+// ©2018 Gooborg Studios: Vinyl Darkscratch, Light Apacha.
 // Additional support from LaunchpadFun (http://www.launchpadfun.com/en/).
-// https://www.nightwave.co/lightpad
+// http://www.gooborg.com/lightpad
 //
 
 #pragma once
@@ -57,17 +57,20 @@ class LaunchpadBase {
 		void endColorUpdate();
 		virtual void setColor(unsigned char light, unsigned char color) = 0;
 		virtual void setPulse(unsigned char light, unsigned char color) = 0;
+
 		std::regex PORT_REGEX;
+
 	protected:
+		void sendMessage(Message message);
+		int preconnect();
+		
 		RtMidiIn *midiin;
 		RtMidiOut *midiout;
 		int inport;
 		int outport;
-		void sendMessage(Message message);
 		bool connected;
 		SysExMessage *color_update;
-	protected:
-		int preconnect();
+
 	private:
 		virtual int buttonToNote(int button);
 };
@@ -93,6 +96,7 @@ class LaunchpadS: public LaunchpadBase {
 		void disconnect();
 		void setColor(unsigned char light, unsigned char color);
 		void setPulse(unsigned char light, unsigned char color);
+	
 	private:
 		int buttonToNote(int button);
 };
