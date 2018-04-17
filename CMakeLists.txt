@@ -217,4 +217,5 @@ ENDIF()
 # 	endfunction(MakeOSXBundleApp)
 
 # 	MakeOSXBundleApp("lightpad" ${PROJECT_BINARY_DIR})
-# ENDIF()
+# ENDIF()add_custom_target(distclean rm -rf ${PROJECT_BINARY_DIR}/*)
+add_custom_target(distclean rm -rf ${PROJECT_BINARY_DIR}/*)
