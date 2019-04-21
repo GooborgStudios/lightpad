@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.13.1: http://docutils.sourceforge.net/" />
+<title></title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document">
+
+
+<p>2018-01-20  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>NEWS.txt: Prepare for 1.3.28 release.</li>
+</ul>
+</blockquote>
+<p>2018-01-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>NEWS.txt: Update with changes since previous release.</li>
+</ul>
+</blockquote>
+<p>2018-01-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>PerlMagick/Magick.xs: Compiler warnings reduction.</li>
+<li>magick/pixel_cache.h: Mark GetPixels(), GetIndexes(), and
+GetOnePixel() as deprecated.  Compilers may produce a warning if
+these functions are used.</li>
+<li>magick/pixel_cache.c (InterpolateColor): Return black pixel if
+InterpolateViewColor() reports failure.</li>
+<li>coders/png.c (ReadMNGImage): Fix memory leak of chunk and
+mng_info in error path.</li>
+<li>coders/gif.c (ReadGIFImage): Fix memory leak of global colormap.</li>
+</ul>
+</blockquote>
+<p>2018-01-13  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/symbols.h: Fix SourceForge issue #538 &quot;13 symbols in
+common with ImageMagick despite --enable-symbol-prefix&quot;.</li>
+<li>coders/bmp.c (ReadBMPImage): Fix non-terminal loop due to
+unexpected bit-field mask value.  Fixes SourceForge issue #541
+&quot;Infinite Loop in ReadBMPImage (coders/bmp.c)&quot;.</li>
+<li>coders/jpeg.c (JPEGMessageHandler): Revert code added on
+2017-07-08 to promote certain warnings from libjpeg to errors.
+Add code to rationalize claimed image dimensions based on file
+size.  Resolves SourceForge issue #539 &quot;Images with libjpeg
+warnings result in error&quot;.</li>
+</ul>
+</blockquote>
+<p>2018-01-11  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>coders/wpg.c Recursive ReadImage could return multiple scenes</dt>
+<dd>fixed.</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+<p>2018-01-07  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOnePNGImage): Quit 'passes' loop if we
+encountered an error</li>
+<li>magick/pixel_cache.c (SetNexus): Fix heap overwrite in
+AcquireCacheNexus() due to SetNexus() not using an allocated
+staging area for the pixels like it should.  This problem impacts
+all 1.3.X releases.  Resolves SourceForge issues 532
+&quot;heap-buffer-overflow bug in ReadWPGImage&quot; and #531
+&quot;heap-buffer-overflow in AcquireCacheNexus&quot;.</li>
+<li>magick/pixel_cache.c (InterpolateViewColor): Now returns
+MagickPassFail rather than void.  Code using this function is
+updated to check the return status.</li>
+</ul>
+</blockquote>
+<p>2018-01-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/describe.c (DescribeImage): Discriminate between
+AcquireImagePixels() returning NULL or finding a transparent
+pixel.  This avoids use of a null pointer in the case where
+AcquireImagePixels() returns NULL.</li>
+</ul>
+</blockquote>
+<p>2017-12-31  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/static.c: Change static module initialization to be based
+on an initialized list rather than a squence of function calls in
+order to simplify maintenance and possibly address future
+requirements.</li>
+</ul>
+</blockquote>
+<p>2017-12-30  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Copyright.txt: Bump copyright years and rotate ChangeLog.</li>
+</ul>
+</blockquote>
+</div>
+</body>
+</html>

@@ -126,14 +126,24 @@ target_link_libraries(lightpad ${wxWidgets_LIBRARIES})
 target_link_libraries(midiprobe ${wxWidgets_LIBRARIES})
 target_link_libraries(midiout ${wxWidgets_LIBRARIES})
 
-find_package(GraphicsMagick REQUIRED)
-add_definitions(-DLIB_GRAPHICSMAGICK)
-include_directories(${MAGICK_INCLUDE_DIR})
-include_directories(${MAGICK++_INCLUDE_DIR})
-link_directories(${MAGICK_LIBRARY_DIR})
-link_directories(${MAGICK++_LIBRARY_DIR})
-target_link_libraries(lightpad ${MAGICK_LIBRARIES})
-target_link_libraries(lightpad ${MAGICK++_LIBRARIES})
+# XXX Uncomment me later!
+	# find_package(GraphicsMagick REQUIRED)
+	# add_definitions(-DLIB_GRAPHICSMAGICK)
+	# include_directories(${MAGICK_INCLUDE_DIR})
+	# include_directories(${MAGICK++_INCLUDE_DIR})
+	# link_directories(${MAGICK_LIBRARY_DIR})
+	# link_directories(${MAGICK++_LIBRARY_DIR})
+	# target_link_libraries(lightpad ${MAGICK_LIBRARIES})
+	# target_link_libraries(lightpad ${MAGICK++_LIBRARIES})
+ # End XXX Uncomment me later!
+
+# XXX Remove me later!
+	add_definitions(-DLIB_GRAPHICSMAGICK)
+	include_directories(${ROOT}/graphicsmagick/include/GraphicsMagick)
+	link_directories(${ROOT}/graphicsmagick/lib)
+	target_link_libraries(lightpad ${ROOT}/graphicsmagick/lib/libGraphicsMagick.dylib)
+	target_link_libraries(lightpad ${ROOT}/graphicsmagick/lib/libGraphicsMagick++.dylib)
+# End XXX Remove me later!
 
 find_package(LibMagic)
 IF(LibMagic_FOUND)
@@ -198,24 +208,25 @@ IF(NOT ${CMAKE_GENERATOR} MATCHES "Xcode") # Xcode doesn't generate the required
 	add_custom_target(oclint oclint -p ${BUILD} ${SOURCE_FILES} DEPENDS ${SRC}/* ${BUILD}/compile_commands.json WORKING_DIRECTORY ${BUILD}/oclint VERBATIM) # COMMENT "Generating cleanliness report with OCLint..."
 ENDIF()
 
-# IF(APPLE)
-# 	# -------- Function to build OS X Stand Alone Bundles -----------------
-# 	function(MakeOSXBundleApp target binary_dir)
-# 		IF(${CMAKE_GENERATOR} MATCHES "Xcode")
-# 			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/Debug/${target}.app")
-# 		ELSE()
-# 			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/${target}.app")
-# 		ENDIF()
+IF(APPLE)
+	# -------- Function to build OS X Stand Alone Bundles -----------------
+	function(MakeOSXBundleApp target binary_dir)
+		IF(${CMAKE_GENERATOR} MATCHES "Xcode")
+			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/Debug/${target}.app")
+		ELSE()
+			set(TARGET_FILE "${EXECUTABLE_OUTPUT_PATH}/${target}.app")
+		ENDIF()
 
-# 		SET(OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.cmake")
-# 		SET(OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.sh")
+		SET(OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.cmake")
+		SET(OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT "${binary_dir}/${target}_OSX_MakeStandAloneBundle.sh")
 
-# 		CONFIGURE_FILE("${ROOT}/scripts/CompleteBundle.cmake.in" "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}" @ONLY IMMEDIATE)
-# 		CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in" "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
+		CONFIGURE_FILE("${ROOT}/scripts/CompleteBundle.cmake.in" "${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT}" @ONLY IMMEDIATE)
+		CONFIGURE_FILE("${ROOT}/scripts/CreateBundle.sh.in" "${OSX_MAKE_STANDALONE_BUNDLE_BASH_SCRIPT}" @ONLY IMMEDIATE)
 
-# 		add_custom_command(TARGET ${target} POST_BUILD COMMAND cmake -P ${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT} VERBATIM)
-# 	endfunction(MakeOSXBundleApp)
+		add_custom_command(TARGET ${target} POST_BUILD COMMAND cmake -P ${OSX_MAKE_STANDALONE_BUNDLE_CMAKE_SCRIPT} VERBATIM)
+	endfunction(MakeOSXBundleApp)
 
-# 	MakeOSXBundleApp("lightpad" ${PROJECT_BINARY_DIR})
-# ENDIF()add_custom_target(distclean rm -rf ${PROJECT_BINARY_DIR}/*)
+	MakeOSXBundleApp("lightpad" ${PROJECT_BINARY_DIR})
+ENDIF()
+
 add_custom_target(distclean rm -rf ${PROJECT_BINARY_DIR}/*)

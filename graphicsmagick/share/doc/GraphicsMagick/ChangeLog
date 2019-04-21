@@ -1,0 +1,77 @@
+2018-01-20  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Prepare for 1.3.28 release.
+
+2018-01-17  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Update with changes since previous release.
+
+2018-01-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* PerlMagick/Magick.xs: Compiler warnings reduction.
+
+	* magick/pixel_cache.h: Mark GetPixels(), GetIndexes(), and
+	GetOnePixel() as deprecated.  Compilers may produce a warning if
+	these functions are used.
+
+	* magick/pixel_cache.c (InterpolateColor): Return black pixel if
+	InterpolateViewColor() reports failure.
+
+	* coders/png.c (ReadMNGImage): Fix memory leak of chunk and
+	mng_info in error path.
+
+	* coders/gif.c (ReadGIFImage): Fix memory leak of global colormap.
+
+2018-01-13  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/symbols.h: Fix SourceForge issue #538 "13 symbols in
+	common with ImageMagick despite --enable-symbol-prefix".
+
+	* coders/bmp.c (ReadBMPImage): Fix non-terminal loop due to
+	unexpected bit-field mask value.  Fixes SourceForge issue #541
+	"Infinite Loop in ReadBMPImage (coders/bmp.c)".
+
+	* coders/jpeg.c (JPEGMessageHandler): Revert code added on
+	2017-07-08 to promote certain warnings from libjpeg to errors.
+	Add code to rationalize claimed image dimensions based on file
+	size.  Resolves SourceForge issue #539 "Images with libjpeg
+	warnings result in error".
+
+2018-01-11  Fojtik Jaroslav  <JaFojtik@seznam.cz>
+
+	* coders/wpg.c Recursive ReadImage could return multiple scenes
+          fixed.
+
+2018-01-07  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/png.c (ReadOnePNGImage): Quit 'passes' loop if we
+	encountered an error
+
+	* magick/pixel_cache.c (SetNexus): Fix heap overwrite in
+	AcquireCacheNexus() due to SetNexus() not using an allocated
+	staging area for the pixels like it should.  This problem impacts
+	all 1.3.X releases.  Resolves SourceForge issues 532
+	"heap-buffer-overflow bug in ReadWPGImage" and #531
+	"heap-buffer-overflow in AcquireCacheNexus".
+
+	* magick/pixel_cache.c (InterpolateViewColor): Now returns
+	MagickPassFail rather than void.  Code using this function is
+	updated to check the return status.
+
+2018-01-01  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/describe.c (DescribeImage): Discriminate between
+	AcquireImagePixels() returning NULL or finding a transparent
+	pixel.  This avoids use of a null pointer in the case where
+	AcquireImagePixels() returns NULL.
+
+2017-12-31  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/static.c: Change static module initialization to be based
+	on an initialized list rather than a squence of function calls in
+	order to simplify maintenance and possibly address future
+	requirements.
+
+2017-12-30  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Copyright.txt: Bump copyright years and rotate ChangeLog.
