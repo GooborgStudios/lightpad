@@ -1,8 +1,8 @@
+# This software has been discontinued due to lack of community support.  The repository will be retained for archival purposes.
+
 # Lightpad
 Software Designed, Developed, and Published by [Gooborg Studios](http://www.gooborg.com) (Vinyl Darkscratch, Light Apacha), © 2018 under a GNU General Public License.
 Additional support from [LaunchpadFun](http://www.launchpadfun.com/en/).
-
-# This software is in beta stages.  Please report any bugs you encounter! 
 
 ## Dependencies
 - A C++11 compiler
